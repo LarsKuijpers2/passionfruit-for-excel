@@ -296,3 +296,42 @@ export interface WebSearchInfo {
   searchResults: WebSearchResult[];
   citations: WebSearchCitation[];
 }
+
+// ============================================
+// Memory Service Types (Supermemory Integration)
+// ============================================
+
+/**
+ * Configuration for memory service
+ */
+export interface MemoryConfig {
+  /** Supermemory API key */
+  apiKey: string;
+  /** User ID for memory isolation */
+  userId?: string;
+  /** Project ID for grouping memories */
+  projectId?: string;
+}
+
+/**
+ * Memory search result
+ */
+export interface MemorySearchResult {
+  content: string;
+  score?: number;
+  metadata?: Record<string, unknown>;
+}
+
+/**
+ * Conversation context for memory storage
+ */
+export interface ConversationContext {
+  workbookName: string;
+  topic: string;
+  keyPoints: string[];
+  modifications: Array<{
+    cell: string;
+    oldValue: string | number | null;
+    newValue: string | number;
+  }>;
+}

@@ -26,6 +26,12 @@
  * });
  * const searchResult = await excelWithSearch.webSearch('ACME Corp website');
  * console.log(searchResult.answer);
+ *
+ * // Memory service for persistent context (requires Supermemory API key)
+ * import { MemoryService } from 'passionfruit-for-excel';
+ * const memory = new MemoryService({ apiKey: process.env.SUPERMEMORY_API_KEY });
+ * await memory.add('User prefers ISO date format');
+ * const results = await memory.search('date preferences');
  * ```
  */
 
@@ -33,6 +39,7 @@ export { PassfruitExcel } from './claude-excel.js';
 export { ExcelExtractor } from './excel-extractor.js';
 export { QuestionAnswerDetector } from './question-answer-detector.js';
 export { buildWebSearchTool, extractSearchInfo, formatSearchResults } from './web-search.js';
+export { MemoryService, createMemoryService } from './memory-service.js';
 export type {
   // Core types
   PassfruitConfig,
@@ -63,4 +70,8 @@ export type {
   WebSearchCitation,
   WebSearchInfo,
   UserLocation,
+  // Memory types
+  MemoryConfig,
+  MemorySearchResult,
+  ConversationContext,
 } from './types.js';

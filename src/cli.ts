@@ -11,6 +11,7 @@ import { PassfruitExcel } from './claude-excel.js';
 import { ExcelExtractor } from './excel-extractor.js';
 import { QuestionAnswerDetector } from './question-answer-detector.js';
 import { formatSearchResults } from './web-search.js';
+import { createMemoryService, MemoryService } from './memory-service.js';
 import type { DetectedQAPair, QuestionnaireStructure, ConfirmationResult, PassfruitConfig } from './types.js';
 
 const program = new Command();
@@ -581,6 +582,165 @@ program
             console.log(chalk.gray(`    "${citation.citedText}"`));
           }
         }
+      }
+    } catch (error) {
+      console.error(chalk.red(`Error: ${error instanceof Error ? error.message : error}`));
+      process.exit(1);
+    }
+  });
+
+/**
+ * Memory command - manage persistent memory
+ */
+program
+  .command('memory')
+  .description('Manage persistent memory for improved context')
+  .argument('<action>', 'Action: search, add, status')
+  .argument('[content]', 'Content to search for or add')
+  .option('-u, --user <id>', 'User ID for memory isolation')
+  .action(async (
+    action: string,
+    content: string | undefined,
+    options: { user?: string }
+  ) => {
+    const memoryService = createMemoryService(options.user);
+
+    if (!memoryService) {
+      console.error(chalk.red('Error: SUPERMEMORY_API_KEY not set'));
+      console.error(chalk.gray('Get your API key at: https://console.supermemory.ai'));
+      console.error(chalk.gray('Then run: export SUPERMEMORY_API_KEY=sm_...'));
+      process.exit(1);
+    }
+
+    try {
+      switch (action) {
+        case 'search':
+          if (!content) {
+            console.error(chalk.red('Error: Please provide a search query'));
+            process.exit(1);
+          }
+          console.log(chalk.gray(`\nSearching memories for: "${content}"...\n`));
+          const results = await memoryService.search(content);
+
+          if (results.length === 0) {
+            console.log(chalk.yellow('No relevant memories found.'));
+          } else {
+            console.log(chalk.bold(`Found ${results.length} relevant memories:\n`));
+            for (let i = 0; i < results.length; i++) {
+              const r = results[i];
+              const score = r.score ? ` (${Math.round(r.score * 100)}%)` : '';
+              console.log(chalk.cyan(`${i + 1}.${score}`));
+              console.log(`   ${r.content}`);
+              console.log('');
+            }
+          }
+          break;
+
+        case 'add':
+          if (!content) {
+            console.error(chalk.red('Error: Please provide content to remember'));
+            process.exit(1);
+          }
+          console.log(chalk.gray(`\nAdding to memory: "${content}"...\n`));
+          const success = await memoryService.add(content);
+
+          if (success) {
+            console.log(chalk.green('Memory added successfully.'));
+          } else {
+            console.log(chalk.red('Failed to add memory.'));
+          }
+          break;
+
+        case 'status':
+          console.log(chalk.bold('\nMemory Service Status\n'));
+          console.log(chalk.green('✓ Memory service connected'));
+          console.log(chalk.gray(`  User ID: ${options.user || process.env.USER || 'default'}`));
+          console.log(chalk.gray('  Project: passionfruit-excel'));
+
+          // Test search
+          const testResults = await memoryService.search('test connection');
+          console.log(chalk.gray(`  Total memories accessible: ${testResults.length > 0 ? 'Yes' : 'Empty or new account'}`));
+          break;
+
+        default:
+          console.error(chalk.red(`Unknown action: ${action}`));
+          console.error(chalk.gray('Valid actions: search, add, status'));
+          process.exit(1);
+      }
+    } catch (error) {
+      console.error(chalk.red(`Error: ${error instanceof Error ? error.message : error}`));
+      process.exit(1);
+    }
+  });
+
+/**
+ * Remember command - store customer/supplier info from a questionnaire
+ */
+program
+  .command('remember')
+  .description('Store information from a completed questionnaire into memory')
+  .argument('<file>', 'Path to completed Excel questionnaire')
+  .option('-n, --name <name>', 'Customer/supplier name to associate with this data')
+  .action(async (file: string, options: { name?: string }) => {
+    const memoryService = createMemoryService();
+
+    if (!memoryService) {
+      console.error(chalk.red('Error: SUPERMEMORY_API_KEY not set'));
+      console.error(chalk.gray('Get your API key at: https://console.supermemory.ai'));
+      process.exit(1);
+    }
+
+    try {
+      const extractor = new ExcelExtractor();
+      const workbook = await extractor.extract(file);
+
+      console.log(chalk.gray(`\nExtracting data from ${file}...`));
+
+      // Extract key data from the questionnaire
+      const data: Record<string, unknown> = {};
+      let detectedName = options.name;
+
+      for (const sheet of workbook.sheets) {
+        for (const [addr, cell] of sheet.cells) {
+          if (cell.value && typeof cell.value === 'string') {
+            // Look for common fields
+            const value = cell.value.trim();
+
+            // Try to detect company/group name
+            if (!detectedName && (addr.includes('43') || addr.includes('59'))) {
+              const cellAbove = sheet.cells.get(addr.replace(/\d+/, String(parseInt(addr.match(/\d+/)?.[0] || '0') - 1)));
+              if (cellAbove?.value?.toString().toLowerCase().includes('name')) {
+                detectedName = value;
+              }
+            }
+
+            // Store non-empty values with meaningful length
+            if (value.length > 2 && value.length < 200) {
+              data[addr] = value;
+            }
+          }
+        }
+      }
+
+      const customerName = detectedName || file.replace(/\.xlsx?$/i, '');
+
+      console.log(chalk.bold(`\nStoring information for: ${customerName}`));
+      console.log(chalk.gray(`Found ${Object.keys(data).length} data points\n`));
+
+      // Store in memory
+      const success = await memoryService.storeCustomerInfo({
+        name: customerName,
+        data,
+        source: file,
+      });
+
+      if (success) {
+        console.log(chalk.green('✓ Information stored in memory'));
+        console.log(chalk.gray('\nYou can now reference this in future conversations:'));
+        console.log(chalk.cyan(`  "What do you remember about ${customerName}?"`));
+        console.log(chalk.cyan(`  "Use previous data for ${customerName} to fill this questionnaire"`));
+      } else {
+        console.log(chalk.red('Failed to store information'));
       }
     } catch (error) {
       console.error(chalk.red(`Error: ${error instanceof Error ? error.message : error}`));

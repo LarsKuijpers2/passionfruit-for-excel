@@ -14,6 +14,11 @@ import { Command } from 'commander';
 import { resolve } from 'path';
 import { readdir } from 'fs/promises';
 import { PipelineV2 } from './pipeline.js';
+import { loadRules } from './rules-loader.js';
+import { SectionExtractor } from './section-extractor.js';
+import { QuestionnaireIndexer } from './questionnaire-index.js';
+import { SourceStorage } from './source-storage.js';
+import { QuestionnaireMatcher } from './questionnaire-matcher.js';
 import type { PipelineV2Options } from './types.js';
 
 const program = new Command();
@@ -223,6 +228,166 @@ addCommonOptions(
         console.log(`  ❌ ${r.file}: ERROR - ${r.error}`);
       } else {
         console.log(`  ✅ ${r.file}: ${r.questions} questions, ${r.flagged} flagged`);
+      }
+    }
+
+  } catch (error) {
+    console.error(`\n❌ Error: ${error instanceof Error ? error.message : error}`);
+    process.exit(1);
+  }
+});
+
+/** Index a questionnaire and save as source */
+addCommonOptions(
+  program
+    .command('index')
+    .description('Index a questionnaire (create TOC, label values, save as source)')
+    .argument('<file>', 'Path to the questionnaire file')
+    .option('--sources-dir <dir>', 'Sources directory', './sources')
+).action(async (file: string, opts) => {
+  try {
+    const filePath = resolve(file);
+    const sourcesDir = opts.sourcesDir as string || './sources';
+
+    console.log('Loading rules...');
+    const rules = await loadRules(opts.rules as string || './rules/rules.yaml');
+    console.log(`  Loaded ${rules.config.topics.length} topics`);
+
+    console.log(`\nIndexing: ${file}`);
+    const extractor = new SectionExtractor();
+    const { metadata, sections, questions } = await extractor.extract(filePath);
+
+    console.log(`  Found ${sections.length} sections, ${questions.length} fields`);
+
+    const indexer = new QuestionnaireIndexer(rules);
+    const index = indexer.createIndex(metadata, sections, questions, filePath);
+
+    console.log(`\n📋 Table of Contents:`);
+    for (const section of index.toc) {
+      const fill = section.filledFields > 0 ? `✓ ${section.filledFields}/${section.totalFields}` : `○ ${section.totalFields}`;
+      console.log(`  ${section.title} [${fill}]`);
+      if (section.topics.length > 0) {
+        console.log(`    Topics: ${section.topics.join(', ')}`);
+      }
+    }
+
+    console.log(`\n📊 Summary:`);
+    console.log(`  Total fields: ${index.summary.totalFields}`);
+    console.log(`  Filled: ${index.summary.filledFields}`);
+    console.log(`  Empty: ${index.summary.emptyFields}`);
+    console.log(`  Narrative (reusable): ${index.summary.narrativeFields}`);
+    console.log(`  Topics: ${index.summary.topicsCovered.join(', ')}`);
+
+    // Save as source
+    const storage = new SourceStorage(sourcesDir);
+    const savedPath = await storage.save(index);
+    console.log(`\n✅ Saved to: ${savedPath}`);
+
+  } catch (error) {
+    console.error(`\n❌ Error: ${error instanceof Error ? error.message : error}`);
+    process.exit(1);
+  }
+});
+
+/** List/search sources */
+program
+  .command('sources')
+  .description('List and search source questionnaires')
+  .option('--sources-dir <dir>', 'Sources directory', './sources')
+  .option('--search <query>', 'Search for content')
+  .option('--topic <topic>', 'Filter by topic')
+  .action(async (opts) => {
+    try {
+      const sourcesDir = opts.sourcesDir as string || './sources';
+      const storage = new SourceStorage(sourcesDir);
+
+      if (opts.search) {
+        console.log(`\n🔍 Searching for: "${opts.search}"`);
+        const results = await storage.search(opts.search as string);
+
+        if (results.length === 0) {
+          console.log('  No matches found');
+        } else {
+          for (const r of results) {
+            console.log(`\n  📁 ${r.sourceFile} (${r.customer || 'unknown'})`);
+            for (const m of r.matches.slice(0, 3)) {
+              console.log(`    Q: ${m.questionText.substring(0, 60)}...`);
+              console.log(`    A: ${m.answerText.substring(0, 60)}...`);
+            }
+          }
+        }
+      } else if (opts.topic) {
+        console.log(`\n📂 Searching topic: "${opts.topic}"`);
+        const results = await storage.searchByTopic(opts.topic as string);
+
+        for (const r of results) {
+          console.log(`\n  📁 ${r.sourceFile}: ${r.matches.length} matches`);
+        }
+      } else {
+        // List all sources
+        const summary = await storage.getSummary();
+
+        console.log(`\n📚 Source Library`);
+        console.log(`  Total sources: ${summary.totalSources}`);
+        console.log(`  Total fields: ${summary.totalFields}`);
+        console.log(`  Filled fields: ${summary.filledFields}`);
+        console.log(`  Narrative answers: ${summary.narrativeFields}`);
+        console.log(`\nTopics covered: ${summary.topicsCovered.join(', ')}`);
+
+        console.log(`\nSources:`);
+        for (const s of summary.sourcesList) {
+          console.log(`  📁 ${s.filename}`);
+          console.log(`     Customer: ${s.customer || 'unknown'}`);
+          console.log(`     Fields: ${s.filled}/${s.fields} filled`);
+        }
+      }
+    } catch (error) {
+      console.error(`\n❌ Error: ${error instanceof Error ? error.message : error}`);
+      process.exit(1);
+    }
+  });
+
+/** Match a questionnaire against sources */
+addCommonOptions(
+  program
+    .command('match')
+    .description('Find matching answers for a questionnaire from sources')
+    .argument('<file>', 'Path to the questionnaire file')
+    .option('--sources-dir <dir>', 'Sources directory', './sources')
+).action(async (file: string, opts) => {
+  try {
+    const filePath = resolve(file);
+    const sourcesDir = opts.sourcesDir as string || './sources';
+    const answerLibDir = opts.answerLibrary as string || './answer-library';
+
+    console.log(`\nMatching: ${file}`);
+
+    // Extract questionnaire
+    const extractor = new SectionExtractor();
+    const { sections, questions } = await extractor.extract(filePath);
+    console.log(`  Found ${questions.length} questions`);
+
+    // Match against sources
+    const matcher = new QuestionnaireMatcher(sourcesDir, answerLibDir);
+    await matcher.init();
+
+    const result = await matcher.getSuggestions(questions, sections);
+
+    console.log(`\n📊 Match Results:`);
+    console.log(`  Already filled: ${result.filled}`);
+    console.log(`  Suggestions found: ${result.suggested}`);
+    console.log(`  No match: ${result.noMatch}`);
+
+    if (result.suggestions.length > 0) {
+      console.log(`\n💡 Suggestions:`);
+      for (const s of result.suggestions.slice(0, 10)) {
+        console.log(`\n  Cell ${s.cell}: ${s.question}`);
+        console.log(`  → ${s.suggestedAnswer}`);
+        console.log(`    Source: ${s.source} (${s.confidence}% confidence)`);
+      }
+
+      if (result.suggestions.length > 10) {
+        console.log(`\n  ... and ${result.suggestions.length - 10} more suggestions`);
       }
     }
 

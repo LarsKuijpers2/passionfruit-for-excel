@@ -1,8 +1,20 @@
 /**
  * Answer Library for Pipeline v2
  *
- * YAML-based storage for approved reusable answers.
- * Supports pattern matching for answer suggestions.
+ * YAML-based storage for approved NARRATIVE answers only.
+ * Only free-text descriptions that can be reused across questionnaires.
+ *
+ * NOT for structured data like:
+ * - Company names, addresses, contacts
+ * - Certificate numbers, dates
+ * - Yes/No answers
+ * - Numbers, percentages
+ *
+ * YES for narrative answers like:
+ * - Quality policy descriptions
+ * - Sustainability commitments
+ * - Process descriptions
+ * - Food safety procedures
  */
 
 import { readFile, writeFile, mkdir } from 'fs/promises';
@@ -14,6 +26,22 @@ import type {
   AnswerLibrary,
   ClassifiedQuestion,
 } from './types.js';
+import type { LabeledField, ValueType } from './questionnaire-index.js';
+
+/** Topics that allow narrative answers in the library */
+const NARRATIVE_TOPICS = [
+  'quality_systems',
+  'food_safety',
+  'sustainability',
+  'ethical_social',
+  'food_fraud',
+  'food_defense',
+  'environmental',
+  'procedures',
+];
+
+/** Minimum length for a narrative answer */
+const MIN_NARRATIVE_LENGTH = 50;
 
 const LIBRARY_FILENAME = 'answers.yaml';
 
@@ -62,13 +90,67 @@ export class AnswerLibraryManager {
   }
 
   /**
-   * Add an approved answer to the library
+   * Check if an answer is a valid narrative (can be added to library)
+   */
+  isValidNarrative(
+    answerText: string,
+    valueType?: ValueType,
+    topicId?: string
+  ): { valid: boolean; reason?: string } {
+    // Check minimum length
+    if (answerText.length < MIN_NARRATIVE_LENGTH) {
+      return { valid: false, reason: `Too short (min ${MIN_NARRATIVE_LENGTH} chars)` };
+    }
+
+    // Check value type if provided
+    if (valueType && valueType !== 'narrative') {
+      return { valid: false, reason: `Not a narrative (type: ${valueType})` };
+    }
+
+    // Check topic if provided
+    if (topicId && !NARRATIVE_TOPICS.some(t => topicId.toLowerCase().includes(t))) {
+      return { valid: false, reason: `Topic not suitable for reuse: ${topicId}` };
+    }
+
+    // Check it's not structured data
+    const structuredPatterns = [
+      /^[\d.,]+$/,                    // Just numbers
+      /^\d{4}[-/]\d{2}[-/]\d{2}$/,   // Date
+      /^(yes|no|ja|nein|oui|non)$/i, // Yes/No
+      /^[A-Z]{2,4}[-\s]?\d+/,         // Certificate numbers
+      /^\+?\d[\d\s-]{6,}/,            // Phone numbers
+      /^[\w.-]+@[\w.-]+\.\w+$/,       // Email
+    ];
+
+    for (const pattern of structuredPatterns) {
+      if (pattern.test(answerText.trim())) {
+        return { valid: false, reason: 'Looks like structured data, not narrative' };
+      }
+    }
+
+    return { valid: true };
+  }
+
+  /**
+   * Add an approved answer to the library (narrative only)
    */
   async addAnswer(
     question: ClassifiedQuestion,
     approvedBy: string,
     reviewNotes?: string
-  ): Promise<ApprovedAnswer> {
+  ): Promise<ApprovedAnswer | null> {
+    // Validate it's a narrative
+    const validation = this.isValidNarrative(
+      question.answerText,
+      undefined,
+      question.classification.topicId
+    );
+
+    if (!validation.valid) {
+      console.log(`  Skipping non-narrative: ${validation.reason}`);
+      return null;
+    }
+
     await this.load();
 
     // Create question pattern from the question text
@@ -86,6 +168,48 @@ export class AnswerLibraryManager {
       approvedAt: new Date().toISOString(),
       reuseCount: 0,
       reviewNotes,
+    };
+
+    this.library!.answers.push(answer);
+    await this.save();
+
+    return answer;
+  }
+
+  /**
+   * Add a narrative from a labeled field
+   */
+  async addFromField(
+    field: LabeledField,
+    sourceFile: string,
+    approvedBy: string
+  ): Promise<ApprovedAnswer | null> {
+    // Validate it's a narrative
+    const validation = this.isValidNarrative(
+      field.answerText,
+      field.valueType,
+      field.topic
+    );
+
+    if (!validation.valid) {
+      return null;
+    }
+
+    await this.load();
+
+    const pattern = this.createPattern(field.questionText);
+
+    const answer: ApprovedAnswer = {
+      id: randomUUID(),
+      topicId: field.topic.toLowerCase().replace(/\s+/g, '_'),
+      questionPatterns: [pattern],
+      exampleQuestions: [field.questionText],
+      answerDE: field.answerText,
+      answerEN: field.answerText,
+      sourceFile,
+      approvedBy,
+      approvedAt: new Date().toISOString(),
+      reuseCount: 0,
     };
 
     this.library!.answers.push(answer);

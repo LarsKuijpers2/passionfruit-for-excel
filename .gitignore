@@ -7,3 +7,14 @@ dist/
 coverage/
 .idea/
 *.xlsx.backup
+
+# Pipeline data directories (contain user files, not code)
+incoming/*.xlsx
+incoming/*.xls
+incoming/*.pdf
+incoming/*.docx
+extracted/*.xlsx
+reviewed/*.xlsx
+failed/*
+logs/*.log
+logs/summary.json

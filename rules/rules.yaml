@@ -1132,3 +1132,11 @@ exclude_patterns:
   - "(?i)^st[eé]rilis[eé]\\s+UHT\\s*/\\s*sterilized$"
   - "(?i)^lequel\\s*/\\s*which one\\s*:?$"
   - "(?i)^pr[eé]cisez\\s*/\\s*(please\\s+)?specify\\s*:?$"
+
+  # Example/hint text
+  - "(?i)^z\\.\\s*B\\..*e\\.\\s*g\\."
+  - "(?i)^e\\.\\s*g\\.\\s+\\d+"
+  - "(?i)^z\\.\\s*B\\.\\s+\\d+"
+
+  # Decision tree nodes (from rules model)
+  - "^[└├│─►]"

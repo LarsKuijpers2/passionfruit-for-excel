@@ -17,6 +17,7 @@ import { loadRules, shouldExclude, type LoadedRules } from './rules-loader.js';
 import { SectionExtractor } from './section-extractor.js';
 import { VisualExtractor } from './visual-extractor.js';
 import { TopicClassifier } from './topic-classifier.js';
+import { SectionClassifier, type SectionClassification } from './section-classifier.js';
 import { MarkdownGenerator, buildSummary } from './markdown-generator.js';
 import { AnswerLibraryManager } from './answer-library.js';
 import { ReviewCLI, quickReview } from './review-cli.js';
@@ -39,6 +40,7 @@ export class PipelineV2 {
   private sectionExtractor: SectionExtractor;
   private visualExtractor: VisualExtractor;
   private classifier: TopicClassifier | null = null;
+  private sectionClassifier: SectionClassifier | null = null;
   private markdownGenerator: MarkdownGenerator;
   private answerLibrary: AnswerLibraryManager;
 
@@ -66,6 +68,11 @@ export class PipelineV2 {
       model: this.options.bedrockModel,
       useBedrock: this.options.useBedrock,
     });
+
+    this.sectionClassifier = new SectionClassifier(this.rules, {
+      region: this.options.awsRegion,
+      model: this.options.bedrockModel,
+    });
   }
 
   /**
@@ -73,7 +80,7 @@ export class PipelineV2 {
    */
   async processFile(
     filePath: string,
-    options: { useVision?: boolean; interactive?: boolean } = {}
+    options: { useVision?: boolean; interactive?: boolean; sectionFirst?: boolean } = {}
   ): Promise<ExtractionResult> {
     if (!this.rules || !this.classifier) {
       await this.init();
@@ -116,16 +123,24 @@ export class PipelineV2 {
     const libraryMatches = await this.findLibraryMatches(questions);
     console.log(`  Found ${libraryMatches.size} potential matches`);
 
-    // Step 3: Classify all questions
+    // Step 3: Classify questions
     console.log('  Classifying questions...');
     const sectionTitles = new Map(sections.map(s => [s.id, s.title]));
-    const classifications = await this.classifier!.classifyBatch(questions, sectionTitles);
 
-    // Build classified questions
-    const classifiedQuestions: ClassifiedQuestion[] = questions.map((q, i) => ({
-      ...q,
-      classification: classifications[i],
-    }));
+    let classifiedQuestions: ClassifiedQuestion[];
+
+    if (options.sectionFirst && sections.length > 0 && this.options.useBedrock) {
+      // Section-first: classify sections, then assign topics to questions
+      console.log('    Using section-first classification...');
+      classifiedQuestions = await this.classifyBySections(sections, questions, sectionTitles);
+    } else {
+      // Per-question classification (fallback)
+      const classifications = await this.classifier!.classifyBatch(questions, sectionTitles);
+      classifiedQuestions = questions.map((q, i) => ({
+        ...q,
+        classification: classifications[i],
+      }));
+    }
 
     // Step 4: Build extraction result
     const summary = buildSummary(classifiedQuestions);
@@ -165,6 +180,69 @@ export class PipelineV2 {
     console.log(`    → Log Only: ${summary.byDestination.log_only}`);
 
     return result;
+  }
+
+  /**
+   * Classify questions using section-first approach
+   * 1. Classify sections by their titles
+   * 2. Assign topics to questions based on their section
+   * 3. Fall back to per-question classification for unclassified sections
+   */
+  private async classifyBySections(
+    sections: QuestionnaireSection[],
+    questions: ExtractedQuestion[],
+    sectionTitles: Map<string, string>
+  ): Promise<ClassifiedQuestion[]> {
+    // Step 1: Classify sections
+    const { classified, unclassifiedQuestions } = await this.sectionClassifier!.classifySections(
+      sections,
+      questions
+    );
+
+    console.log(`    Sections classified: ${classified.length}/${sections.length}`);
+    console.log(`    Questions needing individual classification: ${unclassifiedQuestions.length}`);
+
+    // Step 2: Build map of sectionId -> classification
+    const sectionTopicMap = new Map<string, SectionClassification>();
+    for (const c of classified) {
+      sectionTopicMap.set(c.sectionId, c);
+    }
+
+    // Step 3: Classify questions in classified sections
+    const classifiedQuestions: ClassifiedQuestion[] = [];
+
+    for (const q of questions) {
+      const sectionClass = sectionTopicMap.get(q.sectionId);
+
+      if (sectionClass) {
+        // Use section's topic
+        const topic = this.rules!.config.topics.find(t => t.id === sectionClass.topicId);
+        if (topic) {
+          classifiedQuestions.push({
+            ...q,
+            classification: {
+              topicId: topic.id,
+              topicName: topic.name,
+              confidence: sectionClass.confidence,
+              confidenceLevel: sectionClass.confidence >= 0.8 ? 'high' : 'medium',
+              destination: topic.destination,
+              entityLevel: topic.level[0],
+              evidenceType: topic.evidence_type,
+              isReusable: topic.reusable,
+              flagReasons: [],
+              classificationMethod: 'keyword', // section-based counts as keyword
+            },
+          });
+          continue;
+        }
+      }
+
+      // Fall back to per-question classification
+      const [classification] = await this.classifier!.classifyBatch([q], sectionTitles);
+      classifiedQuestions.push({ ...q, classification });
+    }
+
+    return classifiedQuestions;
   }
 
   /**

@@ -59,6 +59,7 @@ addCommonOptions(
     .argument('<file>', 'Path to the questionnaire file')
     .option('--vision', 'Use visual extraction (Claude Vision)')
     .option('-i, --interactive', 'Interactive review mode')
+    .option('-s, --section-first', 'Classify by section first (more efficient)')
 ).action(async (file: string, opts) => {
   const pipelineOpts = buildOptions(opts);
   const pipeline = new PipelineV2(pipelineOpts);
@@ -68,6 +69,7 @@ addCommonOptions(
     const result = await pipeline.processFile(filePath, {
       useVision: !!opts.vision,
       interactive: !!opts.interactive,
+      sectionFirst: !!opts.sectionFirst,
     });
 
     console.log('\n✅ Done.');
@@ -157,6 +159,7 @@ addCommonOptions(
     .option('--input-dir <dir>', 'Input directory', './incoming')
     .option('--vision', 'Use visual extraction (Claude Vision)')
     .option('-i, --interactive', 'Interactive review mode')
+    .option('-s, --section-first', 'Classify by section first (more efficient)')
 ).action(async (opts) => {
   const pipelineOpts = buildOptions(opts);
   const inputDir = opts.inputDir as string || './incoming';
@@ -187,6 +190,7 @@ addCommonOptions(
         const result = await pipeline.processFile(filePath, {
           useVision: !!opts.vision,
           interactive: !!opts.interactive,
+          sectionFirst: !!opts.sectionFirst,
         });
 
         totalQuestions += result.summary.totalQuestions;

@@ -136,6 +136,11 @@ export function shouldExclude(rules: LoadedRules, questionText: string, answerTe
     return true;
   }
 
+  // Check if answer matches exclude patterns (page headers, etc.)
+  if (aText && rules.excludePatterns.some(p => p.test(aText))) {
+    return true;
+  }
+
   // Exclude if question and answer are identical (likely a header/label)
   if (qText && aText && qText === aText) {
     return true;
@@ -143,6 +148,11 @@ export function shouldExclude(rules: LoadedRules, questionText: string, answerTe
 
   // Exclude very short questions that are just labels
   if (qText.length < 5 && !aText) {
+    return true;
+  }
+
+  // Exclude [object Object] serialization errors
+  if (qText === '[object Object]' || aText === '[object Object]') {
     return true;
   }
 

@@ -364,22 +364,46 @@ export class SectionExtractor {
     if (typeof value === 'boolean') return value ? 'Yes' : 'No';
     if (value instanceof Date) return value.toISOString().split('T')[0];
 
-    // Rich text
-    if (typeof value === 'object' && 'richText' in value) {
-      return value.richText.map(rt => rt.text).join('');
+    if (typeof value === 'object') {
+      // Rich text
+      if ('richText' in value && Array.isArray(value.richText)) {
+        return value.richText.map((rt: { text: string }) => rt.text).join('');
+      }
+
+      // Formula with result
+      if ('result' in value) {
+        const result = value.result;
+        if (result === null || result === undefined) return '';
+        if (typeof result === 'string') return result;
+        if (typeof result === 'number') return result.toString();
+        if (typeof result === 'boolean') return result ? 'Yes' : 'No';
+        if (result instanceof Date) return result.toISOString().split('T')[0];
+        // Error value from formula
+        if (typeof result === 'object' && 'error' in result) return '';
+        return '';
+      }
+
+      // Hyperlink
+      if ('hyperlink' in value) {
+        return (value as { text?: string; hyperlink?: string }).text ||
+               (value as { hyperlink?: string }).hyperlink || '';
+      }
+
+      // Shared string (text property)
+      if ('text' in value && typeof value.text === 'string') {
+        return value.text;
+      }
+
+      // Error value
+      if ('error' in value) {
+        return '';
+      }
+
+      // Unknown object - return empty instead of [object Object]
+      return '';
     }
 
-    // Formula result
-    if (typeof value === 'object' && 'result' in value) {
-      return String(value.result || '');
-    }
-
-    // Hyperlink
-    if (typeof value === 'object' && 'hyperlink' in value) {
-      return value.text || value.hyperlink || '';
-    }
-
-    return String(value);
+    return '';
   }
 
   /**

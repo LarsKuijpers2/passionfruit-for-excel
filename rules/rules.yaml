@@ -1120,3 +1120,15 @@ exclude_patterns:
   - "(?i)^ja\\s*/\\s*nein$"
   - "(?i)^oui\\s*/\\s*non$"
   - "(?i)^n/?a$"
+
+  # Page headers/footers
+  - "(?i)^ref\\s+[a-z0-9.-]+\\s+version"
+  - "(?i)^page\\s+\\d+\\s*/\\s*\\d+$"
+
+  # French/English label placeholders
+  - "(?i)^autre\\s*/\\s*other\\s*:?$"
+  - "(?i)^autres\\s*:?\\s*\\(pr[eé]cisez\\)$"
+  - "(?i)^absence$"
+  - "(?i)^st[eé]rilis[eé]\\s+UHT\\s*/\\s*sterilized$"
+  - "(?i)^lequel\\s*/\\s*which one\\s*:?$"
+  - "(?i)^pr[eé]cisez\\s*/\\s*(please\\s+)?specify\\s*:?$"

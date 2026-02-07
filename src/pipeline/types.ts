@@ -194,10 +194,12 @@ export interface PipelineOptions {
   failedDir: string;
   /** Logs directory (default: ./logs/) */
   logsDir: string;
-  /** Whether to use Claude API for categorisation/translation */
+  /** Whether to use Claude API (via AWS Bedrock) for categorisation/translation */
   useClaudeAPI: boolean;
-  /** Anthropic API key */
-  anthropicApiKey?: string;
+  /** AWS region for Bedrock (default: eu-central-1) */
+  awsRegion?: string;
+  /** Claude model ID for Bedrock */
+  bedrockModel?: string;
   /** Whether this is a dry run */
   dryRun: boolean;
 }

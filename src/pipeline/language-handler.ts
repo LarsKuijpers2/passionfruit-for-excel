@@ -4,9 +4,17 @@
  * Handles:
  * - Bilingual question detection and splitting (DE/EN)
  * - Answer language splitting
- * - Translation via Claude API
+ * - Translation via Claude (AWS Bedrock)
  * - Language-neutral data detection
  */
+
+import {
+  BedrockRuntimeClient,
+  ConverseCommand,
+} from '@aws-sdk/client-bedrock-runtime';
+
+const DEFAULT_MODEL = 'eu.anthropic.claude-sonnet-4-20250514-v1:0';
+const DEFAULT_REGION = 'eu-central-1';
 
 /** Result of splitting a text into DE and EN */
 export interface LanguageSplit {
@@ -74,12 +82,28 @@ const ENGLISH_INDICATORS = [
   'certified', 'available', 'applicable', 'conducted',
 ];
 
+export interface LanguageHandlerConfig {
+  region?: string;
+  model?: string;
+}
+
 export class LanguageHandler {
-  private anthropicApiKey?: string;
+  private bedrockClient: BedrockRuntimeClient | null = null;
+  private model: string;
+  private region: string;
   private translationCache: Map<string, string> = new Map();
 
-  constructor(anthropicApiKey?: string) {
-    this.anthropicApiKey = anthropicApiKey;
+  constructor(config?: LanguageHandlerConfig) {
+    this.region = config?.region || DEFAULT_REGION;
+    this.model = config?.model || DEFAULT_MODEL;
+  }
+
+  /** Initialize Bedrock client (lazy initialization) */
+  private getBedrockClient(): BedrockRuntimeClient {
+    if (!this.bedrockClient) {
+      this.bedrockClient = new BedrockRuntimeClient({ region: this.region });
+    }
+    return this.bedrockClient;
   }
 
   /** Split a question text into DE and EN */
@@ -195,13 +219,13 @@ export class LanguageHandler {
     return { de: text.trim(), en: text.trim(), wasTranslated: false, sourceLanguage: 'unknown' };
   }
 
-  /** Translate texts using Claude API (batch) */
+  /** Translate texts using Claude via AWS Bedrock (batch) */
   async translateBatch(
     items: Array<{ text: string; fromLang: string; toLang: string; index: number }>
   ): Promise<Map<number, string>> {
     const translations = new Map<number, string>();
 
-    if (!this.anthropicApiKey || items.length === 0) {
+    if (items.length === 0) {
       return translations;
     }
 
@@ -222,8 +246,7 @@ export class LanguageHandler {
     }
 
     try {
-      const { default: Anthropic } = await import('@anthropic-ai/sdk');
-      const client = new Anthropic({ apiKey: this.anthropicApiKey });
+      const client = this.getBedrockClient();
 
       // Batch in groups of 50 to stay within token limits
       const batchSize = 50;
@@ -234,19 +257,25 @@ export class LanguageHandler {
           `${idx + 1}. [${item.fromLang}→${item.toLang}] "${item.text}"`
         )).join('\n');
 
-        const response = await client.messages.create({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 4000,
+        const command = new ConverseCommand({
+          modelId: this.model,
           messages: [{
             role: 'user',
-            content: `Translate each text faithfully. Preserve exact meaning — do not summarise or paraphrase. For technical/industry terms, use standard translations. Respond with a JSON array of objects with "index" (1-based) and "translation" fields.
+            content: [{
+              text: `Translate each text faithfully. Preserve exact meaning — do not summarise or paraphrase. For technical/industry terms, use standard translations. Respond with a JSON array of objects with "index" (1-based) and "translation" fields.
 
 ${prompt}`,
+            }],
           }],
+          inferenceConfig: {
+            maxTokens: 4000,
+          },
         });
 
-        const textContent = response.content.find(c => c.type === 'text');
-        if (textContent && textContent.type === 'text') {
+        const response = await client.send(command);
+        const textContent = response.output?.message?.content?.[0];
+
+        if (textContent && 'text' in textContent) {
           const jsonMatch = textContent.text.match(/\[[\s\S]*\]/);
           if (jsonMatch) {
             const results: Array<{ index: number; translation: string }> = JSON.parse(jsonMatch[0]);
@@ -263,7 +292,7 @@ ${prompt}`,
         }
       }
     } catch (error) {
-      console.error(`Translation API call failed: ${error instanceof Error ? error.message : error}`);
+      console.error(`Bedrock translation failed: ${error instanceof Error ? error.message : error}`);
     }
 
     return translations;

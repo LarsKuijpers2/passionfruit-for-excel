@@ -6,10 +6,17 @@
  * - Procedures: WHAT THEY DO/COMPLY WITH/HAVE CERTIFIED
  * - Product: SPECIFIC TO A PRODUCT/SKU/INGREDIENT
  *
- * Uses rule-based matching first, then Claude API for ambiguous cases.
+ * Uses rule-based matching first, then Claude via AWS Bedrock for ambiguous cases.
  */
 
+import {
+  BedrockRuntimeClient,
+  ConverseCommand,
+} from '@aws-sdk/client-bedrock-runtime';
 import type { Category, RawQAPair, ConfidenceLevel } from './types.js';
+
+const DEFAULT_MODEL = 'eu.anthropic.claude-sonnet-4-20250514-v1:0';
+const DEFAULT_REGION = 'eu-central-1';
 
 /** Result of categorising a single Q&A pair */
 export interface CategorisationResult {
@@ -94,11 +101,27 @@ const PRODUCT_PATTERNS: RegExp[] = [
   /\b(per\s*product|per\s*sku|product\s*specific|produktspezifisch)\b/i,
 ];
 
-export class Categoriser {
-  private anthropicApiKey?: string;
+export interface CategoriserConfig {
+  region?: string;
+  model?: string;
+}
 
-  constructor(anthropicApiKey?: string) {
-    this.anthropicApiKey = anthropicApiKey;
+export class Categoriser {
+  private bedrockClient: BedrockRuntimeClient | null = null;
+  private model: string;
+  private region: string;
+
+  constructor(config?: CategoriserConfig) {
+    this.region = config?.region || DEFAULT_REGION;
+    this.model = config?.model || DEFAULT_MODEL;
+  }
+
+  /** Initialize Bedrock client (lazy initialization) */
+  private getBedrockClient(): BedrockRuntimeClient {
+    if (!this.bedrockClient) {
+      this.bedrockClient = new BedrockRuntimeClient({ region: this.region });
+    }
+    return this.bedrockClient;
   }
 
   /** Categorise a single Q&A pair using rules */
@@ -199,12 +222,8 @@ export class Categoriser {
     return pairs.map(pair => this.categorise(pair));
   }
 
-  /** Categorise using Claude API for ambiguous cases */
+  /** Categorise using Claude via AWS Bedrock for ambiguous cases */
   async categoriseWithClaude(pairs: RawQAPair[]): Promise<CategorisationResult[]> {
-    if (!this.anthropicApiKey) {
-      return this.categoriseBatch(pairs);
-    }
-
     // First pass: rule-based
     const results = this.categoriseBatch(pairs);
 
@@ -218,23 +237,26 @@ export class Categoriser {
     }
 
     try {
-      const { default: Anthropic } = await import('@anthropic-ai/sdk');
-      const client = new Anthropic({ apiKey: this.anthropicApiKey });
+      const client = this.getBedrockClient();
 
-      // Batch API call for low-confidence items
-      const questionsForClaude = lowConfItems.map(item => ({
-        index: item.index,
-        question: item.pair.questionText,
-        answer: item.pair.answerText,
-        section: item.pair.sectionHeader || 'unknown',
-      }));
+      // Process in batches of 50 to avoid token limits
+      const batchSize = 50;
+      for (let batchStart = 0; batchStart < lowConfItems.length; batchStart += batchSize) {
+        const batch = lowConfItems.slice(batchStart, batchStart + batchSize);
 
-      const response = await client.messages.create({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 2000,
-        messages: [{
-          role: 'user',
-          content: `Categorise each Q&A pair into exactly one category. The categories are:
+        const questionsForClaude = batch.map(item => ({
+          index: item.index,
+          question: item.pair.questionText,
+          answer: item.pair.answerText,
+          section: item.pair.sectionHeader || 'unknown',
+        }));
+
+        const command = new ConverseCommand({
+          modelId: this.model,
+          messages: [{
+            role: 'user',
+            content: [{
+              text: `Categorise each Q&A pair into exactly one category. The categories are:
 
 1. **EntityDB** — Identifies WHO/WHERE the entity is or HOW to reach them (company name, address, contacts, registration numbers, financial identifiers)
 2. **Procedures** — Describes WHAT the entity does, complies with, or has certified (certifications, food safety, quality management, sustainability, social compliance)
@@ -246,23 +268,30 @@ Respond with a JSON array of objects with "index" and "category" fields.
 
 Q&A pairs:
 ${JSON.stringify(questionsForClaude, null, 2)}`,
-        }],
-      });
+            }],
+          }],
+          inferenceConfig: {
+            maxTokens: 4000,
+          },
+        });
 
-      const textContent = response.content.find(c => c.type === 'text');
-      if (textContent && textContent.type === 'text') {
-        const jsonMatch = textContent.text.match(/\[[\s\S]*\]/);
-        if (jsonMatch) {
-          const claudeResults: Array<{ index: number; category: Category }> = JSON.parse(jsonMatch[0]);
+        const response = await client.send(command);
+        const textContent = response.output?.message?.content?.[0];
 
-          for (const cr of claudeResults) {
-            if (cr.index !== undefined && cr.category) {
-              const validCategories: Category[] = ['EntityDB', 'Procedures', 'Product'];
-              if (validCategories.includes(cr.category)) {
-                results[cr.index].category = cr.category;
-                results[cr.index].confidence = Math.max(results[cr.index].confidence, 0.65);
-                results[cr.index].confidenceLevel = this.toConfidenceLevel(results[cr.index].confidence);
-                results[cr.index].flagReason = `${results[cr.index].flagReason || ''} [Claude API assisted]`.trim();
+        if (textContent && 'text' in textContent) {
+          const jsonMatch = textContent.text.match(/\[[\s\S]*\]/);
+          if (jsonMatch) {
+            const claudeResults: Array<{ index: number; category: Category }> = JSON.parse(jsonMatch[0]);
+
+            for (const cr of claudeResults) {
+              if (cr.index !== undefined && cr.category) {
+                const validCategories: Category[] = ['EntityDB', 'Procedures', 'Product'];
+                if (validCategories.includes(cr.category)) {
+                  results[cr.index].category = cr.category;
+                  results[cr.index].confidence = Math.max(results[cr.index].confidence, 0.65);
+                  results[cr.index].confidenceLevel = this.toConfidenceLevel(results[cr.index].confidence);
+                  results[cr.index].flagReason = `${results[cr.index].flagReason || ''} [Bedrock assisted]`.trim();
+                }
               }
             }
           }
@@ -270,7 +299,7 @@ ${JSON.stringify(questionsForClaude, null, 2)}`,
       }
     } catch (error) {
       // API failure is non-fatal — keep rule-based results
-      console.error(`Claude API categorisation failed: ${error instanceof Error ? error.message : error}`);
+      console.error(`Bedrock categorisation failed: ${error instanceof Error ? error.message : error}`);
     }
 
     return results;

@@ -30,6 +30,7 @@ const DEFAULT_OPTIONS: PipelineOptions = {
   failedDir: './failed',
   logsDir: './logs',
   useClaudeAPI: true,
+  awsRegion: 'eu-central-1',
   dryRun: false,
 };
 
@@ -44,8 +45,14 @@ export class Pipeline {
   constructor(options: Partial<PipelineOptions> = {}) {
     this.options = { ...DEFAULT_OPTIONS, ...options };
     this.fileReader = new FileReader();
-    this.categoriser = new Categoriser(this.options.anthropicApiKey);
-    this.languageHandler = new LanguageHandler(this.options.anthropicApiKey);
+    this.categoriser = new Categoriser({
+      region: this.options.awsRegion,
+      model: this.options.bedrockModel,
+    });
+    this.languageHandler = new LanguageHandler({
+      region: this.options.awsRegion,
+      model: this.options.bedrockModel,
+    });
     this.outputGenerator = new OutputGenerator();
     this.logger = new PipelineLogger(this.options.logsDir);
   }
@@ -74,7 +81,7 @@ export class Pipeline {
       // Step 3: Categorise
       this.logger.info(`  Categorising...`);
       let categorisationResults;
-      if (this.options.useClaudeAPI && this.options.anthropicApiKey) {
+      if (this.options.useClaudeAPI) {
         categorisationResults = await this.categoriser.categoriseWithClaude(rawPairs);
       } else {
         categorisationResults = this.categoriser.categoriseBatch(rawPairs);

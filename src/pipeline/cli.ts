@@ -29,7 +29,8 @@ function addCommonOptions(cmd: Command): Command {
     .option('--failed-dir <dir>', 'Failed files directory', './failed')
     .option('--logs-dir <dir>', 'Logs directory', './logs')
     .option('--offline', 'Skip Claude API calls (rule-based only)')
-    .option('--api-key <key>', 'Anthropic API key (or set ANTHROPIC_API_KEY env var)')
+    .option('--region <region>', 'AWS region for Bedrock (or set AWS_REGION env var)', 'eu-central-1')
+    .option('--model <model>', 'Bedrock model ID')
     .option('--dry-run', 'Preview without generating output files');
 }
 
@@ -39,7 +40,8 @@ function buildOptions(opts: {
   failedDir?: string;
   logsDir?: string;
   offline?: boolean;
-  apiKey?: string;
+  region?: string;
+  model?: string;
   dryRun?: boolean;
 }): Partial<PipelineOptions> {
   return {
@@ -48,7 +50,8 @@ function buildOptions(opts: {
     failedDir: opts.failedDir,
     logsDir: opts.logsDir,
     useClaudeAPI: !opts.offline,
-    anthropicApiKey: opts.apiKey || process.env.ANTHROPIC_API_KEY,
+    awsRegion: opts.region || process.env.AWS_REGION || 'eu-central-1',
+    bedrockModel: opts.model,
     dryRun: opts.dryRun || false,
   };
 }

@@ -362,7 +362,13 @@ export class SectionExtractor {
     if (typeof value === 'string') return value;
     if (typeof value === 'number') return value.toString();
     if (typeof value === 'boolean') return value ? 'Yes' : 'No';
-    if (value instanceof Date) return value.toISOString().split('T')[0];
+    if (value instanceof Date) {
+      try {
+        return value.toISOString().split('T')[0];
+      } catch {
+        return '';
+      }
+    }
 
     if (typeof value === 'object') {
       // Rich text
@@ -377,7 +383,13 @@ export class SectionExtractor {
         if (typeof result === 'string') return result;
         if (typeof result === 'number') return result.toString();
         if (typeof result === 'boolean') return result ? 'Yes' : 'No';
-        if (result instanceof Date) return result.toISOString().split('T')[0];
+        if (result instanceof Date) {
+          try {
+            return result.toISOString().split('T')[0];
+          } catch {
+            return '';
+          }
+        }
         // Error value from formula
         if (typeof result === 'object' && 'error' in result) return '';
         return '';

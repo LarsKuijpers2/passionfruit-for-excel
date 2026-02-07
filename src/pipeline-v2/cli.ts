@@ -12,6 +12,7 @@
 
 import { Command } from 'commander';
 import { resolve } from 'path';
+import { readdir } from 'fs/promises';
 import { PipelineV2 } from './pipeline.js';
 import type { PipelineV2Options } from './types.js';
 
@@ -139,6 +140,85 @@ addCommonOptions(
         console.log(`    Name: ${topic.name}`);
         console.log(`    Destination: ${topic.destination}`);
         console.log('');
+      }
+    }
+
+  } catch (error) {
+    console.error(`\n❌ Error: ${error instanceof Error ? error.message : error}`);
+    process.exit(1);
+  }
+});
+
+/** Batch process all files in incoming directory */
+addCommonOptions(
+  program
+    .command('batch')
+    .description('Process all questionnaire files in the incoming directory')
+    .option('--input-dir <dir>', 'Input directory', './incoming')
+    .option('--vision', 'Use visual extraction (Claude Vision)')
+    .option('-i, --interactive', 'Interactive review mode')
+).action(async (opts) => {
+  const pipelineOpts = buildOptions(opts);
+  const inputDir = opts.inputDir as string || './incoming';
+  const pipeline = new PipelineV2(pipelineOpts);
+
+  try {
+    // Find all Excel files in incoming directory
+    const files = await readdir(inputDir);
+    const excelFiles = files.filter(f =>
+      f.endsWith('.xlsx') || f.endsWith('.xls')
+    );
+
+    if (excelFiles.length === 0) {
+      console.log(`\nNo Excel files found in ${inputDir}`);
+      return;
+    }
+
+    console.log(`\n📂 Found ${excelFiles.length} files in ${inputDir}\n`);
+
+    let totalQuestions = 0;
+    let totalFlagged = 0;
+    const results: { file: string; questions: number; flagged: number; error?: string }[] = [];
+
+    for (const file of excelFiles) {
+      const filePath = resolve(inputDir, file);
+
+      try {
+        const result = await pipeline.processFile(filePath, {
+          useVision: !!opts.vision,
+          interactive: !!opts.interactive,
+        });
+
+        totalQuestions += result.summary.totalQuestions;
+        totalFlagged += result.summary.flaggedForReview;
+        results.push({
+          file,
+          questions: result.summary.totalQuestions,
+          flagged: result.summary.flaggedForReview,
+        });
+
+      } catch (error) {
+        const errorMsg = error instanceof Error ? error.message : String(error);
+        console.error(`  ❌ Error: ${errorMsg}`);
+        results.push({ file, questions: 0, flagged: 0, error: errorMsg });
+      }
+    }
+
+    // Print summary
+    console.log('\n' + '='.repeat(60));
+    console.log('📊 Batch Summary');
+    console.log('='.repeat(60));
+    console.log(`Files processed: ${excelFiles.length}`);
+    console.log(`Total questions: ${totalQuestions}`);
+    console.log(`Total flagged: ${totalFlagged}`);
+    console.log('');
+
+    console.log('Per file:');
+    for (const r of results) {
+      if (r.error) {
+        console.log(`  ❌ ${r.file}: ERROR - ${r.error}`);
+      } else {
+        console.log(`  ✅ ${r.file}: ${r.questions} questions, ${r.flagged} flagged`);
       }
     }
 

@@ -237,6 +237,104 @@ addCommonOptions(
   }
 });
 
+/** Extract questionnaire to searchable Markdown */
+addCommonOptions(
+  program
+    .command('extract')
+    .description('Extract questionnaire to searchable Markdown')
+    .argument('<file>', 'Path to the questionnaire file')
+    .option('--output-dir <dir>', 'Output directory', './extracted')
+).action(async (file: string, opts) => {
+  try {
+    const filePath = resolve(file);
+    const outputDir = opts.outputDir as string || './extracted';
+
+    console.log('Loading rules...');
+    const rules = await loadRules(opts.rules as string || './rules/rules.yaml');
+
+    console.log(`\nExtracting: ${file}`);
+    const extractor = new SectionExtractor();
+    const { metadata, sections, questions } = await extractor.extract(filePath);
+
+    const indexer = new QuestionnaireIndexer(rules);
+    const index = indexer.createIndex(metadata, sections, questions, filePath);
+
+    // Generate Markdown
+    const { mkdir, writeFile } = await import('fs/promises');
+    await mkdir(outputDir, { recursive: true });
+
+    const lines: string[] = [];
+    lines.push(`# ${metadata.filename}`);
+    lines.push('');
+    lines.push(`**Customer:** ${metadata.customer || 'Unknown'}`);
+    lines.push(`**Extracted:** ${new Date().toISOString()}`);
+    lines.push(`**Fields:** ${index.summary.filledFields}/${index.summary.totalFields} filled`);
+    lines.push('');
+    lines.push('---');
+    lines.push('');
+
+    // Table of Contents
+    lines.push('## Table of Contents');
+    lines.push('');
+    for (const section of index.toc) {
+      const fill = section.filledFields > 0 ? `${section.filledFields}/${section.totalFields}` : '0';
+      lines.push(`- [${section.title}](#${section.id.toLowerCase().replace(/[^a-z0-9]/g, '-')}) (${fill} filled)`);
+    }
+    lines.push('');
+    lines.push('---');
+    lines.push('');
+
+    // Group fields by section
+    const fieldsBySection = new Map<string, typeof index.fields>();
+    for (const field of index.fields) {
+      if (!fieldsBySection.has(field.sectionId)) {
+        fieldsBySection.set(field.sectionId, []);
+      }
+      fieldsBySection.get(field.sectionId)!.push(field);
+    }
+
+    // Output each section
+    for (const section of index.toc) {
+      const sectionFields = fieldsBySection.get(section.id) || [];
+      const filledFields = sectionFields.filter(f => f.isFilled);
+
+      lines.push(`## ${section.title}`);
+      lines.push('');
+      lines.push(`**Topics:** ${section.topics.join(', ')}`);
+      lines.push('');
+
+      if (filledFields.length === 0) {
+        lines.push('_No filled fields_');
+        lines.push('');
+        continue;
+      }
+
+      lines.push('| Question | Answer | Type |');
+      lines.push('|----------|--------|------|');
+
+      for (const field of filledFields) {
+        const q = field.questionText.replace(/\|/g, '\\|').replace(/\n/g, ' ').substring(0, 60);
+        const a = field.answerText.replace(/\|/g, '\\|').replace(/\n/g, ' ').substring(0, 60);
+        lines.push(`| ${q} | ${a} | ${field.valueType} |`);
+      }
+      lines.push('');
+    }
+
+    // Write file
+    const safeName = metadata.filename.replace(/\.[^.]+$/, '').replace(/[^a-zA-Z0-9-_]/g, '_');
+    const outputPath = `${outputDir}/${safeName}.md`;
+    await writeFile(outputPath, lines.join('\n'), 'utf-8');
+
+    console.log(`\n✅ Extracted to: ${outputPath}`);
+    console.log(`   ${index.summary.filledFields} filled fields`);
+    console.log(`   ${index.toc.length} sections`);
+
+  } catch (error) {
+    console.error(`\n❌ Error: ${error instanceof Error ? error.message : error}`);
+    process.exit(1);
+  }
+});
+
 /** Index a questionnaire and save as source */
 addCommonOptions(
   program

@@ -333,8 +333,7 @@ export class WebReviewGenerator {
     }
 
     /* Library items: colored borders show destination */
-    #panel-library .item.standard { border-left: 3px solid #22c55e; }
-    #panel-library .item.narrative { border-left: 3px solid #3b82f6; }
+    #panel-library .item { border-left: 3px solid #4ade80; } /* default: library (green) */
 
     .item-header {
       display: flex;
@@ -2628,10 +2627,6 @@ export class WebReviewGenerator {
       background: rgba(34, 197, 94, 0.2);
       color: #4ade80;
     }
-    .level-badge.narrative {
-      background: rgba(251, 191, 36, 0.2);
-      color: #fbbf24;
-    }
 
     /* Cell selection for label/value pairing */
     .excel-table td.label-selected {
@@ -3381,11 +3376,19 @@ export class WebReviewGenerator {
           const value = item.value || '';
           const isEmpty = !value || value.trim() === '';
 
-          // Determine level badge
-          const level = item.level || 'standard';
-          const levelBadge = level === 'product' ? '<span class="level-badge product">product</span>' :
-                            level === 'narrative' ? '<span class="level-badge narrative">narrative</span>' :
-                            '<span class="level-badge entity">entity</span>';
+          // Determine destination badge based on topic (from rules.yaml)
+          const topic = section.topic || '';
+          const entityTopics = ['company', 'company_information', 'contact_persons', 'contacts', 'certifications', 'documents', 'signature', 'approval', 'crisis', 'financial'];
+          const productTopics = ['product', 'identification', 'physical_properties', 'sensory', 'analytical', 'formula_composition', 'allergens', 'nutritional', 'regulatory_ids', 'microbiological', 'microbiology', 'contaminants', 'gmo', 'claims', 'rspo_palm', 'packaging', 'storage_transport', 'coding', 'origin_provenance'];
+          let destination = 'library';
+          if (productTopics.includes(topic) || item.level === 'product') {
+            destination = 'product';
+          } else if (entityTopics.includes(topic)) {
+            destination = 'entity';
+          }
+          const levelBadge = destination === 'product' ? '<span class="level-badge product">product</span>' :
+                            destination === 'entity' ? '<span class="level-badge entity">entity</span>' :
+                            '<span class="level-badge library">library</span>';
 
           return \`
             <div class="item" data-index="\${idx}" data-cells="\${cells}" data-sheet="\${escapeHtml(sheetName)}" data-label="\${escapeHtml(item.label)}" data-section="\${escapeHtml(section.name || section.title)}" data-topic="\${section.topic || ''}">
@@ -3470,10 +3473,17 @@ export class WebReviewGenerator {
             ? \`\${source.lCell} → \${source.vCell}\`
             : (source?.labelCell && source?.valueCell ? \`\${source.labelCell} → \${source.valueCell}\` : '');
 
-          // Level badge - library items show their level or "library" as default
-          const level = item.level || 'standard';
-          const levelBadge = level === 'product' ? '<span class="level-badge product">product</span>' :
-                            level === 'narrative' ? '<span class="level-badge narrative">narrative</span>' :
+          // Determine destination badge based on topic (from rules.yaml)
+          const entityTopics = ['company', 'company_information', 'contact_persons', 'contacts', 'certifications', 'documents', 'signature', 'approval', 'crisis', 'financial'];
+          const productTopics = ['product', 'identification', 'physical_properties', 'sensory', 'analytical', 'formula_composition', 'allergens', 'nutritional', 'regulatory_ids', 'microbiological', 'microbiology', 'contaminants', 'gmo', 'claims', 'rspo_palm', 'packaging', 'storage_transport', 'coding', 'origin_provenance'];
+          let destination = 'library';
+          if (productTopics.includes(topic) || item.level === 'product') {
+            destination = 'product';
+          } else if (entityTopics.includes(topic)) {
+            destination = 'entity';
+          }
+          const levelBadge = destination === 'product' ? '<span class="level-badge product">product</span>' :
+                            destination === 'entity' ? '<span class="level-badge entity">entity</span>' :
                             '<span class="level-badge library">library</span>';
 
           return \`

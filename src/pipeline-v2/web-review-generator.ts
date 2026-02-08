@@ -56,6 +56,21 @@ export class WebReviewGenerator {
   }
 
   /**
+   * Generate the single-page app shell (index.html)
+   * This is the new architecture - one HTML file that loads data dynamically
+   */
+  async generateAppShell(): Promise<string> {
+    await mkdir(this.outputDir, { recursive: true });
+
+    const html = this.buildAppShellHtml();
+    const outputPath = join(this.outputDir, 'index.html');
+
+    await writeFile(outputPath, html, 'utf-8');
+
+    return outputPath;
+  }
+
+  /**
    * Build the complete review HTML
    */
   private buildReviewHtml(
@@ -2208,5 +2223,1333 @@ export class WebReviewGenerator {
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
+  }
+
+  /**
+   * Build the single-page app shell HTML
+   * Loads questionnaire data dynamically from API
+   */
+  private buildAppShellHtml(): string {
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Passionfruit Review</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --background: #09090b;
+      --foreground: #fafafa;
+      --card: #0a0a0c;
+      --card-foreground: #fafafa;
+      --muted: #27272a;
+      --muted-foreground: #a1a1aa;
+      --border: #27272a;
+      --input: #27272a;
+      --primary: #fafafa;
+      --primary-foreground: #18181b;
+      --secondary: #27272a;
+      --secondary-foreground: #fafafa;
+      --accent: #27272a;
+      --accent-foreground: #fafafa;
+      --destructive: #7f1d1d;
+      --radius: 6px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--background);
+      color: var(--foreground);
+      height: 100vh;
+      overflow: hidden;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* Loading state */
+    .loading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      gap: 16px;
+    }
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--border);
+      border-top-color: var(--foreground);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .loading-text {
+      color: var(--muted-foreground);
+    }
+
+    /* Welcome screen (no questionnaire selected) */
+    .welcome-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      gap: 24px;
+      padding: 40px;
+    }
+    .welcome-title {
+      font-size: 24px;
+      font-weight: 600;
+    }
+    .welcome-subtitle {
+      color: var(--muted-foreground);
+      max-width: 400px;
+      text-align: center;
+    }
+    .questionnaire-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-width: 500px;
+      width: 100%;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .questionnaire-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+    .questionnaire-item:hover {
+      background: var(--accent);
+      border-color: var(--muted-foreground);
+    }
+    .questionnaire-name {
+      font-weight: 500;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .questionnaire-meta {
+      font-size: 12px;
+      color: var(--muted-foreground);
+    }
+
+    /* Header */
+    .header {
+      background: var(--card);
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .header h1 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--foreground);
+    }
+    .header .meta {
+      font-size: 12px;
+      color: var(--muted-foreground);
+      margin-top: 2px;
+    }
+    .app-title {
+      font-size: 12px;
+      color: var(--muted-foreground);
+      margin-bottom: 2px;
+    }
+
+    /* View toggles */
+    .toggles {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .toggle {
+      padding: 6px 12px;
+      background: var(--secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--muted-foreground);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      transition: all 0.15s ease;
+    }
+    .toggle:hover {
+      background: var(--accent);
+      color: var(--foreground);
+    }
+    .toggle.active {
+      background: var(--foreground);
+      color: var(--background);
+      border-color: var(--foreground);
+    }
+    .toggle-divider {
+      width: 1px;
+      height: 20px;
+      background: var(--border);
+      margin: 0 4px;
+    }
+
+    /* Connection status */
+    .connection-status {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+    .connection-status.connected { background: #22c55e; }
+    .connection-status.disconnected { background: #ef4444; }
+    .connection-status.checking { background: #f59e0b; animation: pulse 1s infinite; }
+    @keyframes pulse { 50% { opacity: 0.5; } }
+
+    /* Sidebar toggle */
+    .sidebar-toggle {
+      background: transparent;
+      border: none;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      padding: 8px;
+      margin-right: 12px;
+      border-radius: var(--radius);
+      transition: all 0.15s ease;
+    }
+    .sidebar-toggle:hover {
+      background: var(--muted);
+      color: var(--foreground);
+    }
+    .sidebar-toggle svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Main layout */
+    .main {
+      display: flex;
+      height: calc(100vh - 56px - 40px);
+      overflow: hidden;
+    }
+
+    /* Panels */
+    .panel {
+      flex: 1;
+      display: none;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+      overflow: hidden;
+      min-width: 0;
+    }
+    .panel.visible { display: flex; }
+    .panel:last-child { border-right: none; }
+    .panel-header {
+      padding: 12px 16px;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      font-weight: 500;
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .panel-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 280px;
+      background: var(--card);
+      border-right: 1px solid var(--border);
+      display: none;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+    .sidebar.open { display: flex; }
+    .sidebar-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      font-weight: 500;
+      font-size: 13px;
+    }
+    .sidebar-content {
+      flex: 1;
+      overflow-y: auto;
+    }
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+      color: inherit;
+    }
+    .sidebar-item:hover { background: var(--muted); }
+    .sidebar-item.active { background: var(--accent); border-left: 2px solid var(--foreground); }
+    .sidebar-item-name {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 13px;
+    }
+    .sidebar-item-badge {
+      font-size: 11px;
+      padding: 2px 6px;
+      background: var(--muted);
+      border-radius: 10px;
+      color: var(--muted-foreground);
+    }
+
+    /* Excel table */
+    .sheet-tabs {
+      display: flex;
+      gap: 4px;
+      padding: 8px 16px;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+    }
+    .sheet-tab {
+      padding: 6px 12px;
+      background: var(--secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .sheet-tab:hover { background: var(--accent); }
+    .sheet-tab.active {
+      background: var(--foreground);
+      color: var(--background);
+    }
+    .sheet-content { display: none; }
+    .sheet-content.active { display: block; }
+
+    .excel-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .excel-table th, .excel-table td {
+      border: 1px solid var(--border);
+      padding: 6px 10px;
+      text-align: left;
+      white-space: nowrap;
+      max-width: 300px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .excel-table th {
+      background: var(--muted);
+      font-weight: 500;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    .excel-table .row-header {
+      background: var(--muted);
+      color: var(--muted-foreground);
+      font-weight: 500;
+      text-align: center;
+      width: 40px;
+    }
+    .excel-table tr:hover td:not(.row-header) {
+      background: rgba(255,255,255,0.03);
+    }
+    .excel-table td.highlighted {
+      background: rgba(59, 130, 246, 0.2) !important;
+      outline: 2px solid #3b82f6;
+    }
+
+    /* Items */
+    .section {
+      margin-bottom: 24px;
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      background: var(--muted);
+      border-radius: var(--radius);
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    .section-title {
+      font-weight: 600;
+      font-size: 13px;
+    }
+    .section-meta {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .section-badge {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: var(--background);
+    }
+    .section-items {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-left: 12px;
+    }
+    .section.collapsed .section-items { display: none; }
+
+    .item {
+      padding: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .item:hover { border-color: var(--muted-foreground); }
+    .item.selected {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 1px #3b82f6;
+    }
+    .item.reviewed.correct, .item.reviewed.accepted {
+      border-left: 3px solid #22c55e;
+      background: rgba(34, 197, 94, 0.05);
+    }
+    .item.reviewed.wrong, .item.reviewed.rejected {
+      border-left: 3px solid #ef4444;
+      background: rgba(239, 68, 68, 0.05);
+    }
+
+    .item-label {
+      font-size: 12px;
+      color: var(--muted-foreground);
+      margin-bottom: 4px;
+    }
+    .item-value {
+      font-size: 13px;
+      color: var(--foreground);
+      background: var(--muted);
+      padding: 8px 12px;
+      border-radius: var(--radius);
+    }
+    .item-value.empty {
+      color: var(--muted-foreground);
+      font-style: italic;
+    }
+    .item-ref {
+      font-size: 10px;
+      color: var(--muted-foreground);
+      margin-top: 8px;
+      font-family: ui-monospace, monospace;
+    }
+
+    /* Review actions */
+    .item-actions {
+      display: flex;
+      gap: 4px;
+      margin-top: 8px;
+    }
+    .review-only { display: none; }
+    body.review-mode .review-only { display: flex; }
+
+    .action-btn {
+      padding: 4px 8px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      background: var(--background);
+      color: var(--muted-foreground);
+    }
+    .action-btn:hover {
+      background: var(--muted);
+      color: var(--foreground);
+    }
+    .action-btn.correct:hover { background: #14532d; color: #4ade80; border-color: #166534; }
+    .action-btn.wrong:hover { background: #7f1d1d; color: #fca5a5; border-color: #991b1b; }
+
+    /* Keep action buttons visible on reviewed items */
+    .item.reviewed .item-actions { opacity: 0.6; }
+    .item.reviewed:hover .item-actions { opacity: 1; }
+    .item.reviewed.correct .action-btn.correct,
+    .item.reviewed.accepted .action-btn.correct { background: #14532d; color: #4ade80; border-color: #166534; }
+    .item.reviewed.wrong .action-btn.wrong,
+    .item.reviewed.rejected .action-btn.wrong { background: #7f1d1d; color: #fca5a5; border-color: #991b1b; }
+
+    /* Wrong note input */
+    .wrong-note-container {
+      display: none;
+      margin-top: 8px;
+    }
+    .item.show-note .wrong-note-container { display: block; }
+    .wrong-note-input {
+      width: 100%;
+      padding: 6px 10px;
+      background: var(--background);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--foreground);
+      font-size: 12px;
+    }
+    .wrong-note-btns {
+      display: flex;
+      gap: 4px;
+      margin-top: 4px;
+    }
+    .wrong-note-btn {
+      padding: 4px 8px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 11px;
+      cursor: pointer;
+      background: var(--background);
+      color: var(--muted-foreground);
+    }
+    .wrong-note-btn.save { background: #7f1d1d; color: #fca5a5; border-color: #991b1b; }
+
+    /* Group buttons */
+    .group-btns {
+      display: flex;
+      gap: 4px;
+    }
+    .group-btn {
+      padding: 4px 8px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 11px;
+      cursor: pointer;
+      background: var(--background);
+      color: var(--muted-foreground);
+      transition: all 0.15s ease;
+    }
+    .group-btn:hover {
+      background: var(--muted);
+      color: var(--foreground);
+    }
+    .group-btn.accept-all:hover { background: #14532d; color: #4ade80; }
+    .group-btn.reject-all:hover { background: #7f1d1d; color: #fca5a5; }
+
+    /* Stats bar */
+    .stats-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 20px;
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--muted-foreground);
+    }
+    .stats-bar .stat {
+      display: flex;
+      gap: 16px;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--foreground);
+      color: var(--background);
+      padding: 10px 20px;
+      border-radius: var(--radius);
+      font-size: 13px;
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* Empty state */
+    .empty {
+      color: var(--muted-foreground);
+      text-align: center;
+      padding: 40px;
+      font-style: italic;
+    }
+
+    /* App container */
+    .app-container {
+      display: none;
+      flex-direction: column;
+      height: 100vh;
+    }
+    .app-container.visible {
+      display: flex;
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading state -->
+  <div class="loading-container" id="loading">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Loading...</div>
+  </div>
+
+  <!-- Welcome screen (no questionnaire selected) -->
+  <div class="welcome-container" id="welcome" style="display: none;">
+    <h1 class="welcome-title">Passionfruit Review</h1>
+    <p class="welcome-subtitle">Select a questionnaire to review its indexed structure and harvested library items.</p>
+    <div class="questionnaire-list" id="questionnaire-list"></div>
+  </div>
+
+  <!-- Main app -->
+  <div class="app-container" id="app">
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-header">Questionnaires</div>
+      <div class="sidebar-content" id="sidebar-list"></div>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+      <div style="display: flex; align-items: center;">
+        <button class="sidebar-toggle" id="sidebar-toggle" title="Open questionnaire list (B)">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+        <div>
+          <div class="app-title">Passionfruit Review</div>
+          <h1 id="questionnaire-title">Loading...</h1>
+          <div class="meta" id="questionnaire-meta"></div>
+        </div>
+      </div>
+      <div class="toggles">
+        <span id="connection-status" class="connection-status checking"></span>
+        <button class="toggle active" data-panel="original" title="Toggle Original (1)">Original</button>
+        <button class="toggle active" data-panel="indexed" title="Toggle Indexed (2)">Indexed</button>
+        <button class="toggle" data-panel="library" title="Toggle Library (3)">Library</button>
+        <div class="toggle-divider"></div>
+        <button class="toggle" id="review-toggle" title="Toggle review mode (R)">Review</button>
+        <button class="toggle" id="complete-toggle" title="Complete Review">Complete Review (<span id="feedback-count">0</span>)</button>
+        <button class="toggle" id="clear-toggle" title="Clear all feedback">Clear</button>
+        <button class="toggle" title="Help (?)">?</button>
+      </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="main">
+      <div class="panel visible" id="panel-original">
+        <div class="panel-header">
+          <span>Original Questionnaire</span>
+          <span id="original-stats"></span>
+        </div>
+        <div id="sheet-tabs" class="sheet-tabs"></div>
+        <div class="panel-content" id="original-content"></div>
+      </div>
+
+      <div class="panel visible" id="panel-indexed">
+        <div class="panel-header">
+          <span>Indexed Structure</span>
+          <span id="indexed-stats"></span>
+          <div class="group-btns review-only">
+            <button class="group-btn accept-all" id="accept-all-indexed">✓ Accept All</button>
+            <button class="group-btn reject-all" id="reject-all-indexed">✗ Reject All</button>
+          </div>
+        </div>
+        <div class="panel-content" id="indexed-content"></div>
+      </div>
+
+      <div class="panel" id="panel-library">
+        <div class="panel-header">
+          <span>Harvested Library</span>
+          <span id="library-stats"></span>
+          <div class="group-btns review-only">
+            <button class="group-btn accept-all" id="accept-all-library">✓ Accept All</button>
+            <button class="group-btn reject-all" id="reject-all-library">✗ Reject All</button>
+          </div>
+        </div>
+        <div class="panel-content" id="library-content"></div>
+      </div>
+    </div>
+
+    <!-- Stats bar -->
+    <div class="stats-bar">
+      <div class="stat" id="stats-left"></div>
+      <div class="stat" id="stats-right"></div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // State
+    let currentQuestionnaire = null;
+    let questionnaireData = null;
+    let feedbackLog = [];
+    let serverConnected = false;
+    const API_BASE = '';
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', init);
+
+    async function init() {
+      // Check URL for questionnaire parameter
+      const params = new URLSearchParams(window.location.search);
+      const questionnaireId = params.get('q');
+
+      // Check server connection
+      await checkServerConnection();
+
+      if (questionnaireId) {
+        await loadQuestionnaire(questionnaireId);
+      } else {
+        await showWelcome();
+      }
+    }
+
+    async function checkServerConnection() {
+      const status = document.getElementById('connection-status');
+      try {
+        const res = await fetch(API_BASE + '/api/health');
+        if (res.ok) {
+          serverConnected = true;
+          status.className = 'connection-status connected';
+          status.title = 'Connected to server';
+        } else {
+          throw new Error('Server error');
+        }
+      } catch {
+        serverConnected = false;
+        status.className = 'connection-status disconnected';
+        status.title = 'Server disconnected';
+      }
+    }
+
+    async function showWelcome() {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('welcome').style.display = 'flex';
+      document.getElementById('app').classList.remove('visible');
+
+      // Load questionnaire list
+      try {
+        const res = await fetch(API_BASE + '/api/questionnaires');
+        const data = await res.json();
+        renderQuestionnaireList(data.questionnaires);
+      } catch (err) {
+        console.error('Failed to load questionnaires:', err);
+        document.getElementById('questionnaire-list').innerHTML =
+          '<div class="empty">Failed to load questionnaires. Is the server running?</div>';
+      }
+    }
+
+    function renderQuestionnaireList(questionnaires) {
+      const container = document.getElementById('questionnaire-list');
+      const sidebar = document.getElementById('sidebar-list');
+
+      if (!questionnaires || questionnaires.length === 0) {
+        container.innerHTML = '<div class="empty">No questionnaires found. Run the index command first.</div>';
+        return;
+      }
+
+      const html = questionnaires.map(q => \`
+        <a class="questionnaire-item" href="?q=\${encodeURIComponent(q.name)}">
+          <div>
+            <div class="questionnaire-name">\${escapeHtml(q.displayName)}</div>
+            <div class="questionnaire-meta">\${q.feedbackCount || 0} items reviewed</div>
+          </div>
+        </a>
+      \`).join('');
+
+      container.innerHTML = html;
+
+      // Also populate sidebar
+      const sidebarHtml = questionnaires.map(q => \`
+        <a class="sidebar-item\${currentQuestionnaire === q.name ? ' active' : ''}"
+           href="?q=\${encodeURIComponent(q.name)}">
+          <span class="sidebar-item-name">\${escapeHtml(q.displayName)}</span>
+          \${q.feedbackCount ? \`<span class="sidebar-item-badge">\${q.feedbackCount}</span>\` : ''}
+        </a>
+      \`).join('');
+      sidebar.innerHTML = sidebarHtml;
+    }
+
+    async function loadQuestionnaire(id) {
+      document.getElementById('loading').style.display = 'flex';
+      document.getElementById('welcome').style.display = 'none';
+      document.getElementById('app').classList.remove('visible');
+
+      try {
+        const res = await fetch(API_BASE + '/api/questionnaire/' + encodeURIComponent(id));
+        if (!res.ok) throw new Error('Failed to load questionnaire');
+
+        questionnaireData = await res.json();
+        currentQuestionnaire = id;
+
+        // Update URL without reload
+        history.pushState({}, '', '?q=' + encodeURIComponent(id));
+
+        // Render the app
+        renderApp();
+
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('app').classList.add('visible');
+
+        // Load feedback if exists
+        if (questionnaireData.feedback) {
+          feedbackLog = [
+            ...(questionnaireData.feedback.index || []),
+            ...(questionnaireData.feedback.library || [])
+          ];
+          updateFeedbackCount();
+          restoreFeedbackState();
+        }
+
+        // Update sidebar
+        const questRes = await fetch(API_BASE + '/api/questionnaires');
+        const questData = await questRes.json();
+        renderQuestionnaireList(questData.questionnaires);
+
+      } catch (err) {
+        console.error('Failed to load questionnaire:', err);
+        showToast('Failed to load questionnaire');
+        await showWelcome();
+      }
+    }
+
+    function renderApp() {
+      if (!questionnaireData) return;
+
+      const { structure, indexed, library } = questionnaireData;
+
+      // Update header
+      document.getElementById('questionnaire-title').textContent =
+        structure?.source?.filename || indexed?.source || currentQuestionnaire;
+      document.getElementById('questionnaire-meta').textContent =
+        \`Indexed: \${indexed?.indexed || 'N/A'} | Language: \${(indexed?.language || 'N/A').toUpperCase()} | \${indexed?.stats?.total || 0} items\`;
+
+      // Render panels
+      if (structure) {
+        renderOriginalPanel(structure);
+      } else {
+        document.getElementById('original-content').innerHTML =
+          '<div class="empty">Structure data not found</div>';
+      }
+
+      if (indexed) {
+        renderIndexedPanel(indexed);
+      } else {
+        document.getElementById('indexed-content').innerHTML =
+          '<div class="empty">Indexed data not found. Run the index command first.</div>';
+      }
+
+      if (library) {
+        renderLibraryPanel(library);
+      } else {
+        document.getElementById('library-content').innerHTML =
+          '<div class="empty">Library data not found. Run the harvest command first.</div>';
+      }
+
+      // Update stats
+      updateStats();
+
+      // Setup event handlers
+      setupEventHandlers();
+    }
+
+    function renderOriginalPanel(structure) {
+      const tabsContainer = document.getElementById('sheet-tabs');
+      const contentContainer = document.getElementById('original-content');
+
+      // Render sheet tabs
+      tabsContainer.innerHTML = structure.sheets.map((sheet, idx) => \`
+        <button class="sheet-tab\${idx === 0 ? ' active' : ''}" data-sheet="\${idx}">
+          \${escapeHtml(sheet.name)}
+        </button>
+      \`).join('');
+
+      // Render sheet contents
+      contentContainer.innerHTML = structure.sheets.map((sheet, idx) => \`
+        <div class="sheet-content\${idx === 0 ? ' active' : ''}" data-sheet="\${idx}">
+          \${renderSheetTable(sheet)}
+        </div>
+      \`).join('');
+
+      document.getElementById('original-stats').textContent =
+        \`\${structure.sheets.length} sheets, \${structure.sheets.reduce((sum, s) => sum + (s.rows?.length || 0) * (s.columns?.length || 0), 0)} cells\`;
+
+      // Sheet tab handlers
+      tabsContainer.querySelectorAll('.sheet-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabsContainer.querySelectorAll('.sheet-tab').forEach(t => t.classList.remove('active'));
+          contentContainer.querySelectorAll('.sheet-content').forEach(c => c.classList.remove('active'));
+          tab.classList.add('active');
+          contentContainer.querySelector(\`[data-sheet="\${tab.dataset.sheet}"]\`).classList.add('active');
+        });
+      });
+    }
+
+    function renderSheetTable(sheet) {
+      if (!sheet.rows || sheet.rows.length === 0) {
+        return '<div class="empty">Empty sheet</div>';
+      }
+
+      const columns = sheet.columns || [];
+      const headerHtml = '<tr><th class="row-header">#</th>' +
+        columns.map(col => \`<th>\${col}</th>\`).join('') + '</tr>';
+
+      const rowsHtml = sheet.rows.map(row => {
+        const rowNum = row.rowNumber || row.row;
+        const cells = columns.map(col => {
+          const cell = row.cells?.find(c => c.column === col);
+          const value = cell?.value ?? '';
+          const cellId = \`\${col}\${rowNum}\`;
+          return \`<td data-cell="\${cellId}">\${escapeHtml(String(value))}</td>\`;
+        }).join('');
+        return \`<tr><td class="row-header">\${rowNum}</td>\${cells}</tr>\`;
+      }).join('');
+
+      return \`<table class="excel-table"><thead>\${headerHtml}</thead><tbody>\${rowsHtml}</tbody></table>\`;
+    }
+
+    function renderIndexedPanel(indexed) {
+      const container = document.getElementById('indexed-content');
+
+      if (!indexed.sections || indexed.sections.length === 0) {
+        container.innerHTML = '<div class="empty">No sections indexed</div>';
+        return;
+      }
+
+      let totalItems = 0;
+      const sectionsHtml = indexed.sections.map((section, sIdx) => {
+        const itemsHtml = section.items.map((item, iIdx) => {
+          totalItems++;
+          const idx = \`\${sIdx}-\${iIdx}\`;
+          const cells = item.labelCell && item.valueCell ? \`\${item.labelCell} → \${item.valueCell}\` : '';
+          const value = item.value || '';
+          const isEmpty = !value || value.trim() === '';
+
+          return \`
+            <div class="item" data-index="\${idx}" data-cells="\${cells}" data-label="\${escapeHtml(item.label)}" data-section="\${escapeHtml(section.name)}" data-topic="\${section.topic || ''}">
+              <div class="item-label">\${escapeHtml(item.label)}</div>
+              <div class="item-value\${isEmpty ? ' empty' : ''}">\${isEmpty ? '(empty)' : escapeHtml(value)}</div>
+              <div class="item-ref">\${cells}</div>
+              <div class="item-actions review-only">
+                <button class="action-btn correct" title="Accept (C)">✓</button>
+                <button class="action-btn wrong" title="Reject (W)">✗</button>
+              </div>
+              <div class="wrong-note-container">
+                <input type="text" class="wrong-note-input" placeholder="Reason for rejection (optional)">
+                <div class="wrong-note-btns">
+                  <button class="wrong-note-btn save">Save</button>
+                  <button class="wrong-note-btn cancel">Cancel</button>
+                </div>
+              </div>
+            </div>
+          \`;
+        }).join('');
+
+        return \`
+          <div class="section" data-section="\${sIdx}">
+            <div class="section-header">
+              <div class="section-title">\${escapeHtml(section.name)}</div>
+              <div class="section-meta">
+                <span class="section-badge">\${section.topic || 'general'}</span>
+                <span>\${section.items.length} items</span>
+              </div>
+            </div>
+            <div class="section-items">\${itemsHtml}</div>
+          </div>
+        \`;
+      }).join('');
+
+      container.innerHTML = sectionsHtml;
+      document.getElementById('indexed-stats').textContent =
+        \`\${indexed.sections.length} sections, \${totalItems} items\`;
+    }
+
+    function renderLibraryPanel(library) {
+      const container = document.getElementById('library-content');
+
+      if (!library.items || library.items.length === 0) {
+        container.innerHTML = '<div class="empty">No library items harvested</div>';
+        return;
+      }
+
+      // Group by topic
+      const byTopic = {};
+      library.items.forEach((item, idx) => {
+        const topic = item.topic || 'general';
+        if (!byTopic[topic]) byTopic[topic] = [];
+        byTopic[topic].push({ ...item, idx });
+      });
+
+      const topicsHtml = Object.entries(byTopic).map(([topic, items]) => {
+        const itemsHtml = items.map(item => {
+          const cells = item.sources?.[0]?.labelCell && item.sources?.[0]?.valueCell
+            ? \`\${item.sources[0].labelCell} → \${item.sources[0].valueCell}\`
+            : '';
+
+          return \`
+            <div class="item" data-index="\${item.idx}" data-cells="\${cells}" data-label="\${escapeHtml(item.label)}" data-topic="\${topic}">
+              <div class="item-label">\${escapeHtml(item.label)}</div>
+              <div class="item-value">\${escapeHtml(item.value || '')}</div>
+              <div class="item-ref">\${cells}</div>
+              <div class="item-actions review-only">
+                <button class="action-btn correct" title="Accept (C)">✓</button>
+                <button class="action-btn wrong" title="Reject (W)">✗</button>
+              </div>
+              <div class="wrong-note-container">
+                <input type="text" class="wrong-note-input" placeholder="Reason for rejection (optional)">
+                <div class="wrong-note-btns">
+                  <button class="wrong-note-btn save">Save</button>
+                  <button class="wrong-note-btn cancel">Cancel</button>
+                </div>
+              </div>
+            </div>
+          \`;
+        }).join('');
+
+        return \`
+          <div class="section" data-topic="\${topic}">
+            <div class="section-header">
+              <div class="section-title">\${topic.toUpperCase()}</div>
+              <div class="section-meta">
+                <span>\${items.length} items</span>
+                <div class="group-btns review-only">
+                  <button class="group-btn accept-all" data-topic="\${topic}">✓ All</button>
+                  <button class="group-btn reject-all" data-topic="\${topic}">✗ All</button>
+                </div>
+              </div>
+            </div>
+            <div class="section-items">\${itemsHtml}</div>
+          </div>
+        \`;
+      }).join('');
+
+      container.innerHTML = topicsHtml;
+      document.getElementById('library-stats').textContent = \`\${library.items.length} items\`;
+    }
+
+    function setupEventHandlers() {
+      // Panel toggles
+      document.querySelectorAll('.toggle[data-panel]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          btn.classList.toggle('active');
+          const panel = document.getElementById('panel-' + btn.dataset.panel);
+          panel?.classList.toggle('visible', btn.classList.contains('active'));
+        });
+      });
+
+      // Review mode toggle
+      document.getElementById('review-toggle')?.addEventListener('click', function() {
+        this.classList.toggle('active');
+        document.body.classList.toggle('review-mode', this.classList.contains('active'));
+      });
+
+      // Sidebar toggle
+      document.getElementById('sidebar-toggle')?.addEventListener('click', () => {
+        document.getElementById('sidebar')?.classList.toggle('open');
+      });
+
+      // Clear feedback
+      document.getElementById('clear-toggle')?.addEventListener('click', async () => {
+        if (!confirm('Clear all feedback for this questionnaire?')) return;
+        try {
+          await fetch(API_BASE + '/api/feedback', { method: 'DELETE' });
+          feedbackLog = [];
+          updateFeedbackCount();
+          document.querySelectorAll('.item').forEach(item => {
+            item.classList.remove('reviewed', 'correct', 'wrong', 'accepted', 'rejected', 'show-note');
+          });
+          showToast('Feedback cleared');
+        } catch (err) {
+          showToast('Failed to clear feedback');
+        }
+      });
+
+      // Item click handlers
+      document.querySelectorAll('.item').forEach(item => {
+        item.addEventListener('click', (e) => {
+          if (e.target.closest('.action-btn') || e.target.closest('.wrong-note-container')) return;
+          document.querySelectorAll('.item.selected').forEach(i => i.classList.remove('selected'));
+          item.classList.add('selected');
+          highlightCells(item.dataset.cells);
+        });
+      });
+
+      // Action buttons
+      document.querySelectorAll('.action-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const item = btn.closest('.item');
+
+          if (btn.classList.contains('correct')) {
+            item.classList.remove('wrong', 'rejected', 'show-note');
+            item.classList.add('reviewed', 'correct', 'accepted');
+            showToast('Accepted');
+            logFeedback(item, 'correct');
+          } else if (btn.classList.contains('wrong')) {
+            item.classList.add('show-note');
+            item.querySelector('.wrong-note-input')?.focus();
+          }
+        });
+      });
+
+      // Wrong note save/cancel
+      document.querySelectorAll('.wrong-note-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const item = btn.closest('.item');
+          const input = item.querySelector('.wrong-note-input');
+
+          if (btn.classList.contains('save')) {
+            item.classList.remove('correct', 'accepted', 'show-note');
+            item.classList.add('reviewed', 'wrong', 'rejected');
+            const note = input?.value || '';
+            showToast(note ? 'Rejected with note' : 'Rejected');
+            logFeedback(item, 'wrong', note);
+            if (input) input.value = '';
+          } else {
+            item.classList.remove('show-note');
+            if (input) input.value = '';
+          }
+        });
+      });
+
+      // Panel-level Accept/Reject All
+      document.getElementById('accept-all-indexed')?.addEventListener('click', () => {
+        const items = document.querySelectorAll('#panel-indexed .item');
+        items.forEach(item => {
+          item.classList.remove('wrong', 'rejected', 'show-note');
+          item.classList.add('reviewed', 'correct', 'accepted');
+          logFeedback(item, 'correct');
+        });
+        showToast(items.length + ' indexed items accepted');
+      });
+
+      document.getElementById('reject-all-indexed')?.addEventListener('click', () => {
+        const items = document.querySelectorAll('#panel-indexed .item');
+        items.forEach(item => {
+          item.classList.remove('correct', 'accepted');
+          item.classList.add('reviewed', 'wrong', 'rejected');
+          logFeedback(item, 'wrong');
+        });
+        showToast(items.length + ' indexed items rejected');
+      });
+
+      document.getElementById('accept-all-library')?.addEventListener('click', () => {
+        const items = document.querySelectorAll('#panel-library .item');
+        items.forEach(item => {
+          item.classList.remove('wrong', 'rejected', 'show-note');
+          item.classList.add('reviewed', 'correct', 'accepted');
+          logFeedback(item, 'correct');
+        });
+        showToast(items.length + ' library items accepted');
+      });
+
+      document.getElementById('reject-all-library')?.addEventListener('click', () => {
+        const items = document.querySelectorAll('#panel-library .item');
+        items.forEach(item => {
+          item.classList.remove('correct', 'accepted');
+          item.classList.add('reviewed', 'wrong', 'rejected');
+          logFeedback(item, 'wrong');
+        });
+        showToast(items.length + ' library items rejected');
+      });
+
+      // Topic-level Accept/Reject All in library
+      document.querySelectorAll('#panel-library .group-btn[data-topic]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const topic = btn.dataset.topic;
+          const items = document.querySelectorAll(\`#panel-library .item[data-topic="\${topic}"]\`);
+
+          if (btn.classList.contains('accept-all')) {
+            items.forEach(item => {
+              item.classList.remove('wrong', 'rejected', 'show-note');
+              item.classList.add('reviewed', 'correct', 'accepted');
+              logFeedback(item, 'correct');
+            });
+            showToast(items.length + ' items accepted');
+          } else {
+            items.forEach(item => {
+              item.classList.remove('correct', 'accepted');
+              item.classList.add('reviewed', 'wrong', 'rejected');
+              logFeedback(item, 'wrong');
+            });
+            showToast(items.length + ' items rejected');
+          }
+        });
+      });
+
+      // Complete Review
+      document.getElementById('complete-toggle')?.addEventListener('click', completeReview);
+
+      // Section collapse
+      document.querySelectorAll('.section-header').forEach(header => {
+        header.addEventListener('click', () => {
+          header.closest('.section')?.classList.toggle('collapsed');
+        });
+      });
+    }
+
+    async function logFeedback(item, action, note = '') {
+      const panel = item.closest('.panel')?.id?.replace('panel-', '') || 'indexed';
+      const feedbackItem = {
+        action: action === 'correct' ? 'accepted' : action === 'wrong' ? 'rejected' : action,
+        label: item.dataset.label || item.querySelector('.item-label')?.textContent,
+        value: item.querySelector('.item-value')?.textContent,
+        cells: item.dataset.cells,
+        section: item.dataset.section,
+        topic: item.dataset.topic,
+        reason: note,
+        reviewedAt: new Date().toISOString()
+      };
+
+      // Update local log
+      const existingIdx = feedbackLog.findIndex(f =>
+        f.cells === feedbackItem.cells && f.label === feedbackItem.label
+      );
+      if (existingIdx >= 0) {
+        feedbackLog[existingIdx] = feedbackItem;
+      } else {
+        feedbackLog.push(feedbackItem);
+      }
+      updateFeedbackCount();
+
+      // Save to server
+      if (serverConnected) {
+        try {
+          await fetch(API_BASE + '/api/feedback', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ panel, item: feedbackItem })
+          });
+        } catch (err) {
+          console.error('Failed to save feedback:', err);
+        }
+      }
+    }
+
+    function updateFeedbackCount() {
+      document.getElementById('feedback-count').textContent = feedbackLog.length;
+    }
+
+    function restoreFeedbackState() {
+      feedbackLog.forEach(fb => {
+        const items = document.querySelectorAll(\`.item[data-cells="\${fb.cells}"]\`);
+        items.forEach(item => {
+          if (fb.action === 'accepted') {
+            item.classList.add('reviewed', 'correct', 'accepted');
+          } else if (fb.action === 'rejected') {
+            item.classList.add('reviewed', 'wrong', 'rejected');
+          }
+        });
+      });
+    }
+
+    async function completeReview() {
+      if (!feedbackLog || feedbackLog.length === 0) {
+        showToast('No feedback to save');
+        return;
+      }
+
+      if (!serverConnected) {
+        showToast('Server not connected');
+        return;
+      }
+
+      try {
+        const exportRes = await fetch(API_BASE + '/api/export-approved', { method: 'POST' });
+        if (!exportRes.ok) throw new Error('Export failed');
+
+        const rulesRes = await fetch(API_BASE + '/api/apply-rules', { method: 'POST' });
+        if (!rulesRes.ok) throw new Error('Rules failed');
+
+        showToast('Review complete! Data exported and rules applied.');
+      } catch (err) {
+        showToast('Failed to complete review: ' + err.message);
+      }
+    }
+
+    function highlightCells(cellsStr) {
+      document.querySelectorAll('.excel-table td.highlighted').forEach(td => {
+        td.classList.remove('highlighted');
+      });
+
+      if (!cellsStr) return;
+
+      const cells = cellsStr.split(/[→,\\s]+/).map(c => c.trim()).filter(Boolean);
+      cells.forEach(cell => {
+        document.querySelectorAll(\`[data-cell="\${cell}"]\`).forEach(td => {
+          td.classList.add('highlighted');
+        });
+      });
+    }
+
+    function updateStats() {
+      const indexed = questionnaireData?.indexed;
+      const library = questionnaireData?.library;
+
+      document.getElementById('stats-left').innerHTML = \`
+        <span>Sections: \${indexed?.sections?.length || 0}</span>
+        <span>Items: \${indexed?.stats?.total || 0}</span>
+        <span>Answered: \${indexed?.stats?.answered || 0}</span>
+        <span>Library: \${library?.items?.length || 0}</span>
+      \`;
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+      switch(e.key) {
+        case '1': document.querySelector('[data-panel="original"]')?.click(); break;
+        case '2': document.querySelector('[data-panel="indexed"]')?.click(); break;
+        case '3': document.querySelector('[data-panel="library"]')?.click(); break;
+        case 'r': case 'R': document.getElementById('review-toggle')?.click(); break;
+        case 'b': case 'B': document.getElementById('sidebar-toggle')?.click(); break;
+      }
+    });
+  </script>
+</body>
+</html>`;
   }
 }

@@ -304,48 +304,44 @@ program
 program
   .command('serve')
   .description('Start review server with auto-save (replaces manual export)')
-  .argument('<file>', 'Questionnaire filename')
+  .argument('[file]', 'Questionnaire filename (optional - opens welcome screen if not provided)')
   .option('--questionnaires-dir <dir>', 'Questionnaires directory', './questionnaires')
   .option('--indexed-dir <dir>', 'Indexed questionnaires directory', './indexed')
   .option('--library <file>', 'Answer library file', './answer-library.yaml')
   .option('--review-dir <dir>', 'Review output directory', './review')
   .option('--port <port>', 'Server port', '3456')
   .option('--no-open', 'Do not open browser automatically')
-  .action(async (file: string, opts) => {
+  .action(async (file: string | undefined, opts) => {
     try {
-      const questionnairesDir = opts.questionnairesDir as string || './questionnaires';
-      const indexedDir = opts.indexedDir as string || './indexed';
-      const libraryPath = opts.library as string || './answer-library.yaml';
       const reviewDir = opts.reviewDir as string || './review';
       const port = parseInt(opts.port as string || '3456', 10);
 
-      // Normalize filename - extract just the filename without directory
-      const fileName = file.split('/').pop() || file;
-      const baseName = fileName.replace(/\.(xlsx?|json|yaml)$/i, '');
-      const safeName = baseName.replace(/[^a-zA-Z0-9-_]/g, '_');
-
-      // Find the files
-      const structurePath = join(questionnairesDir, `${safeName}.json`);
-      const indexedPath = join(indexedDir, `${safeName}.yaml`);
-
-      console.log('\n🚀 Starting review server\n');
-      console.log('  Questionnaire: ' + file);
+      console.log('\n🚀 Starting Passionfruit Review Server\n');
       console.log('  Port: ' + port);
 
-      // Generate the review HTML first
-      console.log('\n  Generating review interface...');
+      // Generate the single-page app shell
+      console.log('\n  Generating review app...');
       const generator = new WebReviewGenerator(reviewDir);
-      const htmlPath = await generator.generate(structurePath, indexedPath, libraryPath);
-      const htmlFilename = htmlPath.split('/').pop() || '';
+      const htmlPath = await generator.generateAppShell();
       console.log('  ✅ Generated: ' + htmlPath);
 
-      // Start server
-      const server = new ReviewServer(file, { port, reviewDir });
+      // Determine the questionnaire ID if provided
+      let questionnaireId: string | undefined;
+      if (file) {
+        const fileName = file.split('/').pop() || file;
+        const baseName = fileName.replace(/\.(xlsx?|json|yaml)$/i, '');
+        questionnaireId = baseName.replace(/[^a-zA-Z0-9-_]/g, '_');
+        console.log('  Questionnaire: ' + questionnaireId);
+      }
+
+      // Start server (use empty string for questionnaire since app handles multiple)
+      const server = new ReviewServer(file || '', { port, reviewDir });
       await server.start();
 
       // Open browser
       if (opts.open !== false) {
-        server.openBrowser(htmlFilename);
+        const url = questionnaireId ? `?q=${encodeURIComponent(questionnaireId)}` : '';
+        server.openBrowser(url);
       }
 
     } catch (error) {

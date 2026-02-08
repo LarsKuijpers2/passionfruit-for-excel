@@ -279,6 +279,28 @@ export class ReviewServer {
         res.status(500).json({ error: 'Failed to generate preview' });
       }
     });
+
+    // Get questionnaire data (structure + indexed + library)
+    this.app.get('/api/questionnaire/:id', async (req, res) => {
+      try {
+        const { id } = req.params;
+        const data = await this.loadQuestionnaireData(id);
+        res.json(data);
+      } catch (error) {
+        console.error('Error loading questionnaire data:', error);
+        res.status(500).json({ error: 'Failed to load questionnaire data' });
+      }
+    });
+
+    // Serve the single-page app at root
+    this.app.get('/', (req, res) => {
+      const indexPath = join(this.reviewDir, 'index.html');
+      if (existsSync(indexPath)) {
+        res.sendFile(indexPath, { root: process.cwd() });
+      } else {
+        res.status(404).send('Review app not found. Run the review command first.');
+      }
+    });
   }
 
   private async saveFeedback(): Promise<void> {
@@ -577,34 +599,94 @@ export class ReviewServer {
     return questionnaires;
   }
 
+  /**
+   * Load all data for a specific questionnaire (structure + indexed + library)
+   */
+  private async loadQuestionnaireData(questionnaireId: string): Promise<{
+    id: string;
+    structure: any;
+    indexed: any;
+    library: any;
+    feedback: FeedbackData | null;
+  }> {
+    const safeName = questionnaireId.replace(/[^a-zA-Z0-9-_]/g, '_');
+
+    // Load structure (questionnaires/*.json)
+    const structurePath = join('./questionnaires', `${safeName}.json`);
+    let structure = null;
+    if (existsSync(structurePath)) {
+      structure = JSON.parse(await readFile(structurePath, 'utf-8'));
+    }
+
+    // Load indexed (indexed/*.yaml)
+    const indexedPath = join('./indexed', `${safeName}.yaml`);
+    let indexed = null;
+    if (existsSync(indexedPath)) {
+      indexed = parseYaml(await readFile(indexedPath, 'utf-8'));
+    }
+
+    // Load library (answer-library.yaml)
+    const libraryPath = './answer-library.yaml';
+    let library = null;
+    if (existsSync(libraryPath)) {
+      library = parseYaml(await readFile(libraryPath, 'utf-8'));
+    }
+
+    // Load feedback for this questionnaire
+    const feedbackPath = join(this.reviewDir, safeName, 'feedback.json');
+    let feedback = null;
+    if (existsSync(feedbackPath)) {
+      feedback = JSON.parse(await readFile(feedbackPath, 'utf-8'));
+    }
+
+    return {
+      id: questionnaireId,
+      structure,
+      indexed,
+      library,
+      feedback
+    };
+  }
+
   async start(): Promise<void> {
     // Load existing feedback
     await this.loadFeedback();
 
     return new Promise((resolve) => {
       this.app.listen(this.port, () => {
-        console.log(`\nReview server running at http://localhost:${this.port}`);
-        console.log(`Questionnaire: ${this.questionnaire}`);
+        console.log(`\nPassionfruit Review Server running at http://localhost:${this.port}`);
+        if (this.questionnaire) {
+          console.log(`Default questionnaire: ${this.questionnaire}`);
+        }
         console.log(`\nAPI endpoints:`);
-        console.log(`  GET  /api/health           - Health check`);
-        console.log(`  GET  /api/questionnaires   - List all questionnaires`);
-        console.log(`  GET  /api/status           - Review status`);
-        console.log(`  GET  /api/feedback         - Get all feedback`);
-        console.log(`  POST /api/feedback         - Save feedback item`);
-        console.log(`  POST /api/feedback/bulk    - Save multiple items`);
-        console.log(`  DELETE /api/feedback       - Clear all feedback`);
-        console.log(`  POST /api/apply-rules      - Apply rules from feedback`);
-        console.log(`  GET  /api/rules/preview    - Preview generated rules`);
-        console.log(`  POST /api/export-approved  - Export approved to DB files`);
-        console.log(`  GET  /api/export-approved/preview - Preview export`);
+        console.log(`  GET  /                      - Review app (single-page)`);
+        console.log(`  GET  /api/health            - Health check`);
+        console.log(`  GET  /api/questionnaires    - List all questionnaires`);
+        console.log(`  GET  /api/questionnaire/:id - Get questionnaire data`);
+        console.log(`  GET  /api/status            - Review status`);
+        console.log(`  GET  /api/feedback          - Get all feedback`);
+        console.log(`  POST /api/feedback          - Save feedback item`);
+        console.log(`  POST /api/feedback/bulk     - Save multiple items`);
+        console.log(`  DELETE /api/feedback        - Clear all feedback`);
+        console.log(`  POST /api/apply-rules       - Apply rules from feedback`);
+        console.log(`  GET  /api/rules/preview     - Preview generated rules`);
+        console.log(`  POST /api/export-approved   - Export approved to DB files`);
         console.log(`\nPress Ctrl+C to stop\n`);
         resolve();
       });
     });
   }
 
-  openBrowser(htmlPath: string): void {
-    const url = `http://localhost:${this.port}/review/${htmlPath}`;
+  openBrowser(path: string = ''): void {
+    // Handle new URL format: root with optional query parameter
+    // path can be: '' (welcome), '?q=questionnaire-id', or legacy 'filename.html'
+    let url: string;
+    if (path.startsWith('?') || path === '') {
+      url = `http://localhost:${this.port}/${path}`;
+    } else {
+      // Legacy: direct HTML file path
+      url = `http://localhost:${this.port}/review/${path}`;
+    }
     console.log(`Opening browser: ${url}`);
 
     const command = process.platform === 'darwin' ? 'open' :

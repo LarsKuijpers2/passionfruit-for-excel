@@ -1,0 +1,518 @@
+id: ee511cfe
+source: Questionnaire emballages Kaaspack.xlsx
+indexed: 2026-02-08
+language: en
+sections:
+  - title: Product Information
+    topic: identification
+    rows: 2-2
+    sheet: Questionnaire fournisseurs
+    items:
+      - type: field
+        label: Supplier
+        value: Kaaspack
+        topic: company
+        level: standard
+        lCell: A2
+        vCell: A5
+      - type: field
+        label: Product Type
+        value: Tranche/Slice
+        topic: product
+        level: product
+        lang: en
+        lCell: B2
+        vCell: B5
+      - type: field
+        label: Tippagral Product Code
+        value: TC01
+        topic: product
+        level: product
+        lang: fr
+        lCell: C2
+        vCell: C5
+      - type: field
+        label: Supplier Product Code
+        value: "300724"
+        topic: product
+        level: product
+        lang: fr
+        lCell: D2
+        vCell: D5
+      - type: field
+        label: Weight (kg)
+        value: "1"
+        topic: product
+        level: product
+        lCell: E2
+        vCell: E5
+  - title: Packaging Reduction Actions
+    topic: packaging
+    rows: 2-2
+    sheet: Questionnaire fournisseurs
+    items:
+      - type: text
+        label: Have you implemented packaging reduction actions
+        value: Our packaging is designed for the most efficient use of mate
+        topic: sustainability
+        level: narrative
+        lang: en
+        lCell: F2
+        vCell: F5
+      - type: text
+        label: Have you implemented actions to develop recycled material incorporation
+        value: The second packaging (cardboard) consists of partially recyc
+        topic: sustainability
+        level: narrative
+        lang: en
+        lCell: G2
+        vCell: G5
+  - title: Listes
+    topic: other
+    rows: 2-2
+    sheet: Listes
+    items:
+      - type: choice
+        label: Questions - oui / yes
+        value: oui / yes
+        topic: other
+        level: product
+        lang: fr
+        lCell: B2
+        vCell: B3
+      - type: choice
+        label: Questions - non / no
+        value: non / no
+        topic: other
+        level: product
+        lang: fr
+        lCell: B2
+        vCell: B4
+      - type: choice
+        label: PFAS (respect des 3 seuils) - conforme à la réglementation PPWR
+        value: conforme à la réglementation PPWR / compliant with PPWR reg
+        topic: packaging
+        level: product
+        lang: fr
+        lCell: C2
+        vCell: C3
+      - type: choice
+        label: PFAS (respect des 3 seuils) - non-conforme à la réglementation PPWR
+        value: non-conforme à la réglementation PPWR / not compliant with P
+        topic: packaging
+        level: product
+        lang: fr
+        lCell: C2
+        vCell: C4
+      - type: choice
+        label: MOSH - absent
+        value: absent
+        topic: packaging
+        level: product
+        lang: fr
+        lCell: D2
+        vCell: D3
+      - type: choice
+        label: MOSH - inférieure à 0,1%
+        value: inférieure à 0,1% / less than 0.1%
+        topic: packaging
+        level: product
+        lang: fr
+        lCell: D2
+        vCell: D4
+      - type: choice
+        label: MOSH - supérieure à 0,1%
+        value: supérieure à 0,1% / greater than 0.1%
+        topic: packaging
+        level: product
+        lang: en
+        lCell: D2
+        vCell: D5
+      - type: choice
+        label: MOAH - absent
+        value: absent
+        topic: packaging
+        level: product
+        lang: fr
+        lCell: E2
+        vCell: E3
+      - type: choice
+        label: MOAH - inférieure à 0,1% et [composés de 3 à 7 cycles aromatiques]
+        value: inférieure à 0,1% et [composés de 3 à 7 cycles aromatiques]
+        topic: packaging
+        level: product
+        lang: fr
+        lCell: E2
+        vCell: E4
+      - type: choice
+        label: MOAH - supérieure à 0,1% ou/et [composés de 3 à 7 cycles aromatiques]
+        value: supérieure à 0,1% ou/et [composés de 3 à 7 cycles aromatique
+        topic: packaging
+        level: product
+        lang: fr
+        lCell: E2
+        vCell: E5
+      - type: choice
+        label: Réemployable - oui / yes
+        value: oui / yes
+        topic: packaging
+        level: product
+        lang: fr
+        lCell: F2
+        vCell: F3
+      - type: choice
+        label: Réemployable - non / no
+        value: non / no
+        topic: packaging
+        level: product
+        lang: en
+        lCell: F2
+        vCell: F4
+  - title: Primary Packaging
+    topic: packaging
+    rows: 3-3
+    sheet: Questionnaire fournisseurs
+    items:
+      - type: field
+        label: Primary Element 1 Type
+        value: barquette (tray)
+        topic: packaging
+        level: product
+        lang: fr
+        lCell: I3
+        vCell: I5
+      - type: field
+        label: Primary Element 1 Composition
+        value: APET/PE
+        topic: packaging
+        level: product
+        lang: fr
+        lCell: J3
+        vCell: J5
+      - type: field
+        label: Primary Element 1 Weight (kg)
+        value: "0.028"
+        topic: packaging
+        level: product
+        lang: en
+        lCell: K3
+        vCell: K5
+      - type: field
+        label: Primary Element 1 Thickness (µ)
+        value: "350"
+        topic: packaging
+        level: product
+        lang: en
+        lCell: L3
+        vCell: L5
+      - type: field
+        label: Primary Element 1 Recycled Material (%)
+        value: "0"
+        topic: packaging
+        level: product
+        lang: en
+        lCell: M3
+        vCell: M5
+      - type: field
+        label: Primary Element 1 Recyclable in France
+        value: /
+        topic: packaging
+        level: product
+        lang: en
+        lCell: N3
+        vCell: N5
+      - type: field
+        label: Primary Element 2 Type
+        value: opercule (lid)
+        topic: packaging
+        level: product
+        lang: fr
+        lCell: Q3
+        vCell: Q5
+      - type: field
+        label: Primary Element 2 Composition
+        value: PET/PE/EVOH
+        topic: packaging
+        level: product
+        lang: fr
+        lCell: R3
+        vCell: R5
+      - type: field
+        label: Primary Element 2 Weight (kg)
+        value: inclus dans 0,028 / included in 0,028
+        topic: packaging
+        level: product
+        lang: en
+        lCell: S3
+        vCell: S5
+      - type: field
+        label: Primary Element 2 Thickness (µ)
+        value: "62"
+        topic: packaging
+        level: product
+        lang: en
+        lCell: T3
+        vCell: T5
+      - type: field
+        label: Primary Element 2 Recycled Material (%)
+        value: "0"
+        topic: packaging
+        level: product
+        lang: en
+        lCell: U3
+        vCell: U5
+      - type: field
+        label: Primary Element 2 Recyclable in France
+        value: /
+        topic: packaging
+        level: product
+        lang: en
+        lCell: V3
+        vCell: V5
+      - type: field
+        label: Primary Element 3 Type
+        value: étiquette (label)
+        topic: packaging
+        level: product
+        lang: fr
+        lCell: Y3
+        vCell: Y5
+      - type: field
+        label: Primary Element 3 Composition
+        value: papier (paper)
+        topic: packaging
+        level: product
+        lang: fr
+        lCell: Z3
+        vCell: Z5
+      - type: field
+        label: Primary Element 3 Weight (kg)
+        value: inclus dans 0,028 / included in 0,028
+        topic: packaging
+        level: product
+        lang: en
+        lCell: AA3
+        vCell: AA5
+      - type: field
+        label: PFAS Presence in Primary Packaging
+        value: conforme à la réglementation PPWR /  compliant with PPWR reg
+        topic: packaging
+        level: product
+        lang: en
+        lCell: AH3
+        vCell: AH5
+  - title: Secondary Packaging
+    topic: packaging
+    rows: 3-3
+    sheet: Questionnaire fournisseurs
+    items:
+      - type: field
+        label: Secondary Element 1 Type
+        value: carton (cardboard)
+        topic: packaging
+        level: product
+        lang: fr
+        lCell: AI3
+        vCell: AI5
+      - type: field
+        label: Secondary Element 1 Composition
+        value: papier (paper)
+        topic: packaging
+        level: product
+        lang: fr
+        lCell: AJ3
+        vCell: AJ5
+      - type: field
+        label: Secondary Element 1 Weight (kg)
+        value: "0.302"
+        topic: packaging
+        level: product
+        lang: en
+        lCell: AK3
+        vCell: AK5
+      - type: field
+        label: Secondary Element 1 Thickness (µ)
+        value: "3250"
+        topic: packaging
+        level: product
+        lang: en
+        lCell: AL3
+        vCell: AL5
+      - type: field
+        label: Secondary Element 1 Recycled Material (%)
+        value: "0.81"
+        topic: packaging
+        level: product
+        lang: en
+        lCell: AM3
+        vCell: AM5
+      - type: yesno
+        label: Secondary Element 1 Recyclable in France
+        value: oui / yes
+        topic: packaging
+        level: product
+        lang: fr
+        lCell: AN3
+        vCell: AN5
+      - type: field
+        label: Secondary Element 1 Recyclability Rate (%)
+        value: "1"
+        topic: packaging
+        level: product
+        lang: en
+        lCell: AP3
+        vCell: AP5
+      - type: field
+        label: Secondary Element 2
+        value: n/a
+        topic: packaging
+        level: product
+        lang: fr
+        lCell: AQ3
+        vCell: AQ5
+      - type: field
+        label: Units per Box
+        value: "6"
+        topic: packaging
+        level: product
+        lCell: BH3
+        vCell: BH5
+      - type: field
+        label: Empty Space Rate in Box (%)
+        value: "12"
+        topic: packaging
+        level: product
+        lang: en
+        lCell: BI3
+        vCell: BI5
+      - type: field
+        label: MOSH Presence
+        value: inférieure à 0,1% / less than 0.1%
+        topic: packaging
+        level: product
+        lang: fr
+        lCell: BJ3
+        vCell: BJ5
+      - type: field
+        label: MOAH Presence
+        value: "inférieure à 0,1% et [composés de 3 à 7 cycles aromatiques] "
+        topic: packaging
+        level: product
+        lang: fr
+        lCell: BK3
+        vCell: BK5
+  - title: Tertiary Packaging
+    topic: packaging
+    rows: 3-3
+    sheet: Questionnaire fournisseurs
+    items:
+      - type: field
+        label: Tertiary Element 1 Type
+        value: palette (pallet)
+        topic: packaging
+        level: product
+        lang: fr
+        lCell: BL3
+        vCell: BL5
+      - type: field
+        label: Tertiary Element 1 Composition
+        value: bois (wood)
+        topic: packaging
+        level: product
+        lang: en
+        lCell: BM3
+        vCell: BM5
+      - type: field
+        label: Tertiary Element 1 Weight (kg)
+        value: +/-23
+        topic: packaging
+        level: product
+        lang: en
+        lCell: BN3
+        vCell: BN5
+      - type: field
+        label: Tertiary Element 1 Recycled Material (%)
+        value: "0"
+        topic: packaging
+        level: product
+        lang: en
+        lCell: BO3
+        vCell: BO5
+      - type: field
+        label: Tertiary Element 1 Recyclability Rate (%)
+        value: "1"
+        topic: packaging
+        level: product
+        lang: en
+        lCell: BP3
+        vCell: BP5
+      - type: yesno
+        label: Tertiary Element 1 Reusable
+        value: oui / yes
+        topic: packaging
+        level: product
+        lang: fr
+        lCell: BQ3
+        vCell: BQ5
+      - type: field
+        label: Tertiary Element 2 Type
+        value: film étirable (stretchfoil)
+        topic: packaging
+        level: product
+        lang: fr
+        lCell: BR3
+        vCell: BR5
+      - type: field
+        label: Tertiary Element 2 Composition
+        value: PE
+        topic: packaging
+        level: product
+        lang: fr
+        lCell: BS3
+        vCell: BS5
+      - type: field
+        label: Tertiary Element 2 Weight (kg)
+        value: Included in 23 kg
+        topic: packaging
+        level: product
+        lang: en
+        lCell: BT3
+        vCell: BT5
+      - type: field
+        label: Tertiary Element 2 Thickness (µ)
+        value: "23"
+        topic: packaging
+        level: product
+        lang: en
+        lCell: BU3
+        vCell: BU5
+      - type: field
+        label: Tertiary Element 2 Recycled Material (%)
+        value: "0"
+        topic: packaging
+        level: product
+        lang: en
+        lCell: BV3
+        vCell: BV5
+      - type: yesno
+        label: Tertiary Element 2 Recyclable in France
+        value: oui / yes
+        topic: packaging
+        level: product
+        lang: en
+        lCell: BW3
+        vCell: BW5
+      - type: field
+        label: Tertiary Element 2 Recyclability Rate (%)
+        value: "1"
+        topic: packaging
+        level: product
+        lang: en
+        lCell: BY3
+        vCell: BY5
+stats:
+  total: 60
+  answered: 60
+  standard: 1
+  narrative: 2
+  product: 57

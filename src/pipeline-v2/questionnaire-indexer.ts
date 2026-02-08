@@ -6,13 +6,52 @@
  */
 
 import { readFile, writeFile, mkdir } from 'fs/promises';
+import { existsSync } from 'fs';
 import { join } from 'path';
-import { stringify as stringifyYaml } from 'yaml';
+import { stringify as stringifyYaml, parse as parseYaml } from 'yaml';
 import { randomUUID } from 'crypto';
 import { franc } from 'franc';
 import { VisualAnalyzer, type SheetAnalysis, type DetectedItem, type ItemType, type ItemLevel } from './visual-analyzer.js';
 import type { QuestionnaireStructure } from './excel-structure.js';
 import { RulesManager } from './rules/rules-manager.js';
+
+// =============================================================================
+// TOPIC DEFINITION (loaded from rules/rules.yaml)
+// =============================================================================
+
+interface TopicDefinition {
+  id: string;
+  name: string;
+  description: string;
+  keywords: string[];
+  patterns?: string[];
+}
+
+interface TopicRules {
+  topics: TopicDefinition[];
+}
+
+let loadedTopics: TopicDefinition[] | null = null;
+
+async function loadTopicsFromRules(rulesDir: string): Promise<TopicDefinition[]> {
+  if (loadedTopics) return loadedTopics;
+
+  const rulesPath = join(rulesDir, 'rules.yaml');
+  if (!existsSync(rulesPath)) {
+    console.warn('  Warning: rules/rules.yaml not found, using fallback topics');
+    return [];
+  }
+
+  try {
+    const content = await readFile(rulesPath, 'utf-8');
+    const rules = parseYaml(content) as TopicRules;
+    loadedTopics = rules.topics || [];
+    return loadedTopics;
+  } catch (error) {
+    console.warn(`  Warning: Failed to load topics from rules.yaml: ${error}`);
+    return [];
+  }
+}
 
 // =============================================================================
 // TYPES
@@ -62,39 +101,80 @@ export interface IndexedQuestionnaire {
 // TOPIC NORMALIZATION
 // =============================================================================
 
-const TOPIC_PATTERNS: Array<{ pattern: RegExp; topic: string }> = [
-  { pattern: /company|firmierung|entreprise|bedrijf|general.*data|allgemeine.*daten|algemene/i, topic: 'company' },
-  { pattern: /contact|ansprech|kontakt/i, topic: 'contacts' },
+// Fallback patterns if rules.yaml is not available
+const FALLBACK_TOPIC_PATTERNS: Array<{ pattern: RegExp; topic: string }> = [
+  { pattern: /company|firmierung|entreprise|bedrijf|general.*data|allgemeine.*daten|algemene/i, topic: 'company_information' },
+  { pattern: /contact|ansprech|kontakt/i, topic: 'contact_persons' },
   { pattern: /certif|zertif/i, topic: 'certifications' },
   { pattern: /allerg/i, topic: 'allergens' },
-  { pattern: /haccp|food.*safety|lebensmittel.*sicherheit/i, topic: 'food_safety' },
-  { pattern: /quality|qualität|qualite|kwaliteit|qm.*system/i, topic: 'quality' },
+  { pattern: /haccp|food.*safety|lebensmittel.*sicherheit/i, topic: 'quality_systems' },
+  { pattern: /quality|qualität|qualite|kwaliteit|qm.*system/i, topic: 'quality_systems' },
   { pattern: /sustain|nachhaltig|durable|duurzaam|rse|csr/i, topic: 'sustainability' },
-  { pattern: /environment|umwelt|environnement|milieu/i, topic: 'environment' },
+  { pattern: /environment|umwelt|environnement|milieu/i, topic: 'sustainability' },
   { pattern: /packag|verpack|emballage|verpakking/i, topic: 'packaging' },
-  { pattern: /logist|transport|shipping|lieferung|livraison/i, topic: 'logistics' },
-  { pattern: /origin|herkunft|origine|oorsprong/i, topic: 'origin' },
+  { pattern: /logist|transport|shipping|lieferung|livraison/i, topic: 'storage_transport' },
+  { pattern: /origin|herkunft|origine|oorsprong/i, topic: 'origin_provenance' },
   { pattern: /fraud|betrug|fraude/i, topic: 'food_fraud' },
-  { pattern: /nutri|nährwert|valeur/i, topic: 'nutrition' },
-  { pattern: /crisis|krisen|crise/i, topic: 'crisis' },
-  { pattern: /financ|finanz|bank|steuer|tax/i, topic: 'financial' },
-  { pattern: /animal|tier|welfare|wohl/i, topic: 'animal_welfare' },
-  { pattern: /audit|inspection|prüfung/i, topic: 'audits' },
-  { pattern: /product|produkt|produit/i, topic: 'product' },
-  { pattern: /ingredient|zutat|ingrédient|ingrediënt/i, topic: 'ingredients' },
-  { pattern: /bacterio|micro|keime/i, topic: 'microbiology' },
-  { pattern: /export/i, topic: 'export' },
-  { pattern: /document|dokument|pièce/i, topic: 'documents' },
+  { pattern: /nutri|nährwert|valeur/i, topic: 'nutritional' },
+  { pattern: /crisis|krisen|crise/i, topic: 'complaints' },
+  { pattern: /financ|finanz|bank|steuer|tax/i, topic: 'company_information' },
+  { pattern: /animal|tier|welfare|wohl/i, topic: 'ethical_social' },
+  { pattern: /product|produkt|produit/i, topic: 'identification' },
+  { pattern: /ingredient|zutat|ingrédient|ingrediënt/i, topic: 'formula_composition' },
+  { pattern: /bacterio|micro|keime/i, topic: 'microbiological' },
+  { pattern: /export/i, topic: 'country_regulatory' },
+  { pattern: /document|dokument|pièce/i, topic: 'declaration' },
   { pattern: /onderteken|signature|unterschrift/i, topic: 'signature' },
   { pattern: /autoris|approval|genehmigung/i, topic: 'approval' },
+  { pattern: /foreign.*bod|fremdkörper|corps.*étrang/i, topic: 'foreign_bodies' },
+  { pattern: /raw.*material|rohstoff|matière.*première/i, topic: 'raw_materials' },
+  { pattern: /traceab|rückverfolgb|traça/i, topic: 'traceability' },
+  { pattern: /complaint|reklamation|réclamation/i, topic: 'complaints' },
+  { pattern: /shelf.*life|haltbarkeit|durée.*conservation/i, topic: 'shelf_life' },
+  { pattern: /defense|verteidigung|défense/i, topic: 'food_defense' },
+  { pattern: /gmo|genetisch|génétique/i, topic: 'gmo' },
+  { pattern: /contaminant|verunreinig|contamin/i, topic: 'contaminants' },
+  { pattern: /claim|angabe|allégation/i, topic: 'claims' },
+  { pattern: /palm|rspo/i, topic: 'rspo_palm' },
+  { pattern: /calibrat|kalibrier|étalon/i, topic: 'measuring_instruments' },
 ];
 
-function normalizeTopic(sectionTitle: string): string {
-  for (const { pattern, topic } of TOPIC_PATTERNS) {
+function normalizeTopicWithRules(sectionTitle: string, topics: TopicDefinition[]): string {
+  const lowerTitle = sectionTitle.toLowerCase();
+
+  // First try fallback patterns (more specific and multilingual)
+  for (const { pattern, topic } of FALLBACK_TOPIC_PATTERNS) {
     if (pattern.test(sectionTitle)) {
       return topic;
     }
   }
+
+  // Then try matching against loaded topic patterns (regex)
+  for (const topic of topics) {
+    for (const pattern of topic.patterns || []) {
+      try {
+        const regex = new RegExp(pattern, 'i');
+        if (regex.test(sectionTitle)) {
+          return topic.id;
+        }
+      } catch {
+        // Invalid regex pattern, skip
+      }
+    }
+  }
+
+  // Finally try keywords with word boundary matching to avoid false positives
+  for (const topic of topics) {
+    for (const keyword of topic.keywords || []) {
+      // Use word boundary to avoid partial matches like "format" in "informatie"
+      const escaped = keyword.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const keywordRegex = new RegExp(`\\b${escaped}\\b`, 'i');
+      if (keywordRegex.test(lowerTitle)) {
+        return topic.id;
+      }
+    }
+  }
+
   return 'other';
 }
 
@@ -106,11 +186,14 @@ export class QuestionnaireIndexer {
   private storageDir: string;
   private analyzer: VisualAnalyzer;
   private rulesManager: RulesManager;
+  private rulesDir: string;
+  private topics: TopicDefinition[] = [];
 
   constructor(storageDir: string = './questionnaires', region: string = 'eu-central-1', rulesDir: string = './rules') {
     this.storageDir = storageDir;
     this.analyzer = new VisualAnalyzer(region);
     this.rulesManager = new RulesManager(rulesDir);
+    this.rulesDir = rulesDir;
   }
 
   /**
@@ -122,6 +205,12 @@ export class QuestionnaireIndexer {
     const filepath = join(this.storageDir, `${jsonName}.json`);
     const content = await readFile(filepath, 'utf-8');
     const structure: QuestionnaireStructure = JSON.parse(content);
+
+    // Load topics from rules.yaml
+    this.topics = await loadTopicsFromRules(this.rulesDir);
+    if (this.topics.length > 0) {
+      console.log(`  Loaded ${this.topics.length} topic definitions from rules.yaml`);
+    }
 
     // Load rules
     const rules = await this.rulesManager.loadIndexRules();
@@ -154,7 +243,7 @@ export class QuestionnaireIndexer {
 
       // Convert to indexed sections
       for (const [sectionTitle, items] of sectionMap) {
-        const topic = normalizeTopic(sectionTitle);
+        const topic = normalizeTopicWithRules(sectionTitle, this.topics);
         const indexedItems: IndexedItem[] = [];
 
         for (const item of items) {

@@ -2293,7 +2293,7 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
 
         return `
           <a class="sidebar-item${isActive ? ' active' : ''}"
-             href="${q.hasReview ? '/review/' + q.reviewUrl : '#'}"
+             href="${q.hasReview ? q.reviewUrl : '#'}"
              title="${q.displayName}"
              ${!q.hasReview ? 'style="opacity: 0.5; pointer-events: none;"' : ''}>
             <span class="sidebar-item-icon">
@@ -2650,8 +2650,8 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
         const item = btn.closest('.item');
 
         if (btn.classList.contains('correct')) {
-          item.classList.remove('wrong', 'show-note');
-          item.classList.add('reviewed', 'correct');
+          item.classList.remove('wrong', 'rejected', 'show-note');
+          item.classList.add('reviewed', 'correct', 'accepted');
           showToast('Accepted');
           logFeedback(item, 'correct');
         } else if (btn.classList.contains('wrong')) {
@@ -2673,8 +2673,8 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
         const input = item.querySelector('.wrong-note-input');
 
         if (btn.classList.contains('save')) {
-          item.classList.remove('correct', 'show-note');
-          item.classList.add('reviewed', 'wrong');
+          item.classList.remove('correct', 'accepted', 'show-note');
+          item.classList.add('reviewed', 'wrong', 'rejected');
           const note = input?.value || '';
           showToast(note ? 'Marked as wrong with note' : 'Marked as wrong');
           logFeedback(item, 'wrong', note);

@@ -103,26 +103,28 @@ export interface APIEntityFields {
   country?: string;
 }
 
-/** Additional data stored in entity.data object */
+/**
+ * Additional data stored in entity.data object
+ *
+ * IMPORTANT: Only flat key-value pairs are supported.
+ * No nested objects or arrays - use separate keys instead:
+ * - contacts_name, contacts_role (not contacts: [{...}])
+ * - certification_type, certification_number (not certifications: [{...}])
+ */
 export interface EntityAdditionalData {
-  // Contacts (multiple)
-  contacts?: Array<{
-    name: string;
-    role?: string;
-    email?: string;
-    phone?: string;
-  }>;
+  // Contact info (flat keys)
+  contacts_name?: string;
+  contacts_role?: string;
+  contacts_email?: string;
+  contacts_phone?: string;
 
-  // Certifications
-  certifications?: Array<{
-    type: string;
-    number?: string;
-    validUntil?: string;
-    body?: string;
-  }>;
+  // Certification info (flat keys)
+  certification_type?: string;
+  certification_number?: string;
+  certification_validUntil?: string;
 
   // Business info
-  activities?: string[];
+  activities?: string;  // Comma-separated string
   employees?: string;
   turnover?: string;
 
@@ -131,8 +133,8 @@ export interface EntityAdditionalData {
   kvkNumber?: string;
   vatNumber?: string;
 
-  // Flexible additional data
-  [key: string]: any;
+  // Flexible additional data (flat key-value only)
+  [key: string]: string | undefined;
 }
 
 /** Full entity for Passionfruit API */

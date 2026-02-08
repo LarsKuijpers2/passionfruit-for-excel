@@ -1193,7 +1193,7 @@ export class WebReviewGenerator {
 
         return \`
           <a class="sidebar-item\${isActive ? ' active' : ''}"
-             href="\${q.hasReview ? '/review/' + q.reviewUrl : '#'}"
+             href="\${q.hasReview ? q.reviewUrl : '#'}"
              title="\${q.displayName}"
              \${!q.hasReview ? 'style="opacity: 0.5; pointer-events: none;"' : ''}>
             <span class="sidebar-item-icon">

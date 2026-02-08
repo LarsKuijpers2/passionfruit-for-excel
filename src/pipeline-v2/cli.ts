@@ -319,8 +319,9 @@ program
       const reviewDir = opts.reviewDir as string || './review';
       const port = parseInt(opts.port as string || '3456', 10);
 
-      // Normalize filename
-      const baseName = file.replace(/\.(xlsx?|json|yaml)$/i, '');
+      // Normalize filename - extract just the filename without directory
+      const fileName = file.split('/').pop() || file;
+      const baseName = fileName.replace(/\.(xlsx?|json|yaml)$/i, '');
       const safeName = baseName.replace(/[^a-zA-Z0-9-_]/g, '_');
 
       // Find the files

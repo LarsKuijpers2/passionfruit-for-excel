@@ -9,11 +9,9 @@ entity:
   zipCode: 7905 SW
   country: Nederland
   data:
-    contacts:
-      - name: I. Vegter
-        role: QA Manager
-    activities:
-      - versnijden en raspen van kaas
+    contacts_name: I. Vegter
+    contacts_role: QA Manager
+    activities: versnijden en raspen van kaas
     egNumber: NL Z 0159 EG
 sources:
   - field: name

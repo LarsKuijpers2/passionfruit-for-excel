@@ -158,12 +158,16 @@ function mapToAPIEntity(raw: RawExtraction): APIEntity {
   // Build data object for additional fields
   const data: EntityAdditionalData = {};
 
+  // Store contacts as separate key-value pairs: contacts_name, contacts_role
   if (raw.contacts.length > 0) {
-    data.contacts = raw.contacts.filter(c => c.name) as any;
+    const contact = raw.contacts[0]; // Primary contact
+    if (contact.name) data.contacts_name = contact.name;
+    if (contact.role) data.contacts_role = contact.role;
   }
 
   if (raw.activities.length > 0) {
-    data.activities = raw.activities;
+    // Store activities as comma-separated string for simplicity
+    data.activities = raw.activities.join(', ');
   }
 
   if (raw.egNumber) {
@@ -238,22 +242,11 @@ async function main() {
 
       const data = prepared.entity.data;
 
-      if (data.contacts && data.contacts.length > 0) {
-        console.log('  contacts:');
-        for (const contact of data.contacts) {
-          console.log(`    - ${contact.name}${contact.role ? ` (${contact.role})` : ''}`);
+      // Show all flat key-value pairs
+      for (const [key, value] of Object.entries(data)) {
+        if (value !== undefined) {
+          console.log(`  ${key}: ${value}`);
         }
-      }
-
-      if (data.activities && data.activities.length > 0) {
-        console.log('  activities:');
-        for (const activity of data.activities) {
-          console.log(`    - ${activity}`);
-        }
-      }
-
-      if (data.egNumber) {
-        console.log(`  egNumber: ${data.egNumber}`);
       }
     }
 

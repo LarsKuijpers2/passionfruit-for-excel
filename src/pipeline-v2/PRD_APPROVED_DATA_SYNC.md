@@ -112,23 +112,59 @@ Returns JWT token for subsequent requests.
 | `DELETE` | `/api/v2/entities/{id}` | Delete entity |
 
 **Entity Schema:**
+
+The entity has two parts:
+1. **Top-level fields**: `name`, `parentId` (required)
+2. **Data object**: All other fields (displayed in UI as "Company Information" + "Additional Fields")
+
 ```json
 {
   "name": "Kaas-Pack Holland BV",
+  "parentId": null,
   "data": {
-    "address": "Buitenvaart 2109",
-    "location": "7905 SW Hoogeveen, Nederland",
+    // Company Information fields (shown in UI form)
     "email": "quality@kaaspack.nl",
     "phone": "0528-268246",
+    "website": "https://kaaspack.nl",
+    "street": "Buitenvaart 2109",
+    "city": "Hoogeveen",
+    "zipCode": "7905 SW",
+    "country": "Nederland",
+
+    // Additional Fields (shown as key-value pairs in UI)
     "contacts": [
       { "name": "I. Vegter", "role": "QA Manager" }
     ],
+    "activities": ["versnijden en raspen van kaas"],
+    "egNumber": "NL Z 0159 EG",
     "certifications": [
       { "type": "FSSC 22000", "number": "ABC123" }
     ]
   }
 }
 ```
+
+**Entity Field Mapping from Questionnaires:**
+
+| Questionnaire Label | Entity Field | Notes |
+|---------------------|--------------|-------|
+| Bedrijfsnaam / Company name | `name` | Top-level field |
+| Adres / Address / Street | `data.street` | |
+| Postcode, plaats, land | Parse into: | Dutch format: "1234 AB City, Country" |
+| | `data.zipCode` | "7905 SW" |
+| | `data.city` | "Hoogeveen" |
+| | `data.country` | "Nederland" |
+| Email-adres / E-mail | `data.email` | |
+| Telefoonnummer / Phone | `data.phone` | |
+| Website / Homepage | `data.website` | |
+| Contactpersoon | `data.contacts[].name` | |
+| Functie / Function | `data.contacts[].role` | |
+| Bedrijfsactiviteiten | `data.activities[]` | |
+| EG-nummer | `data.egNumber` | |
+| KvK-nummer | `data.kvkNumber` | |
+| BTW-nummer | `data.vatNumber` | |
+| Certificering (FSSC, IFS, etc.) | `data.certifications[].type` | |
+| Certificaatnummer | `data.certifications[].number` | |
 
 ### Answers
 

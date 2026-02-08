@@ -773,6 +773,12 @@
     .command-palette.library-mode .property-row.library-only {
       display: flex;
     }
+    .property-row.multi-only {
+      display: none;
+    }
+    .command-palette.multi-select .property-row.multi-only {
+      display: flex;
+    }
     .command-palette-footer {
       display: flex;
       justify-content: flex-end;
@@ -952,6 +958,13 @@
             <option value="reject">Reject</option>
             <option value="reset">Reset (clear review)</option>
           </select>
+        </div>
+        <div class="property-row multi-only">
+          <label>Merge</label>
+          <button type="button" id="mergeValuesBtn" style="padding:8px 12px;background:var(--muted);border:1px solid var(--border);border-radius:var(--radius);color:var(--foreground);cursor:pointer;text-align:left;">
+            Merge values as sentences
+          </button>
+          <div id="mergePreview" style="margin-top:8px;padding:8px;background:var(--background);border-radius:var(--radius);font-size:12px;color:var(--muted-foreground);display:none;"></div>
         </div>
       </div>
       <div class="command-palette-footer">
@@ -2039,12 +2052,25 @@
 
         if (count === 1) {
           commandPalette.classList.add('single-select');
+          commandPalette.classList.remove('multi-select');
           document.getElementById('bulkLabel').value = firstItem.dataset.label || '';
           document.getElementById('bulkValue').value = firstItem.querySelector('.item-value')?.textContent || '';
+          document.getElementById('mergePreview').style.display = 'none';
         } else {
           commandPalette.classList.remove('single-select');
+          commandPalette.classList.add('multi-select');
           document.getElementById('bulkLabel').value = '';
           document.getElementById('bulkValue').value = '';
+
+          // Show merge preview
+          const values = Array.from(selectedItems).map(item => {
+            const val = item.querySelector('.item-value')?.textContent?.trim() || '';
+            return val === '(empty)' ? '' : val;
+          }).filter(v => v);
+          const mergedPreview = values.join('. ') + (values.length > 0 ? '.' : '');
+          const previewEl = document.getElementById('mergePreview');
+          previewEl.textContent = mergedPreview.length > 100 ? mergedPreview.substring(0, 100) + '...' : mergedPreview;
+          previewEl.style.display = values.length > 1 ? 'block' : 'none';
         }
 
         // Indexed mode: populate sections and topics
@@ -2169,6 +2195,47 @@
       paletteBackdrop?.addEventListener('click', hideCommandPalette);
       document.getElementById('paletteCancel')?.addEventListener('click', hideCommandPalette);
       document.getElementById('paletteApply')?.addEventListener('click', applyCommandPaletteChanges);
+
+      // Merge values button
+      document.getElementById('mergeValuesBtn')?.addEventListener('click', async () => {
+        const items = Array.from(selectedItems);
+        if (items.length < 2) {
+          showToast('Select at least 2 items to merge');
+          return;
+        }
+
+        // Get all values and merge them
+        const values = items.map(item => {
+          const val = item.querySelector('.item-value')?.textContent?.trim() || '';
+          return val === '(empty)' ? '' : val;
+        }).filter(v => v);
+
+        const mergedValue = values.join('. ') + (values.length > 0 ? '.' : '');
+
+        // Apply merged value to the first item
+        const firstItem = items[0];
+        const firstValueEl = firstItem.querySelector('.item-value');
+        if (firstValueEl) {
+          firstValueEl.textContent = mergedValue;
+          firstValueEl.classList.remove('empty');
+        }
+
+        // Mark first item as accepted
+        firstItem.classList.remove('wrong', 'rejected', 'show-note');
+        firstItem.classList.add('reviewed', 'correct', 'accepted');
+        await logFeedback(firstItem, 'correct');
+
+        // Mark other items as rejected (merged into first)
+        for (let i = 1; i < items.length; i++) {
+          items[i].classList.remove('correct', 'accepted');
+          items[i].classList.add('reviewed', 'wrong', 'rejected');
+          await logFeedback(items[i], 'wrong', 'Merged into: ' + firstItem.dataset.label);
+        }
+
+        hideCommandPalette();
+        showToast(`Merged ${items.length} values into first item`);
+        clearSelection();
+      });
 
       // Keyboard shortcuts for selection and command palette
       document.addEventListener('keydown', (e) => {

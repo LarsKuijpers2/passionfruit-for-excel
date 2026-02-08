@@ -240,17 +240,67 @@
       overflow-y: auto;
       padding: 16px;
     }
+    .panel-search {
+      padding: 8px 16px;
+      background: transparent;
+    }
+    .panel-search input {
+      width: 100%;
+      padding: 6px 0;
+      background: transparent !important;
+      background-color: transparent !important;
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+      border-radius: 0;
+      color: var(--foreground);
+      font-size: 12px;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .panel-search input:focus {
+      outline: none;
+      border-bottom-color: rgba(255,255,255,0.3);
+      box-shadow: none;
+      background: transparent !important;
+    }
+    .panel-search input::placeholder {
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* Sidebar overlay */
+    .sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 99;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+    .sidebar-overlay.visible {
+      opacity: 1;
+      visibility: visible;
+    }
 
     /* Sidebar */
     .sidebar {
+      position: fixed;
+      left: 0;
+      top: 56px;
+      bottom: 40px;
       width: 280px;
       background: var(--card);
       border-right: 1px solid var(--border);
-      display: none;
       flex-direction: column;
-      flex-shrink: 0;
+      z-index: 100;
+      transform: translateX(-100%);
+      transition: transform 0.2s ease;
+      display: flex;
     }
-    .sidebar.open { display: flex; }
+    .sidebar.open { transform: translateX(0); }
     .sidebar-header {
       padding: 12px 16px;
       border-bottom: 1px solid var(--border);
@@ -395,6 +445,19 @@
     .level-badge.library {
       background: rgba(34, 197, 94, 0.2);
       color: #4ade80;
+    }
+    .topic-badge {
+      display: inline-block;
+      font-size: 9px;
+      padding: 1px 5px;
+      border-radius: 3px;
+      margin-left: 6px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      background: var(--muted);
+      color: var(--muted-foreground);
+      vertical-align: middle;
     }
 
     /* Cell selection for label/value pairing */
@@ -779,6 +842,35 @@
     .command-palette.multi-select .property-row.multi-only {
       display: flex;
     }
+    .merge-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .checkbox-label input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+    .merge-options select {
+      padding: 6px 10px;
+      background: var(--input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--foreground);
+      font-size: 13px;
+    }
+    .merge-options select:disabled {
+      opacity: 0.5;
+    }
     .command-palette-footer {
       display: flex;
       justify-content: flex-end;
@@ -825,6 +917,8 @@
 
   <!-- Main app -->
   <div class="app-container" id="app">
+    <!-- Sidebar overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
       <div class="sidebar-header">Questionnaires</div>
@@ -850,8 +944,8 @@
       <div class="toggles">
         <span id="connection-status" class="connection-status checking"></span>
         <button class="toggle active" data-panel="original" title="Toggle Original (1)">Original</button>
-        <button class="toggle active" data-panel="indexed" title="Toggle Indexed (2)">Indexed</button>
-        <button class="toggle" data-panel="library" title="Toggle Library (3)">Library</button>
+        <button class="toggle active" data-panel="indexed" title="Toggle Extraction (2)">Extraction</button>
+        <button class="toggle active" data-panel="library" title="Toggle Save as (3)">Save as</button>
         <div class="toggle-divider"></div>
         <button class="toggle" id="review-toggle" title="Toggle review mode (R)">Review</button>
         <button class="toggle" id="complete-toggle" title="Complete Review">Complete Review (<span id="feedback-count">0</span>)</button>
@@ -873,24 +967,30 @@
 
       <div class="panel visible" id="panel-indexed">
         <div class="panel-header">
-          <span>Indexed Structure</span>
+          <span>Extraction</span>
           <span id="indexed-stats"></span>
           <div class="group-btns review-only">
             <button class="group-btn accept-all" id="accept-all-indexed">✓ Accept All</button>
             <button class="group-btn reject-all" id="reject-all-indexed">✗ Reject All</button>
           </div>
         </div>
+        <div class="panel-search">
+          <input type="text" id="indexed-search" placeholder="Search label or value..." />
+        </div>
         <div class="panel-content" id="indexed-content"></div>
       </div>
 
-      <div class="panel" id="panel-library">
+      <div class="panel visible" id="panel-library">
         <div class="panel-header">
-          <span>Harvested Library</span>
+          <span>Save as</span>
           <span id="library-stats"></span>
           <div class="group-btns review-only">
             <button class="group-btn accept-all" id="accept-all-library">✓ Accept All</button>
             <button class="group-btn reject-all" id="reject-all-library">✗ Reject All</button>
           </div>
+        </div>
+        <div class="panel-search">
+          <input type="text" id="library-search" placeholder="Search label or value..." />
         </div>
         <div class="panel-content" id="library-content"></div>
       </div>
@@ -960,11 +1060,19 @@
           </select>
         </div>
         <div class="property-row multi-only">
-          <label>Merge</label>
-          <button type="button" id="mergeValuesBtn" style="padding:8px 12px;background:var(--muted);border:1px solid var(--border);border-radius:var(--radius);color:var(--foreground);cursor:pointer;text-align:left;">
-            Merge values as sentences
-          </button>
-          <div id="mergePreview" style="margin-top:8px;padding:8px;background:var(--background);border-radius:var(--radius);font-size:12px;color:var(--muted-foreground);display:none;"></div>
+          <label>Merge Values</label>
+          <div class="merge-options">
+            <label class="checkbox-label">
+              <input type="checkbox" id="mergeValues">
+              Combine values from selected items
+            </label>
+            <select id="mergeSeparator" disabled>
+              <option value="\n">New line</option>
+              <option value=", ">Comma</option>
+              <option value="; ">Semicolon</option>
+              <option value=" | ">Pipe</option>
+            </select>
+          </div>
         </div>
       </div>
       <div class="command-palette-footer">
@@ -992,6 +1100,19 @@
 
       // Check server connection
       await checkServerConnection();
+
+      // Setup tab dropdown
+      setupTabDropdown();
+
+      // Load questionnaire list for dropdown
+      try {
+        const res = await fetch(API_BASE + '/api/questionnaires');
+        const data = await res.json();
+        allQuestionnaires = data.questionnaires || [];
+        renderTabDropdown();
+      } catch (err) {
+        console.error('Failed to load questionnaires:', err);
+      }
 
       if (questionnaireId) {
         await loadQuestionnaire(questionnaireId);
@@ -1037,7 +1158,6 @@
 
     function renderQuestionnaireList(questionnaires) {
       const container = document.getElementById('questionnaire-list');
-      const sidebar = document.getElementById('sidebar-list');
 
       if (!questionnaires || questionnaires.length === 0) {
         container.innerHTML = '<div class="empty">No questionnaires found. Run the index command first.</div>';
@@ -1054,16 +1174,6 @@
       `).join('');
 
       container.innerHTML = html;
-
-      // Also populate sidebar
-      const sidebarHtml = questionnaires.map(q => `
-        <a class="sidebar-item${currentQuestionnaire === q.name ? ' active' : ''}"
-           href="?q=${encodeURIComponent(q.name)}">
-          <span class="sidebar-item-name">${escapeHtml(q.displayName)}</span>
-          ${q.feedbackCount ? `<span class="sidebar-item-badge">${q.feedbackCount}</span>` : ''}
-        </a>
-      `).join('');
-      sidebar.innerHTML = sidebarHtml;
     }
 
     async function loadQuestionnaire(id) {
@@ -1081,6 +1191,15 @@
         // Update URL without reload
         history.pushState({}, '', '?q=' + encodeURIComponent(id));
 
+        // Add to open tabs if not already there
+        const q = allQuestionnaires.find(q => q.name === id);
+        const displayName = q?.displayName || questionnaireData.structure?.source?.filename || id;
+        if (!openTabs.some(t => t.name === id)) {
+          openTabs.push({ name: id, displayName });
+        }
+        renderTopTabs();
+        renderTabDropdown();
+
         // Render the app
         renderApp();
 
@@ -1097,10 +1216,12 @@
           restoreFeedbackState();
         }
 
-        // Update sidebar
+        // Update questionnaire list
         const questRes = await fetch(API_BASE + '/api/questionnaires');
         const questData = await questRes.json();
+        allQuestionnaires = questData.questionnaires || [];
         renderQuestionnaireList(questData.questionnaires);
+        renderTabDropdown();
 
       } catch (err) {
         console.error('Failed to load questionnaire:', err);
@@ -1136,7 +1257,8 @@
       }
 
       if (library) {
-        renderLibraryPanel(library);
+        const currentSource = structure?.source?.filename || indexed?.source;
+        renderLibraryPanel(library, currentSource);
       } else {
         document.getElementById('library-content').innerHTML =
           '<div class="empty">Library data not found. Run the harvest command first.</div>';
@@ -1224,29 +1346,9 @@
         }
       });
 
-      // Filter Library items by sheet (library is organized by topic, not sheet)
-      document.querySelectorAll('#panel-library .section').forEach(section => {
-        let visibleItems = 0;
-        section.querySelectorAll('.item').forEach(item => {
-          const itemSheet = item.dataset.sheet || '';
-          // When filtering by sheet, only show items that match that sheet exactly
-          // Items without sheet info (empty string) are hidden when filtering
-          if (!sheetName) {
-            // No filter - show all
-            item.style.display = '';
-            visibleItems++;
-          } else if (itemSheet === sheetName) {
-            // Exact match - show
-            item.style.display = '';
-            visibleItems++;
-          } else {
-            // No match or no sheet info - hide
-            item.style.display = 'none';
-          }
-        });
-        // Hide section if no visible items
-        section.style.display = visibleItems > 0 ? '' : 'none';
-      });
+      // Save as panel always shows ALL items from ALL sheets combined
+      // This allows spotting duplicates across sheets
+      // Items are already filtered by questionnaire source in renderLibraryPanel
 
       // Update stats to show filtered count
       updateFilteredStats(sheetName);
@@ -1270,16 +1372,11 @@
         }
       }
 
-      // Update Library stats
-      const visibleLibraryItems = document.querySelectorAll('#panel-library .item:not([style*="display: none"])').length;
+      // Library stats - always shows all items (not filtered by sheet)
       const totalLibraryItems = document.querySelectorAll('#panel-library .item').length;
       const libraryStatsEl = document.getElementById('library-stats');
       if (libraryStatsEl) {
-        if (sheetName) {
-          libraryStatsEl.textContent = `${visibleLibraryItems} of ${totalLibraryItems} items (filtered)`;
-        } else {
-          libraryStatsEl.textContent = `${totalLibraryItems} items`;
-        }
+        libraryStatsEl.textContent = `${totalLibraryItems} items (all sheets)`;
       }
     }
 
@@ -1399,23 +1496,13 @@
           const value = item.value || '';
           const isEmpty = !value || value.trim() === '';
 
-          // Determine destination badge based on topic (from rules.yaml)
-          const topic = section.topic || '';
-          const entityTopics = ['company', 'company_information', 'contact_persons', 'contacts', 'certifications', 'documents', 'signature', 'approval', 'crisis', 'financial'];
-          const productTopics = ['product', 'identification', 'physical_properties', 'sensory', 'analytical', 'formula_composition', 'allergens', 'nutritional', 'regulatory_ids', 'microbiological', 'microbiology', 'contaminants', 'gmo', 'claims', 'rspo_palm', 'packaging', 'storage_transport', 'coding', 'origin_provenance'];
-          let destination = 'library';
-          if (productTopics.includes(topic) || item.level === 'product') {
-            destination = 'product';
-          } else if (entityTopics.includes(topic)) {
-            destination = 'entity';
-          }
-          const levelBadge = destination === 'product' ? '<span class="level-badge product">product</span>' :
-                            destination === 'entity' ? '<span class="level-badge entity">entity</span>' :
-                            '<span class="level-badge library">library</span>';
+          // Show topic badge for the item (use item's topic if available, otherwise section topic)
+          const topic = item.topic || section.topic || 'general';
+          const topicBadge = `<span class="topic-badge">${escapeHtml(topic)}</span>`;
 
           return `
-            <div class="item" data-index="${idx}" data-cells="${cells}" data-sheet="${escapeHtml(sheetName)}" data-label="${escapeHtml(item.label)}" data-section="${escapeHtml(section.name || section.title)}" data-topic="${section.topic || ''}">
-              <div class="item-label">${escapeHtml(item.label)}${levelBadge}</div>
+            <div class="item" data-index="${idx}" data-cells="${cells}" data-sheet="${escapeHtml(sheetName)}" data-label="${escapeHtml(item.label)}" data-section="${escapeHtml(section.name || section.title)}" data-topic="${item.topic || section.topic || ''}">
+              <div class="item-label">${escapeHtml(item.label)}${topicBadge}</div>
               <div class="item-value${isEmpty ? ' empty' : ''}">${isEmpty ? '(empty)' : escapeHtml(value)}</div>
               <div class="item-ref">${sheetName ? sheetName + ': ' : ''}${cells}</div>
               <div class="item-actions review-only">
@@ -1434,7 +1521,7 @@
         }).join('');
 
         return `
-          <div class="section" data-section="${sIdx}" data-sheet="${escapeHtml(sheetName)}" data-topic="${section.topic || 'general'}">
+          <div class="section" data-section="${sIdx}" data-sheet="${escapeHtml(sheetName)}">
             <div class="section-header">
               <div class="section-title">${escapeHtml(section.name || section.title)}${sheetName ? ' <span style="opacity:0.5;font-weight:normal">(' + escapeHtml(sheetName) + ')</span>' : ''}</div>
               <div class="section-meta">
@@ -1452,105 +1539,114 @@
         `${indexed.sections.length} sections, ${totalItems} items`;
     }
 
-    function renderLibraryPanel(library) {
+    function renderLibraryPanel(library, currentSourceFile = null) {
       const container = document.getElementById('library-content');
 
       // Library data can be in two formats:
       // 1. library.items (array) - old format
       // 2. library.byTopic (object with topic keys) - new format
-      let byTopic = {};
+      // Group by destination: Company, Product, Answer Library
+      const byDestination = {
+        company: [],
+        product: [],
+        answer_library: []
+      };
 
+      // Helper to check if item belongs to current questionnaire
+      const matchesSource = (item) => {
+        if (!currentSourceFile) return true; // Show all if no filter
+        const source = item.source || item.sources?.[0];
+        return source?.file === currentSourceFile;
+      };
+
+      // Destination mapping based on topic
+      const entityTopics = ['company', 'company_information', 'contact_persons', 'contacts', 'certifications', 'documents', 'signature', 'approval', 'crisis', 'financial'];
+      const productTopics = ['product', 'identification', 'physical_properties', 'sensory', 'analytical', 'formula_composition', 'allergens', 'nutritional', 'regulatory_ids', 'microbiological', 'microbiology', 'contaminants', 'gmo', 'claims', 'rspo_palm', 'packaging', 'storage_transport', 'coding', 'origin_provenance'];
+
+      const getDestination = (item, topic) => {
+        if (productTopics.includes(topic) || item.level === 'product') return 'product';
+        if (entityTopics.includes(topic)) return 'company';
+        return 'answer_library';
+      };
+
+      let idx = 0;
       if (library.byTopic && Object.keys(library.byTopic).length > 0) {
-        // New format - byTopic is already grouped
-        let idx = 0;
         Object.entries(library.byTopic).forEach(([topic, items]) => {
-          byTopic[topic] = items.map(item => ({ ...item, idx: idx++ }));
+          items.filter(matchesSource).forEach(item => {
+            const dest = getDestination(item, topic);
+            byDestination[dest].push({ ...item, topic, idx: idx++ });
+          });
         });
       } else if (library.items && library.items.length > 0) {
-        // Old format - group by topic
-        library.items.forEach((item, idx) => {
+        library.items.filter(matchesSource).forEach(item => {
           const topic = item.topic || 'general';
-          if (!byTopic[topic]) byTopic[topic] = [];
-          byTopic[topic].push({ ...item, idx });
+          const dest = getDestination(item, topic);
+          byDestination[dest].push({ ...item, topic, idx: idx++ });
         });
       }
 
-      if (Object.keys(byTopic).length === 0) {
-        container.innerHTML = '<div class="empty">No library items harvested</div>';
+      const totalItems = byDestination.company.length + byDestination.product.length + byDestination.answer_library.length;
+      if (totalItems === 0) {
+        container.innerHTML = '<div class="empty">No items for this questionnaire</div>';
         return;
       }
 
-      const topicsHtml = Object.entries(byTopic).map(([topic, items]) => {
-        // Collect unique sheets in this topic
-        const sheetsInTopic = new Set();
-        items.forEach(item => {
-          const source = item.source || item.sources?.[0];
-          if (source?.sheet) sheetsInTopic.add(source.sheet);
-        });
+      const destinationLabels = {
+        company: 'Company (Entity)',
+        product: 'Product',
+        answer_library: 'Answer Library'
+      };
 
-        const itemsHtml = items.map(item => {
-          // Handle both source formats: item.source (single) or item.sources (array)
-          const source = item.source || item.sources?.[0];
-          const sheetName = source?.sheet || '';
-          const cells = source?.lCell && source?.vCell
-            ? `${source.lCell} → ${source.vCell}`
-            : (source?.labelCell && source?.valueCell ? `${source.labelCell} → ${source.valueCell}` : '');
+      const destinationsHtml = Object.entries(byDestination)
+        .filter(([_, items]) => items.length > 0)
+        .map(([dest, items]) => {
+          const itemsHtml = items.map(item => {
+            const source = item.source || item.sources?.[0];
+            const sheetName = source?.sheet || '';
+            const cells = source?.lCell && source?.vCell
+              ? `${source.lCell} → ${source.vCell}`
+              : (source?.labelCell && source?.valueCell ? `${source.labelCell} → ${source.valueCell}` : '');
 
-          // Determine destination badge based on topic (from rules.yaml)
-          const entityTopics = ['company', 'company_information', 'contact_persons', 'contacts', 'certifications', 'documents', 'signature', 'approval', 'crisis', 'financial'];
-          const productTopics = ['product', 'identification', 'physical_properties', 'sensory', 'analytical', 'formula_composition', 'allergens', 'nutritional', 'regulatory_ids', 'microbiological', 'microbiology', 'contaminants', 'gmo', 'claims', 'rspo_palm', 'packaging', 'storage_transport', 'coding', 'origin_provenance'];
-          let destination = 'library';
-          if (productTopics.includes(topic) || item.level === 'product') {
-            destination = 'product';
-          } else if (entityTopics.includes(topic)) {
-            destination = 'entity';
-          }
-          const levelBadge = destination === 'product' ? '<span class="level-badge product">product</span>' :
-                            destination === 'entity' ? '<span class="level-badge entity">entity</span>' :
-                            '<span class="level-badge library">library</span>';
+            const topicBadge = `<span class="topic-badge">${item.topic}</span>`;
 
-          return `
-            <div class="item" data-index="${item.idx}" data-cells="${cells}" data-sheet="${escapeHtml(sheetName)}" data-label="${escapeHtml(item.label)}" data-topic="${topic}">
-              <div class="item-label">${escapeHtml(item.label)}${levelBadge}</div>
-              <div class="item-value">${escapeHtml(item.value || '')}</div>
-              <div class="item-ref">${sheetName ? sheetName + ': ' : ''}${cells}</div>
-              <div class="item-actions review-only">
-                <button class="action-btn correct" title="Accept (C)">✓</button>
-                <button class="action-btn wrong" title="Reject (W)">✗</button>
-              </div>
-              <div class="wrong-note-container">
-                <input type="text" class="wrong-note-input" placeholder="Reason for rejection (optional)">
-                <div class="wrong-note-btns">
-                  <button class="wrong-note-btn save">Save</button>
-                  <button class="wrong-note-btn cancel">Cancel</button>
+            return `
+              <div class="item" data-index="${item.idx}" data-cells="${cells}" data-sheet="${escapeHtml(sheetName)}" data-label="${escapeHtml(item.label)}" data-topic="${item.topic}" data-destination="${dest}">
+                <div class="item-label">${escapeHtml(item.label)}${topicBadge}</div>
+                <div class="item-value">${escapeHtml(item.value || '')}</div>
+                <div class="item-ref">${sheetName ? sheetName + ': ' : ''}${cells}</div>
+                <div class="item-actions review-only">
+                  <button class="action-btn correct" title="Accept (C)">✓</button>
+                  <button class="action-btn wrong" title="Reject (W)">✗</button>
+                </div>
+                <div class="wrong-note-container">
+                  <input type="text" class="wrong-note-input" placeholder="Reason for rejection (optional)">
+                  <div class="wrong-note-btns">
+                    <button class="wrong-note-btn save">Save</button>
+                    <button class="wrong-note-btn cancel">Cancel</button>
+                  </div>
                 </div>
               </div>
+            `;
+          }).join('');
+
+          return `
+            <div class="section" data-destination="${dest}">
+              <div class="section-header">
+                <div class="section-title">${destinationLabels[dest]}</div>
+                <div class="section-meta">
+                  <span>${items.length} items</span>
+                  <div class="group-btns review-only">
+                    <button class="group-btn accept-all" data-destination="${dest}">✓ All</button>
+                    <button class="group-btn reject-all" data-destination="${dest}">✗ All</button>
+                  </div>
+                </div>
+              </div>
+              <div class="section-items">${itemsHtml}</div>
             </div>
           `;
         }).join('');
 
-        const sheetsStr = sheetsInTopic.size > 0 ? Array.from(sheetsInTopic).join(', ') : '';
-
-        return `
-          <div class="section" data-topic="${topic}" data-sheets="${escapeHtml(sheetsStr)}">
-            <div class="section-header">
-              <div class="section-title">${topic.toUpperCase()}</div>
-              <div class="section-meta">
-                <span>${items.length} items</span>
-                <div class="group-btns review-only">
-                  <button class="group-btn accept-all" data-topic="${topic}">✓ All</button>
-                  <button class="group-btn reject-all" data-topic="${topic}">✗ All</button>
-                </div>
-              </div>
-            </div>
-            <div class="section-items">${itemsHtml}</div>
-          </div>
-        `;
-      }).join('');
-
-      container.innerHTML = topicsHtml;
-      // Calculate total items from byTopic
-      const totalItems = Object.values(byTopic).reduce((sum, items) => sum + items.length, 0);
+      container.innerHTML = destinationsHtml;
       document.getElementById('library-stats').textContent = `${totalItems} items`;
     }
 
@@ -1564,15 +1660,57 @@
         });
       });
 
+      // Search functionality for Extraction and Save as panels
+      function setupSearch(inputId, panelId) {
+        const input = document.getElementById(inputId);
+        if (!input) return;
+
+        input.addEventListener('input', () => {
+          const query = input.value.toLowerCase().trim();
+          const panel = document.getElementById(panelId);
+          if (!panel) return;
+
+          panel.querySelectorAll('.section').forEach(section => {
+            let visibleItems = 0;
+            section.querySelectorAll('.item').forEach(item => {
+              const label = (item.dataset.label || '').toLowerCase();
+              const value = (item.querySelector('.item-value')?.textContent || '').toLowerCase();
+
+              if (!query || label.includes(query) || value.includes(query)) {
+                item.style.display = '';
+                visibleItems++;
+              } else {
+                item.style.display = 'none';
+              }
+            });
+            // Hide section if no visible items
+            section.style.display = visibleItems > 0 ? '' : 'none';
+          });
+
+          // Update stats
+          const statsId = panelId === 'panel-indexed' ? 'indexed-stats' : 'library-stats';
+          const statsEl = document.getElementById(statsId);
+          if (statsEl) {
+            const visibleCount = panel.querySelectorAll('.item:not([style*="display: none"])').length;
+            const totalCount = panel.querySelectorAll('.item').length;
+            if (query) {
+              statsEl.textContent = `${visibleCount} of ${totalCount} items (searching)`;
+            } else {
+              statsEl.textContent = panelId === 'panel-library'
+                ? `${totalCount} items (all sheets)`
+                : `${totalCount} items`;
+            }
+          }
+        });
+      }
+
+      setupSearch('indexed-search', 'panel-indexed');
+      setupSearch('library-search', 'panel-library');
+
       // Review mode toggle
       document.getElementById('review-toggle')?.addEventListener('click', function() {
         this.classList.toggle('active');
         document.body.classList.toggle('review-mode', this.classList.contains('active'));
-      });
-
-      // Sidebar toggle
-      document.getElementById('sidebar-toggle')?.addEventListener('click', () => {
-        document.getElementById('sidebar')?.classList.toggle('open');
       });
 
       // Clear feedback
@@ -1922,8 +2060,11 @@
             showToast('Accepted');
             logFeedback(item, 'correct');
           } else if (btn.classList.contains('wrong')) {
-            item.classList.add('show-note');
-            item.querySelector('.wrong-note-input')?.focus();
+            // Immediately reject and save (note is optional)
+            item.classList.remove('correct', 'accepted', 'show-note');
+            item.classList.add('reviewed', 'wrong', 'rejected');
+            showToast('Rejected');
+            logFeedback(item, 'wrong');
           }
         });
       });
@@ -2055,22 +2196,14 @@
           commandPalette.classList.remove('multi-select');
           document.getElementById('bulkLabel').value = firstItem.dataset.label || '';
           document.getElementById('bulkValue').value = firstItem.querySelector('.item-value')?.textContent || '';
-          document.getElementById('mergePreview').style.display = 'none';
         } else {
           commandPalette.classList.remove('single-select');
           commandPalette.classList.add('multi-select');
           document.getElementById('bulkLabel').value = '';
           document.getElementById('bulkValue').value = '';
-
-          // Show merge preview
-          const values = Array.from(selectedItems).map(item => {
-            const val = item.querySelector('.item-value')?.textContent?.trim() || '';
-            return val === '(empty)' ? '' : val;
-          }).filter(v => v);
-          const mergedPreview = values.join('. ') + (values.length > 0 ? '.' : '');
-          const previewEl = document.getElementById('mergePreview');
-          previewEl.textContent = mergedPreview.length > 100 ? mergedPreview.substring(0, 100) + '...' : mergedPreview;
-          previewEl.style.display = values.length > 1 ? 'block' : 'none';
+          // Reset merge options
+          document.getElementById('mergeValues').checked = false;
+          document.getElementById('mergeSeparator').disabled = true;
         }
 
         // Indexed mode: populate sections and topics
@@ -2125,30 +2258,83 @@
         const action = document.getElementById('bulkAction').value;
         const newLabel = document.getElementById('bulkLabel').value;
         const newValue = document.getElementById('bulkValue').value;
+        const mergeValues = document.getElementById('mergeValues')?.checked;
+        const mergeSeparator = document.getElementById('mergeSeparator')?.value || '\n';
 
         const items = Array.from(selectedItems);
         const isLibraryMode = commandPalette.classList.contains('library-mode');
         let changes = 0;
+
+        // Handle merge values
+        if (mergeValues && items.length > 1) {
+          const values = items.map(item => {
+            const valueEl = item.querySelector('.item-value');
+            return valueEl?.textContent?.trim() || '';
+          }).filter(v => v && v !== '(empty)');
+
+          const mergedValue = values.join(mergeSeparator.replace(/\\n/g, '\n'));
+
+          // Update first item with merged value
+          const firstItem = items[0];
+          const firstValueEl = firstItem.querySelector('.item-value');
+          if (firstValueEl) {
+            firstValueEl.textContent = mergedValue;
+            changes++;
+          }
+
+          // Mark other items as rejected (they've been merged into first)
+          for (let i = 1; i < items.length; i++) {
+            items[i].classList.add('reviewed', 'wrong', 'rejected');
+            await logFeedback(items[i], 'wrong', 'Merged into another item');
+          }
+
+          // Accept the first item
+          firstItem.classList.add('reviewed', 'correct', 'accepted');
+          await logFeedback(firstItem, 'correct');
+
+          hideCommandPalette();
+          showToast(`Merged ${values.length} values into 1 item`);
+          clearSelection();
+          return;
+        }
 
         for (const item of items) {
           // Indexed mode: update topic
           if (!isLibraryMode && topic) {
             item.dataset.topic = topic;
             // Update topic badge if present
-            const badge = item.querySelector('.level-badge');
-            if (badge) badge.textContent = topic.toUpperCase();
+            const badge = item.querySelector('.topic-badge');
+            if (badge) badge.textContent = topic;
             changes++;
           }
 
-          // Library mode: update data source
+          // Library mode: update data source and move to correct section
           if (isLibraryMode && dataSource) {
-            item.dataset.dataSource = dataSource;
-            // Update visual indicator
-            const badge = item.querySelector('.level-badge');
-            if (badge) {
-              const labels = { answer_library: 'LIBRARY', entities: 'ENTITY', products: 'PRODUCT' };
-              badge.textContent = labels[dataSource] || dataSource.toUpperCase();
+            // Map dropdown values to destination keys
+            const destMap = { answer_library: 'answer_library', entities: 'company', products: 'product' };
+            const newDest = destMap[dataSource] || dataSource;
+            item.dataset.destination = newDest;
+
+            // Find the target section and move the item
+            const targetSection = document.querySelector(`#panel-library .section[data-destination="${newDest}"]`);
+            if (targetSection) {
+              const itemsContainer = targetSection.querySelector('.section-items');
+              if (itemsContainer && item.parentElement !== itemsContainer) {
+                itemsContainer.appendChild(item);
+              }
             }
+
+            // Update section item counts
+            document.querySelectorAll('#panel-library .section').forEach(section => {
+              const count = section.querySelectorAll('.item').length;
+              const metaSpan = section.querySelector('.section-meta span');
+              if (metaSpan) metaSpan.textContent = `${count} items`;
+              // Hide empty sections
+              section.style.display = count > 0 ? '' : 'none';
+            });
+
+            // Save destination change
+            await logFeedback(item, 'destination_changed', `Moved to ${newDest}`);
             changes++;
           }
 
@@ -2157,7 +2343,7 @@
               item.dataset.label = newLabel;
               const labelEl = item.querySelector('.item-label');
               if (labelEl) {
-                const existingBadge = labelEl.querySelector('.level-badge');
+                const existingBadge = labelEl.querySelector('.topic-badge');
                 labelEl.textContent = newLabel;
                 if (existingBadge) labelEl.appendChild(existingBadge);
               }
@@ -2196,45 +2382,9 @@
       document.getElementById('paletteCancel')?.addEventListener('click', hideCommandPalette);
       document.getElementById('paletteApply')?.addEventListener('click', applyCommandPaletteChanges);
 
-      // Merge values button
-      document.getElementById('mergeValuesBtn')?.addEventListener('click', async () => {
-        const items = Array.from(selectedItems);
-        if (items.length < 2) {
-          showToast('Select at least 2 items to merge');
-          return;
-        }
-
-        // Get all values and merge them
-        const values = items.map(item => {
-          const val = item.querySelector('.item-value')?.textContent?.trim() || '';
-          return val === '(empty)' ? '' : val;
-        }).filter(v => v);
-
-        const mergedValue = values.join('. ') + (values.length > 0 ? '.' : '');
-
-        // Apply merged value to the first item
-        const firstItem = items[0];
-        const firstValueEl = firstItem.querySelector('.item-value');
-        if (firstValueEl) {
-          firstValueEl.textContent = mergedValue;
-          firstValueEl.classList.remove('empty');
-        }
-
-        // Mark first item as accepted
-        firstItem.classList.remove('wrong', 'rejected', 'show-note');
-        firstItem.classList.add('reviewed', 'correct', 'accepted');
-        await logFeedback(firstItem, 'correct');
-
-        // Mark other items as rejected (merged into first)
-        for (let i = 1; i < items.length; i++) {
-          items[i].classList.remove('correct', 'accepted');
-          items[i].classList.add('reviewed', 'wrong', 'rejected');
-          await logFeedback(items[i], 'wrong', 'Merged into: ' + firstItem.dataset.label);
-        }
-
-        hideCommandPalette();
-        showToast(`Merged ${items.length} values into first item`);
-        clearSelection();
+      // Merge checkbox enables/disables separator
+      document.getElementById('mergeValues')?.addEventListener('change', (e) => {
+        document.getElementById('mergeSeparator').disabled = !e.target.checked;
       });
 
       // Keyboard shortcuts for selection and command palette
@@ -2280,6 +2430,7 @@
         cells: item.dataset.cells,
         section: item.dataset.section,
         topic: item.dataset.topic,
+        destination: item.dataset.destination,
         reason: note,
         reviewedAt: new Date().toISOString()
       };
@@ -2301,7 +2452,7 @@
           await fetch(API_BASE + '/api/feedback', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ panel, item: feedbackItem })
+            body: JSON.stringify({ panel, item: feedbackItem, questionnaire: currentQuestionnaire })
           });
         } catch (err) {
           console.error('Failed to save feedback:', err);
@@ -2335,7 +2486,27 @@
           } else if (fb.action === 'rejected') {
             item.classList.add('reviewed', 'wrong', 'rejected');
           }
+
+          // Handle destination changes
+          if (fb.destination) {
+            item.dataset.destination = fb.destination;
+            const targetSection = document.querySelector(`#panel-library .section[data-destination="${fb.destination}"]`);
+            if (targetSection) {
+              const itemsContainer = targetSection.querySelector('.section-items');
+              if (itemsContainer && item.parentElement !== itemsContainer) {
+                itemsContainer.appendChild(item);
+              }
+            }
+          }
         });
+      });
+
+      // Update section item counts after restoring destinations
+      document.querySelectorAll('#panel-library .section').forEach(section => {
+        const count = section.querySelectorAll('.item').length;
+        const metaSpan = section.querySelector('.section-meta span');
+        if (metaSpan) metaSpan.textContent = `${count} items`;
+        section.style.display = count > 0 ? '' : 'none';
       });
     }
 
@@ -2459,7 +2630,7 @@
         case '2': document.querySelector('[data-panel="indexed"]')?.click(); break;
         case '3': document.querySelector('[data-panel="library"]')?.click(); break;
         case 'r': case 'R': document.getElementById('review-toggle')?.click(); break;
-        case 'b': case 'B': document.getElementById('sidebar-toggle')?.click(); break;
+        case 't': case 'T': document.getElementById('add-tab-btn')?.click(); break;
       }
     });
   </script>

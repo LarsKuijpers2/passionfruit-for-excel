@@ -28,6 +28,7 @@ export interface IndexedItem {
   lCell?: string;
   vCell?: string;
   ref?: string;
+  topic: string;
   level: ItemLevel;
   lang: Language | undefined;
 }
@@ -173,6 +174,7 @@ export class QuestionnaireIndexer {
             type: item.type,
             label: item.label,
             value: item.value && item.value !== 'EMPTY' ? item.value : undefined,
+            topic: item.topic || topic, // Use item's topic if available, otherwise section topic
             level: item.level,
             lang: lang !== 'unknown' ? lang : undefined,
           };

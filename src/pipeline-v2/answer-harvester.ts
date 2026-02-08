@@ -105,10 +105,13 @@ export class AnswerHarvester {
           continue;
         }
 
+        // Use item's topic if available, otherwise fall back to section topic
+        const itemTopic = item.topic || section.topic;
+
         // Check if item should be excluded by rules
         if (this.rulesManager.shouldExcludeFromHarvest({
           label: item.label,
-          topic: section.topic,
+          topic: itemTopic,
         })) {
           continue; // Skip excluded items
         }
@@ -119,7 +122,7 @@ export class AnswerHarvester {
           label: item.label,
           value: item.value,
           lang: item.lang,
-          topic: section.topic,
+          topic: itemTopic,
           level: item.level as 'standard' | 'narrative',
           source: {
             file: indexed.source,

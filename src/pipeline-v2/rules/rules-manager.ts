@@ -44,6 +44,8 @@ export interface IndexRules {
 export interface HarvestRules {
   version: string;
   updatedAt?: string;
+  /** Topics to exclude entirely from harvesting (e.g., signature, approval) */
+  excludeTopics?: string[];
   exclude: ExcludeRule[];
   corrections: CorrectionRule[];
 }
@@ -149,6 +151,11 @@ export class RulesManager {
    */
   shouldExcludeFromHarvest(item: { label: string; topic?: string }): boolean {
     if (!this.harvestRules) return false;
+
+    // Check topic-level exclusions first (e.g., signature, approval topics are never harvested)
+    if (item.topic && this.harvestRules.excludeTopics?.includes(item.topic)) {
+      return true;
+    }
 
     for (const rule of this.harvestRules.exclude) {
       // Match by label

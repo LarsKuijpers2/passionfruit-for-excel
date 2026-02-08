@@ -39,6 +39,8 @@ export interface DetectedItem {
   ref?: string;
   /** Detected section */
   section?: string;
+  /** Topic this item is about */
+  topic?: string;
   /** Confidence score 0-1 */
   confidence: number;
   /** Reusability level */
@@ -127,6 +129,32 @@ And a level for reusability:
 - "narrative" = Descriptive company info, needs review (policies, procedures)
 - "product" = Product-specific, changes per product (ingredients, allergens)
 
+And a topic describing what the item is about (choose the most specific one):
+- "company" = Company name, address, legal info
+- "contacts" = Contact persons, phone, email
+- "certifications" = Certifications (BRC, IFS, FSSC, halal, kosher, etc.)
+- "allergens" = Allergen information
+- "food_safety" = HACCP, food safety procedures
+- "quality" = Quality management systems
+- "sustainability" = Sustainability, CSR
+- "environment" = Environmental policies
+- "packaging" = Packaging information
+- "logistics" = Transport, shipping, delivery
+- "origin" = Origin, provenance
+- "food_fraud" = Food fraud prevention
+- "nutrition" = Nutritional values
+- "crisis" = Crisis management
+- "financial" = Financial, banking info
+- "animal_welfare" = Animal welfare
+- "audits" = Audits, inspections
+- "product" = Product identification, specifications
+- "ingredients" = Ingredients, composition
+- "microbiology" = Microbiological specs
+- "documents" = Document references
+- "signature" = Signatures (NOT reusable)
+- "approval" = Approvals, authorizations
+- "other" = Anything else
+
 Respond in this JSON format:
 {
   "layoutType": "vertical|horizontal|matrix|mixed",
@@ -141,6 +169,7 @@ Respond in this JSON format:
       "lCell": "B10",
       "vCell": "C10",
       "section": "General Information",
+      "topic": "company",
       "level": "standard",
       "lang": "en",
       "confidence": 0.95
@@ -152,6 +181,7 @@ Respond in this JSON format:
       "lCell": "B33",
       "vCell": "C33",
       "section": "Palm Certificates",
+      "topic": "certifications",
       "level": "standard",
       "lang": "de",
       "confidence": 0.95
@@ -163,6 +193,7 @@ Respond in this JSON format:
       "lCell": "B43",
       "vCell": "C43",
       "section": "Crisis Management",
+      "topic": "crisis",
       "level": "standard",
       "lang": "en",
       "confidence": 0.9
@@ -174,6 +205,7 @@ Respond in this JSON format:
       "lCell": "B43",
       "vCell": "D43",
       "section": "Crisis Management",
+      "topic": "crisis",
       "level": "standard",
       "lang": "en",
       "confidence": 0.9

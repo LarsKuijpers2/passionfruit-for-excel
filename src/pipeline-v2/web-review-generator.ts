@@ -3547,6 +3547,10 @@ export class WebReviewGenerator {
             <option value="reset">Reset (clear review)</option>
           </select>
         </div>
+        <div class="property-row reject-reason-row" style="display: none;">
+          <label>Reject Reason</label>
+          <input type="text" id="rejectReason" placeholder="Optional reason for rejection">
+        </div>
         <div class="property-row multi-only">
           <label>Merge Values</label>
           <div class="merge-options">
@@ -3976,7 +3980,7 @@ export class WebReviewGenerator {
           const topicBadge = \`<span class="topic-badge">\${escapeHtml(topic)}</span>\`;
 
           return \`
-            <div class="item" data-index="\${idx}" data-cells="\${cells}" data-sheet="\${escapeHtml(sheetName)}" data-label="\${escapeHtml(item.label)}" data-section="\${escapeHtml(section.name || section.title)}" data-topic="\${section.topic || ''}">
+            <div class="item" data-index="\${idx}" data-cells="\${cells}" data-sheet="\${escapeHtml(sheetName)}" data-label="\${escapeHtml(item.label)}" data-section="\${escapeHtml(section.name || section.title)}" data-topic="\${item.topic || section.topic || ''}">
               <div class="item-label">\${escapeHtml(item.label)}\${topicBadge}</div>
               <div class="item-value\${isEmpty ? ' empty' : ''}">\${isEmpty ? '(empty)' : escapeHtml(value)}</div>
               <div class="item-ref">\${sheetName ? sheetName + ': ' : ''}\${cells}</div>
@@ -4745,6 +4749,7 @@ export class WebReviewGenerator {
         const action = document.getElementById('bulkAction').value;
         const newLabel = document.getElementById('bulkLabel').value;
         const newValue = document.getElementById('bulkValue').value;
+        const rejectReason = document.getElementById('rejectReason')?.value || '';
         const mergeValues = document.getElementById('mergeValues')?.checked;
         const mergeSeparator = document.getElementById('mergeSeparator')?.value || '\\n';
 

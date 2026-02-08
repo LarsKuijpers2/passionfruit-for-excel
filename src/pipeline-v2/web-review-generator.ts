@@ -4728,6 +4728,8 @@ export class WebReviewGenerator {
         }
 
         document.getElementById('bulkAction').value = '';
+        document.getElementById('rejectReason').value = '';
+        document.querySelector('.reject-reason-row').style.display = 'none';
 
         commandPalette.classList.add('visible');
 
@@ -4857,7 +4859,7 @@ export class WebReviewGenerator {
               await logFeedback(item, 'correct');
             } else if (action === 'reject') {
               item.classList.add('reviewed', 'wrong', 'rejected');
-              await logFeedback(item, 'wrong');
+              await logFeedback(item, 'wrong', rejectReason);
             }
             changes++;
           }
@@ -4877,6 +4879,14 @@ export class WebReviewGenerator {
       // Merge checkbox enables/disables separator
       document.getElementById('mergeValues')?.addEventListener('change', (e) => {
         document.getElementById('mergeSeparator').disabled = !e.target.checked;
+      });
+
+      // Show/hide reject reason based on action
+      document.getElementById('bulkAction')?.addEventListener('change', (e) => {
+        const rejectRow = document.querySelector('.reject-reason-row');
+        if (rejectRow) {
+          rejectRow.style.display = e.target.value === 'reject' ? '' : 'none';
+        }
       });
 
       // Keyboard shortcuts for selection and command palette

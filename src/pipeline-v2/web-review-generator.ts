@@ -3187,6 +3187,13 @@ export class WebReviewGenerator {
         showToast('Showing all sheets');
       });
       tabsContainer.appendChild(allSheetsBtn);
+
+      // Apply initial filter for first selected sheet
+      const firstTab = tabsContainer.querySelector('.sheet-tab.active');
+      if (firstTab) {
+        const initialSheetName = firstTab.textContent.trim();
+        filterPanelsBySheet(initialSheetName);
+      }
     }
 
     // Filter Indexed and Library sections by sheet name
@@ -3194,7 +3201,8 @@ export class WebReviewGenerator {
       // Filter Indexed sections
       document.querySelectorAll('#panel-indexed .section').forEach(section => {
         const sectionSheet = section.dataset.sheet || '';
-        if (!sheetName || sectionSheet === sheetName || sectionSheet === '') {
+        // Show if: no filter (show all) OR exact sheet match
+        if (!sheetName || sectionSheet === sheetName) {
           section.style.display = '';
         } else {
           section.style.display = 'none';

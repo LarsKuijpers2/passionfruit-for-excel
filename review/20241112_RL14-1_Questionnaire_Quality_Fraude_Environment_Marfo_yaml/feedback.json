@@ -1,0 +1,444 @@
+{
+  "meta": {
+    "source": "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo.yaml",
+    "questionnaire": "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo.yaml",
+    "startedAt": "2026-02-08T15:17:47.735Z",
+    "lastUpdatedAt": "2026-02-08T15:20:56.802Z"
+  },
+  "index": [
+    {
+      "action": "accepted",
+      "label": "Bedrijfsnaam",
+      "value": "Kaas-Pack Holland BV",
+      "cells": "A8,C8",
+      "topic": "company",
+      "section": "Algemene informatie",
+      "reviewedAt": "2026-02-08T15:19:15.685Z",
+      "id": "indexed_1770563955690_kylku2nx3"
+    },
+    {
+      "action": "accepted",
+      "label": "Adres",
+      "value": "Buitenvaart 2109",
+      "cells": "A9,C9",
+      "topic": "company",
+      "section": "Algemene informatie",
+      "reviewedAt": "2026-02-08T15:19:15.685Z",
+      "id": "indexed_1770563955690_3po1kblu0"
+    },
+    {
+      "action": "accepted",
+      "label": "Postcode, plaats, land",
+      "value": "7905 SW Hoogeveen, Nederland",
+      "cells": "A10,C10",
+      "topic": "company",
+      "section": "Algemene informatie",
+      "reviewedAt": "2026-02-08T15:19:15.685Z",
+      "id": "indexed_1770563955690_2l1g4edyo"
+    },
+    {
+      "action": "accepted",
+      "label": "Contactpersoon",
+      "value": "I. Vegter",
+      "cells": "A11,C11",
+      "topic": "company",
+      "section": "Algemene informatie",
+      "reviewedAt": "2026-02-08T15:19:15.686Z",
+      "id": "indexed_1770563955691_xfdhl3yvb"
+    },
+    {
+      "action": "accepted",
+      "label": "Functie",
+      "value": "QA Manager",
+      "cells": "A12,C12",
+      "topic": "company",
+      "section": "Algemene informatie",
+      "reviewedAt": "2026-02-08T15:19:15.686Z",
+      "id": "indexed_1770563955691_bqcnaq098"
+    },
+    {
+      "action": "accepted",
+      "label": "Telefoonnummer",
+      "value": "0528-268246",
+      "cells": "A13,C13",
+      "topic": "company",
+      "section": "Algemene informatie",
+      "reviewedAt": "2026-02-08T15:19:15.686Z",
+      "id": "indexed_1770563955691_2ywc6uuf9"
+    },
+    {
+      "action": "accepted",
+      "label": "Email-adres",
+      "value": "quality@kaaspack.nl",
+      "cells": "A14,C14",
+      "topic": "company",
+      "section": "Algemene informatie",
+      "reviewedAt": "2026-02-08T15:19:15.686Z",
+      "id": "indexed_1770563955700_72unm4e33"
+    },
+    {
+      "action": "accepted",
+      "label": "Bedrijfsactiviteiten",
+      "value": "versnijden en raspen van kaas",
+      "cells": "A15,C15",
+      "topic": "company",
+      "section": "Algemene informatie",
+      "reviewedAt": "2026-02-08T15:19:15.686Z",
+      "id": "indexed_1770563955701_ptn903sj1"
+    },
+    {
+      "action": "accepted",
+      "label": "Product range",
+      "value": "Zuivel",
+      "cells": "A16,C16",
+      "topic": "company",
+      "section": "Algemene informatie",
+      "reviewedAt": "2026-02-08T15:19:15.686Z",
+      "id": "indexed_1770563955702_g8mwz0bqc"
+    },
+    {
+      "action": "accepted",
+      "label": "EG-nummer (indien van toepassing)",
+      "value": "NL Z 0159 EG",
+      "cells": "A17,C17",
+      "topic": "company",
+      "section": "Algemene informatie",
+      "reviewedAt": "2026-02-08T15:19:15.686Z",
+      "id": "indexed_1770563955704_3ygpc24a3"
+    },
+    {
+      "action": "accepted",
+      "label": "Welke kwaliteitsstandaarden zijn in werking binnen uw bedrijf?",
+      "value": "VLOG en Weidegang",
+      "cells": "A21,C21",
+      "topic": "quality",
+      "section": "Kwaliteitsmanagement",
+      "reviewedAt": "2026-02-08T15:19:15.686Z",
+      "id": "indexed_1770563955704_3dyxiu05m"
+    },
+    {
+      "action": "accepted",
+      "label": "Hoe is contaminatie met vreemde delen (metaal, steentjes, hout, etc.) voorkomen?",
+      "value": "Controle op metaaldeeltjes door metaaldetector verder visuele controle",
+      "cells": "A22,C22",
+      "topic": "quality",
+      "section": "Kwaliteitsmanagement",
+      "reviewedAt": "2026-02-08T15:19:15.686Z",
+      "id": "indexed_1770563955707_tuxb7mbwm"
+    },
+    {
+      "action": "accepted",
+      "label": "Hoe is verontreiniging met niet gedeclareerde allergenen in het eindproduct voorkomen?",
+      "value": "Alleen melk, als allergeen, wordt binnen ons pand verwerkt.",
+      "cells": "A23,C23",
+      "topic": "quality",
+      "section": "Kwaliteitsmanagement",
+      "reviewedAt": "2026-02-08T15:19:15.686Z",
+      "id": "indexed_1770563955707_nembkbpv1"
+    },
+    {
+      "action": "accepted",
+      "label": "Als uw bedrijf niet gecertificeerd is volgens een van de GFSI standaarden...",
+      "value": "(empty)",
+      "cells": "A24,C24",
+      "topic": "quality",
+      "section": "Kwaliteitsmanagement",
+      "reviewedAt": "2026-02-08T15:19:15.686Z",
+      "id": "indexed_1770563955708_u1d46wuzm"
+    },
+    {
+      "action": "accepted",
+      "label": "Leg kort uit hoe gevaren die via de grondstoffen uw product kunnen beïnvloeden worden beheerst",
+      "value": "Afstemming binnen het HACCP team betreffende gevaren. Daar worden maatregelen genomen.",
+      "cells": "A29,C29",
+      "topic": "microbiology",
+      "section": "Chemische, Fysische en Microbiologische gevaren",
+      "reviewedAt": "2026-02-08T15:19:15.687Z",
+      "id": "indexed_1770563955708_0wj8ujr2x"
+    },
+    {
+      "action": "accepted",
+      "label": "Voert u Chemische en/of microbiologische analyses uit om de veiligheid van uw product te waarborgen?",
+      "value": "Er worden volgen monsterplanning onderzoeken op microbiologisch gebied uitgevoerd.",
+      "cells": "A30,C30",
+      "topic": "microbiology",
+      "section": "Chemische, Fysische en Microbiologische gevaren",
+      "reviewedAt": "2026-02-08T15:19:15.687Z",
+      "id": "indexed_1770563955710_nl3mg18gl"
+    },
+    {
+      "action": "accepted",
+      "label": "Is er een Food Fraude-analyse uitgevoerd op de grondstoffen en ingrediënten?",
+      "value": "Ja",
+      "cells": "A35,C35",
+      "topic": "food_fraud",
+      "section": "Food Fraude management",
+      "reviewedAt": "2026-02-08T15:19:15.687Z",
+      "id": "indexed_1770563955710_0vd0rueyn"
+    },
+    {
+      "action": "accepted",
+      "label": "Voert u analyses uit op grondstoffen om fraude eerder in het proces te detecteren?",
+      "value": "Nee. We kopen kaas in van gecertificeerde producenten. Er worden controles uitgevoerd.",
+      "cells": "A36,C36",
+      "topic": "food_fraud",
+      "section": "Food Fraude management",
+      "reviewedAt": "2026-02-08T15:19:15.687Z",
+      "id": "indexed_1770563955712_jlzym1htb"
+    },
+    {
+      "action": "accepted",
+      "label": "Bevat het milieubeleid van uw organisatie, zelf toegekende eisen?",
+      "value": "Er wordt intern gewerkt met een CAP 26000 gebaseerd systeem.",
+      "cells": "A41,C41",
+      "topic": "environment",
+      "section": "Milieubeleid",
+      "reviewedAt": "2026-02-08T15:19:15.687Z",
+      "id": "indexed_1770563955712_ftpnrhnun"
+    },
+    {
+      "action": "accepted",
+      "label": "Naam",
+      "value": "I. Vegter",
+      "cells": "A45,C45",
+      "topic": "signature",
+      "section": "Ondertekening",
+      "reviewedAt": "2026-02-08T15:19:15.687Z",
+      "id": "indexed_1770563955712_86txpqp8w"
+    },
+    {
+      "action": "accepted",
+      "label": "Functie",
+      "value": "QA manager",
+      "cells": "A46,C46",
+      "topic": "signature",
+      "section": "Ondertekening",
+      "reviewedAt": "2026-02-08T15:19:15.687Z",
+      "id": "indexed_1770563955713_mr595i414"
+    },
+    {
+      "action": "accepted",
+      "label": "Datum",
+      "value": "2024-11-12",
+      "cells": "A47,C47",
+      "topic": "signature",
+      "section": "Ondertekening",
+      "reviewedAt": "2026-02-08T15:19:15.687Z",
+      "id": "indexed_1770563955713_jwstl2jel"
+    },
+    {
+      "action": "accepted",
+      "label": "Handtekening",
+      "value": "(empty)",
+      "cells": "A48,C48",
+      "topic": "signature",
+      "section": "Ondertekening",
+      "reviewedAt": "2026-02-08T15:19:15.687Z",
+      "id": "indexed_1770563955713_doldp5j5l"
+    },
+    {
+      "action": "accepted",
+      "label": "Is de questionnaire volledig en naar behoren ingevuld?",
+      "value": "(empty)",
+      "cells": "A52,B52",
+      "topic": "approval",
+      "section": "Autorisatie",
+      "reviewedAt": "2026-02-08T15:19:15.687Z",
+      "id": "indexed_1770563955720_kcw0dqxva"
+    },
+    {
+      "action": "accepted",
+      "label": "Is aanvullende informatie gewenst?",
+      "value": "(empty)",
+      "cells": "A53,B53",
+      "topic": "approval",
+      "section": "Autorisatie",
+      "reviewedAt": "2026-02-08T15:19:15.687Z",
+      "id": "indexed_1770563955720_x6iwhpihu"
+    },
+    {
+      "action": "accepted",
+      "label": "Handtekening QA-manager",
+      "value": "(empty)",
+      "cells": "A55,B55",
+      "topic": "approval",
+      "section": "Autorisatie",
+      "reviewedAt": "2026-02-08T15:19:15.687Z",
+      "id": "indexed_1770563955720_aws2kvq4v"
+    },
+    {
+      "action": "accepted",
+      "label": "Datum",
+      "value": "(empty)",
+      "cells": "A57,B57",
+      "topic": "approval",
+      "section": "Autorisatie",
+      "reviewedAt": "2026-02-08T15:19:15.688Z",
+      "id": "indexed_1770563955721_g2vr4ttxr"
+    }
+  ],
+  "library": [
+    {
+      "action": "accepted",
+      "label": "Bedrijfsnaam",
+      "value": "Kaas-Pack Holland BV",
+      "cells": "A8,C8",
+      "topic": "company",
+      "reviewedAt": "2026-02-08T15:20:56.777Z",
+      "id": "library_1770564056785_p1fv88pcl"
+    },
+    {
+      "action": "accepted",
+      "label": "Adres",
+      "value": "Buitenvaart 2109",
+      "cells": "A9,C9",
+      "topic": "company",
+      "reviewedAt": "2026-02-08T15:20:56.777Z",
+      "id": "library_1770564056785_ogv70rm76"
+    },
+    {
+      "action": "accepted",
+      "label": "Postcode, plaats, land",
+      "value": "7905 SW Hoogeveen, Nederland",
+      "cells": "A10,C10",
+      "topic": "company",
+      "reviewedAt": "2026-02-08T15:20:56.777Z",
+      "id": "library_1770564056785_83y7zd9cg"
+    },
+    {
+      "action": "accepted",
+      "label": "Contactpersoon",
+      "value": "I. Vegter",
+      "cells": "A11,C11",
+      "topic": "company",
+      "reviewedAt": "2026-02-08T15:20:56.777Z",
+      "id": "library_1770564056786_997ltx98f"
+    },
+    {
+      "action": "accepted",
+      "label": "Functie",
+      "value": "QA Manager",
+      "cells": "A12,C12",
+      "topic": "company",
+      "reviewedAt": "2026-02-08T15:20:56.777Z",
+      "id": "library_1770564056786_jrywwbjru"
+    },
+    {
+      "action": "accepted",
+      "label": "Telefoonnummer",
+      "value": "0528-268246",
+      "cells": "A13,C13",
+      "topic": "company",
+      "reviewedAt": "2026-02-08T15:20:56.778Z",
+      "id": "library_1770564056787_dngy4qens"
+    },
+    {
+      "action": "accepted",
+      "label": "Email-adres",
+      "value": "quality@kaaspack.nl",
+      "cells": "A14,C14",
+      "topic": "company",
+      "reviewedAt": "2026-02-08T15:20:56.778Z",
+      "id": "library_1770564056789_3btej9bvj"
+    },
+    {
+      "action": "accepted",
+      "label": "Bedrijfsactiviteiten",
+      "value": "versnijden en raspen van kaas",
+      "cells": "A15,C15",
+      "topic": "company",
+      "reviewedAt": "2026-02-08T15:20:56.778Z",
+      "id": "library_1770564056790_c39i9k07r"
+    },
+    {
+      "action": "accepted",
+      "label": "EG-nummer (indien van toepassing)",
+      "value": "NL Z 0159 EG",
+      "cells": "A17,C17",
+      "topic": "company",
+      "reviewedAt": "2026-02-08T15:20:56.778Z",
+      "id": "library_1770564056792_nrpqemu4a"
+    },
+    {
+      "action": "accepted",
+      "label": "Welke kwaliteitsstandaarden zijn in werking binnen uw bedrijf?",
+      "value": "VLOG en Weidegang",
+      "cells": "A21,C21",
+      "topic": "quality",
+      "reviewedAt": "2026-02-08T15:20:56.778Z",
+      "id": "library_1770564056792_r6yotrtxo"
+    },
+    {
+      "action": "accepted",
+      "label": "Hoe is contaminatie met vreemde delen (metaal, steentjes, hout, etc.) voorkomen?",
+      "value": "Controle op metaaldeeltjes door metaaldetector verder visuele controle",
+      "cells": "A22,C22",
+      "topic": "quality",
+      "reviewedAt": "2026-02-08T15:20:56.778Z",
+      "id": "library_1770564056792_5ox9skkbj"
+    },
+    {
+      "action": "accepted",
+      "label": "Leg kort uit hoe gevaren die via de grondstoffen uw product kunnen beïnvloeden worden beheerst",
+      "value": "Afstemming binnen het HACCP team betreffende gevaren. Daar worden maatregelen genomen.",
+      "cells": "A29,C29",
+      "topic": "microbiology",
+      "reviewedAt": "2026-02-08T15:20:56.778Z",
+      "id": "library_1770564056794_gvrehtp0z"
+    },
+    {
+      "action": "accepted",
+      "label": "Voert u Chemische en/of microbiologische analyses uit om de veiligheid van uw product te waarborgen?",
+      "value": "Er worden volgen monsterplanning onderzoeken op microbiologisch gebied uitgevoerd.",
+      "cells": "A30,C30",
+      "topic": "microbiology",
+      "reviewedAt": "2026-02-08T15:20:56.778Z",
+      "id": "library_1770564056796_0jqp4ebab"
+    },
+    {
+      "action": "accepted",
+      "label": "Is er een Food Fraude-analyse uitgevoerd op de grondstoffen en ingrediënten?",
+      "value": "Ja",
+      "cells": "A35,C35",
+      "topic": "food_fraud",
+      "reviewedAt": "2026-02-08T15:20:56.778Z",
+      "id": "library_1770564056796_v06nw1wvd"
+    },
+    {
+      "action": "accepted",
+      "label": "Voert u analyses uit op grondstoffen om fraude eerder in het proces te detecteren?",
+      "value": "Nee. We kopen kaas in van gecertificeerde producenten. Er worden controles uitgevoerd.",
+      "cells": "A36,C36",
+      "topic": "food_fraud",
+      "reviewedAt": "2026-02-08T15:20:56.778Z",
+      "id": "library_1770564056799_vgghjnsep"
+    },
+    {
+      "action": "accepted",
+      "label": "Bevat het milieubeleid van uw organisatie, zelf toegekende eisen?",
+      "value": "Er wordt intern gewerkt met een CAP 26000 gebaseerd systeem.",
+      "cells": "A41,C41",
+      "topic": "environment",
+      "reviewedAt": "2026-02-08T15:20:56.778Z",
+      "id": "library_1770564056799_88m3evynz"
+    },
+    {
+      "action": "accepted",
+      "label": "Naam",
+      "value": "I. Vegter",
+      "cells": "A45,C45",
+      "topic": "signature",
+      "reviewedAt": "2026-02-08T15:20:56.778Z",
+      "id": "library_1770564056799_3a1a4iigq"
+    },
+    {
+      "action": "accepted",
+      "label": "Datum",
+      "value": "2024-11-12",
+      "cells": "A47,C47",
+      "topic": "signature",
+      "reviewedAt": "2026-02-08T15:20:56.778Z",
+      "id": "library_1770564056802_l4l74d05t"
+    }
+  ]
+}

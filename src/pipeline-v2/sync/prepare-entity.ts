@@ -2,16 +2,17 @@
  * Prepare Entity for Sync
  *
  * Extracts entity data from answer library and prepares for API sync.
- * Shows preview for review before actually syncing.
+ * Maps fields to correct Passionfruit API structure:
+ * - Top-level: name, email, phone, website, street, city, zipCode, country
+ * - data object: contacts, certifications, activities, egNumber, etc.
  */
 
 import 'dotenv/config';
 import { readFile, writeFile, mkdir } from 'fs/promises';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
 import { PassionfruitAPIClient } from './api-client.js';
-import { EntityExtractor } from '../entity-extractor.js';
-import type { ExtractedEntityData, APIEntity } from '../api-types.js';
-import type { AnswerLibrary, HarvestedItem } from '../answer-harvester.js';
+import type { APIEntity, EntityAdditionalData } from '../api-types.js';
+import type { AnswerLibrary } from '../answer-harvester.js';
 
 interface PreparedEntity {
   action: 'create' | 'update';
@@ -26,29 +27,75 @@ interface PreparedEntity {
   }>;
 }
 
+interface RawExtraction {
+  name?: string;
+  email?: string;
+  phone?: string;
+  website?: string;
+  street?: string;
+  location?: string; // Raw "7905 SW Hoogeveen, Nederland"
+  contacts: Array<{ name?: string; role?: string }>;
+  activities: string[];
+  egNumber?: string;
+}
+
 async function loadAnswerLibrary(path: string = './answer-library.yaml'): Promise<AnswerLibrary> {
   const content = await readFile(path, 'utf-8');
   return parseYaml(content);
 }
 
-function extractEntityFromLibrary(library: AnswerLibrary): { data: ExtractedEntityData; sources: PreparedEntity['sources'] } {
-  const data: ExtractedEntityData = {};
+/**
+ * Parse Dutch location format: "7905 SW Hoogeveen, Nederland"
+ * Returns: { zipCode: "7905 SW", city: "Hoogeveen", country: "Nederland" }
+ */
+function parseLocation(location: string): { zipCode?: string; city?: string; country?: string } {
+  if (!location) return {};
+
+  // Try to match Dutch format: "1234 AB City, Country"
+  const dutchMatch = location.match(/^(\d{4}\s*[A-Z]{2})\s+([^,]+),?\s*(.*)$/i);
+  if (dutchMatch) {
+    return {
+      zipCode: dutchMatch[1].trim(),
+      city: dutchMatch[2].trim(),
+      country: dutchMatch[3]?.trim() || undefined,
+    };
+  }
+
+  // Try to match "City, Country" format
+  const simpleParts = location.split(',').map(p => p.trim());
+  if (simpleParts.length >= 2) {
+    return {
+      city: simpleParts[0],
+      country: simpleParts[simpleParts.length - 1],
+    };
+  }
+
+  // Just return as city
+  return { city: location };
+}
+
+function extractEntityFromLibrary(library: AnswerLibrary): { raw: RawExtraction; sources: PreparedEntity['sources'] } {
+  const raw: RawExtraction = {
+    contacts: [],
+    activities: [],
+  };
   const sources: PreparedEntity['sources'] = [];
 
-  // Field mapping from Dutch/multilingual labels to entity fields
-  const fieldMappings: Array<{ patterns: RegExp[]; field: string; nested?: { parent: string; subfield: string } }> = [
-    { patterns: [/bedrijfsnaam/i, /company\s*name/i], field: 'name' },
-    { patterns: [/^adres$/i, /address/i], field: 'address' },
-    { patterns: [/postcode.*plaats/i, /zip.*city/i], field: 'location' },
+  // Field mapping from Dutch/multilingual labels
+  const fieldMappings: Array<{ patterns: RegExp[]; field: keyof RawExtraction | string; nested?: { parent: 'contacts'; subfield: string } }> = [
+    { patterns: [/bedrijfsnaam/i, /company\s*name/i, /firmenname/i], field: 'name' },
+    { patterns: [/^adres$/i, /address/i, /straat/i, /street/i], field: 'street' },
+    { patterns: [/postcode.*plaats/i, /zip.*city/i, /plz.*ort/i], field: 'location' },
     { patterns: [/e-?mail/i], field: 'email' },
-    { patterns: [/telefoon/i, /phone/i], field: 'phone' },
-    { patterns: [/contactpersoon/i, /contact.*person/i], field: 'contacts', nested: { parent: 'contacts', subfield: 'name' } },
-    { patterns: [/^functie$/i, /function/i, /role/i], field: 'contacts', nested: { parent: 'contacts', subfield: 'role' } },
-    { patterns: [/bedrijfsactiviteiten/i, /activities/i], field: 'activities' },
+    { patterns: [/telefoon/i, /phone/i, /tel\b/i], field: 'phone' },
+    { patterns: [/website/i, /www/i, /homepage/i], field: 'website' },
+    { patterns: [/contactpersoon/i, /contact.*person/i, /ansprechpartner/i], field: 'contacts', nested: { parent: 'contacts', subfield: 'name' } },
+    { patterns: [/^functie$/i, /function/i, /role/i, /position/i], field: 'contacts', nested: { parent: 'contacts', subfield: 'role' } },
+    { patterns: [/bedrijfsactiviteiten/i, /activities/i, /geschäftstätigkeit/i], field: 'activities' },
     { patterns: [/eg-?nummer/i, /eu.*approval/i], field: 'egNumber' },
   ];
 
-  // Process company topic items
+  // Process company and signature topic items
   const companyItems = library.byTopic['company'] || [];
   const signatureItems = library.byTopic['signature'] || [];
   const allItems = [...companyItems, ...signatureItems];
@@ -72,29 +119,63 @@ function extractEntityFromLibrary(library: AnswerLibrary): { data: ExtractedEnti
 
       // Set value
       if (mapping.nested) {
-        const parent = mapping.nested.parent as 'contacts' | 'certifications';
-        if (!data[parent]) data[parent] = [];
-        const arr = data[parent] as any[];
-
-        // Find or create entry
-        let entry = arr.find(e => !e[mapping.nested!.subfield]);
-        if (!entry) {
-          entry = {};
-          arr.push(entry);
+        // Handle nested contacts
+        let contact = raw.contacts.find(c => !c[mapping.nested!.subfield as keyof typeof c]);
+        if (!contact) {
+          contact = {};
+          raw.contacts.push(contact);
         }
-        entry[mapping.nested.subfield] = item.value;
+        (contact as any)[mapping.nested.subfield] = item.value;
       } else if (mapping.field === 'activities') {
-        if (!data.activities) data.activities = [];
-        data.activities.push(item.value);
+        raw.activities.push(item.value);
       } else {
-        (data as any)[mapping.field] = item.value;
+        (raw as any)[mapping.field] = item.value;
       }
 
       break;
     }
   }
 
-  return { data, sources };
+  return { raw, sources };
+}
+
+function mapToAPIEntity(raw: RawExtraction): APIEntity {
+  // Parse location into city/zipCode/country
+  const parsedLocation = parseLocation(raw.location || '');
+
+  // Build top-level fields
+  const entity: APIEntity = {
+    name: raw.name || 'Unknown Entity',
+    email: raw.email,
+    phone: raw.phone,
+    website: raw.website,
+    street: raw.street,
+    city: parsedLocation.city,
+    zipCode: parsedLocation.zipCode,
+    country: parsedLocation.country,
+  };
+
+  // Build data object for additional fields
+  const data: EntityAdditionalData = {};
+
+  if (raw.contacts.length > 0) {
+    data.contacts = raw.contacts.filter(c => c.name) as any;
+  }
+
+  if (raw.activities.length > 0) {
+    data.activities = raw.activities;
+  }
+
+  if (raw.egNumber) {
+    data.egNumber = raw.egNumber;
+  }
+
+  // Only add data if there's something in it
+  if (Object.keys(data).length > 0) {
+    entity.data = data;
+  }
+
+  return entity;
 }
 
 async function prepareEntity(): Promise<PreparedEntity> {
@@ -105,22 +186,22 @@ async function prepareEntity(): Promise<PreparedEntity> {
   console.log(`  Loaded ${library.total} items from answer library`);
 
   // Extract entity data
-  const { data, sources } = extractEntityFromLibrary(library);
+  const { raw, sources } = extractEntityFromLibrary(library);
   console.log(`  Extracted ${sources.length} entity fields`);
+
+  // Map to API structure
+  const entity = mapToAPIEntity(raw);
 
   // Check API for existing entity
   const client = new PassionfruitAPIClient();
   console.log(`  Checking ${client.environment} API for existing entity...`);
 
-  const existingEntity = data.name ? await client.findEntityByName(data.name) : null;
+  const existingEntity = entity.name ? await client.findEntityByName(entity.name) : null;
 
   const prepared: PreparedEntity = {
     action: existingEntity ? 'update' : 'create',
     existingId: existingEntity?.id,
-    entity: {
-      name: data.name || 'Unknown Entity',
-      data,
-    },
+    entity,
     sources,
   };
 
@@ -140,32 +221,43 @@ async function main() {
       console.log(`  Existing ID: ${prepared.existingId}`);
     }
 
-    console.log('\n  Entity Data:');
+    console.log('\n  === TOP-LEVEL FIELDS (Company Information) ===');
     console.log('  ─────────────────────────────────────────');
+    console.log(`  Name:     ${prepared.entity.name}`);
+    console.log(`  Email:    ${prepared.entity.email || '-'}`);
+    console.log(`  Phone:    ${prepared.entity.phone || '-'}`);
+    console.log(`  Website:  ${prepared.entity.website || '-'}`);
+    console.log(`  Street:   ${prepared.entity.street || '-'}`);
+    console.log(`  City:     ${prepared.entity.city || '-'}`);
+    console.log(`  ZIP Code: ${prepared.entity.zipCode || '-'}`);
+    console.log(`  Country:  ${prepared.entity.country || '-'}`);
 
-    const { data } = prepared.entity;
-    console.log(`  Name:       ${data.name || '-'}`);
-    console.log(`  Address:    ${data.address || '-'}`);
-    console.log(`  Location:   ${data.location || '-'}`);
-    console.log(`  Email:      ${data.email || '-'}`);
-    console.log(`  Phone:      ${data.phone || '-'}`);
-    console.log(`  EG Number:  ${data.egNumber || '-'}`);
+    if (prepared.entity.data) {
+      console.log('\n  === DATA OBJECT (Additional Fields) ===');
+      console.log('  ─────────────────────────────────────────');
 
-    if (data.contacts && data.contacts.length > 0) {
-      console.log('\n  Contacts:');
-      for (const contact of data.contacts) {
-        console.log(`    - ${contact.name}${contact.role ? ` (${contact.role})` : ''}`);
+      const data = prepared.entity.data;
+
+      if (data.contacts && data.contacts.length > 0) {
+        console.log('  contacts:');
+        for (const contact of data.contacts) {
+          console.log(`    - ${contact.name}${contact.role ? ` (${contact.role})` : ''}`);
+        }
+      }
+
+      if (data.activities && data.activities.length > 0) {
+        console.log('  activities:');
+        for (const activity of data.activities) {
+          console.log(`    - ${activity}`);
+        }
+      }
+
+      if (data.egNumber) {
+        console.log(`  egNumber: ${data.egNumber}`);
       }
     }
 
-    if (data.activities && data.activities.length > 0) {
-      console.log('\n  Activities:');
-      for (const activity of data.activities) {
-        console.log(`    - ${activity}`);
-      }
-    }
-
-    console.log('\n  Sources:');
+    console.log('\n  === SOURCES ===');
     console.log('  ─────────────────────────────────────────');
     for (const source of prepared.sources) {
       console.log(`  ${source.field}: "${source.value.substring(0, 40)}${source.value.length > 40 ? '...' : ''}"`);

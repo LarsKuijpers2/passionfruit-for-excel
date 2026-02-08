@@ -166,19 +166,45 @@ export class PassionfruitAPIClient {
 
   /**
    * Create a new entity
+   *
+   * Entity structure for Passionfruit API:
+   * - Top-level: name, email, phone, website, street, city, zipCode, country
+   * - data: Additional key-value pairs (contacts, activities, egNumber, etc.)
    */
   async createEntity(entity: APIEntity, parentId: number | null = null): Promise<EntityResponse> {
-    return this.request('POST', '/api/v2/entities/', {
-      ...entity,
+    // Build the payload with top-level fields
+    const payload: Record<string, any> = {
+      name: entity.name,
       parentId,
-    });
+    };
+
+    // Add top-level company info fields if present
+    if (entity.email) payload.email = entity.email;
+    if (entity.phone) payload.phone = entity.phone;
+    if (entity.website) payload.website = entity.website;
+    if (entity.street) payload.street = entity.street;
+    if (entity.city) payload.city = entity.city;
+    if (entity.zipCode) payload.zipCode = entity.zipCode;
+    if (entity.country) payload.country = entity.country;
+
+    // Add data object for additional fields
+    if (entity.data && Object.keys(entity.data).length > 0) {
+      payload.data = entity.data;
+    }
+
+    return this.request('POST', '/api/v2/entities/', payload);
   }
 
   /**
    * Update an existing entity
    */
   async updateEntity(id: number, entity: Partial<APIEntity>): Promise<EntityResponse> {
-    return this.request('PUT', `/api/v2/entities/${id}`, entity);
+    // Ensure parentId is included (required by API)
+    const payload = {
+      parentId: entity.parentId ?? null,
+      ...entity,
+    };
+    return this.request('PUT', `/api/v2/entities/${id}`, payload);
   }
 
   /**

@@ -67,20 +67,44 @@ export interface APIAnswer {
 // ENTITIES
 // =============================================================================
 
-/** Extracted entity data (grows over time) */
-export interface ExtractedEntityData {
-  // Core company info
-  name?: string;
-  address?: string;
-  location?: string;
-  country?: string;
+/**
+ * Passionfruit API Entity Structure
+ *
+ * The entity has TWO levels of fields:
+ *
+ * 1. TOP-LEVEL FIELDS (Company Information section in UI):
+ *    - name (entity name - required)
+ *    - email, phone, website, street, city, zipCode, country
+ *
+ * 2. DATA OBJECT (Additional Fields section in UI):
+ *    - Key-value pairs for anything else
+ *    - contacts[], certifications[], activities[], etc.
+ */
 
-  // Contact info
+/** Top-level entity fields for Passionfruit API */
+export interface APIEntityFields {
+  /** Entity name (required) */
+  name: string;
+  /** Parent entity ID (null for root) */
+  parentId?: number | null;
+  /** Email address */
   email?: string;
+  /** Phone number */
   phone?: string;
-  fax?: string;
+  /** Website URL */
   website?: string;
+  /** Street address */
+  street?: string;
+  /** City */
+  city?: string;
+  /** ZIP/Postal code */
+  zipCode?: string;
+  /** Country */
+  country?: string;
+}
 
+/** Additional data stored in entity.data object */
+export interface EntityAdditionalData {
   // Contacts (multiple)
   contacts?: Array<{
     name: string;
@@ -101,6 +125,59 @@ export interface ExtractedEntityData {
   activities?: string[];
   employees?: string;
   turnover?: string;
+
+  // Registration numbers
+  egNumber?: string;
+  kvkNumber?: string;
+  vatNumber?: string;
+
+  // Flexible additional data
+  [key: string]: any;
+}
+
+/** Full entity for Passionfruit API */
+export interface APIEntity extends APIEntityFields {
+  /** Additional key-value data */
+  data?: EntityAdditionalData;
+}
+
+/** Extracted entity data from questionnaire (before mapping to API structure) */
+export interface ExtractedEntityData {
+  // Will be mapped to top-level fields
+  name?: string;
+  email?: string;
+  phone?: string;
+  website?: string;
+  street?: string;
+  city?: string;
+  zipCode?: string;
+  country?: string;
+
+  // Raw location (needs parsing into city/zipCode/country)
+  location?: string;
+  // Raw address (maps to street)
+  address?: string;
+
+  // Will go into data object
+  contacts?: Array<{
+    name: string;
+    role?: string;
+    email?: string;
+    phone?: string;
+  }>;
+  certifications?: Array<{
+    type: string;
+    number?: string;
+    validUntil?: string;
+    body?: string;
+  }>;
+  activities?: string[];
+  employees?: string;
+  turnover?: string;
+  egNumber?: string;
+  kvkNumber?: string;
+  vatNumber?: string;
+  fax?: string;
 
   // Flexible additional data
   [key: string]: any;

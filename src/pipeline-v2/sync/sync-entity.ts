@@ -2,59 +2,68 @@
  * Sync Entity to Passionfruit API
  *
  * Creates or updates an entity based on the prepared preview.
+ * Uses correct field mapping:
+ * - Top-level: name, email, phone, website, street, city, zipCode, country
+ * - data object: contacts, activities, egNumber, etc.
  */
 
 import 'dotenv/config';
 import { readFile } from 'fs/promises';
 import { parse as parseYaml } from 'yaml';
 import { PassionfruitAPIClient } from './api-client.js';
+import type { APIEntity } from '../api-types.js';
+
+interface PreparedEntity {
+  action: 'create' | 'update';
+  existingId?: number;
+  entity: APIEntity;
+}
 
 async function syncEntity() {
   console.log('\n🔄 Syncing entity to Passionfruit API...\n');
 
   // Load the prepared entity
   const content = await readFile('./api-ready/entity-preview.yaml', 'utf-8');
-  const prepared = parseYaml(content);
+  const prepared: PreparedEntity = parseYaml(content);
 
   const client = new PassionfruitAPIClient();
   console.log(`  Environment: ${client.environment}`);
   console.log(`  API URL: ${client.url}`);
 
-  // Check again for existing entity
-  const existing = await client.findEntityByName(prepared.entity.name);
+  if (prepared.action === 'update' && prepared.existingId) {
+    console.log(`\n  Updating existing entity: ID ${prepared.existingId}`);
 
-  if (existing) {
-    console.log(`\n  Found existing entity: ID ${existing.id}`);
-    console.log(`  Updating with new data...`);
+    // Build data object - ALL fields go in data (API stores everything in data object)
+    // The UI displays certain keys as "Company Information" fields
+    const data: Record<string, any> = {
+      ...(prepared.entity.data || {}),
+    };
 
-    // Merge data
-    const mergedData = { ...existing.data, ...prepared.entity.data };
+    // Add company info fields to data object (UI shows these as "Company Information")
+    if (prepared.entity.email) data.email = prepared.entity.email;
+    if (prepared.entity.phone) data.phone = prepared.entity.phone;
+    if (prepared.entity.website) data.website = prepared.entity.website;
+    if (prepared.entity.street) data.street = prepared.entity.street;
+    if (prepared.entity.city) data.city = prepared.entity.city;
+    if (prepared.entity.zipCode) data.zipCode = prepared.entity.zipCode;
+    if (prepared.entity.country) data.country = prepared.entity.country;
 
-    // Merge contacts (don't duplicate)
-    if (prepared.entity.data.contacts && existing.data?.contacts) {
-      const existingNames = new Set(existing.data.contacts.map((c: any) => c.name));
-      const newContacts = prepared.entity.data.contacts.filter((c: any) => !existingNames.has(c.name));
-      mergedData.contacts = [...existing.data.contacts, ...newContacts];
-    }
-
-    // Merge activities (don't duplicate)
-    if (prepared.entity.data.activities && existing.data?.activities) {
-      const existingActivities = new Set(existing.data.activities);
-      const newActivities = prepared.entity.data.activities.filter((a: string) => !existingActivities.has(a));
-      mergedData.activities = [...existing.data.activities, ...newActivities];
-    }
-
-    const updated = await client.updateEntity(existing.id, {
+    const payload = {
       name: prepared.entity.name,
-      data: mergedData,
-    });
+      data,
+    };
+
+    const updated = await client.updateEntity(prepared.existingId, payload);
 
     console.log(`\n✅ Entity updated: ID ${updated.id}`);
     console.log(`  Name: ${updated.name}`);
 
+    // Show updated data
+    console.log('\n  Updated data:');
+    console.log(JSON.stringify(data, null, 2).split('\n').map(l => '    ' + l).join('\n'));
+
   } else {
-    console.log(`\n  No existing entity found`);
-    console.log(`  Creating new entity...`);
+    console.log(`\n  Creating new entity...`);
 
     const created = await client.createEntity(prepared.entity);
 

@@ -1550,8 +1550,8 @@ export class WebReviewGenerator {
         const item = btn.closest('.item');
 
         if (btn.classList.contains('correct')) {
-          item.classList.remove('wrong', 'show-note');
-          item.classList.add('reviewed', 'correct');
+          item.classList.remove('wrong', 'rejected', 'show-note');
+          item.classList.add('reviewed', 'correct', 'accepted');
           showToast('Accepted');
           logFeedback(item, 'correct');
         } else if (btn.classList.contains('wrong')) {
@@ -1573,8 +1573,8 @@ export class WebReviewGenerator {
         const input = item.querySelector('.wrong-note-input');
 
         if (btn.classList.contains('save')) {
-          item.classList.remove('correct', 'show-note');
-          item.classList.add('reviewed', 'wrong');
+          item.classList.remove('correct', 'accepted', 'show-note');
+          item.classList.add('reviewed', 'wrong', 'rejected');
           const note = input?.value || '';
           showToast(note ? 'Marked as wrong with note' : 'Marked as wrong');
           logFeedback(item, 'wrong', note);

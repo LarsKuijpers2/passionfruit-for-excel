@@ -1,0 +1,171 @@
+{
+  "meta": {
+    "source": "20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo",
+    "exportedAt": "2026-02-08T15:05:49.145Z",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "label": "Bedrijfsnaam",
+      "value": "Kaas-Pack Holland BV",
+      "cells": "A8,C8",
+      "section": "Algemene informatie",
+      "topic": "company",
+      "source": "20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo",
+      "approvedAt": "2026-02-08T15:04:42.610Z"
+    },
+    {
+      "label": "Adres",
+      "value": "Buitenvaart 2109",
+      "cells": "A9,C9",
+      "section": "Algemene informatie",
+      "topic": "company",
+      "source": "20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo",
+      "approvedAt": "2026-02-08T15:04:42.610Z"
+    },
+    {
+      "label": "Postcode, plaats, land",
+      "value": "7905 SW Hoogeveen, Nederland",
+      "cells": "A10,C10",
+      "section": "Algemene informatie",
+      "topic": "company",
+      "source": "20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo",
+      "approvedAt": "2026-02-08T15:04:42.610Z"
+    },
+    {
+      "label": "Contactpersoon",
+      "value": "I. Vegter",
+      "cells": "A11,C11",
+      "section": "Algemene informatie",
+      "topic": "company",
+      "source": "20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo",
+      "approvedAt": "2026-02-08T15:04:42.610Z"
+    },
+    {
+      "label": "Functie",
+      "value": "QA Manager",
+      "cells": "A12,C12",
+      "section": "Algemene informatie",
+      "topic": "company",
+      "source": "20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo",
+      "approvedAt": "2026-02-08T15:04:42.610Z"
+    },
+    {
+      "label": "Telefoonnummer",
+      "value": "0528-268246",
+      "cells": "A13,C13",
+      "section": "Algemene informatie",
+      "topic": "company",
+      "source": "20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo",
+      "approvedAt": "2026-02-08T15:04:42.610Z"
+    },
+    {
+      "label": "Email-adres",
+      "value": "quality@kaaspack.nl",
+      "cells": "A14,C14",
+      "section": "Algemene informatie",
+      "topic": "company",
+      "source": "20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo",
+      "approvedAt": "2026-02-08T15:04:42.610Z"
+    },
+    {
+      "label": "Bedrijfsactiviteiten",
+      "value": "versnijden en raspen van kaas",
+      "cells": "A15,C15",
+      "section": "Algemene informatie",
+      "topic": "company",
+      "source": "20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo",
+      "approvedAt": "2026-02-08T15:04:42.611Z"
+    },
+    {
+      "label": "Product range",
+      "value": "Zuivel",
+      "cells": "A16,C16",
+      "section": "Algemene informatie",
+      "topic": "company",
+      "source": "20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo",
+      "approvedAt": "2026-02-08T15:04:42.611Z"
+    },
+    {
+      "label": "EG-nummer (indien van toepassing)",
+      "value": "NL Z 0159 EG",
+      "cells": "A17,C17",
+      "section": "Algemene informatie",
+      "topic": "company",
+      "source": "20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo",
+      "approvedAt": "2026-02-08T15:04:42.611Z"
+    },
+    {
+      "label": "Naam",
+      "value": "I. Vegter",
+      "cells": "A45,C45",
+      "section": "Ondertekening",
+      "topic": "signature",
+      "source": "20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo",
+      "approvedAt": "2026-02-08T15:04:42.612Z"
+    },
+    {
+      "label": "Functie",
+      "value": "QA manager",
+      "cells": "A46,C46",
+      "section": "Ondertekening",
+      "topic": "signature",
+      "source": "20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo",
+      "approvedAt": "2026-02-08T15:04:42.612Z"
+    },
+    {
+      "label": "Datum",
+      "value": "2024-11-12",
+      "cells": "A47,C47",
+      "section": "Ondertekening",
+      "topic": "signature",
+      "source": "20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo",
+      "approvedAt": "2026-02-08T15:04:42.612Z"
+    },
+    {
+      "label": "Handtekening",
+      "value": "(empty)",
+      "cells": "A48,C48",
+      "section": "Ondertekening",
+      "topic": "signature",
+      "source": "20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo",
+      "approvedAt": "2026-02-08T15:04:42.612Z"
+    },
+    {
+      "label": "Is de questionnaire volledig en naar behoren ingevuld?",
+      "value": "(empty)",
+      "cells": "A52,B52",
+      "section": "Autorisatie",
+      "topic": "approval",
+      "source": "20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo",
+      "approvedAt": "2026-02-08T15:04:42.612Z"
+    },
+    {
+      "label": "Is aanvullende informatie gewenst?",
+      "value": "(empty)",
+      "cells": "A53,B53",
+      "section": "Autorisatie",
+      "topic": "approval",
+      "source": "20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo",
+      "approvedAt": "2026-02-08T15:04:42.612Z"
+    },
+    {
+      "label": "Handtekening QA-manager",
+      "value": "(empty)",
+      "cells": "A55,B55",
+      "section": "Autorisatie",
+      "topic": "approval",
+      "source": "20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo",
+      "approvedAt": "2026-02-08T15:04:42.612Z"
+    },
+    {
+      "label": "Datum",
+      "value": "(empty)",
+      "cells": "A57,B57",
+      "section": "Autorisatie",
+      "topic": "approval",
+      "source": "20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo",
+      "approvedAt": "2026-02-08T15:04:42.612Z"
+    }
+  ]
+}

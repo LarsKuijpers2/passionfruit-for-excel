@@ -123,6 +123,9 @@ export interface SheetData {
   };
 }
 
+/** Supported document types */
+export type DocumentType = 'excel' | 'word' | 'pdf';
+
 /** Complete questionnaire structure */
 export interface QuestionnaireStructure {
   /** Source file info */
@@ -131,6 +134,8 @@ export interface QuestionnaireStructure {
     filepath: string;
     extractedAt: string;
     customer?: string;
+    /** Document type (excel, word, pdf) */
+    documentType?: DocumentType;
   };
   /** All sheets */
   sheets: SheetData[];
@@ -186,6 +191,7 @@ export class ExcelStructureExtractor {
         filepath,
         extractedAt: new Date().toISOString(),
         customer,
+        documentType: 'excel' as const,
       },
       sheets,
       stats: {
@@ -680,6 +686,13 @@ export class ExcelStructureExtractor {
       col = Math.floor((col - 1) / 26);
     }
     return letter;
+  }
+
+  /**
+   * Get the document type this extractor handles
+   */
+  getDocumentType(): DocumentType {
+    return 'excel';
   }
 }
 

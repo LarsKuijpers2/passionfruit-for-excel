@@ -18,10 +18,10 @@ import { Command } from 'commander';
 import { resolve, join } from 'path';
 import { readdir, readFile } from 'fs/promises';
 import {
-  ExcelStructureExtractor,
   StructureStorage,
   structureToMarkdown,
 } from './excel-structure.js';
+import { getExtractor, getDocumentType } from './document-extractor.js';
 import { VisualAnalyzer } from './visual-analyzer.js';
 import { QuestionnaireIndexer } from './questionnaire-indexer.js';
 import { AnswerHarvester } from './answer-harvester.js';
@@ -44,8 +44,8 @@ program
 
 program
   .command('store')
-  .description('Store questionnaire preserving Excel structure (sheets/rows/cells/formatting)')
-  .argument('<file>', 'Path to the questionnaire file')
+  .description('Store questionnaire preserving structure (Excel, Word, PDF)')
+  .argument('<file>', 'Path to the questionnaire file (.xlsx, .docx, .pdf)')
   .option('--output-dir <dir>', 'Output directory', './questionnaires')
   .option('--markdown', 'Also export to Markdown')
   .action(async (file: string, opts) => {
@@ -53,9 +53,10 @@ program
       const filePath = resolve(file);
       const outputDir = opts.outputDir as string || './questionnaires';
 
-      console.log('\nStoring: ' + file);
+      const docType = getDocumentType(filePath);
+      console.log('\nStoring: ' + file + ' (' + docType + ')');
 
-      const extractor = new ExcelStructureExtractor();
+      const extractor = await getExtractor(filePath);
       const structure = await extractor.extract(filePath);
 
       console.log('  Sheets: ' + structure.stats.totalSheets);

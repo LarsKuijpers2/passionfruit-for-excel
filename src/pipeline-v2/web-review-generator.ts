@@ -10,7 +10,7 @@
 import { readFile, writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 import { parse as parseYaml } from 'yaml';
-import type { QuestionnaireStructure, SheetData, CellData } from './excel-structure.js';
+import type { QuestionnaireStructure, SheetData, CellData, DocumentType } from './excel-structure.js';
 import type { IndexedQuestionnaire } from './questionnaire-indexer.js';
 import type { AnswerLibrary } from './answer-harvester.js';
 
@@ -78,7 +78,8 @@ export class WebReviewGenerator {
     indexed: IndexedQuestionnaire,
     library: AnswerLibrary | null
   ): string {
-    const sheetsHtml = structure.sheets.map(sheet => this.buildSheetTable(sheet)).join('\n');
+    const docType = structure.source.documentType;
+    const sheetsHtml = structure.sheets.map(sheet => this.buildSheetView(sheet, docType)).join('\n');
     const indexedHtml = this.buildIndexedView(indexed);
     const libraryHtml = library ? this.buildLibraryView(library) : '<p class="empty">Run harvest first to see library items</p>';
 
@@ -251,6 +252,66 @@ export class WebReviewGenerator {
     .excel-table td:hover {
       outline: 1px solid var(--muted-foreground);
       cursor: pointer;
+    }
+
+    /* Document view (Word/PDF) */
+    .document-view {
+      padding: 20px;
+      font-size: 13px;
+      line-height: 1.6;
+      max-width: 800px;
+    }
+    .doc-type-badge {
+      display: inline-block;
+      background: var(--muted);
+      color: var(--muted-foreground);
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: var(--radius);
+      margin-bottom: 16px;
+    }
+    .doc-section {
+      margin-bottom: 24px;
+    }
+    .doc-section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--foreground);
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .doc-section-content {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .doc-label {
+      color: var(--muted-foreground);
+      font-weight: 500;
+    }
+    .doc-value {
+      color: var(--foreground);
+      background: var(--card);
+      padding: 8px 12px;
+      border-radius: var(--radius);
+      border-left: 3px solid #22c55e;
+    }
+    .doc-text {
+      color: var(--foreground);
+    }
+    .doc-label:hover,
+    .doc-value:hover,
+    .doc-text:hover {
+      outline: 1px solid var(--muted-foreground);
+      cursor: pointer;
+    }
+    .doc-label.highlighted,
+    .doc-value.highlighted,
+    .doc-text.highlighted {
+      outline: 2px solid #3b82f6;
+      background: rgba(59, 130, 246, 0.2);
     }
 
     /* Sheet tabs */
@@ -1387,10 +1448,17 @@ export class WebReviewGenerator {
       if (!cellRefs) return;
       const cells = cellRefs.split(',');
       cells.forEach(ref => {
+        // Try Excel table cell
         const cell = document.querySelector('td[data-cell="' + ref + '"]');
         if (cell) {
           cell.classList.add(className);
           cell.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+        }
+        // Try document view elements (Word/PDF)
+        const docEl = document.querySelector('.document-view [data-cell="' + ref + '"]');
+        if (docEl) {
+          docEl.classList.add(className);
+          docEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
         }
       });
     }
@@ -1544,6 +1612,33 @@ export class WebReviewGenerator {
       });
       cell.addEventListener('click', () => {
         selectCell(cell);
+      });
+    });
+
+    // Document view click handlers (Word/PDF)
+    document.querySelectorAll('.document-view [data-cell]').forEach(el => {
+      el.addEventListener('click', () => {
+        // Remove previous highlights
+        document.querySelectorAll('.document-view .highlighted').forEach(h => {
+          h.classList.remove('highlighted');
+        });
+        el.classList.add('highlighted');
+
+        // Find matching items by cell reference
+        const cellRef = el.dataset.cell;
+        const matchingItems = [];
+        allItems.forEach(item => {
+          const cells = item.dataset.cells || '';
+          const cellList = cells.split(/[→,\\s]+/).map(c => c.trim());
+          if (cellList.includes(cellRef)) {
+            matchingItems.push(item);
+          }
+        });
+
+        if (matchingItems.length > 0) {
+          selectItem(matchingItems[0], 'click');
+          currentItemIndex = indexedItems.indexOf(matchingItems[0]);
+        }
       });
     });
 
@@ -2101,6 +2196,82 @@ export class WebReviewGenerator {
   }
 
   /**
+   * Build sheet view - routes between table and document view based on document type
+   */
+  private buildSheetView(sheet: SheetData, documentType?: DocumentType): string {
+    if (documentType === 'word' || documentType === 'pdf') {
+      return this.buildDocumentView(sheet, documentType);
+    }
+    return this.buildSheetTable(sheet);
+  }
+
+  /**
+   * Build document view for Word/PDF - markdown-style rendering
+   */
+  private buildDocumentView(sheet: SheetData, documentType: DocumentType): string {
+    const sections: Array<{ title: string; content: string[] }> = [];
+    let currentSection = { title: sheet.name, content: [] as string[] };
+
+    for (const row of sheet.rows) {
+      for (const [col, cell] of Object.entries(row.cells)) {
+        if (!cell.filled) continue;
+
+        const value = cell.value.trim();
+        if (!value) continue;
+
+        // Section headers
+        if (cell.role === 'section' || cell.role === 'header') {
+          if (currentSection.content.length > 0) {
+            sections.push(currentSection);
+          }
+          currentSection = { title: value, content: [] };
+          continue;
+        }
+
+        // Build clickable element with cell reference
+        const ref = cell.ref || `${col}${row.row}`;
+        const roleClass = cell.role ? `role-${cell.role}` : '';
+        const escapedValue = this.escapeHtml(value);
+
+        // Format based on role
+        if (cell.role === 'label') {
+          currentSection.content.push(
+            `<div class="doc-label ${roleClass}" data-cell="${ref}">${escapedValue}</div>`
+          );
+        } else if (cell.role === 'input' || cell.role === 'value') {
+          currentSection.content.push(
+            `<div class="doc-value ${roleClass}" data-cell="${ref}">${escapedValue}</div>`
+          );
+        } else {
+          currentSection.content.push(
+            `<div class="doc-text ${roleClass}" data-cell="${ref}">${escapedValue}</div>`
+          );
+        }
+      }
+    }
+
+    // Add last section
+    if (currentSection.content.length > 0) {
+      sections.push(currentSection);
+    }
+
+    // Build HTML
+    const sectionsHtml = sections.map(section => `
+      <div class="doc-section">
+        <div class="doc-section-title">${this.escapeHtml(section.title)}</div>
+        <div class="doc-section-content">
+          ${section.content.join('\n          ')}
+        </div>
+      </div>
+    `).join('\n');
+
+    return `<div class="document-view" data-type="${documentType}">
+      <div class="doc-type-badge">${documentType.toUpperCase()}</div>
+      ${sectionsHtml}
+    </div>`;
+  }
+
+  /**
    * Build indexed sections view
    * INDEX = just identify topics and locations, no storage decisions
    */
@@ -2601,6 +2772,66 @@ export class WebReviewGenerator {
       background: var(--muted);
     }
     .excel-table td.cell-merged-hidden { display: none; }
+
+    /* Document view (Word/PDF) */
+    .document-view {
+      padding: 20px;
+      font-size: 13px;
+      line-height: 1.6;
+      max-width: 800px;
+    }
+    .doc-type-badge {
+      display: inline-block;
+      background: var(--muted);
+      color: var(--muted-foreground);
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: var(--radius);
+      margin-bottom: 16px;
+    }
+    .doc-section {
+      margin-bottom: 24px;
+    }
+    .doc-section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--foreground);
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .doc-section-content {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .doc-label {
+      color: var(--muted-foreground);
+      font-weight: 500;
+    }
+    .doc-value {
+      color: var(--foreground);
+      background: var(--card);
+      padding: 8px 12px;
+      border-radius: var(--radius);
+      border-left: 3px solid #22c55e;
+    }
+    .doc-text {
+      color: var(--foreground);
+    }
+    .doc-label:hover,
+    .doc-value:hover,
+    .doc-text:hover {
+      outline: 1px solid var(--muted-foreground);
+      cursor: pointer;
+    }
+    .doc-label.highlighted,
+    .doc-value.highlighted,
+    .doc-text.highlighted {
+      outline: 2px solid #3b82f6;
+      background: rgba(59, 130, 246, 0.2);
+    }
 
     /* Level badges */
     .level-badge {
@@ -3960,6 +4191,42 @@ export class WebReviewGenerator {
         });
       });
 
+      // Document view click handlers (Word/PDF)
+      document.querySelectorAll('.document-view [data-cell]').forEach(el => {
+        el.style.cursor = 'pointer';
+        el.addEventListener('click', (e) => {
+          const cellId = el.dataset.cell;
+          if (!cellId) return;
+
+          // Remove previous highlights
+          document.querySelectorAll('.document-view .highlighted').forEach(h => {
+            h.classList.remove('highlighted');
+          });
+          el.classList.add('highlighted');
+
+          // Find matching items (exact match)
+          const allItems = document.querySelectorAll('.item[data-cells]');
+          const matchingItems = [];
+          allItems.forEach(item => {
+            const cells = item.dataset.cells || '';
+            const cellRefs = cells.split(/[→,\\s]+/).map(c => c.trim());
+            if (cellRefs.includes(cellId)) {
+              matchingItems.push(item);
+            }
+          });
+
+          document.querySelectorAll('.item.selected').forEach(i => i.classList.remove('selected'));
+
+          if (matchingItems.length > 0) {
+            matchingItems.forEach(item => item.classList.add('selected'));
+            matchingItems[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            showToast(\`Found \${matchingItems.length} item(s) for \${cellId}\`);
+          } else {
+            showToast(\`No items reference \${cellId}\`);
+          }
+        });
+      });
+
       // Update cell selection UI
       function updateCellSelectionUI() {
         let existingUI = document.getElementById('cell-selection-ui');
@@ -4531,6 +4798,10 @@ export class WebReviewGenerator {
       document.querySelectorAll('.excel-table td.highlighted').forEach(td => {
         td.classList.remove('highlighted');
       });
+      // Also clear document view highlights
+      document.querySelectorAll('.document-view .highlighted').forEach(el => {
+        el.classList.remove('highlighted');
+      });
 
       if (!cellsStr) return;
 
@@ -4547,13 +4818,20 @@ export class WebReviewGenerator {
         });
       }
 
-      // Find cells in all sheets
+      // Find cells in all sheets (Excel tables and document views)
       const allSheets = document.querySelectorAll('.sheet-content');
       cells.forEach(cell => {
         allSheets.forEach((sheet, idx) => {
-          const td = sheet.querySelector(\`[data-cell="\${cell}"]\`);
+          // Try Excel table cell
+          const td = sheet.querySelector(\`td[data-cell="\${cell}"]\`);
           if (td) {
             td.classList.add('highlighted');
+            if (foundInSheet === null) foundInSheet = idx;
+          }
+          // Try document view element
+          const docEl = sheet.querySelector(\`.document-view [data-cell="\${cell}"]\`);
+          if (docEl) {
+            docEl.classList.add('highlighted');
             if (foundInSheet === null) foundInSheet = idx;
           }
         });

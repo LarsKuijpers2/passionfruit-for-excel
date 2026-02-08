@@ -17,12 +17,13 @@ import { BedrockRuntimeClient, InvokeModelCommand } from '@aws-sdk/client-bedroc
 // Types
 export interface FeedbackItem {
   id: string;
-  action: 'accepted' | 'rejected' | 'edited';
+  action: 'accepted' | 'rejected' | 'edited' | 'destination_changed';
   label: string;
   value?: string;
   cells?: string;
   section?: string;
   topic?: string;
+  destination?: string;
   reason?: string;
   editedLabel?: string;
   editedValue?: string;
@@ -188,7 +189,7 @@ export class ReviewServer {
     // Save single feedback item
     this.app.post('/api/feedback', async (req, res) => {
       try {
-        const { panel, item } = req.body;
+        const { panel, item, questionnaire } = req.body;
 
         if (!panel || !item) {
           return res.status(400).json({ error: 'Missing panel or item' });
@@ -204,8 +205,30 @@ export class ReviewServer {
           item.id = `${panel}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
         }
 
+        // Determine which questionnaire's feedback to update
+        const targetQuestionnaire = questionnaire || this.questionnaire;
+        const safeName = targetQuestionnaire.replace(/[^a-zA-Z0-9-_]/g, '_');
+        const feedbackPath = join(this.reviewDir, safeName, 'feedback.json');
+
+        // Load existing feedback for this questionnaire
+        let feedback: FeedbackData;
+        if (existsSync(feedbackPath)) {
+          feedback = JSON.parse(await readFile(feedbackPath, 'utf-8'));
+        } else {
+          feedback = {
+            meta: {
+              source: targetQuestionnaire,
+              questionnaire: targetQuestionnaire,
+              startedAt: new Date().toISOString(),
+              lastUpdatedAt: new Date().toISOString()
+            },
+            index: [],
+            library: []
+          };
+        }
+
         // Add to appropriate list (replace if same cells exist)
-        const list = panel === 'library' ? this.feedback.library : this.feedback.index;
+        const list = panel === 'library' ? feedback.library : feedback.index;
         const existingIndex = list.findIndex(f => f.cells === item.cells && f.label === item.label);
 
         if (existingIndex >= 0) {
@@ -215,10 +238,12 @@ export class ReviewServer {
         }
 
         // Update timestamp
-        this.feedback.meta.lastUpdatedAt = new Date().toISOString();
+        feedback.meta.lastUpdatedAt = new Date().toISOString();
 
-        // Auto-save
-        await this.saveFeedback();
+        // Save to questionnaire-specific path
+        await mkdir(dirname(feedbackPath), { recursive: true });
+        await writeFile(feedbackPath, JSON.stringify(feedback, null, 2), 'utf-8');
+        console.log(`Saved feedback to ${feedbackPath}`);
 
         res.json({ success: true, id: item.id });
       } catch (error) {
@@ -543,59 +568,96 @@ export class ReviewServer {
   /**
    * Generate preview of what will be exported
    */
-  private generateExportPreview(): { entityDb: any[]; answerLibrary: any[] } {
+  private generateExportPreview(): { entityDb: any[]; answerLibrary: any[]; productDb: any[] } {
     const indexAccepted = this.feedback.index.filter(f => f.action === 'accepted');
     const indexEdited = this.feedback.index.filter(f => f.action === 'edited');
     const libAccepted = this.feedback.library.filter(f => f.action === 'accepted');
     const libEdited = this.feedback.library.filter(f => f.action === 'edited');
 
-    // Entity DB topics (company-level data)
+    // Also include destination_changed items (they were moved but may not have accept/reject)
+    const destChanged = this.feedback.library.filter(f => f.action === 'destination_changed');
+
+    // Entity DB topics (company-level data) - used as fallback when no destination specified
     const entityTopics = ['company', 'contacts', 'certifications', 'financial', 'approval', 'signature'];
 
     // Separate entity-level from answer-library items
     const entityDb: any[] = [];
+    const productDb: any[] = [];
     const answerLibrary: any[] = [];
+
+    // Helper to determine destination
+    const getDestination = (item: any) => {
+      // If destination explicitly set by user, use it
+      if (item.destination) {
+        return item.destination;
+      }
+      // Fallback to topic-based detection
+      const topic = item.topic || 'other';
+      if (entityTopics.includes(topic)) {
+        return 'company';
+      }
+      return 'answer_library';
+    };
 
     // Process index items
     for (const item of [...indexAccepted, ...indexEdited]) {
       const topic = item.topic || 'other';
+      const destination = getDestination(item);
       const entry = {
         label: item.editedLabel || item.label,
         value: item.editedValue || item.value,
         cells: item.cells,
         section: item.section,
         topic,
+        destination,
         source: this.questionnaire,
         approvedAt: item.reviewedAt
       };
 
-      if (entityTopics.includes(topic)) {
+      if (destination === 'company') {
         entityDb.push(entry);
+      } else if (destination === 'product') {
+        productDb.push(entry);
       } else {
         answerLibrary.push(entry);
       }
     }
 
-    // Process library items (all go to answer library)
-    for (const item of [...libAccepted, ...libEdited]) {
-      answerLibrary.push({
+    // Process library items - respect user-defined destination
+    for (const item of [...libAccepted, ...libEdited, ...destChanged]) {
+      const destination = getDestination(item);
+      const entry = {
         label: item.editedLabel || item.label,
         value: item.editedValue || item.value,
         cells: item.cells,
         topic: item.topic || 'other',
+        destination,
         source: this.questionnaire,
         approvedAt: item.reviewedAt
-      });
+      };
+
+      if (destination === 'company') {
+        entityDb.push(entry);
+      } else if (destination === 'product') {
+        productDb.push(entry);
+      } else {
+        answerLibrary.push(entry);
+      }
     }
 
-    return { entityDb, answerLibrary };
+    return { entityDb, answerLibrary, productDb };
   }
 
   /**
    * Export approved items to database files
    */
-  private async exportApproved(): Promise<{ entityDb: any[]; answerLibrary: any[]; paths: { entityDb: string; answerLibrary: string } }> {
-    const { entityDb, answerLibrary } = this.generateExportPreview();
+  private async exportApproved(): Promise<{
+    entityDb: any[];
+    productDb: any[];
+    answerLibrary: any[];
+    paths: { entityDb: string; productDb: string; answerLibrary: string }
+  }> {
+    const { entityDb, productDb, answerLibrary } = this.generateExportPreview();
 
     // Create export directory
     const exportDir = './approved-exports';
@@ -605,7 +667,7 @@ export class ReviewServer {
 
     const timestamp = new Date().toISOString();
 
-    // Save Entity DB export
+    // Save Entity DB export (company-level data)
     const entityDbPath = join(questionnaireDir, 'entity-db.json');
     const entityDbExport = {
       meta: {
@@ -616,6 +678,18 @@ export class ReviewServer {
       items: entityDb
     };
     await writeFile(entityDbPath, JSON.stringify(entityDbExport, null, 2), 'utf-8');
+
+    // Save Product DB export (product-level data)
+    const productDbPath = join(questionnaireDir, 'product-db.json');
+    const productDbExport = {
+      meta: {
+        source: this.questionnaire,
+        exportedAt: timestamp,
+        version: '1.0'
+      },
+      items: productDb
+    };
+    await writeFile(productDbPath, JSON.stringify(productDbExport, null, 2), 'utf-8');
 
     // Save Answer Library export
     const answerLibraryPath = join(questionnaireDir, 'answer-library.json');
@@ -629,14 +703,17 @@ export class ReviewServer {
     };
     await writeFile(answerLibraryPath, JSON.stringify(answerLibraryExport, null, 2), 'utf-8');
 
-    console.log(`Exported ${entityDb.length} entity items to ${entityDbPath}`);
+    console.log(`Exported ${entityDb.length} entity (company) items to ${entityDbPath}`);
+    console.log(`Exported ${productDb.length} product items to ${productDbPath}`);
     console.log(`Exported ${answerLibrary.length} library items to ${answerLibraryPath}`);
 
     return {
       entityDb,
+      productDb,
       answerLibrary,
       paths: {
         entityDb: entityDbPath,
+        productDb: productDbPath,
         answerLibrary: answerLibraryPath
       }
     };

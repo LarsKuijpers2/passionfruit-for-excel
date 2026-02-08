@@ -201,6 +201,39 @@ export class WebReviewGenerator {
       color: var(--muted-foreground);
       font-size: 12px;
     }
+    .panel-search {
+      padding: 8px 16px;
+      background: transparent;
+    }
+    .panel-search input {
+      width: 100%;
+      padding: 6px 0;
+      background: transparent !important;
+      background-color: transparent !important;
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+      border-radius: 0;
+      color: var(--foreground);
+      font-size: 12px;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .panel-search input:focus {
+      outline: none;
+      border-bottom-color: rgba(255,255,255,0.3);
+      box-shadow: none;
+      background: transparent !important;
+    }
+    .panel-search input::placeholder {
+      color: rgba(255,255,255,0.4);
+    }
+    .panel-search input:-webkit-autofill,
+    .panel-search input:-webkit-autofill:hover,
+    .panel-search input:-webkit-autofill:focus {
+      -webkit-box-shadow: 0 0 0 1000px #1a1a1a inset !important;
+      -webkit-text-fill-color: var(--foreground) !important;
+      background-color: transparent !important;
+    }
     .panel-content {
       flex: 1;
       overflow: auto;
@@ -1099,8 +1132,8 @@ export class WebReviewGenerator {
     <div class="toggles">
       <span id="connection-status" class="connection-status checking" title="Checking server connection..."></span>
       <button class="toggle active" data-panel="original" title="Toggle Original (1)">Original</button>
-      <button class="toggle active" data-panel="indexed" title="Toggle Indexed (2)">Indexed</button>
-      <button class="toggle" data-panel="library" title="Toggle Library (3)">Library</button>
+      <button class="toggle active" data-panel="indexed" title="Toggle Extraction (2)">Extraction</button>
+      <button class="toggle active" data-panel="library" title="Toggle Save as (3)">Save as</button>
       <div class="toggle-divider"></div>
       <button class="toggle" id="review-toggle" title="Toggle review mode (R)">Review</button>
       <button class="toggle" id="sync-toggle" title="Sync panels (S)">
@@ -1147,7 +1180,7 @@ export class WebReviewGenerator {
     </div>
 
     <!-- Library View -->
-    <div class="panel" id="panel-library">
+    <div class="panel visible" id="panel-library">
       <div class="panel-header">
         <span>Save as</span>
         <div style="display: flex; align-items: center; gap: 12px;">
@@ -1357,7 +1390,10 @@ export class WebReviewGenerator {
               const panel = data.library?.includes(feedback) ? 'library' : 'indexed';
               const item = findItemByKey(feedback.cells, feedback.label, panel);
               if (item) {
-                item.classList.add('reviewed', feedback.action);
+                // Restore action state (skip destination_changed as it's just a change marker)
+                if (feedback.action && feedback.action !== 'destination_changed') {
+                  item.classList.add('reviewed', feedback.action);
+                }
                 if (feedback.reason) {
                   const noteDisplay = item.querySelector('.item-note-display');
                   if (noteDisplay) {
@@ -1373,8 +1409,27 @@ export class WebReviewGenerator {
                   const valueEl = item.querySelector('.item-value');
                   if (valueEl) valueEl.textContent = feedback.editedValue;
                 }
+                // Restore destination (move item to correct section in library panel)
+                if (feedback.destination && panel === 'library') {
+                  item.dataset.destination = feedback.destination;
+                  const targetSection = document.querySelector(\`#panel-library .section[data-destination="\${feedback.destination}"]\`);
+                  if (targetSection) {
+                    const itemsContainer = targetSection.querySelector('.section-items');
+                    if (itemsContainer && item.parentElement !== itemsContainer) {
+                      itemsContainer.appendChild(item);
+                    }
+                  }
+                }
                 window.feedbackLog.push({ ...feedback, panel });
               }
+            });
+
+            // Update section item counts after restoring destinations
+            document.querySelectorAll('#panel-library .section').forEach(section => {
+              const count = section.querySelectorAll('.item').length;
+              const metaSpan = section.querySelector('.section-meta span');
+              if (metaSpan) metaSpan.textContent = \`\${count} items\`;
+              section.style.display = count > 0 ? '' : 'none';
             });
 
             console.log('Loaded', allFeedback.length, 'feedback items from server');
@@ -1388,9 +1443,31 @@ export class WebReviewGenerator {
             data.feedbackLog.forEach(feedback => {
               const item = findItemByKey(feedback.cells, feedback.label, feedback.panel);
               if (item) {
-                item.classList.add('reviewed', feedback.action);
+                if (feedback.action && feedback.action !== 'destination_changed') {
+                  item.classList.add('reviewed', feedback.action);
+                }
+                // Restore destination (move item to correct section in library panel)
+                if (feedback.destination && feedback.panel === 'library') {
+                  item.dataset.destination = feedback.destination;
+                  const targetSection = document.querySelector(\`#panel-library .section[data-destination="\${feedback.destination}"]\`);
+                  if (targetSection) {
+                    const itemsContainer = targetSection.querySelector('.section-items');
+                    if (itemsContainer && item.parentElement !== itemsContainer) {
+                      itemsContainer.appendChild(item);
+                    }
+                  }
+                }
               }
             });
+
+            // Update section item counts after restoring destinations
+            document.querySelectorAll('#panel-library .section').forEach(section => {
+              const count = section.querySelectorAll('.item').length;
+              const metaSpan = section.querySelector('.section-meta span');
+              if (metaSpan) metaSpan.textContent = \`\${count} items\`;
+              section.style.display = count > 0 ? '' : 'none';
+            });
+
             console.log('Loaded', data.feedbackLog.length, 'feedback items from localStorage (offline mode)');
           }
         }
@@ -1426,7 +1503,7 @@ export class WebReviewGenerator {
           const res = await fetch(API_BASE + '/api/feedback', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ panel, item: feedbackItem })
+            body: JSON.stringify({ panel, item: feedbackItem, questionnaire: currentQuestionnaire })
           });
           if (!res.ok) throw new Error('Server save failed');
           console.log('Saved to server:', feedbackItem.label);
@@ -2651,17 +2728,67 @@ export class WebReviewGenerator {
       overflow-y: auto;
       padding: 16px;
     }
+    .panel-search {
+      padding: 8px 16px;
+      background: transparent;
+    }
+    .panel-search input {
+      width: 100%;
+      padding: 6px 0;
+      background: transparent !important;
+      background-color: transparent !important;
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+      border-radius: 0;
+      color: var(--foreground);
+      font-size: 12px;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .panel-search input:focus {
+      outline: none;
+      border-bottom-color: rgba(255,255,255,0.3);
+      box-shadow: none;
+      background: transparent !important;
+    }
+    .panel-search input::placeholder {
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* Sidebar overlay */
+    .sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 99;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+    .sidebar-overlay.visible {
+      opacity: 1;
+      visibility: visible;
+    }
 
     /* Sidebar */
     .sidebar {
+      position: fixed;
+      left: 0;
+      top: 56px;
+      bottom: 40px;
       width: 280px;
       background: var(--card);
       border-right: 1px solid var(--border);
-      display: none;
       flex-direction: column;
-      flex-shrink: 0;
+      z-index: 100;
+      transform: translateX(-100%);
+      transition: transform 0.2s ease;
+      display: flex;
     }
-    .sidebar.open { display: flex; }
+    .sidebar.open { transform: translateX(0); }
     .sidebar-header {
       padding: 12px 16px;
       border-bottom: 1px solid var(--border);
@@ -3278,6 +3405,8 @@ export class WebReviewGenerator {
 
   <!-- Main app -->
   <div class="app-container" id="app">
+    <!-- Sidebar overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
       <div class="sidebar-header">Questionnaires</div>
@@ -3303,8 +3432,8 @@ export class WebReviewGenerator {
       <div class="toggles">
         <span id="connection-status" class="connection-status checking"></span>
         <button class="toggle active" data-panel="original" title="Toggle Original (1)">Original</button>
-        <button class="toggle active" data-panel="indexed" title="Toggle Indexed (2)">Indexed</button>
-        <button class="toggle" data-panel="library" title="Toggle Library (3)">Library</button>
+        <button class="toggle active" data-panel="indexed" title="Toggle Extraction (2)">Extraction</button>
+        <button class="toggle active" data-panel="library" title="Toggle Save as (3)">Save as</button>
         <div class="toggle-divider"></div>
         <button class="toggle" id="review-toggle" title="Toggle review mode (R)">Review</button>
         <button class="toggle" id="complete-toggle" title="Complete Review">Complete Review (<span id="feedback-count">0</span>)</button>
@@ -3333,10 +3462,13 @@ export class WebReviewGenerator {
             <button class="group-btn reject-all" id="reject-all-indexed">✗ Reject All</button>
           </div>
         </div>
+        <div class="panel-search">
+          <input type="text" id="indexed-search" placeholder="Search label or value..." />
+        </div>
         <div class="panel-content" id="indexed-content"></div>
       </div>
 
-      <div class="panel" id="panel-library">
+      <div class="panel visible" id="panel-library">
         <div class="panel-header">
           <span>Save as</span>
           <span id="library-stats"></span>
@@ -3344,6 +3476,9 @@ export class WebReviewGenerator {
             <button class="group-btn accept-all" id="accept-all-library">✓ Accept All</button>
             <button class="group-btn reject-all" id="reject-all-library">✗ Reject All</button>
           </div>
+        </div>
+        <div class="panel-search">
+          <input type="text" id="library-search" placeholder="Search label or value..." />
         </div>
         <div class="panel-content" id="library-content"></div>
       </div>
@@ -3686,29 +3821,9 @@ export class WebReviewGenerator {
         }
       });
 
-      // Filter Library items by sheet (library is organized by topic, not sheet)
-      document.querySelectorAll('#panel-library .section').forEach(section => {
-        let visibleItems = 0;
-        section.querySelectorAll('.item').forEach(item => {
-          const itemSheet = item.dataset.sheet || '';
-          // When filtering by sheet, only show items that match that sheet exactly
-          // Items without sheet info (empty string) are hidden when filtering
-          if (!sheetName) {
-            // No filter - show all
-            item.style.display = '';
-            visibleItems++;
-          } else if (itemSheet === sheetName) {
-            // Exact match - show
-            item.style.display = '';
-            visibleItems++;
-          } else {
-            // No match or no sheet info - hide
-            item.style.display = 'none';
-          }
-        });
-        // Hide section if no visible items
-        section.style.display = visibleItems > 0 ? '' : 'none';
-      });
+      // Save as panel always shows ALL items from ALL sheets combined
+      // This allows spotting duplicates across sheets
+      // Items are already filtered by questionnaire source in renderLibraryPanel
 
       // Update stats to show filtered count
       updateFilteredStats(sheetName);
@@ -3732,16 +3847,11 @@ export class WebReviewGenerator {
         }
       }
 
-      // Update Library stats
-      const visibleLibraryItems = document.querySelectorAll('#panel-library .item:not([style*="display: none"])').length;
+      // Library stats - always shows all items (not filtered by sheet)
       const totalLibraryItems = document.querySelectorAll('#panel-library .item').length;
       const libraryStatsEl = document.getElementById('library-stats');
       if (libraryStatsEl) {
-        if (sheetName) {
-          libraryStatsEl.textContent = \`\${visibleLibraryItems} of \${totalLibraryItems} items (filtered)\`;
-        } else {
-          libraryStatsEl.textContent = \`\${totalLibraryItems} items\`;
-        }
+        libraryStatsEl.textContent = \`\${totalLibraryItems} items (all sheets)\`;
       }
     }
 
@@ -4035,6 +4145,53 @@ export class WebReviewGenerator {
         });
       });
 
+      // Search functionality for Extraction and Save as panels
+      function setupSearch(inputId, panelId) {
+        const input = document.getElementById(inputId);
+        if (!input) return;
+
+        input.addEventListener('input', () => {
+          const query = input.value.toLowerCase().trim();
+          const panel = document.getElementById(panelId);
+          if (!panel) return;
+
+          panel.querySelectorAll('.section').forEach(section => {
+            let visibleItems = 0;
+            section.querySelectorAll('.item').forEach(item => {
+              const label = (item.dataset.label || '').toLowerCase();
+              const value = (item.querySelector('.item-value')?.textContent || '').toLowerCase();
+
+              if (!query || label.includes(query) || value.includes(query)) {
+                item.style.display = '';
+                visibleItems++;
+              } else {
+                item.style.display = 'none';
+              }
+            });
+            // Hide section if no visible items
+            section.style.display = visibleItems > 0 ? '' : 'none';
+          });
+
+          // Update stats
+          const statsId = panelId === 'panel-indexed' ? 'indexed-stats' : 'library-stats';
+          const statsEl = document.getElementById(statsId);
+          if (statsEl) {
+            const visibleCount = panel.querySelectorAll('.item:not([style*="display: none"])').length;
+            const totalCount = panel.querySelectorAll('.item').length;
+            if (query) {
+              statsEl.textContent = \`\${visibleCount} of \${totalCount} items (searching)\`;
+            } else {
+              statsEl.textContent = panelId === 'panel-library'
+                ? \`\${totalCount} items (all sheets)\`
+                : \`\${totalCount} items\`;
+            }
+          }
+        });
+      }
+
+      setupSearch('indexed-search', 'panel-indexed');
+      setupSearch('library-search', 'panel-library');
+
       // Review mode toggle
       document.getElementById('review-toggle')?.addEventListener('click', function() {
         this.classList.toggle('active');
@@ -4042,9 +4199,16 @@ export class WebReviewGenerator {
       });
 
       // Sidebar toggle
-      document.getElementById('sidebar-toggle')?.addEventListener('click', () => {
-        document.getElementById('sidebar')?.classList.toggle('open');
-      });
+      const sidebar = document.getElementById('sidebar');
+      const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+      function toggleSidebar() {
+        sidebar?.classList.toggle('open');
+        sidebarOverlay?.classList.toggle('visible');
+      }
+
+      document.getElementById('sidebar-toggle')?.addEventListener('click', toggleSidebar);
+      sidebarOverlay?.addEventListener('click', toggleSidebar);
 
       // Clear feedback
       document.getElementById('clear-toggle')?.addEventListener('click', async () => {
@@ -4638,15 +4802,33 @@ export class WebReviewGenerator {
             changes++;
           }
 
-          // Library mode: update data source
+          // Library mode: update data source and move to correct section
           if (isLibraryMode && dataSource) {
-            item.dataset.dataSource = dataSource;
-            // Update visual indicator
-            const badge = item.querySelector('.level-badge');
-            if (badge) {
-              const labels = { answer_library: 'LIBRARY', entities: 'ENTITY', products: 'PRODUCT' };
-              badge.textContent = labels[dataSource] || dataSource.toUpperCase();
+            // Map dropdown values to destination keys
+            const destMap = { answer_library: 'answer_library', entities: 'company', products: 'product' };
+            const newDest = destMap[dataSource] || dataSource;
+            item.dataset.destination = newDest;
+
+            // Find the target section and move the item
+            const targetSection = document.querySelector(\`#panel-library .section[data-destination="\${newDest}"]\`);
+            if (targetSection) {
+              const itemsContainer = targetSection.querySelector('.section-items');
+              if (itemsContainer && item.parentElement !== itemsContainer) {
+                itemsContainer.appendChild(item);
+              }
             }
+
+            // Update section item counts
+            document.querySelectorAll('#panel-library .section').forEach(section => {
+              const count = section.querySelectorAll('.item').length;
+              const metaSpan = section.querySelector('.section-meta span');
+              if (metaSpan) metaSpan.textContent = \`\${count} items\`;
+              // Hide empty sections
+              section.style.display = count > 0 ? '' : 'none';
+            });
+
+            // Save destination change
+            await logFeedback(item, 'destination_changed', \`Moved to \${newDest}\`);
             changes++;
           }
 
@@ -4742,6 +4924,7 @@ export class WebReviewGenerator {
         cells: item.dataset.cells,
         section: item.dataset.section,
         topic: item.dataset.topic,
+        destination: item.dataset.destination,
         reason: note,
         reviewedAt: new Date().toISOString()
       };
@@ -4763,7 +4946,7 @@ export class WebReviewGenerator {
           await fetch(API_BASE + '/api/feedback', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ panel, item: feedbackItem })
+            body: JSON.stringify({ panel, item: feedbackItem, questionnaire: currentQuestionnaire })
           });
         } catch (err) {
           console.error('Failed to save feedback:', err);
@@ -4797,7 +4980,27 @@ export class WebReviewGenerator {
           } else if (fb.action === 'rejected') {
             item.classList.add('reviewed', 'wrong', 'rejected');
           }
+
+          // Handle destination changes
+          if (fb.destination) {
+            item.dataset.destination = fb.destination;
+            const targetSection = document.querySelector(\`#panel-library .section[data-destination="\${fb.destination}"]\`);
+            if (targetSection) {
+              const itemsContainer = targetSection.querySelector('.section-items');
+              if (itemsContainer && item.parentElement !== itemsContainer) {
+                itemsContainer.appendChild(item);
+              }
+            }
+          }
         });
+      });
+
+      // Update section item counts after restoring destinations
+      document.querySelectorAll('#panel-library .section').forEach(section => {
+        const count = section.querySelectorAll('.item').length;
+        const metaSpan = section.querySelector('.section-meta span');
+        if (metaSpan) metaSpan.textContent = \`\${count} items\`;
+        section.style.display = count > 0 ? '' : 'none';
       });
     }
 

@@ -19,7 +19,7 @@ import type {
 // =============================================================================
 
 interface FieldPattern {
-  field: keyof ExtractedEntityData | string;
+  field: string;
   patterns: RegExp[];
   /** For nested fields like contacts[].name */
   nested?: {

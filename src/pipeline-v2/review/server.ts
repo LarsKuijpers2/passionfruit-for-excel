@@ -7,8 +7,8 @@
 
 import express from 'express';
 import cors from 'cors';
-import { readFile, writeFile, mkdir } from 'fs/promises';
-import { join, dirname } from 'path';
+import { readFile, writeFile, mkdir, readdir } from 'fs/promises';
+import { join, dirname, basename } from 'path';
 import { existsSync } from 'fs';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
 import { exec } from 'child_process';
@@ -98,6 +98,17 @@ export class ReviewServer {
     // Health check
     this.app.get('/api/health', (req, res) => {
       res.json({ status: 'ok', questionnaire: this.questionnaire });
+    });
+
+    // List all available questionnaires
+    this.app.get('/api/questionnaires', async (req, res) => {
+      try {
+        const questionnaires = await this.listQuestionnaires();
+        res.json({ questionnaires, current: this.questionnaire });
+      } catch (error) {
+        console.error('Error listing questionnaires:', error);
+        res.status(500).json({ error: 'Failed to list questionnaires' });
+      }
     });
 
     // Get current feedback status
@@ -246,6 +257,28 @@ export class ReviewServer {
         res.status(500).json({ error: 'Failed to generate rules' });
       }
     });
+
+    // Export approved items to database files
+    this.app.post('/api/export-approved', async (req, res) => {
+      try {
+        const exported = await this.exportApproved();
+        res.json({ success: true, exported });
+      } catch (error) {
+        console.error('Error exporting approved:', error);
+        res.status(500).json({ error: 'Failed to export approved items' });
+      }
+    });
+
+    // Get export preview
+    this.app.get('/api/export-approved/preview', async (req, res) => {
+      try {
+        const preview = this.generateExportPreview();
+        res.json(preview);
+      } catch (error) {
+        console.error('Error generating export preview:', error);
+        res.status(500).json({ error: 'Failed to generate preview' });
+      }
+    });
   }
 
   private async saveFeedback(): Promise<void> {
@@ -366,6 +399,175 @@ export class ReviewServer {
     console.log(`Saved rules to ${indexRulesPath} and ${harvestRulesPath}`);
   }
 
+  /**
+   * Generate preview of what will be exported
+   */
+  private generateExportPreview(): { entityDb: any[]; answerLibrary: any[] } {
+    const indexAccepted = this.feedback.index.filter(f => f.action === 'accepted');
+    const indexEdited = this.feedback.index.filter(f => f.action === 'edited');
+    const libAccepted = this.feedback.library.filter(f => f.action === 'accepted');
+    const libEdited = this.feedback.library.filter(f => f.action === 'edited');
+
+    // Entity DB topics (company-level data)
+    const entityTopics = ['company', 'contacts', 'certifications', 'financial', 'approval', 'signature'];
+
+    // Separate entity-level from answer-library items
+    const entityDb: any[] = [];
+    const answerLibrary: any[] = [];
+
+    // Process index items
+    for (const item of [...indexAccepted, ...indexEdited]) {
+      const topic = item.topic || 'other';
+      const entry = {
+        label: item.editedLabel || item.label,
+        value: item.editedValue || item.value,
+        cells: item.cells,
+        section: item.section,
+        topic,
+        source: this.questionnaire,
+        approvedAt: item.reviewedAt
+      };
+
+      if (entityTopics.includes(topic)) {
+        entityDb.push(entry);
+      } else {
+        answerLibrary.push(entry);
+      }
+    }
+
+    // Process library items (all go to answer library)
+    for (const item of [...libAccepted, ...libEdited]) {
+      answerLibrary.push({
+        label: item.editedLabel || item.label,
+        value: item.editedValue || item.value,
+        cells: item.cells,
+        topic: item.topic || 'other',
+        source: this.questionnaire,
+        approvedAt: item.reviewedAt
+      });
+    }
+
+    return { entityDb, answerLibrary };
+  }
+
+  /**
+   * Export approved items to database files
+   */
+  private async exportApproved(): Promise<{ entityDb: any[]; answerLibrary: any[]; paths: { entityDb: string; answerLibrary: string } }> {
+    const { entityDb, answerLibrary } = this.generateExportPreview();
+
+    // Create export directory
+    const exportDir = './approved-exports';
+    const safeName = this.questionnaire.replace(/[^a-zA-Z0-9-_]/g, '_');
+    const questionnaireDir = join(exportDir, safeName);
+    await mkdir(questionnaireDir, { recursive: true });
+
+    const timestamp = new Date().toISOString();
+
+    // Save Entity DB export
+    const entityDbPath = join(questionnaireDir, 'entity-db.json');
+    const entityDbExport = {
+      meta: {
+        source: this.questionnaire,
+        exportedAt: timestamp,
+        version: '1.0'
+      },
+      items: entityDb
+    };
+    await writeFile(entityDbPath, JSON.stringify(entityDbExport, null, 2), 'utf-8');
+
+    // Save Answer Library export
+    const answerLibraryPath = join(questionnaireDir, 'answer-library.json');
+    const answerLibraryExport = {
+      meta: {
+        source: this.questionnaire,
+        exportedAt: timestamp,
+        version: '1.0'
+      },
+      items: answerLibrary
+    };
+    await writeFile(answerLibraryPath, JSON.stringify(answerLibraryExport, null, 2), 'utf-8');
+
+    console.log(`Exported ${entityDb.length} entity items to ${entityDbPath}`);
+    console.log(`Exported ${answerLibrary.length} library items to ${answerLibraryPath}`);
+
+    return {
+      entityDb,
+      answerLibrary,
+      paths: {
+        entityDb: entityDbPath,
+        answerLibrary: answerLibraryPath
+      }
+    };
+  }
+
+  /**
+   * List all available questionnaires from indexed folder
+   */
+  private async listQuestionnaires(): Promise<Array<{
+    name: string;
+    displayName: string;
+    hasReview: boolean;
+    reviewUrl?: string;
+    indexed: boolean;
+    feedbackCount?: number;
+  }>> {
+    const indexedDir = './indexed';
+    const questionnaires: Array<{
+      name: string;
+      displayName: string;
+      hasReview: boolean;
+      reviewUrl?: string;
+      indexed: boolean;
+      feedbackCount?: number;
+    }> = [];
+
+    try {
+      const files = await readdir(indexedDir);
+
+      for (const file of files) {
+        if (!file.endsWith('.yaml') && !file.endsWith('.yml')) continue;
+
+        const name = file.replace(/\.(yaml|yml)$/, '');
+        const safeName = name.replace(/[^a-zA-Z0-9]/g, '_');
+
+        // Check if review HTML exists
+        const reviewHtmlPath = join(this.reviewDir, `${safeName}_review.html`);
+        const hasReview = existsSync(reviewHtmlPath);
+
+        // Check feedback count
+        let feedbackCount = 0;
+        const feedbackPath = join(this.reviewDir, safeName, 'feedback.json');
+        if (existsSync(feedbackPath)) {
+          try {
+            const feedbackData = JSON.parse(await readFile(feedbackPath, 'utf-8'));
+            feedbackCount = (feedbackData.index?.length || 0) + (feedbackData.library?.length || 0);
+          } catch {}
+        }
+
+        // Create display name (shorter, more readable)
+        const displayName = name
+          .replace(/_/g, ' ')
+          .replace(/\d{8}/, (d) => `${d.slice(0,4)}-${d.slice(4,6)}-${d.slice(6,8)}`)
+          .replace(/  +/g, ' ')
+          .trim();
+
+        questionnaires.push({
+          name,
+          displayName,
+          hasReview,
+          reviewUrl: hasReview ? `${safeName}_review.html` : undefined,
+          indexed: true,
+          feedbackCount
+        });
+      }
+    } catch (error) {
+      console.error('Error reading indexed directory:', error);
+    }
+
+    return questionnaires;
+  }
+
   async start(): Promise<void> {
     // Load existing feedback
     await this.loadFeedback();
@@ -375,14 +577,17 @@ export class ReviewServer {
         console.log(`\nReview server running at http://localhost:${this.port}`);
         console.log(`Questionnaire: ${this.questionnaire}`);
         console.log(`\nAPI endpoints:`);
-        console.log(`  GET  /api/health     - Health check`);
-        console.log(`  GET  /api/status     - Review status`);
-        console.log(`  GET  /api/feedback   - Get all feedback`);
-        console.log(`  POST /api/feedback   - Save feedback item`);
-        console.log(`  POST /api/feedback/bulk - Save multiple items`);
-        console.log(`  DELETE /api/feedback - Clear all feedback`);
-        console.log(`  POST /api/apply-rules - Apply rules from feedback`);
-        console.log(`  GET  /api/rules/preview - Preview generated rules`);
+        console.log(`  GET  /api/health           - Health check`);
+        console.log(`  GET  /api/questionnaires   - List all questionnaires`);
+        console.log(`  GET  /api/status           - Review status`);
+        console.log(`  GET  /api/feedback         - Get all feedback`);
+        console.log(`  POST /api/feedback         - Save feedback item`);
+        console.log(`  POST /api/feedback/bulk    - Save multiple items`);
+        console.log(`  DELETE /api/feedback       - Clear all feedback`);
+        console.log(`  POST /api/apply-rules      - Apply rules from feedback`);
+        console.log(`  GET  /api/rules/preview    - Preview generated rules`);
+        console.log(`  POST /api/export-approved  - Export approved to DB files`);
+        console.log(`  GET  /api/export-approved/preview - Preview export`);
         console.log(`\nPress Ctrl+C to stop\n`);
         resolve();
       });

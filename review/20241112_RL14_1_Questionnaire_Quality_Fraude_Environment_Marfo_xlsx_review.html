@@ -85,7 +85,8 @@
     /* Main layout */
     .main {
       display: flex;
-      height: calc(100vh - 56px);
+      height: calc(100vh - 56px - 40px); /* header + stats bar */
+      overflow: hidden;
     }
 
     /* Panels */
@@ -511,8 +512,13 @@
     }
     .item.has-note .item-note-display { display: block; }
 
-    /* Hide buttons on reviewed items, but show note */
-    .item.reviewed .item-actions { display: none !important; }
+    /* Keep action buttons visible on reviewed items so user can change decision */
+    .item.reviewed .item-actions { opacity: 0.6; }
+    .item.reviewed:hover .item-actions { opacity: 1; }
+    .item.reviewed.correct .action-btn.correct,
+    .item.reviewed.accepted .action-btn.correct { background: #14532d; color: #4ade80; border-color: #166534; }
+    .item.reviewed.wrong .action-btn.wrong,
+    .item.reviewed.rejected .action-btn.wrong { background: #7f1d1d; color: #fca5a5; border-color: #991b1b; }
     .item.reviewed.edited { border-left: 3px solid #a855f7; }
 
     /* Edit mode */
@@ -648,15 +654,283 @@
       transition: opacity 0.2s;
     }
     .toast.visible { opacity: 1; }
+
+    /* Connection status */
+    .connection-status {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+    .connection-status.connected { background: #22c55e; }
+    .connection-status.disconnected { background: #ef4444; }
+    .connection-status.checking { background: #f59e0b; }
+
+    /* Sidebar Navigation */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 280px;
+      background: var(--card);
+      border-right: 1px solid var(--border);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(-100%);
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .sidebar.open {
+      transform: translateX(0);
+    }
+    .sidebar-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .sidebar-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--foreground);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sidebar-title svg {
+      width: 16px;
+      height: 16px;
+      opacity: 0.7;
+    }
+    .sidebar-close {
+      background: none;
+      border: none;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+    .sidebar-close:hover {
+      background: var(--muted);
+      color: var(--foreground);
+    }
+    .sidebar-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+    }
+    .sidebar-section {
+      margin-bottom: 16px;
+    }
+    .sidebar-section-title {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted-foreground);
+      padding: 0 8px;
+      margin-bottom: 8px;
+    }
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: var(--radius);
+      color: var(--muted-foreground);
+      text-decoration: none;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.15s;
+      margin-bottom: 2px;
+    }
+    .sidebar-item:hover {
+      background: var(--muted);
+      color: var(--foreground);
+    }
+    .sidebar-item.active {
+      background: var(--secondary);
+      color: var(--foreground);
+    }
+    .sidebar-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 16px;
+      background: var(--foreground);
+      border-radius: 0 2px 2px 0;
+    }
+    .sidebar-item-icon {
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .sidebar-item-icon svg {
+      width: 14px;
+      height: 14px;
+    }
+    .sidebar-item-content {
+      flex: 1;
+      min-width: 0;
+    }
+    .sidebar-item-name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sidebar-item-meta {
+      font-size: 10px;
+      color: var(--muted-foreground);
+      margin-top: 2px;
+    }
+    .sidebar-item-badge {
+      background: var(--muted);
+      color: var(--muted-foreground);
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 9999px;
+      flex-shrink: 0;
+    }
+    .sidebar-item-badge.has-feedback {
+      background: #14532d;
+      color: #4ade80;
+    }
+    .sidebar-footer {
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--muted-foreground);
+    }
+    .sidebar-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 99;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s;
+    }
+    .sidebar-overlay.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Sidebar toggle button */
+    .sidebar-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: var(--secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--muted-foreground);
+      cursor: pointer;
+      margin-right: 8px;
+      transition: all 0.15s;
+    }
+    .sidebar-toggle:hover {
+      background: var(--muted);
+      color: var(--foreground);
+    }
+    .sidebar-toggle svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Loading state for questionnaires */
+    .sidebar-loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: var(--muted-foreground);
+      font-size: 12px;
+    }
+    .sidebar-loading::before {
+      content: '';
+      width: 14px;
+      height: 14px;
+      border: 2px solid var(--border);
+      border-top-color: var(--foreground);
+      border-radius: 50%;
+      margin-right: 8px;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Empty state */
+    .sidebar-empty {
+      padding: 20px;
+      text-align: center;
+      color: var(--muted-foreground);
+      font-size: 12px;
+    }
   </style>
 </head>
 <body>
+  <!-- Sidebar Navigation -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-title">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+          <polyline points="14 2 14 8 20 8"/>
+        </svg>
+        Questionnaires
+      </div>
+      <button class="sidebar-close" id="sidebar-close" title="Close sidebar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="sidebar-content">
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Indexed</div>
+        <div id="questionnaire-list">
+          <div class="sidebar-loading">Loading questionnaires...</div>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar-footer">
+      Press <kbd>B</kbd> to toggle sidebar
+    </div>
+  </div>
+
   <div class="header">
-    <div>
-      <h1>20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx</h1>
-      <div class="meta">Indexed: 2026-02-08 | Language: NL | 27 items</div>
+    <div style="display: flex; align-items: center;">
+      <button class="sidebar-toggle" id="sidebar-toggle" title="Open questionnaire list (B)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <div>
+        <h1>20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx</h1>
+        <div class="meta">Indexed: 2026-02-08 | Language: NL | 27 items</div>
+      </div>
     </div>
     <div class="toggles">
+      <span id="connection-status" class="connection-status checking" title="Checking server connection..."></span>
       <button class="toggle active" data-panel="original" title="Toggle Original (1)">Original</button>
       <button class="toggle active" data-panel="indexed" title="Toggle Indexed (2)">Indexed</button>
       <button class="toggle" data-panel="library" title="Toggle Library (3)">Library</button>
@@ -665,7 +939,7 @@
       <button class="toggle" id="sync-toggle" title="Sync panels (S)">
         <span class="sync-icon">⟷</span> Sync
       </button>
-      <button class="toggle" id="export-toggle" title="Export all feedback files">💾 Save</button>
+      <button class="toggle" id="complete-toggle" title="Save approved data and apply learning rules">Complete Review</button>
       <button class="toggle" id="clear-toggle" title="Clear all feedback">Clear</button>
       <button class="toggle" id="help-toggle" title="Show shortcuts (?)">?</button>
     </div>
@@ -707,7 +981,11 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
     <div class="panel visible" id="panel-indexed">
       <div class="panel-header">
         <span>Indexed Structure</span>
-        <span class="count">7 sections, 27 items</span>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span class="count">7 sections, 27 items</span>
+          <button class="group-btn accept-all" id="accept-all-indexed" title="Accept all indexed items">✓ Accept All</button>
+          <button class="group-btn reject-all" id="reject-all-indexed" title="Reject all indexed items">✗ Reject All</button>
+        </div>
       </div>
       <div class="panel-content">
         
@@ -729,7 +1007,7 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
             </div>
           </div>
           <div class="section-items">
-        <div class="item" data-index="0" data-cells="A8,C8" data-label="Bedrijfsnaam" data-section="Algemene informatie">
+        <div class="item" data-index="0" data-cells="A8,C8" data-label="Bedrijfsnaam" data-section="Algemene informatie" data-topic="company">
           <div class="item-header">
             <span class="item-label">Bedrijfsnaam</span>
             <span class="item-meta">A8 → C8</span>
@@ -750,7 +1028,7 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
           </div>
         </div>
       
-        <div class="item" data-index="1" data-cells="A9,C9" data-label="Adres" data-section="Algemene informatie">
+        <div class="item" data-index="1" data-cells="A9,C9" data-label="Adres" data-section="Algemene informatie" data-topic="company">
           <div class="item-header">
             <span class="item-label">Adres</span>
             <span class="item-meta">A9 → C9</span>
@@ -771,7 +1049,7 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
           </div>
         </div>
       
-        <div class="item" data-index="2" data-cells="A10,C10" data-label="Postcode, plaats, land" data-section="Algemene informatie">
+        <div class="item" data-index="2" data-cells="A10,C10" data-label="Postcode, plaats, land" data-section="Algemene informatie" data-topic="company">
           <div class="item-header">
             <span class="item-label">Postcode, plaats, land</span>
             <span class="item-meta">A10 → C10</span>
@@ -792,7 +1070,7 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
           </div>
         </div>
       
-        <div class="item" data-index="3" data-cells="A11,C11" data-label="Contactpersoon" data-section="Algemene informatie">
+        <div class="item" data-index="3" data-cells="A11,C11" data-label="Contactpersoon" data-section="Algemene informatie" data-topic="company">
           <div class="item-header">
             <span class="item-label">Contactpersoon</span>
             <span class="item-meta">A11 → C11</span>
@@ -813,7 +1091,7 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
           </div>
         </div>
       
-        <div class="item" data-index="4" data-cells="A12,C12" data-label="Functie" data-section="Algemene informatie">
+        <div class="item" data-index="4" data-cells="A12,C12" data-label="Functie" data-section="Algemene informatie" data-topic="company">
           <div class="item-header">
             <span class="item-label">Functie</span>
             <span class="item-meta">A12 → C12</span>
@@ -834,7 +1112,7 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
           </div>
         </div>
       
-        <div class="item" data-index="5" data-cells="A13,C13" data-label="Telefoonnummer" data-section="Algemene informatie">
+        <div class="item" data-index="5" data-cells="A13,C13" data-label="Telefoonnummer" data-section="Algemene informatie" data-topic="company">
           <div class="item-header">
             <span class="item-label">Telefoonnummer</span>
             <span class="item-meta">A13 → C13</span>
@@ -855,7 +1133,7 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
           </div>
         </div>
       
-        <div class="item" data-index="6" data-cells="A14,C14" data-label="Email-adres" data-section="Algemene informatie">
+        <div class="item" data-index="6" data-cells="A14,C14" data-label="Email-adres" data-section="Algemene informatie" data-topic="company">
           <div class="item-header">
             <span class="item-label">Email-adres</span>
             <span class="item-meta">A14 → C14</span>
@@ -876,7 +1154,7 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
           </div>
         </div>
       
-        <div class="item" data-index="7" data-cells="A15,C15" data-label="Bedrijfsactiviteiten" data-section="Algemene informatie">
+        <div class="item" data-index="7" data-cells="A15,C15" data-label="Bedrijfsactiviteiten" data-section="Algemene informatie" data-topic="company">
           <div class="item-header">
             <span class="item-label">Bedrijfsactiviteiten</span>
             <span class="item-meta">A15 → C15</span>
@@ -897,7 +1175,7 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
           </div>
         </div>
       
-        <div class="item" data-index="8" data-cells="A16,C16" data-label="Product range" data-section="Algemene informatie">
+        <div class="item" data-index="8" data-cells="A16,C16" data-label="Product range" data-section="Algemene informatie" data-topic="company">
           <div class="item-header">
             <span class="item-label">Product range</span>
             <span class="item-meta">A16 → C16</span>
@@ -918,7 +1196,7 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
           </div>
         </div>
       
-        <div class="item" data-index="9" data-cells="A17,C17" data-label="EG-nummer (indien van toepassing)" data-section="Algemene informatie">
+        <div class="item" data-index="9" data-cells="A17,C17" data-label="EG-nummer (indien van toepassing)" data-section="Algemene informatie" data-topic="company">
           <div class="item-header">
             <span class="item-label">EG-nummer (indien van toepassing)</span>
             <span class="item-meta">A17 → C17</span>
@@ -959,9 +1237,9 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
             </div>
           </div>
           <div class="section-items">
-        <div class="item" data-index="10" data-cells="A21,C21" data-label="Welke kwaliteitsstandaarden zijn in werking binnen uw bedrijf" data-section="Kwaliteitsmanagement">
+        <div class="item" data-index="10" data-cells="A21,C21" data-label="Welke kwaliteitsstandaarden zijn in werking binnen uw bedrijf?" data-section="Kwaliteitsmanagement" data-topic="quality">
           <div class="item-header">
-            <span class="item-label">Welke kwaliteitsstandaarden zijn in werking binnen uw bedrijf</span>
+            <span class="item-label">Welke kwaliteitsstandaarden zijn in werking binnen uw bedrijf?</span>
             <span class="item-meta">A21 → C21</span>
           </div>
           <div class="item-value">VLOG en Weidegang</div>
@@ -980,12 +1258,12 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
           </div>
         </div>
       
-        <div class="item" data-index="11" data-cells="A22,C22" data-label="Hoe is contaminatie met vreemde delen gecontroleerd" data-section="Kwaliteitsmanagement">
+        <div class="item" data-index="11" data-cells="A22,C22" data-label="Hoe is contaminatie met vreemde delen (metaal, steentjes, hout, etc.) voorkomen?" data-section="Kwaliteitsmanagement" data-topic="quality">
           <div class="item-header">
-            <span class="item-label">Hoe is contaminatie met vreemde delen gecontroleerd</span>
+            <span class="item-label">Hoe is contaminatie met vreemde delen (metaal, steentjes, hout, etc.) voorkomen?</span>
             <span class="item-meta">A22 → C22</span>
           </div>
-          <div class="item-value">Controle op metaaldeeltjes door metaaldetector verder visuel</div>
+          <div class="item-value">Controle op metaaldeeltjes door metaaldetector verder visuele controle</div>
           <div class="item-note-display"></div>
           <div class="item-actions review-only">
             <button class="action-btn correct" title="Accept (C)">✓</button>
@@ -1001,9 +1279,9 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
           </div>
         </div>
       
-        <div class="item" data-index="12" data-cells="A23,C23" data-label="Hoe is verontreiniging met niet gedeclareerde allergenen voorkomen" data-section="Kwaliteitsmanagement">
+        <div class="item" data-index="12" data-cells="A23,C23" data-label="Hoe is verontreiniging met niet gedeclareerde allergenen in het eindproduct voorkomen?" data-section="Kwaliteitsmanagement" data-topic="quality">
           <div class="item-header">
-            <span class="item-label">Hoe is verontreiniging met niet gedeclareerde allergenen voorkomen</span>
+            <span class="item-label">Hoe is verontreiniging met niet gedeclareerde allergenen in het eindproduct voorkomen?</span>
             <span class="item-meta">A23 → C23</span>
           </div>
           <div class="item-value">Alleen melk, als allergeen, wordt binnen ons pand verwerkt.</div>
@@ -1022,9 +1300,9 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
           </div>
         </div>
       
-        <div class="item" data-index="13" data-cells="A24,C24" data-label="Als uw bedrijf niet gecertificeerd is volgens een van de GFSI" data-section="Kwaliteitsmanagement">
+        <div class="item" data-index="13" data-cells="A24,C24" data-label="Als uw bedrijf niet gecertificeerd is volgens een van de GFSI standaarden..." data-section="Kwaliteitsmanagement" data-topic="quality">
           <div class="item-header">
-            <span class="item-label">Als uw bedrijf niet gecertificeerd is volgens een van de GFSI</span>
+            <span class="item-label">Als uw bedrijf niet gecertificeerd is volgens een van de GFSI standaarden...</span>
             <span class="item-meta">A24 → C24</span>
           </div>
           <div class="item-value empty">(empty)</div>
@@ -1063,12 +1341,12 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
             </div>
           </div>
           <div class="section-items">
-        <div class="item" data-index="14" data-cells="A29,C29" data-label="Leg kort uit hoe gevaren die via de grondstoffen uw product kunnen beïnvloeden" data-section="Chemische, Fysische en Microbiologische gevaren">
+        <div class="item" data-index="14" data-cells="A29,C29" data-label="Leg kort uit hoe gevaren die via de grondstoffen uw product kunnen beïnvloeden worden beheerst" data-section="Chemische, Fysische en Microbiologische gevaren" data-topic="microbiology">
           <div class="item-header">
-            <span class="item-label">Leg kort uit hoe gevaren die via de grondstoffen uw product kunnen beïnvloeden</span>
+            <span class="item-label">Leg kort uit hoe gevaren die via de grondstoffen uw product kunnen beïnvloeden worden beheerst</span>
             <span class="item-meta">A29 → C29</span>
           </div>
-          <div class="item-value">Afstemming binnen het HACCP team betreffende gevaren. Daar w</div>
+          <div class="item-value">Afstemming binnen het HACCP team betreffende gevaren. Daar worden maatregelen genomen.</div>
           <div class="item-note-display"></div>
           <div class="item-actions review-only">
             <button class="action-btn correct" title="Accept (C)">✓</button>
@@ -1084,12 +1362,12 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
           </div>
         </div>
       
-        <div class="item" data-index="15" data-cells="A30,C30" data-label="Voert u Chemische en/of microbiologische analyses uit" data-section="Chemische, Fysische en Microbiologische gevaren">
+        <div class="item" data-index="15" data-cells="A30,C30" data-label="Voert u Chemische en/of microbiologische analyses uit om de veiligheid van uw product te waarborgen?" data-section="Chemische, Fysische en Microbiologische gevaren" data-topic="microbiology">
           <div class="item-header">
-            <span class="item-label">Voert u Chemische en/of microbiologische analyses uit</span>
+            <span class="item-label">Voert u Chemische en/of microbiologische analyses uit om de veiligheid van uw product te waarborgen?</span>
             <span class="item-meta">A30 → C30</span>
           </div>
-          <div class="item-value">Er worden volgen monsterplanning onderzoeken op microbiologi</div>
+          <div class="item-value">Er worden volgen monsterplanning onderzoeken op microbiologisch gebied uitgevoerd.</div>
           <div class="item-note-display"></div>
           <div class="item-actions review-only">
             <button class="action-btn correct" title="Accept (C)">✓</button>
@@ -1125,9 +1403,9 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
             </div>
           </div>
           <div class="section-items">
-        <div class="item" data-index="16" data-cells="A35,C35" data-label="Is er een Food Fraude-analyse uitgevoerd op de grondstoffen" data-section="Food Fraude management">
+        <div class="item" data-index="16" data-cells="A35,C35" data-label="Is er een Food Fraude-analyse uitgevoerd op de grondstoffen en ingrediënten?" data-section="Food Fraude management" data-topic="food_fraud">
           <div class="item-header">
-            <span class="item-label">Is er een Food Fraude-analyse uitgevoerd op de grondstoffen</span>
+            <span class="item-label">Is er een Food Fraude-analyse uitgevoerd op de grondstoffen en ingrediënten?</span>
             <span class="item-meta">A35 → C35</span>
           </div>
           <div class="item-value">Ja</div>
@@ -1146,12 +1424,12 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
           </div>
         </div>
       
-        <div class="item" data-index="17" data-cells="A36,C36" data-label="Voert u analyses uit op grondstoffen om fraude eerder in het proces te detecteren" data-section="Food Fraude management">
+        <div class="item" data-index="17" data-cells="A36,C36" data-label="Voert u analyses uit op grondstoffen om fraude eerder in het proces te detecteren?" data-section="Food Fraude management" data-topic="food_fraud">
           <div class="item-header">
-            <span class="item-label">Voert u analyses uit op grondstoffen om fraude eerder in het proces te detecteren</span>
+            <span class="item-label">Voert u analyses uit op grondstoffen om fraude eerder in het proces te detecteren?</span>
             <span class="item-meta">A36 → C36</span>
           </div>
-          <div class="item-value">Nee. We kopen kaas in van gecertificeerde producenten. Er wo</div>
+          <div class="item-value">Nee. We kopen kaas in van gecertificeerde producenten. Er worden controles uitgevoerd.</div>
           <div class="item-note-display"></div>
           <div class="item-actions review-only">
             <button class="action-btn correct" title="Accept (C)">✓</button>
@@ -1187,9 +1465,9 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
             </div>
           </div>
           <div class="section-items">
-        <div class="item" data-index="18" data-cells="A41,C41" data-label="Bevat het milieubeleid van uw organisatie" data-section="Milieubeleid">
+        <div class="item" data-index="18" data-cells="A41,C41" data-label="Bevat het milieubeleid van uw organisatie, zelf toegekende eisen?" data-section="Milieubeleid" data-topic="environment">
           <div class="item-header">
-            <span class="item-label">Bevat het milieubeleid van uw organisatie</span>
+            <span class="item-label">Bevat het milieubeleid van uw organisatie, zelf toegekende eisen?</span>
             <span class="item-meta">A41 → C41</span>
           </div>
           <div class="item-value">Er wordt intern gewerkt met een CAP 26000 gebaseerd systeem.</div>
@@ -1228,7 +1506,7 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
             </div>
           </div>
           <div class="section-items">
-        <div class="item" data-index="19" data-cells="A45,C45" data-label="Naam" data-section="Ondertekening">
+        <div class="item" data-index="19" data-cells="A45,C45" data-label="Naam" data-section="Ondertekening" data-topic="signature">
           <div class="item-header">
             <span class="item-label">Naam</span>
             <span class="item-meta">A45 → C45</span>
@@ -1249,7 +1527,7 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
           </div>
         </div>
       
-        <div class="item" data-index="20" data-cells="A46,C46" data-label="Functie" data-section="Ondertekening">
+        <div class="item" data-index="20" data-cells="A46,C46" data-label="Functie" data-section="Ondertekening" data-topic="signature">
           <div class="item-header">
             <span class="item-label">Functie</span>
             <span class="item-meta">A46 → C46</span>
@@ -1270,7 +1548,7 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
           </div>
         </div>
       
-        <div class="item" data-index="21" data-cells="A47,C47" data-label="Datum" data-section="Ondertekening">
+        <div class="item" data-index="21" data-cells="A47,C47" data-label="Datum" data-section="Ondertekening" data-topic="signature">
           <div class="item-header">
             <span class="item-label">Datum</span>
             <span class="item-meta">A47 → C47</span>
@@ -1291,7 +1569,7 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
           </div>
         </div>
       
-        <div class="item" data-index="22" data-cells="A48,C48" data-label="Handtekening" data-section="Ondertekening">
+        <div class="item" data-index="22" data-cells="A48,C48" data-label="Handtekening" data-section="Ondertekening" data-topic="signature">
           <div class="item-header">
             <span class="item-label">Handtekening</span>
             <span class="item-meta">A48 → C48</span>
@@ -1314,10 +1592,10 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
       </div>
         </div>
       
-        <div class="section" data-section="Autorisatie (QA-afdeling Marfo)">
+        <div class="section" data-section="Autorisatie">
           <div class="section-header">
             <div class="section-header-left">
-              <span class="section-title">Autorisatie (QA-afdeling Marfo)</span>
+              <span class="section-title">Autorisatie</span>
               <span class="section-meta">
                 Rows 52-57
                 <span class="topic">approval</span>
@@ -1332,7 +1610,7 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
             </div>
           </div>
           <div class="section-items">
-        <div class="item" data-index="23" data-cells="A52,B52" data-label="Is de questionnaire volledig en naar behoren ingevuld?" data-section="Autorisatie (QA-afdeling Marfo)">
+        <div class="item" data-index="23" data-cells="A52,B52" data-label="Is de questionnaire volledig en naar behoren ingevuld?" data-section="Autorisatie" data-topic="approval">
           <div class="item-header">
             <span class="item-label">Is de questionnaire volledig en naar behoren ingevuld?</span>
             <span class="item-meta">A52 → B52</span>
@@ -1353,7 +1631,7 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
           </div>
         </div>
       
-        <div class="item" data-index="24" data-cells="A53,B53" data-label="Is aanvullende informatie gewenst?" data-section="Autorisatie (QA-afdeling Marfo)">
+        <div class="item" data-index="24" data-cells="A53,B53" data-label="Is aanvullende informatie gewenst?" data-section="Autorisatie" data-topic="approval">
           <div class="item-header">
             <span class="item-label">Is aanvullende informatie gewenst?</span>
             <span class="item-meta">A53 → B53</span>
@@ -1374,7 +1652,7 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
           </div>
         </div>
       
-        <div class="item" data-index="25" data-cells="A55,B55" data-label="Handtekening QA-manager" data-section="Autorisatie (QA-afdeling Marfo)">
+        <div class="item" data-index="25" data-cells="A55,B55" data-label="Handtekening QA-manager" data-section="Autorisatie" data-topic="approval">
           <div class="item-header">
             <span class="item-label">Handtekening QA-manager</span>
             <span class="item-meta">A55 → B55</span>
@@ -1395,7 +1673,7 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
           </div>
         </div>
       
-        <div class="item" data-index="26" data-cells="A57,B57" data-label="Datum" data-section="Autorisatie (QA-afdeling Marfo)">
+        <div class="item" data-index="26" data-cells="A57,B57" data-label="Datum" data-section="Autorisatie" data-topic="approval">
           <div class="item-header">
             <span class="item-label">Datum</span>
             <span class="item-meta">A57 → B57</span>
@@ -1425,7 +1703,11 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
     <div class="panel" id="panel-library">
       <div class="panel-header">
         <span>Harvested Library</span>
-        <span class="count">18 items</span>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span class="count">18 items</span>
+          <button class="group-btn accept-all" id="accept-all-library" title="Accept all library items">✓ Accept All</button>
+          <button class="group-btn reject-all" id="reject-all-library" title="Reject all library items">✗ Reject All</button>
+        </div>
       </div>
       <div class="panel-content">
         
@@ -1643,9 +1925,9 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
           </div>
         </div>
         
-          <div class="item narrative" data-cells="A21,C21" data-label="Welke kwaliteitsstandaarden zijn in werking binnen uw bedrijf" data-topic="quality">
+          <div class="item narrative" data-cells="A21,C21" data-label="Welke kwaliteitsstandaarden zijn in werking binnen uw bedrijf?" data-topic="quality">
             <div class="item-header">
-              <span class="item-label">Welke kwaliteitsstandaarden zijn in werking binnen uw bedrijf</span>
+              <span class="item-label">Welke kwaliteitsstandaarden zijn in werking binnen uw bedrijf?</span>
               <span class="item-meta">A21 → C21</span>
             </div>
             <div class="item-value">VLOG en Weidegang</div>
@@ -1664,12 +1946,12 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
             </div>
           </div>
         
-          <div class="item narrative" data-cells="A22,C22" data-label="Hoe is contaminatie met vreemde delen gecontroleerd" data-topic="quality">
+          <div class="item narrative" data-cells="A22,C22" data-label="Hoe is contaminatie met vreemde delen (metaal, steentjes, hout, etc.) voorkomen?" data-topic="quality">
             <div class="item-header">
-              <span class="item-label">Hoe is contaminatie met vreemde delen gecontroleerd</span>
+              <span class="item-label">Hoe is contaminatie met vreemde delen (metaal, steentjes, hout, etc.) voorkomen?</span>
               <span class="item-meta">A22 → C22</span>
             </div>
-            <div class="item-value">Controle op metaaldeeltjes door metaaldetector verder visuel</div>
+            <div class="item-value">Controle op metaaldeeltjes door metaaldetector verder visuele controle</div>
             <div class="item-note-display"></div>
             <div class="item-actions review-only">
               <button class="action-btn correct" title="Accept (C)">✓</button>
@@ -1696,12 +1978,12 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
           </div>
         </div>
         
-          <div class="item narrative" data-cells="A29,C29" data-label="Leg kort uit hoe gevaren die via de grondstoffen uw product kunnen beïnvloeden" data-topic="microbiology">
+          <div class="item narrative" data-cells="A29,C29" data-label="Leg kort uit hoe gevaren die via de grondstoffen uw product kunnen beïnvloeden worden beheerst" data-topic="microbiology">
             <div class="item-header">
-              <span class="item-label">Leg kort uit hoe gevaren die via de grondstoffen uw product kunnen beïnvloeden</span>
+              <span class="item-label">Leg kort uit hoe gevaren die via de grondstoffen uw product kunnen beïnvloeden worden beheerst</span>
               <span class="item-meta">A29 → C29</span>
             </div>
-            <div class="item-value">Afstemming binnen het HACCP team betreffende gevaren. Daar w</div>
+            <div class="item-value">Afstemming binnen het HACCP team betreffende gevaren. Daar worden maatregelen genomen.</div>
             <div class="item-note-display"></div>
             <div class="item-actions review-only">
               <button class="action-btn correct" title="Accept (C)">✓</button>
@@ -1717,12 +1999,12 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
             </div>
           </div>
         
-          <div class="item narrative" data-cells="A30,C30" data-label="Voert u Chemische en/of microbiologische analyses uit" data-topic="microbiology">
+          <div class="item narrative" data-cells="A30,C30" data-label="Voert u Chemische en/of microbiologische analyses uit om de veiligheid van uw product te waarborgen?" data-topic="microbiology">
             <div class="item-header">
-              <span class="item-label">Voert u Chemische en/of microbiologische analyses uit</span>
+              <span class="item-label">Voert u Chemische en/of microbiologische analyses uit om de veiligheid van uw product te waarborgen?</span>
               <span class="item-meta">A30 → C30</span>
             </div>
-            <div class="item-value">Er worden volgen monsterplanning onderzoeken op microbiologi</div>
+            <div class="item-value">Er worden volgen monsterplanning onderzoeken op microbiologisch gebied uitgevoerd.</div>
             <div class="item-note-display"></div>
             <div class="item-actions review-only">
               <button class="action-btn correct" title="Accept (C)">✓</button>
@@ -1749,9 +2031,9 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
           </div>
         </div>
         
-          <div class="item narrative" data-cells="A35,C35" data-label="Is er een Food Fraude-analyse uitgevoerd op de grondstoffen" data-topic="food_fraud">
+          <div class="item narrative" data-cells="A35,C35" data-label="Is er een Food Fraude-analyse uitgevoerd op de grondstoffen en ingrediënten?" data-topic="food_fraud">
             <div class="item-header">
-              <span class="item-label">Is er een Food Fraude-analyse uitgevoerd op de grondstoffen</span>
+              <span class="item-label">Is er een Food Fraude-analyse uitgevoerd op de grondstoffen en ingrediënten?</span>
               <span class="item-meta">A35 → C35</span>
             </div>
             <div class="item-value">Ja</div>
@@ -1770,12 +2052,12 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
             </div>
           </div>
         
-          <div class="item narrative" data-cells="A36,C36" data-label="Voert u analyses uit op grondstoffen om fraude eerder in het proces te detecteren" data-topic="food_fraud">
+          <div class="item narrative" data-cells="A36,C36" data-label="Voert u analyses uit op grondstoffen om fraude eerder in het proces te detecteren?" data-topic="food_fraud">
             <div class="item-header">
-              <span class="item-label">Voert u analyses uit op grondstoffen om fraude eerder in het proces te detecteren</span>
+              <span class="item-label">Voert u analyses uit op grondstoffen om fraude eerder in het proces te detecteren?</span>
               <span class="item-meta">A36 → C36</span>
             </div>
-            <div class="item-value">Nee. We kopen kaas in van gecertificeerde producenten. Er wo</div>
+            <div class="item-value">Nee. We kopen kaas in van gecertificeerde producenten. Er worden controles uitgevoerd.</div>
             <div class="item-note-display"></div>
             <div class="item-actions review-only">
               <button class="action-btn correct" title="Accept (C)">✓</button>
@@ -1802,9 +2084,9 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
           </div>
         </div>
         
-          <div class="item narrative" data-cells="A41,C41" data-label="Bevat het milieubeleid van uw organisatie" data-topic="environment">
+          <div class="item narrative" data-cells="A41,C41" data-label="Bevat het milieubeleid van uw organisatie, zelf toegekende eisen?" data-topic="environment">
             <div class="item-header">
-              <span class="item-label">Bevat het milieubeleid van uw organisatie</span>
+              <span class="item-label">Bevat het milieubeleid van uw organisatie, zelf toegekende eisen?</span>
               <span class="item-meta">A41 → C41</span>
             </div>
             <div class="item-value">Er wordt intern gewerkt met een CAP 26000 gebaseerd systeem.</div>
@@ -1929,6 +2211,7 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
     </div>
     <div class="shortcut-group">
       <div class="shortcut-group-title">Other</div>
+      <div class="shortcut"><span>Toggle sidebar</span><kbd>B</kbd></div>
       <div class="shortcut"><span>Show this help</span><kbd>?</kbd></div>
       <div class="shortcut"><span>Clear selection</span><kbd>Esc</kbd></div>
     </div>
@@ -1938,45 +2221,181 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
     // State
     let syncMode = false;
     let reviewMode = false;
+    let sidebarOpen = false;
     let currentItemIndex = -1;
     const indexedItems = Array.from(document.querySelectorAll('#panel-indexed .item'));
     const libraryItems = Array.from(document.querySelectorAll('#panel-library .item'));
     const allItems = [...indexedItems, ...libraryItems];
 
-    // Storage key for this file
-    const STORAGE_KEY = 'review_20241112_RL14_1_Questionnaire_Quality_Fraude_Environment_Marfo_xlsx';
+    // Current questionnaire name (for highlighting in sidebar)
+    const currentQuestionnaire = '20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx';
 
-    // Load persisted state on page load
-    function loadPersistedState() {
+    // Server API base URL (same origin when served by review server)
+    const API_BASE = window.location.port === '3456' ? '' : 'http://localhost:3456';
+    let serverConnected = false;
+
+    // Sidebar elements
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebarClose = document.getElementById('sidebar-close');
+    const questionnaireList = document.getElementById('questionnaire-list');
+
+    // Toggle sidebar
+    function toggleSidebar() {
+      sidebarOpen = !sidebarOpen;
+      sidebar.classList.toggle('open', sidebarOpen);
+      sidebarOverlay.classList.toggle('visible', sidebarOpen);
+      if (sidebarOpen) {
+        loadQuestionnaires();
+      }
+    }
+
+    // Close sidebar
+    function closeSidebar() {
+      sidebarOpen = false;
+      sidebar.classList.remove('open');
+      sidebarOverlay.classList.remove('visible');
+    }
+
+    // Load questionnaires from API
+    async function loadQuestionnaires() {
+      if (!serverConnected) {
+        questionnaireList.innerHTML = '<div class="sidebar-empty">Server not connected</div>';
+        return;
+      }
+
       try {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (!saved) return;
+        const res = await fetch(API_BASE + '/api/questionnaires');
+        if (!res.ok) throw new Error('Failed to fetch');
 
-        const data = JSON.parse(saved);
-        window.feedbackLog = data.feedbackLog || [];
+        const data = await res.json();
+        renderQuestionnaires(data.questionnaires);
+      } catch (e) {
+        console.error('Failed to load questionnaires:', e);
+        questionnaireList.innerHTML = '<div class="sidebar-empty">Failed to load questionnaires</div>';
+      }
+    }
 
-        // Restore item states
-        data.feedbackLog.forEach(feedback => {
-          const item = findItemByKey(feedback.cells, feedback.label, feedback.panel);
-          if (item) {
-            item.classList.add('reviewed', feedback.action);
-            if (feedback.note) {
-              const noteDisplay = item.querySelector('.item-note-display');
-              if (noteDisplay) {
-                noteDisplay.textContent = feedback.note;
-                item.classList.add('has-note');
+    // Render questionnaire list
+    function renderQuestionnaires(questionnaires) {
+      if (!questionnaires || questionnaires.length === 0) {
+        questionnaireList.innerHTML = '<div class="sidebar-empty">No questionnaires found</div>';
+        return;
+      }
+
+      questionnaireList.innerHTML = questionnaires.map(q => {
+        const isActive = currentQuestionnaire.includes(q.name.replace(/_/g, '-')) ||
+                        currentQuestionnaire.includes(q.name) ||
+                        q.name.includes(currentQuestionnaire.replace(/[^a-zA-Z0-9]/g, '_'));
+        const badgeClass = q.feedbackCount > 0 ? 'has-feedback' : '';
+        const badgeText = q.feedbackCount > 0 ? q.feedbackCount + ' reviewed' : 'Not started';
+
+        return `
+          <a class="sidebar-item${isActive ? ' active' : ''}"
+             href="${q.hasReview ? '/review/' + q.reviewUrl : '#'}"
+             title="${q.displayName}"
+             ${!q.hasReview ? 'style="opacity: 0.5; pointer-events: none;"' : ''}>
+            <span class="sidebar-item-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+                <line x1="10" y1="9" x2="8" y2="9"/>
+              </svg>
+            </span>
+            <span class="sidebar-item-content">
+              <div class="sidebar-item-name">${q.displayName}</div>
+              ${q.hasReview ? '' : '<div class="sidebar-item-meta">No review generated</div>'}
+            </span>
+            <span class="sidebar-item-badge ${badgeClass}">${badgeText}</span>
+          </a>
+        `;
+      }).join('');
+    }
+
+    // Sidebar event listeners
+    sidebarToggle.addEventListener('click', toggleSidebar);
+    sidebarClose.addEventListener('click', closeSidebar);
+    sidebarOverlay.addEventListener('click', closeSidebar);
+
+    // Check server connection
+    async function checkServerConnection() {
+      try {
+        const res = await fetch(API_BASE + '/api/health');
+        serverConnected = res.ok;
+        updateConnectionStatus();
+        return serverConnected;
+      } catch {
+        serverConnected = false;
+        updateConnectionStatus();
+        return false;
+      }
+    }
+
+    // Update connection status indicator
+    function updateConnectionStatus() {
+      const indicator = document.getElementById('connection-status');
+      if (indicator) {
+        indicator.className = 'connection-status ' + (serverConnected ? 'connected' : 'disconnected');
+        indicator.title = serverConnected ? 'Connected to server (auto-save enabled)' : 'Server not connected (using localStorage fallback)';
+      }
+    }
+
+    // Load persisted state from server or localStorage
+    async function loadPersistedState() {
+      try {
+        // Try server first
+        if (await checkServerConnection()) {
+          const res = await fetch(API_BASE + '/api/feedback');
+          if (res.ok) {
+            const data = await res.json();
+            window.feedbackLog = [];
+
+            // Restore from server data
+            const allFeedback = [...(data.index || []), ...(data.library || [])];
+            allFeedback.forEach(feedback => {
+              const panel = data.library?.includes(feedback) ? 'library' : 'indexed';
+              const item = findItemByKey(feedback.cells, feedback.label, panel);
+              if (item) {
+                item.classList.add('reviewed', feedback.action);
+                if (feedback.reason) {
+                  const noteDisplay = item.querySelector('.item-note-display');
+                  if (noteDisplay) {
+                    noteDisplay.textContent = feedback.reason;
+                    item.classList.add('has-note');
+                  }
+                }
+                if (feedback.editedLabel) {
+                  const labelEl = item.querySelector('.item-label');
+                  if (labelEl) labelEl.textContent = feedback.editedLabel;
+                }
+                if (feedback.editedValue) {
+                  const valueEl = item.querySelector('.item-value');
+                  if (valueEl) valueEl.textContent = feedback.editedValue;
+                }
+                window.feedbackLog.push({ ...feedback, panel });
               }
-            }
-            if (feedback.editedLabel) {
-              const labelEl = item.querySelector('.item-label');
-              if (labelEl) labelEl.textContent = feedback.editedLabel;
-            }
-            if (feedback.editedValue) {
-              const valueEl = item.querySelector('.item-value');
-              if (valueEl) valueEl.textContent = feedback.editedValue;
-            }
+            });
+
+            console.log('Loaded', allFeedback.length, 'feedback items from server');
           }
-        });
+        } else {
+          // Fallback to localStorage
+          const saved = localStorage.getItem('review_fallback');
+          if (saved) {
+            const data = JSON.parse(saved);
+            window.feedbackLog = data.feedbackLog || [];
+            data.feedbackLog.forEach(feedback => {
+              const item = findItemByKey(feedback.cells, feedback.label, feedback.panel);
+              if (item) {
+                item.classList.add('reviewed', feedback.action);
+              }
+            });
+            console.log('Loaded', data.feedbackLog.length, 'feedback items from localStorage (offline mode)');
+          }
+        }
 
         // Update all section statuses
         document.querySelectorAll('.section, .library-topic').forEach(section => {
@@ -1985,7 +2404,6 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
         });
 
         updateFeedbackCount();
-        console.log('Restored', data.feedbackLog.length, 'feedback items');
       } catch (e) {
         console.error('Failed to load persisted state:', e);
       }
@@ -2003,18 +2421,36 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
       return null;
     }
 
-    // Save state to localStorage
-    function saveState() {
+    // Save feedback to server (or localStorage fallback)
+    async function saveFeedback(panel, feedbackItem) {
       try {
-        const data = {
-          savedAt: new Date().toISOString(),
-          source: '20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx',
-          feedbackLog: window.feedbackLog || []
-        };
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        if (serverConnected) {
+          const res = await fetch(API_BASE + '/api/feedback', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ panel, item: feedbackItem })
+          });
+          if (!res.ok) throw new Error('Server save failed');
+          console.log('Saved to server:', feedbackItem.label);
+        } else {
+          // Fallback to localStorage
+          window.feedbackLog = window.feedbackLog || [];
+          window.feedbackLog.push({ ...feedbackItem, panel });
+          localStorage.setItem('review_fallback', JSON.stringify({
+            savedAt: new Date().toISOString(),
+            feedbackLog: window.feedbackLog
+          }));
+          console.log('Saved to localStorage (offline):', feedbackItem.label);
+        }
       } catch (e) {
-        console.error('Failed to save state:', e);
+        console.error('Failed to save feedback:', e);
+        showToast('Failed to save - check server connection');
       }
+    }
+
+    // Legacy saveState function for compatibility
+    function saveState() {
+      // No-op - saving now happens per-item via saveFeedback()
     }
 
     // Utility: show toast
@@ -2040,7 +2476,7 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
         const cell = document.querySelector('td[data-cell="' + ref + '"]');
         if (cell) {
           cell.classList.add(className);
-          cell.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+          cell.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
         }
       });
     }
@@ -2077,7 +2513,7 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
       if (!item) return;
 
       item.classList.add('selected');
-      item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
       if (syncMode) {
         // Highlight cells in original
@@ -2114,7 +2550,7 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
           const itemCells = (item.dataset.cells || '').split(',');
           if (itemCells.includes(cellRef)) {
             item.classList.add('highlighted');
-            item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
           }
         });
       }
@@ -2265,19 +2701,19 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
     });
 
     // Log feedback
-    function logFeedback(item, action, note = '') {
-      const feedback = {
-        action,
+    async function logFeedback(item, action, note = '') {
+      const panel = item.closest('.panel')?.id?.replace('panel-', '') || 'indexed';
+      const feedbackItem = {
+        action: action === 'correct' ? 'accepted' : action === 'wrong' ? 'rejected' : action,
         label: item.querySelector('.item-label')?.textContent,
         value: item.querySelector('.item-value')?.textContent,
         cells: item.dataset.cells,
         topic: item.dataset.topic,
         section: item.dataset.section,
-        panel: item.closest('.panel')?.id?.replace('panel-', ''),
-        note: note || undefined,
-        timestamp: new Date().toISOString()
+        reason: note || undefined,
+        reviewedAt: new Date().toISOString()
       };
-      console.log('Feedback:', feedback);
+      console.log('Feedback:', feedbackItem);
 
       // Show note persistently if provided
       if (note) {
@@ -2290,10 +2726,12 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
 
       // Store in session for potential export
       window.feedbackLog = window.feedbackLog || [];
-      window.feedbackLog.push(feedback);
+      window.feedbackLog.push({ ...feedbackItem, panel });
       updateFeedbackCount();
       updateSectionStatus(item);
-      saveState();
+
+      // Save to server (or localStorage fallback)
+      await saveFeedback(panel, feedbackItem);
     }
 
     // Edit item (inline editing)
@@ -2321,7 +2759,7 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
       item.querySelector('.edit-label').focus();
 
       // Save handler
-      editActions.querySelector('.save').addEventListener('click', () => {
+      editActions.querySelector('.save').addEventListener('click', async () => {
         const newLabel = item.querySelector('.edit-label').value;
         const newValue = item.querySelector('.edit-value').value;
 
@@ -2334,7 +2772,8 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
         editActions.remove();
 
         // Log as edited
-        const feedback = {
+        const panel = item.closest('.panel')?.id?.replace('panel-', '') || 'indexed';
+        const feedbackItem = {
           action: 'edited',
           label: originalLabel,
           value: originalValue,
@@ -2343,14 +2782,13 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
           cells: item.dataset.cells,
           section: item.dataset.section,
           topic: item.dataset.topic,
-          panel: item.closest('.panel')?.id?.replace('panel-', ''),
-          timestamp: new Date().toISOString()
+          reviewedAt: new Date().toISOString()
         };
         window.feedbackLog = window.feedbackLog || [];
-        window.feedbackLog.push(feedback);
+        window.feedbackLog.push({ ...feedbackItem, panel });
         updateFeedbackCount();
         updateSectionStatus(item);
-        saveState();
+        await saveFeedback(panel, feedbackItem);
         showToast('Item edited');
       });
 
@@ -2375,12 +2813,13 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
       return str.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     }
 
-    // Update feedback count in export button
+    // Update feedback count in complete button
     function updateFeedbackCount() {
       const count = window.feedbackLog?.length || 0;
-      const exportBtn = document.getElementById('export-toggle');
-      exportBtn.textContent = count > 0 ? 'Export (' + count + ')' : 'Export';
-      if (count > 0) exportBtn.classList.add('has-feedback');
+      const completeBtn = document.getElementById('complete-toggle');
+      completeBtn.textContent = count > 0 ? 'Complete Review (' + count + ')' : 'Complete Review';
+      if (count > 0) completeBtn.classList.add('has-feedback');
+      else completeBtn.classList.remove('has-feedback');
     }
 
     // Update section status (e.g., "5/10 ✓")
@@ -2435,123 +2874,112 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
       });
     });
 
-    // Export feedback - generates multiple structured files
-    document.getElementById('export-toggle').addEventListener('click', exportAll);
+    // Panel-level Accept/Reject All buttons
+    document.getElementById('accept-all-indexed')?.addEventListener('click', () => {
+      const items = document.querySelectorAll('#panel-indexed .item');
+      items.forEach(item => {
+        item.classList.remove('wrong', 'rejected', 'show-note');
+        item.classList.add('reviewed', 'correct', 'accepted');
+        logFeedback(item, 'correct');
+      });
+      showToast(items.length + ' indexed items accepted');
+    });
 
-    function exportAll() {
+    document.getElementById('reject-all-indexed')?.addEventListener('click', () => {
+      const items = document.querySelectorAll('#panel-indexed .item');
+      items.forEach(item => {
+        item.classList.remove('correct', 'accepted');
+        item.classList.add('reviewed', 'wrong', 'rejected');
+        logFeedback(item, 'wrong');
+      });
+      showToast(items.length + ' indexed items rejected');
+    });
+
+    document.getElementById('accept-all-library')?.addEventListener('click', () => {
+      const items = document.querySelectorAll('#panel-library .item');
+      items.forEach(item => {
+        item.classList.remove('wrong', 'rejected', 'show-note');
+        item.classList.add('reviewed', 'correct', 'accepted');
+        logFeedback(item, 'correct');
+      });
+      showToast(items.length + ' library items accepted');
+    });
+
+    document.getElementById('reject-all-library')?.addEventListener('click', () => {
+      const items = document.querySelectorAll('#panel-library .item');
+      items.forEach(item => {
+        item.classList.remove('correct', 'accepted');
+        item.classList.add('reviewed', 'wrong', 'rejected');
+        logFeedback(item, 'wrong');
+      });
+      showToast(items.length + ' library items rejected');
+    });
+
+    // Complete Review - saves approved data AND applies learning rules
+    document.getElementById('complete-toggle').addEventListener('click', completeReview);
+
+    async function completeReview() {
       if (!window.feedbackLog || window.feedbackLog.length === 0) {
-        showToast('No feedback to export');
+        showToast('No feedback to save');
         return;
       }
 
-      const timestamp = new Date().toISOString();
-      const dateStr = timestamp.split('T')[0];
-      const sourceFile = '20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx';
-      const safeName = sourceFile.replace(/[^a-zA-Z0-9]/g, '_');
+      if (!serverConnected) {
+        showToast('Server not connected');
+        return;
+      }
 
-      // Group feedback
-      const accepted = window.feedbackLog.filter(f => f.action === 'correct');
-      const rejected = window.feedbackLog.filter(f => f.action === 'wrong');
-      const edited = window.feedbackLog.filter(f => f.action === 'edited');
+      try {
+        // 1. Save approved items to database files
+        const exportRes = await fetch(API_BASE + '/api/export-approved', { method: 'POST' });
+        if (!exportRes.ok) throw new Error('Failed to export approved');
+        const exportResult = await exportRes.json();
 
-      // Single comprehensive review file per questionnaire
-      const review = {
-        meta: {
-          source: sourceFile,
-          reviewedAt: timestamp,
-          version: '1.0'
-        },
-        summary: {
-          total: window.feedbackLog.length,
-          accepted: accepted.length,
-          rejected: rejected.length,
-          edited: edited.length
-        },
-        index: {
-          accepted: accepted.filter(f => f.panel === 'indexed').map(f => ({
-            label: f.label,
-            value: f.value,
-            cells: f.cells,
-            section: f.section,
-            reviewedAt: f.timestamp
-          })),
-          rejected: rejected.filter(f => f.panel === 'indexed').map(f => ({
-            label: f.label,
-            value: f.value,
-            cells: f.cells,
-            section: f.section,
-            reason: f.note || null,
-            reviewedAt: f.timestamp
-          })),
-          edited: edited.filter(f => f.panel === 'indexed').map(f => ({
-            original: { label: f.label, value: f.value },
-            corrected: {
-              label: f.editedLabel || f.label,
-              value: f.editedValue || f.value
-            },
-            cells: f.cells,
-            section: f.section,
-            reviewedAt: f.timestamp
-          }))
-        },
-        library: {
-          accepted: accepted.filter(f => f.panel === 'library').map(f => ({
-            label: f.label,
-            value: f.value,
-            topic: f.topic,
-            cells: f.cells,
-            reviewedAt: f.timestamp
-          })),
-          rejected: rejected.filter(f => f.panel === 'library').map(f => ({
-            label: f.label,
-            value: f.value,
-            topic: f.topic,
-            cells: f.cells,
-            reason: f.note || null,
-            reviewedAt: f.timestamp
-          })),
-          edited: edited.filter(f => f.panel === 'library').map(f => ({
-            original: { label: f.label, value: f.value },
-            corrected: {
-              label: f.editedLabel || f.label,
-              value: f.editedValue || f.value
-            },
-            topic: f.topic,
-            cells: f.cells,
-            reviewedAt: f.timestamp
-          }))
-        }
-      };
+        // 2. Apply learning rules from rejections/edits
+        const rulesRes = await fetch(API_BASE + '/api/apply-rules', { method: 'POST' });
+        if (!rulesRes.ok) throw new Error('Failed to apply rules');
+        const rulesResult = await rulesRes.json();
 
-      // Download single review file
-      downloadJSON(review, safeName + '_review_' + dateStr + '.json');
-      showToast('Saved review for ' + sourceFile);
-    }
+        // Show summary
+        const entityCount = exportResult.exported?.entityDb?.length || 0;
+        const libraryCount = exportResult.exported?.answerLibrary?.length || 0;
+        const rulesCount = (rulesResult.rules?.indexRules?.exclude?.length || 0) +
+                          (rulesResult.rules?.indexRules?.corrections?.length || 0) +
+                          (rulesResult.rules?.harvestRules?.exclude?.length || 0) +
+                          (rulesResult.rules?.harvestRules?.corrections?.length || 0);
 
-    function downloadJSON(data, filename) {
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      a.click();
-      URL.revokeObjectURL(url);
+        showToast('Saved ' + entityCount + ' entity, ' + libraryCount + ' library, ' + rulesCount + ' rules');
+        console.log('Review completed:', { exportResult, rulesResult });
+      } catch (e) {
+        console.error('Failed to complete review:', e);
+        showToast('Failed to complete - check console');
+      }
     }
 
     // Clear all feedback
-    document.getElementById('clear-toggle').addEventListener('click', () => {
+    document.getElementById('clear-toggle').addEventListener('click', async () => {
       if (!window.feedbackLog || window.feedbackLog.length === 0) {
         showToast('Nothing to clear');
         return;
       }
 
       if (confirm('Clear all ' + window.feedbackLog.length + ' feedback items? This cannot be undone.')) {
+        // Clear on server if connected
+        if (serverConnected) {
+          try {
+            await fetch(API_BASE + '/api/feedback', { method: 'DELETE' });
+          } catch (e) {
+            console.error('Failed to clear on server:', e);
+          }
+        }
+
+        // Clear local state
         window.feedbackLog = [];
-        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem('review_fallback');
 
         // Reset all item states
         document.querySelectorAll('.item').forEach(item => {
-          item.classList.remove('reviewed', 'correct', 'wrong', 'edited', 'has-note');
+          item.classList.remove('reviewed', 'correct', 'wrong', 'accepted', 'rejected', 'edited', 'has-note');
           const noteDisplay = item.querySelector('.item-note-display');
           if (noteDisplay) noteDisplay.textContent = '';
         });
@@ -2568,12 +2996,9 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
       }
     });
 
-    // Auto-save reminder on page unload
-    window.addEventListener('beforeunload', (e) => {
-      if (window.feedbackLog && window.feedbackLog.length > 0) {
-        e.preventDefault();
-        e.returnValue = 'You have unsaved feedback. Export before leaving?';
-      }
+    // Page unload - no warning needed since we auto-save
+    window.addEventListener('beforeunload', () => {
+      // Auto-save is enabled, no need to warn
     });
 
     // Keyboard shortcuts
@@ -2590,14 +3015,23 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
         return;
       }
 
-      // Close help/clear selection with Escape
+      // Close help/sidebar/clear selection with Escape
       if (key === 'escape') {
         if (helpModal.classList.contains('visible')) {
           toggleHelp();
+        } else if (sidebarOpen) {
+          closeSidebar();
         } else {
           clearHighlights();
           currentItemIndex = -1;
         }
+        return;
+      }
+
+      // Sidebar toggle
+      if (key === 'b') {
+        e.preventDefault();
+        toggleSidebar();
         return;
       }
 
@@ -2639,7 +3073,7 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
         if (currentItemIndex >= 0) {
           clearHighlights();
           indexedItems[currentItemIndex].classList.add('current');
-          indexedItems[currentItemIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+          indexedItems[currentItemIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
           if (syncMode) selectItem(indexedItems[currentItemIndex], 'keyboard');
         }
         return;
@@ -2650,7 +3084,7 @@ Er wordt gewerkt aan de CSRD eisen. ">Er wordt intern gewerkt met een CAP 26000 
         if (currentItemIndex >= 0 && indexedItems[currentItemIndex]) {
           clearHighlights();
           indexedItems[currentItemIndex].classList.add('current');
-          indexedItems[currentItemIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+          indexedItems[currentItemIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
           if (syncMode) selectItem(indexedItems[currentItemIndex], 'keyboard');
         }
         return;

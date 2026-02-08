@@ -154,7 +154,8 @@ export class WebReviewGenerator {
     /* Main layout */
     .main {
       display: flex;
-      height: calc(100vh - 56px);
+      height: calc(100vh - 56px - 40px); /* header + stats bar */
+      overflow: hidden;
     }
 
     /* Panels */
@@ -580,8 +581,13 @@ export class WebReviewGenerator {
     }
     .item.has-note .item-note-display { display: block; }
 
-    /* Hide buttons on reviewed items, but show note */
-    .item.reviewed .item-actions { display: none !important; }
+    /* Keep action buttons visible on reviewed items so user can change decision */
+    .item.reviewed .item-actions { opacity: 0.6; }
+    .item.reviewed:hover .item-actions { opacity: 1; }
+    .item.reviewed.correct .action-btn.correct,
+    .item.reviewed.accepted .action-btn.correct { background: #14532d; color: #4ade80; border-color: #166534; }
+    .item.reviewed.wrong .action-btn.wrong,
+    .item.reviewed.rejected .action-btn.wrong { background: #7f1d1d; color: #fca5a5; border-color: #991b1b; }
     .item.reviewed.edited { border-left: 3px solid #a855f7; }
 
     /* Edit mode */
@@ -728,13 +734,269 @@ export class WebReviewGenerator {
     .connection-status.connected { background: #22c55e; }
     .connection-status.disconnected { background: #ef4444; }
     .connection-status.checking { background: #f59e0b; }
+
+    /* Sidebar Navigation */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 280px;
+      background: var(--card);
+      border-right: 1px solid var(--border);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(-100%);
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .sidebar.open {
+      transform: translateX(0);
+    }
+    .sidebar-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .sidebar-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--foreground);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sidebar-title svg {
+      width: 16px;
+      height: 16px;
+      opacity: 0.7;
+    }
+    .sidebar-close {
+      background: none;
+      border: none;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+    .sidebar-close:hover {
+      background: var(--muted);
+      color: var(--foreground);
+    }
+    .sidebar-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+    }
+    .sidebar-section {
+      margin-bottom: 16px;
+    }
+    .sidebar-section-title {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted-foreground);
+      padding: 0 8px;
+      margin-bottom: 8px;
+    }
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: var(--radius);
+      color: var(--muted-foreground);
+      text-decoration: none;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.15s;
+      margin-bottom: 2px;
+    }
+    .sidebar-item:hover {
+      background: var(--muted);
+      color: var(--foreground);
+    }
+    .sidebar-item.active {
+      background: var(--secondary);
+      color: var(--foreground);
+    }
+    .sidebar-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 16px;
+      background: var(--foreground);
+      border-radius: 0 2px 2px 0;
+    }
+    .sidebar-item-icon {
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .sidebar-item-icon svg {
+      width: 14px;
+      height: 14px;
+    }
+    .sidebar-item-content {
+      flex: 1;
+      min-width: 0;
+    }
+    .sidebar-item-name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sidebar-item-meta {
+      font-size: 10px;
+      color: var(--muted-foreground);
+      margin-top: 2px;
+    }
+    .sidebar-item-badge {
+      background: var(--muted);
+      color: var(--muted-foreground);
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 9999px;
+      flex-shrink: 0;
+    }
+    .sidebar-item-badge.has-feedback {
+      background: #14532d;
+      color: #4ade80;
+    }
+    .sidebar-footer {
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--muted-foreground);
+    }
+    .sidebar-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 99;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s;
+    }
+    .sidebar-overlay.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Sidebar toggle button */
+    .sidebar-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: var(--secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--muted-foreground);
+      cursor: pointer;
+      margin-right: 8px;
+      transition: all 0.15s;
+    }
+    .sidebar-toggle:hover {
+      background: var(--muted);
+      color: var(--foreground);
+    }
+    .sidebar-toggle svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Loading state for questionnaires */
+    .sidebar-loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: var(--muted-foreground);
+      font-size: 12px;
+    }
+    .sidebar-loading::before {
+      content: '';
+      width: 14px;
+      height: 14px;
+      border: 2px solid var(--border);
+      border-top-color: var(--foreground);
+      border-radius: 50%;
+      margin-right: 8px;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Empty state */
+    .sidebar-empty {
+      padding: 20px;
+      text-align: center;
+      color: var(--muted-foreground);
+      font-size: 12px;
+    }
   </style>
 </head>
 <body>
+  <!-- Sidebar Navigation -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-title">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+          <polyline points="14 2 14 8 20 8"/>
+        </svg>
+        Questionnaires
+      </div>
+      <button class="sidebar-close" id="sidebar-close" title="Close sidebar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="sidebar-content">
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Indexed</div>
+        <div id="questionnaire-list">
+          <div class="sidebar-loading">Loading questionnaires...</div>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar-footer">
+      Press <kbd>B</kbd> to toggle sidebar
+    </div>
+  </div>
+
   <div class="header">
-    <div>
-      <h1>${this.escapeHtml(structure.source.filename)}</h1>
-      <div class="meta">Indexed: ${indexed.indexed} | Language: ${indexed.language.toUpperCase()} | ${indexed.stats.total} items</div>
+    <div style="display: flex; align-items: center;">
+      <button class="sidebar-toggle" id="sidebar-toggle" title="Open questionnaire list (B)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <div>
+        <h1>${this.escapeHtml(structure.source.filename)}</h1>
+        <div class="meta">Indexed: ${indexed.indexed} | Language: ${indexed.language.toUpperCase()} | ${indexed.stats.total} items</div>
+      </div>
     </div>
     <div class="toggles">
       <span id="connection-status" class="connection-status checking" title="Checking server connection..."></span>
@@ -746,7 +1008,7 @@ export class WebReviewGenerator {
       <button class="toggle" id="sync-toggle" title="Sync panels (S)">
         <span class="sync-icon">⟷</span> Sync
       </button>
-      <button class="toggle" id="export-toggle" title="Apply rules from feedback">Apply Rules</button>
+      <button class="toggle" id="complete-toggle" title="Save approved data and apply learning rules">Complete Review</button>
       <button class="toggle" id="clear-toggle" title="Clear all feedback">Clear</button>
       <button class="toggle" id="help-toggle" title="Show shortcuts (?)">?</button>
     </div>
@@ -775,7 +1037,11 @@ export class WebReviewGenerator {
     <div class="panel visible" id="panel-indexed">
       <div class="panel-header">
         <span>Indexed Structure</span>
-        <span class="count">${indexed.sections.length} sections, ${indexed.stats.total} items</span>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span class="count">${indexed.sections.length} sections, ${indexed.stats.total} items</span>
+          <button class="group-btn accept-all" id="accept-all-indexed" title="Accept all indexed items">✓ Accept All</button>
+          <button class="group-btn reject-all" id="reject-all-indexed" title="Reject all indexed items">✗ Reject All</button>
+        </div>
       </div>
       <div class="panel-content">
         ${indexedHtml}
@@ -786,7 +1052,11 @@ export class WebReviewGenerator {
     <div class="panel" id="panel-library">
       <div class="panel-header">
         <span>Harvested Library</span>
-        <span class="count">${library ? library.total + ' items' : 'Not harvested'}</span>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span class="count">${library ? library.total + ' items' : 'Not harvested'}</span>
+          <button class="group-btn accept-all" id="accept-all-library" title="Accept all library items">✓ Accept All</button>
+          <button class="group-btn reject-all" id="reject-all-library" title="Reject all library items">✗ Reject All</button>
+        </div>
       </div>
       <div class="panel-content">
         ${libraryHtml}
@@ -841,6 +1111,7 @@ export class WebReviewGenerator {
     </div>
     <div class="shortcut-group">
       <div class="shortcut-group-title">Other</div>
+      <div class="shortcut"><span>Toggle sidebar</span><kbd>B</kbd></div>
       <div class="shortcut"><span>Show this help</span><kbd>?</kbd></div>
       <div class="shortcut"><span>Clear selection</span><kbd>Esc</kbd></div>
     </div>
@@ -850,14 +1121,104 @@ export class WebReviewGenerator {
     // State
     let syncMode = false;
     let reviewMode = false;
+    let sidebarOpen = false;
     let currentItemIndex = -1;
     const indexedItems = Array.from(document.querySelectorAll('#panel-indexed .item'));
     const libraryItems = Array.from(document.querySelectorAll('#panel-library .item'));
     const allItems = [...indexedItems, ...libraryItems];
 
+    // Current questionnaire name (for highlighting in sidebar)
+    const currentQuestionnaire = '${structure.source.filename.replace(/'/g, "\\'")}';
+
     // Server API base URL (same origin when served by review server)
     const API_BASE = window.location.port === '3456' ? '' : 'http://localhost:3456';
     let serverConnected = false;
+
+    // Sidebar elements
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebarClose = document.getElementById('sidebar-close');
+    const questionnaireList = document.getElementById('questionnaire-list');
+
+    // Toggle sidebar
+    function toggleSidebar() {
+      sidebarOpen = !sidebarOpen;
+      sidebar.classList.toggle('open', sidebarOpen);
+      sidebarOverlay.classList.toggle('visible', sidebarOpen);
+      if (sidebarOpen) {
+        loadQuestionnaires();
+      }
+    }
+
+    // Close sidebar
+    function closeSidebar() {
+      sidebarOpen = false;
+      sidebar.classList.remove('open');
+      sidebarOverlay.classList.remove('visible');
+    }
+
+    // Load questionnaires from API
+    async function loadQuestionnaires() {
+      if (!serverConnected) {
+        questionnaireList.innerHTML = '<div class="sidebar-empty">Server not connected</div>';
+        return;
+      }
+
+      try {
+        const res = await fetch(API_BASE + '/api/questionnaires');
+        if (!res.ok) throw new Error('Failed to fetch');
+
+        const data = await res.json();
+        renderQuestionnaires(data.questionnaires);
+      } catch (e) {
+        console.error('Failed to load questionnaires:', e);
+        questionnaireList.innerHTML = '<div class="sidebar-empty">Failed to load questionnaires</div>';
+      }
+    }
+
+    // Render questionnaire list
+    function renderQuestionnaires(questionnaires) {
+      if (!questionnaires || questionnaires.length === 0) {
+        questionnaireList.innerHTML = '<div class="sidebar-empty">No questionnaires found</div>';
+        return;
+      }
+
+      questionnaireList.innerHTML = questionnaires.map(q => {
+        const isActive = currentQuestionnaire.includes(q.name.replace(/_/g, '-')) ||
+                        currentQuestionnaire.includes(q.name) ||
+                        q.name.includes(currentQuestionnaire.replace(/[^a-zA-Z0-9]/g, '_'));
+        const badgeClass = q.feedbackCount > 0 ? 'has-feedback' : '';
+        const badgeText = q.feedbackCount > 0 ? q.feedbackCount + ' reviewed' : 'Not started';
+
+        return \`
+          <a class="sidebar-item\${isActive ? ' active' : ''}"
+             href="\${q.hasReview ? '/review/' + q.reviewUrl : '#'}"
+             title="\${q.displayName}"
+             \${!q.hasReview ? 'style="opacity: 0.5; pointer-events: none;"' : ''}>
+            <span class="sidebar-item-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+                <line x1="10" y1="9" x2="8" y2="9"/>
+              </svg>
+            </span>
+            <span class="sidebar-item-content">
+              <div class="sidebar-item-name">\${q.displayName}</div>
+              \${q.hasReview ? '' : '<div class="sidebar-item-meta">No review generated</div>'}
+            </span>
+            <span class="sidebar-item-badge \${badgeClass}">\${badgeText}</span>
+          </a>
+        \`;
+      }).join('');
+    }
+
+    // Sidebar event listeners
+    sidebarToggle.addEventListener('click', toggleSidebar);
+    sidebarClose.addEventListener('click', closeSidebar);
+    sidebarOverlay.addEventListener('click', closeSidebar);
 
     // Check server connection
     async function checkServerConnection() {
@@ -1015,7 +1376,7 @@ export class WebReviewGenerator {
         const cell = document.querySelector('td[data-cell="' + ref + '"]');
         if (cell) {
           cell.classList.add(className);
-          cell.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+          cell.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
         }
       });
     }
@@ -1052,7 +1413,7 @@ export class WebReviewGenerator {
       if (!item) return;
 
       item.classList.add('selected');
-      item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
       if (syncMode) {
         // Highlight cells in original
@@ -1089,7 +1450,7 @@ export class WebReviewGenerator {
           const itemCells = (item.dataset.cells || '').split(',');
           if (itemCells.includes(cellRef)) {
             item.classList.add('highlighted');
-            item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
           }
         });
       }
@@ -1352,13 +1713,13 @@ export class WebReviewGenerator {
       return str.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     }
 
-    // Update feedback count in apply rules button
+    // Update feedback count in complete button
     function updateFeedbackCount() {
       const count = window.feedbackLog?.length || 0;
-      const exportBtn = document.getElementById('export-toggle');
-      exportBtn.textContent = count > 0 ? 'Apply Rules (' + count + ')' : 'Apply Rules';
-      if (count > 0) exportBtn.classList.add('has-feedback');
-      else exportBtn.classList.remove('has-feedback');
+      const completeBtn = document.getElementById('complete-toggle');
+      completeBtn.textContent = count > 0 ? 'Complete Review (' + count + ')' : 'Complete Review';
+      if (count > 0) completeBtn.classList.add('has-feedback');
+      else completeBtn.classList.remove('has-feedback');
     }
 
     // Update section status (e.g., "5/10 ✓")
@@ -1413,32 +1774,85 @@ export class WebReviewGenerator {
       });
     });
 
-    // Apply rules from feedback
-    document.getElementById('export-toggle').addEventListener('click', applyRules);
+    // Panel-level Accept/Reject All buttons
+    document.getElementById('accept-all-indexed')?.addEventListener('click', () => {
+      const items = document.querySelectorAll('#panel-indexed .item');
+      items.forEach(item => {
+        item.classList.remove('wrong', 'rejected', 'show-note');
+        item.classList.add('reviewed', 'correct', 'accepted');
+        logFeedback(item, 'correct');
+      });
+      showToast(items.length + ' indexed items accepted');
+    });
 
-    async function applyRules() {
+    document.getElementById('reject-all-indexed')?.addEventListener('click', () => {
+      const items = document.querySelectorAll('#panel-indexed .item');
+      items.forEach(item => {
+        item.classList.remove('correct', 'accepted');
+        item.classList.add('reviewed', 'wrong', 'rejected');
+        logFeedback(item, 'wrong');
+      });
+      showToast(items.length + ' indexed items rejected');
+    });
+
+    document.getElementById('accept-all-library')?.addEventListener('click', () => {
+      const items = document.querySelectorAll('#panel-library .item');
+      items.forEach(item => {
+        item.classList.remove('wrong', 'rejected', 'show-note');
+        item.classList.add('reviewed', 'correct', 'accepted');
+        logFeedback(item, 'correct');
+      });
+      showToast(items.length + ' library items accepted');
+    });
+
+    document.getElementById('reject-all-library')?.addEventListener('click', () => {
+      const items = document.querySelectorAll('#panel-library .item');
+      items.forEach(item => {
+        item.classList.remove('correct', 'accepted');
+        item.classList.add('reviewed', 'wrong', 'rejected');
+        logFeedback(item, 'wrong');
+      });
+      showToast(items.length + ' library items rejected');
+    });
+
+    // Complete Review - saves approved data AND applies learning rules
+    document.getElementById('complete-toggle').addEventListener('click', completeReview);
+
+    async function completeReview() {
       if (!window.feedbackLog || window.feedbackLog.length === 0) {
-        showToast('No feedback to apply');
+        showToast('No feedback to save');
         return;
       }
 
       if (!serverConnected) {
-        showToast('Server not connected - cannot apply rules');
+        showToast('Server not connected');
         return;
       }
 
       try {
-        const res = await fetch(API_BASE + '/api/apply-rules', { method: 'POST' });
-        if (!res.ok) throw new Error('Failed to apply rules');
+        // 1. Save approved items to database files
+        const exportRes = await fetch(API_BASE + '/api/export-approved', { method: 'POST' });
+        if (!exportRes.ok) throw new Error('Failed to export approved');
+        const exportResult = await exportRes.json();
 
-        const result = await res.json();
-        const indexCount = (result.rules?.indexRules?.exclude?.length || 0) + (result.rules?.indexRules?.corrections?.length || 0);
-        const harvestCount = (result.rules?.harvestRules?.exclude?.length || 0) + (result.rules?.harvestRules?.corrections?.length || 0);
+        // 2. Apply learning rules from rejections/edits
+        const rulesRes = await fetch(API_BASE + '/api/apply-rules', { method: 'POST' });
+        if (!rulesRes.ok) throw new Error('Failed to apply rules');
+        const rulesResult = await rulesRes.json();
 
-        showToast('Applied ' + indexCount + ' index + ' + harvestCount + ' harvest rules');
+        // Show summary
+        const entityCount = exportResult.exported?.entityDb?.length || 0;
+        const libraryCount = exportResult.exported?.answerLibrary?.length || 0;
+        const rulesCount = (rulesResult.rules?.indexRules?.exclude?.length || 0) +
+                          (rulesResult.rules?.indexRules?.corrections?.length || 0) +
+                          (rulesResult.rules?.harvestRules?.exclude?.length || 0) +
+                          (rulesResult.rules?.harvestRules?.corrections?.length || 0);
+
+        showToast('Saved ' + entityCount + ' entity, ' + libraryCount + ' library, ' + rulesCount + ' rules');
+        console.log('Review completed:', { exportResult, rulesResult });
       } catch (e) {
-        console.error('Failed to apply rules:', e);
-        showToast('Failed to apply rules - check console');
+        console.error('Failed to complete review:', e);
+        showToast('Failed to complete - check console');
       }
     }
 
@@ -1501,14 +1915,23 @@ export class WebReviewGenerator {
         return;
       }
 
-      // Close help/clear selection with Escape
+      // Close help/sidebar/clear selection with Escape
       if (key === 'escape') {
         if (helpModal.classList.contains('visible')) {
           toggleHelp();
+        } else if (sidebarOpen) {
+          closeSidebar();
         } else {
           clearHighlights();
           currentItemIndex = -1;
         }
+        return;
+      }
+
+      // Sidebar toggle
+      if (key === 'b') {
+        e.preventDefault();
+        toggleSidebar();
         return;
       }
 
@@ -1550,7 +1973,7 @@ export class WebReviewGenerator {
         if (currentItemIndex >= 0) {
           clearHighlights();
           indexedItems[currentItemIndex].classList.add('current');
-          indexedItems[currentItemIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+          indexedItems[currentItemIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
           if (syncMode) selectItem(indexedItems[currentItemIndex], 'keyboard');
         }
         return;
@@ -1561,7 +1984,7 @@ export class WebReviewGenerator {
         if (currentItemIndex >= 0 && indexedItems[currentItemIndex]) {
           clearHighlights();
           indexedItems[currentItemIndex].classList.add('current');
-          indexedItems[currentItemIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+          indexedItems[currentItemIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
           if (syncMode) selectItem(indexedItems[currentItemIndex], 'keyboard');
         }
         return;
@@ -1674,7 +2097,7 @@ export class WebReviewGenerator {
         const idx = itemIndex++;
         const cells = [item.lCell, item.vCell].filter(Boolean).join(',');
         return `
-        <div class="item" data-index="${idx}" data-cells="${cells}" data-label="${this.escapeHtml(item.label)}" data-section="${this.escapeHtml(section.title)}">
+        <div class="item" data-index="${idx}" data-cells="${cells}" data-label="${this.escapeHtml(item.label)}" data-section="${this.escapeHtml(section.title)}" data-topic="${section.topic}">
           <div class="item-header">
             <span class="item-label">${this.escapeHtml(item.label)}</span>
             <span class="item-meta">${item.lCell || ''}${item.vCell ? ' → ' + item.vCell : ''}</span>

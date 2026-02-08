@@ -11,6 +11,9 @@
  *   list           - List stored questionnaires
  */
 
+// Load environment variables from .env file
+import 'dotenv/config';
+
 import { Command } from 'commander';
 import { resolve, join } from 'path';
 import { readdir, readFile } from 'fs/promises';
@@ -25,6 +28,8 @@ import { AnswerHarvester } from './answer-harvester.js';
 import { ReviewCLI } from './review-cli.js';
 import { WebReviewGenerator } from './web-review-generator.js';
 import { ReviewServer } from './review/server.js';
+import { printEnvironmentInfo, getConfig, hasApiKey } from './config/environments.js';
+import { PassionfruitAPIClient } from './sync/api-client.js';
 
 const program = new Command();
 
@@ -349,6 +354,46 @@ program
   });
 
 // =============================================================================
+// ENV - Show current environment configuration
+// =============================================================================
+
+program
+  .command('env')
+  .description('Show current Passionfruit API environment configuration')
+  .option('--test', 'Test API connection')
+  .action(async (opts) => {
+    try {
+      printEnvironmentInfo();
+
+      if (opts.test) {
+        if (!hasApiKey()) {
+          console.log('Cannot test connection: PASSIONFRUIT_API_KEY not set\n');
+          process.exit(1);
+        }
+
+        console.log('Testing API connection...');
+        try {
+          const client = new PassionfruitAPIClient();
+          const stats = await client.getStats();
+          console.log('✅ Connection successful!\n');
+          console.log('API Stats:');
+          console.log(`  Entities: ${stats.entities}`);
+          console.log(`  Answers: ${stats.answers}`);
+          console.log(`  Evidences: ${stats.evidences}`);
+          console.log();
+        } catch (error) {
+          console.log('❌ Connection failed: ' + (error instanceof Error ? error.message : error));
+          console.log();
+          process.exit(1);
+        }
+      }
+    } catch (error) {
+      console.error('\n❌ Error: ' + (error instanceof Error ? error.message : error));
+      process.exit(1);
+    }
+  });
+
+// =============================================================================
 // HELP - Show the pipeline flow
 // =============================================================================
 
@@ -377,13 +422,20 @@ program
 ║     → Output: answer-library.yaml                              ║
 ║                                                                ║
 ║  4. REVIEW                                                     ║
-║     npx tsx src/pipeline-v2/cli.ts review                      ║
+║     npx tsx src/pipeline-v2/cli.ts serve <file.xlsx>           ║
 ║     → Interactive review with visual preview                   ║
-║     → Feedback stored for learning                             ║
-║     → Output: feedback/feedback.yaml                           ║
+║     → Approve items for entity DB and answer library           ║
+║     → Output: approved-exports/<name>/*.json                   ║
 ║                                                                ║
-║  5. FILL (coming soon)                                         ║
-║     → Auto-fill new questionnaires with approved answers       ║
+║  5. SYNC (coming soon)                                         ║
+║     npx tsx src/pipeline-v2/cli.ts sync-approved               ║
+║     → Sync approved items to Passionfruit API                  ║
+║     → Uploads evidence, creates entities, saves answers        ║
+║                                                                ║
+║  ENV                                                           ║
+║     npx tsx src/pipeline-v2/cli.ts env                         ║
+║     → Show current API environment (dev/production)            ║
+║     → Set via PASSIONFRUIT_ENV environment variable            ║
 ║                                                                ║
 ╚═══════════════════════════════════════════════════════════════╝
 `);

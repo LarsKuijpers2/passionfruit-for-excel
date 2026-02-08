@@ -37,6 +37,7 @@ export interface IndexedSection {
   title: string;
   topic: string;
   rows: string;
+  sheet?: string;
   items: IndexedItem[];
 }
 
@@ -203,6 +204,7 @@ export class QuestionnaireIndexer {
             title: sectionTitle,
             topic,
             rows,
+            sheet: analysis.sheetName,
             items: indexedItems,
           });
         }

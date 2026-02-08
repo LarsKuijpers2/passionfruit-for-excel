@@ -2580,6 +2580,37 @@ export class WebReviewGenerator {
       background: rgba(59, 130, 246, 0.2) !important;
       outline: 2px solid #3b82f6;
     }
+    /* Cell formatting */
+    .excel-table td.cell-bold { font-weight: 600; }
+    .excel-table td.cell-italic { font-style: italic; }
+    .excel-table td.cell-header {
+      background: rgba(59, 130, 246, 0.1);
+      font-weight: 600;
+    }
+    .excel-table td.cell-label {
+      color: var(--muted-foreground);
+    }
+    .excel-table td.cell-section {
+      background: var(--muted);
+      font-weight: 600;
+      color: var(--foreground);
+    }
+    .excel-table tr.row-header-type td:not(.row-header) {
+      background: rgba(59, 130, 246, 0.08);
+    }
+    .excel-table tr.row-section-type td:not(.row-header) {
+      background: var(--muted);
+    }
+    .excel-table td.cell-merged-hidden { display: none; }
+    /* Cell selection for label/value pairing */
+    .excel-table td.label-selected {
+      background: rgba(251, 191, 36, 0.3) !important;
+      outline: 2px solid #fbbf24;
+    }
+    .excel-table td.value-selected {
+      background: rgba(34, 197, 94, 0.3) !important;
+      outline: 2px solid #22c55e;
+    }
 
     /* Items */
     .section {
@@ -3095,8 +3126,15 @@ export class WebReviewGenerator {
         </div>
       \`).join('');
 
+      // Calculate cell count from actual cell data
+      const cellCount = structure.sheets.reduce((sum, s) => {
+        if (!s.rows) return sum;
+        return sum + s.rows.reduce((rowSum, row) => {
+          return rowSum + (row.cells ? Object.keys(row.cells).length : 0);
+        }, 0);
+      }, 0);
       document.getElementById('original-stats').textContent =
-        \`\${structure.sheets.length} sheets, \${structure.sheets.reduce((sum, s) => sum + (s.rows?.length || 0) * (s.columns?.length || 0), 0)} cells\`;
+        \`\${structure.sheets.length} sheets, \${cellCount} cells\`;
 
       // Sheet tab handlers
       tabsContainer.querySelectorAll('.sheet-tab').forEach(tab => {
@@ -3105,8 +3143,95 @@ export class WebReviewGenerator {
           contentContainer.querySelectorAll('.sheet-content').forEach(c => c.classList.remove('active'));
           tab.classList.add('active');
           contentContainer.querySelector(\`[data-sheet="\${tab.dataset.sheet}"]\`).classList.add('active');
+
+          // Filter Indexed and Library panels by sheet
+          const sheetName = tab.textContent.trim();
+          filterPanelsBySheet(sheetName);
         });
       });
+
+      // Add "All Sheets" button
+      const allSheetsBtn = document.createElement('button');
+      allSheetsBtn.className = 'sheet-tab';
+      allSheetsBtn.textContent = 'All';
+      allSheetsBtn.title = 'Show all sheets';
+      allSheetsBtn.style.marginLeft = 'auto';
+      allSheetsBtn.addEventListener('click', () => {
+        filterPanelsBySheet(null); // Show all
+        showToast('Showing all sheets');
+      });
+      tabsContainer.appendChild(allSheetsBtn);
+    }
+
+    // Filter Indexed and Library sections by sheet name
+    function filterPanelsBySheet(sheetName) {
+      // Filter Indexed sections
+      document.querySelectorAll('#panel-indexed .section').forEach(section => {
+        const sectionSheet = section.dataset.sheet || '';
+        if (!sheetName || sectionSheet === sheetName || sectionSheet === '') {
+          section.style.display = '';
+        } else {
+          section.style.display = 'none';
+        }
+      });
+
+      // Filter Library items by sheet (library is organized by topic, not sheet)
+      document.querySelectorAll('#panel-library .section').forEach(section => {
+        let visibleItems = 0;
+        section.querySelectorAll('.item').forEach(item => {
+          const itemSheet = item.dataset.sheet || '';
+          // When filtering by sheet, only show items that match that sheet exactly
+          // Items without sheet info (empty string) are hidden when filtering
+          if (!sheetName) {
+            // No filter - show all
+            item.style.display = '';
+            visibleItems++;
+          } else if (itemSheet === sheetName) {
+            // Exact match - show
+            item.style.display = '';
+            visibleItems++;
+          } else {
+            // No match or no sheet info - hide
+            item.style.display = 'none';
+          }
+        });
+        // Hide section if no visible items
+        section.style.display = visibleItems > 0 ? '' : 'none';
+      });
+
+      // Update stats to show filtered count
+      updateFilteredStats(sheetName);
+    }
+
+    function updateFilteredStats(sheetName) {
+      // Update Indexed stats
+      const indexedSections = document.querySelectorAll('#panel-indexed .section:not([style*="display: none"])');
+      let indexedItems = 0;
+      indexedSections.forEach(s => {
+        indexedItems += s.querySelectorAll('.item').length;
+      });
+      const indexedStatsEl = document.getElementById('indexed-stats');
+      if (indexedStatsEl) {
+        if (sheetName) {
+          indexedStatsEl.textContent = \`\${indexedSections.length} sections, \${indexedItems} items (filtered)\`;
+        } else {
+          const allSections = document.querySelectorAll('#panel-indexed .section').length;
+          const allItems = document.querySelectorAll('#panel-indexed .item').length;
+          indexedStatsEl.textContent = \`\${allSections} sections, \${allItems} items\`;
+        }
+      }
+
+      // Update Library stats
+      const visibleLibraryItems = document.querySelectorAll('#panel-library .item:not([style*="display: none"])').length;
+      const totalLibraryItems = document.querySelectorAll('#panel-library .item').length;
+      const libraryStatsEl = document.getElementById('library-stats');
+      if (libraryStatsEl) {
+        if (sheetName) {
+          libraryStatsEl.textContent = \`\${visibleLibraryItems} of \${totalLibraryItems} items (filtered)\`;
+        } else {
+          libraryStatsEl.textContent = \`\${totalLibraryItems} items\`;
+        }
+      }
     }
 
     function renderSheetTable(sheet) {
@@ -3114,20 +3239,93 @@ export class WebReviewGenerator {
         return '<div class="empty">Empty sheet</div>';
       }
 
-      const columns = sheet.columns || [];
+      // Extract columns from cell data if not provided
+      let columns = sheet.columns;
+      if (!columns || columns.length === 0) {
+        // Collect all unique column letters from all rows
+        const colSet = new Set();
+        sheet.rows.forEach(row => {
+          if (row.cells) {
+            Object.keys(row.cells).forEach(col => colSet.add(col));
+          }
+        });
+        // Sort columns alphabetically (A, B, C, ... AA, AB, etc.)
+        columns = Array.from(colSet).sort((a, b) => {
+          if (a.length !== b.length) return a.length - b.length;
+          return a.localeCompare(b);
+        });
+      }
+
+      // Build merge map: track which cells are merged and their spans
+      const mergeMap = {};
+      sheet.rows.forEach(row => {
+        if (row.cells) {
+          Object.entries(row.cells).forEach(([col, cell]) => {
+            if (cell?.format?.isMerged && cell.format.mergeRange) {
+              const key = \`\${col}\${row.rowNumber || row.row}\`;
+              mergeMap[key] = {
+                isOrigin: cell.format.isMergeOrigin,
+                range: cell.format.mergeRange
+              };
+            }
+          });
+        }
+      });
+
+      // Calculate colspan from merge range (e.g., "A3:C3" -> 3 columns)
+      function getColspan(range, startCol) {
+        if (!range) return 1;
+        const match = range.match(/([A-Z]+)\\d+:([A-Z]+)\\d+/);
+        if (!match) return 1;
+        const startIdx = columns.indexOf(match[1]);
+        const endIdx = columns.indexOf(match[2]);
+        if (startIdx === -1 || endIdx === -1) return 1;
+        return endIdx - startIdx + 1;
+      }
+
       const headerHtml = '<tr><th class="row-header">#</th>' +
         columns.map(col => \`<th>\${col}</th>\`).join('') + '</tr>';
 
       const rowsHtml = sheet.rows.map(row => {
         const rowNum = row.rowNumber || row.row;
+        const rowType = row.rowType || '';
+        const rowClass = rowType === 'header' ? ' class="row-header-type"' :
+                        rowType === 'section' ? ' class="row-section-type"' : '';
+
         const cellsHtml = columns.map(col => {
-          // Cells are stored as object with column letter keys (e.g., cells.A, cells.B)
           const cell = row.cells?.[col];
           const value = cell?.value ?? '';
           const cellId = \`\${col}\${rowNum}\`;
-          return \`<td data-cell="\${cellId}">\${escapeHtml(String(value))}</td>\`;
+          const mergeInfo = mergeMap[cellId];
+
+          // Skip non-origin merged cells
+          if (mergeInfo && !mergeInfo.isOrigin) {
+            return ''; // Will be covered by colspan
+          }
+
+          // Build cell classes
+          const classes = [];
+          if (cell?.format?.bold) classes.push('cell-bold');
+          if (cell?.format?.italic) classes.push('cell-italic');
+          if (cell?.role === 'header') classes.push('cell-header');
+          if (cell?.role === 'label') classes.push('cell-label');
+          if (cell?.role === 'section' || rowType === 'section') classes.push('cell-section');
+
+          const classStr = classes.length ? \` class="\${classes.join(' ')}"\` : '';
+          const colspan = mergeInfo?.isOrigin ? getColspan(mergeInfo.range, col) : 1;
+          const colspanStr = colspan > 1 ? \` colspan="\${colspan}"\` : '';
+
+          // Style for font size (scale relative to base 12px)
+          let styleStr = '';
+          if (cell?.format?.fontSize && cell.format.fontSize !== 11) {
+            const scale = cell.format.fontSize / 11;
+            if (scale > 1.1) styleStr = \` style="font-size: \${Math.round(12 * scale)}px"\`;
+          }
+
+          return \`<td data-cell="\${cellId}"\${classStr}\${colspanStr}\${styleStr}>\${escapeHtml(String(value))}</td>\`;
         }).join('');
-        return \`<tr><td class="row-header">\${rowNum}</td>\${cellsHtml}</tr>\`;
+
+        return \`<tr\${rowClass}><td class="row-header">\${rowNum}</td>\${cellsHtml}</tr>\`;
       }).join('');
 
       return \`<table class="excel-table"><thead>\${headerHtml}</thead><tbody>\${rowsHtml}</tbody></table>\`;
@@ -3143,18 +3341,20 @@ export class WebReviewGenerator {
 
       let totalItems = 0;
       const sectionsHtml = indexed.sections.map((section, sIdx) => {
+        const sheetName = section.sheet || '';
         const itemsHtml = section.items.map((item, iIdx) => {
           totalItems++;
           const idx = \`\${sIdx}-\${iIdx}\`;
-          const cells = item.labelCell && item.valueCell ? \`\${item.labelCell} → \${item.valueCell}\` : '';
+          const cells = item.lCell && item.vCell ? \`\${item.lCell} → \${item.vCell}\` :
+                       (item.labelCell && item.valueCell ? \`\${item.labelCell} → \${item.valueCell}\` : '');
           const value = item.value || '';
           const isEmpty = !value || value.trim() === '';
 
           return \`
-            <div class="item" data-index="\${idx}" data-cells="\${cells}" data-label="\${escapeHtml(item.label)}" data-section="\${escapeHtml(section.name)}" data-topic="\${section.topic || ''}">
+            <div class="item" data-index="\${idx}" data-cells="\${cells}" data-sheet="\${escapeHtml(sheetName)}" data-label="\${escapeHtml(item.label)}" data-section="\${escapeHtml(section.name || section.title)}" data-topic="\${section.topic || ''}">
               <div class="item-label">\${escapeHtml(item.label)}</div>
               <div class="item-value\${isEmpty ? ' empty' : ''}">\${isEmpty ? '(empty)' : escapeHtml(value)}</div>
-              <div class="item-ref">\${cells}</div>
+              <div class="item-ref">\${sheetName ? sheetName + ': ' : ''}\${cells}</div>
               <div class="item-actions review-only">
                 <button class="action-btn correct" title="Accept (C)">✓</button>
                 <button class="action-btn wrong" title="Reject (W)">✗</button>
@@ -3171,9 +3371,9 @@ export class WebReviewGenerator {
         }).join('');
 
         return \`
-          <div class="section" data-section="\${sIdx}">
+          <div class="section" data-section="\${sIdx}" data-sheet="\${escapeHtml(sheetName)}">
             <div class="section-header">
-              <div class="section-title">\${escapeHtml(section.name)}</div>
+              <div class="section-title">\${escapeHtml(section.name || section.title)}\${sheetName ? ' <span style="opacity:0.5;font-weight:normal">(' + escapeHtml(sheetName) + ')</span>' : ''}</div>
               <div class="section-meta">
                 <span class="section-badge">\${section.topic || 'general'}</span>
                 <span>\${section.items.length} items</span>
@@ -3218,18 +3418,26 @@ export class WebReviewGenerator {
       }
 
       const topicsHtml = Object.entries(byTopic).map(([topic, items]) => {
+        // Collect unique sheets in this topic
+        const sheetsInTopic = new Set();
+        items.forEach(item => {
+          const source = item.source || item.sources?.[0];
+          if (source?.sheet) sheetsInTopic.add(source.sheet);
+        });
+
         const itemsHtml = items.map(item => {
           // Handle both source formats: item.source (single) or item.sources (array)
           const source = item.source || item.sources?.[0];
+          const sheetName = source?.sheet || '';
           const cells = source?.lCell && source?.vCell
             ? \`\${source.lCell} → \${source.vCell}\`
             : (source?.labelCell && source?.valueCell ? \`\${source.labelCell} → \${source.valueCell}\` : '');
 
           return \`
-            <div class="item" data-index="\${item.idx}" data-cells="\${cells}" data-label="\${escapeHtml(item.label)}" data-topic="\${topic}">
+            <div class="item" data-index="\${item.idx}" data-cells="\${cells}" data-sheet="\${escapeHtml(sheetName)}" data-label="\${escapeHtml(item.label)}" data-topic="\${topic}">
               <div class="item-label">\${escapeHtml(item.label)}</div>
               <div class="item-value">\${escapeHtml(item.value || '')}</div>
-              <div class="item-ref">\${cells}</div>
+              <div class="item-ref">\${sheetName ? sheetName + ': ' : ''}\${cells}</div>
               <div class="item-actions review-only">
                 <button class="action-btn correct" title="Accept (C)">✓</button>
                 <button class="action-btn wrong" title="Reject (W)">✗</button>
@@ -3245,8 +3453,10 @@ export class WebReviewGenerator {
           \`;
         }).join('');
 
+        const sheetsStr = sheetsInTopic.size > 0 ? Array.from(sheetsInTopic).join(', ') : '';
+
         return \`
-          <div class="section" data-topic="\${topic}">
+          <div class="section" data-topic="\${topic}" data-sheets="\${escapeHtml(sheetsStr)}">
             <div class="section-header">
               <div class="section-title">\${topic.toUpperCase()}</div>
               <div class="section-meta">
@@ -3311,9 +3521,243 @@ export class WebReviewGenerator {
           if (e.target.closest('.action-btn') || e.target.closest('.wrong-note-container')) return;
           document.querySelectorAll('.item.selected').forEach(i => i.classList.remove('selected'));
           item.classList.add('selected');
-          highlightCells(item.dataset.cells);
+          highlightCells(item.dataset.cells, item.dataset.sheet);
         });
       });
+
+      // Cell selection state for label/value pairing
+      let selectedCells = [];
+      let selectionMode = null; // 'label' or 'value'
+
+      // Cell click handlers - click Original cell to find related Indexed items
+      // Shift+click to select label cell, Ctrl/Cmd+click to select value cell
+      document.querySelectorAll('.excel-table td[data-cell]').forEach(cell => {
+        cell.style.cursor = 'pointer';
+        cell.addEventListener('click', (e) => {
+          const cellId = cell.dataset.cell;
+          if (!cellId) return;
+
+          // Shift+click = select as label cell
+          if (e.shiftKey) {
+            document.querySelectorAll('.excel-table td.label-selected').forEach(td => {
+              td.classList.remove('label-selected');
+            });
+            cell.classList.add('label-selected');
+            selectedCells[0] = { id: cellId, value: cell.textContent.trim(), element: cell };
+            showToast(\`Label cell: \${cellId} - now Ctrl+click value cell\`);
+            updateCellSelectionUI();
+            return;
+          }
+
+          // Ctrl/Cmd+click = select as value cell
+          if (e.ctrlKey || e.metaKey) {
+            document.querySelectorAll('.excel-table td.value-selected').forEach(td => {
+              td.classList.remove('value-selected');
+            });
+            cell.classList.add('value-selected');
+            selectedCells[1] = { id: cellId, value: cell.textContent.trim(), element: cell };
+            showToast(\`Value cell: \${cellId}\`);
+            updateCellSelectionUI();
+            return;
+          }
+
+          // Normal click - find matching items (exact match)
+          document.querySelectorAll('.excel-table td.highlighted').forEach(td => {
+            td.classList.remove('highlighted');
+          });
+          cell.classList.add('highlighted');
+
+          // Find items that reference this cell (exact match, not substring)
+          const allItems = document.querySelectorAll('.item[data-cells]');
+          const matchingItems = [];
+          allItems.forEach(item => {
+            const cells = item.dataset.cells || '';
+            // Split by arrow and whitespace, check for exact match
+            const cellRefs = cells.split(/[→,\\s]+/).map(c => c.trim());
+            if (cellRefs.includes(cellId)) {
+              matchingItems.push(item);
+            }
+          });
+
+          document.querySelectorAll('.item.selected').forEach(i => i.classList.remove('selected'));
+
+          if (matchingItems.length > 0) {
+            matchingItems.forEach(item => item.classList.add('selected'));
+            matchingItems[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            showToast(\`Found \${matchingItems.length} item(s) for \${cellId}\`);
+          } else {
+            showToast(\`No items reference cell \${cellId} (Shift+click to select as label)\`);
+          }
+        });
+      });
+
+      // Update cell selection UI
+      function updateCellSelectionUI() {
+        let existingUI = document.getElementById('cell-selection-ui');
+        if (!existingUI) {
+          existingUI = document.createElement('div');
+          existingUI.id = 'cell-selection-ui';
+          existingUI.style.cssText = 'position:fixed;bottom:60px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;z-index:1000;display:flex;gap:12px;align-items:center;box-shadow:0 4px 12px rgba(0,0,0,0.3);';
+          document.body.appendChild(existingUI);
+        }
+
+        const labelCell = selectedCells[0];
+        const valueCell = selectedCells[1];
+
+        if (!labelCell && !valueCell) {
+          existingUI.style.display = 'none';
+          return;
+        }
+
+        existingUI.style.display = 'flex';
+        existingUI.innerHTML = \`
+          <div style="font-size:12px;">
+            <div style="color:var(--muted-foreground);margin-bottom:4px;">Selected cells:</div>
+            <div><strong>Label:</strong> \${labelCell ? labelCell.id + ' "' + labelCell.value.substring(0,30) + (labelCell.value.length > 30 ? '...' : '') + '"' : '<em>Shift+click to select</em>'}</div>
+            <div><strong>Value:</strong> \${valueCell ? valueCell.id + ' "' + valueCell.value.substring(0,30) + (valueCell.value.length > 30 ? '...' : '') + '"' : '<em>Ctrl+click to select</em>'}</div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            \${labelCell && valueCell ? '<button id="create-item-btn" style="padding:6px 12px;background:#22c55e;color:#000;border:none;border-radius:var(--radius);cursor:pointer;font-weight:500;">Create Item</button>' : ''}
+            <button id="clear-selection-btn" style="padding:6px 12px;background:var(--muted);color:var(--foreground);border:none;border-radius:var(--radius);cursor:pointer;">Clear</button>
+          </div>
+        \`;
+
+        document.getElementById('clear-selection-btn')?.addEventListener('click', () => {
+          clearCellSelection();
+        });
+
+        document.getElementById('create-item-btn')?.addEventListener('click', () => {
+          createItemFromSelection();
+        });
+      }
+
+      function clearCellSelection() {
+        document.querySelectorAll('.excel-table td.label-selected, .excel-table td.value-selected').forEach(td => {
+          td.classList.remove('label-selected', 'value-selected');
+        });
+        selectedCells = [];
+        updateCellSelectionUI();
+      }
+
+      async function createItemFromSelection() {
+        const labelCell = selectedCells[0];
+        const valueCell = selectedCells[1];
+        if (!labelCell || !valueCell) return;
+
+        // Get current active sheet name
+        const activeTab = document.querySelector('.sheet-tab.active');
+        const sheetName = activeTab ? activeTab.textContent.trim() : '';
+
+        const newItem = {
+          label: labelCell.value,
+          value: valueCell.value,
+          lCell: labelCell.id,
+          vCell: valueCell.id,
+          sheet: sheetName,
+          source: 'manual'
+        };
+
+        // Save to server
+        if (serverConnected) {
+          try {
+            await fetch(API_BASE + '/api/feedback', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                panel: 'manual',
+                item: {
+                  action: 'created',
+                  ...newItem,
+                  reviewedAt: new Date().toISOString()
+                }
+              })
+            });
+
+            // Add item to Indexed panel
+            addManualItemToPanel(newItem);
+            showToast(\`Created item: \${labelCell.value.substring(0,30)}...\`);
+            clearCellSelection();
+          } catch (err) {
+            showToast('Failed to create item');
+          }
+        } else {
+          showToast('Server not connected');
+        }
+      }
+
+      // Add manual item to Indexed panel
+      function addManualItemToPanel(item) {
+        const container = document.getElementById('indexed-content');
+        if (!container) return;
+
+        // Find or create "Manual Items" section
+        let manualSection = container.querySelector('.section[data-section="manual"]');
+        if (!manualSection) {
+          manualSection = document.createElement('div');
+          manualSection.className = 'section';
+          manualSection.dataset.section = 'manual';
+          manualSection.innerHTML = \`
+            <div class="section-header">
+              <div class="section-title">Manual Items <span style="opacity:0.5;font-weight:normal">(\${item.sheet || 'Unknown'})</span></div>
+              <div class="section-meta">
+                <span class="section-badge" style="background:#22c55e;color:#000;">manual</span>
+                <span class="manual-count">0 items</span>
+              </div>
+            </div>
+            <div class="section-items"></div>
+          \`;
+          // Insert at top
+          container.insertBefore(manualSection, container.firstChild);
+
+          // Add collapse handler
+          manualSection.querySelector('.section-header').addEventListener('click', () => {
+            manualSection.classList.toggle('collapsed');
+          });
+        }
+
+        const sectionItems = manualSection.querySelector('.section-items');
+        const cells = \`\${item.lCell} → \${item.vCell}\`;
+        const idx = 'manual-' + Date.now();
+
+        const itemEl = document.createElement('div');
+        itemEl.className = 'item reviewed correct accepted';
+        itemEl.dataset.index = idx;
+        itemEl.dataset.cells = cells;
+        itemEl.dataset.sheet = item.sheet || '';
+        itemEl.dataset.label = item.label;
+        itemEl.innerHTML = \`
+          <div class="item-label">\${escapeHtml(item.label)}</div>
+          <div class="item-value">\${escapeHtml(item.value)}</div>
+          <div class="item-ref">\${item.sheet ? item.sheet + ': ' : ''}\${cells}</div>
+          <div class="item-actions review-only">
+            <button class="action-btn correct" title="Accept (C)">✓</button>
+            <button class="action-btn wrong" title="Reject (W)">✗</button>
+          </div>
+        \`;
+
+        // Add click handler
+        itemEl.addEventListener('click', (e) => {
+          if (e.target.closest('.action-btn')) return;
+          document.querySelectorAll('.item.selected').forEach(i => i.classList.remove('selected'));
+          itemEl.classList.add('selected');
+          highlightCells(cells, item.sheet);
+        });
+
+        sectionItems.appendChild(itemEl);
+
+        // Update count
+        const count = sectionItems.querySelectorAll('.item').length;
+        manualSection.querySelector('.manual-count').textContent = count + ' items';
+
+        // Update stats
+        const statsEl = document.getElementById('indexed-stats');
+        if (statsEl) {
+          const match = statsEl.textContent.match(/(\\d+) sections, (\\d+) items/);
+          if (match) {
+            statsEl.textContent = \`\${match[1]} sections, \${parseInt(match[2]) + 1} items\`;
+          }
+        }
+      }
 
       // Action buttons
       document.querySelectorAll('.action-btn').forEach(btn => {
@@ -3475,6 +3919,19 @@ export class WebReviewGenerator {
 
     function restoreFeedbackState() {
       feedbackLog.forEach(fb => {
+        // Handle manually created items
+        if (fb.action === 'created' && fb.source === 'manual') {
+          addManualItemToPanel({
+            label: fb.label,
+            value: fb.value,
+            lCell: fb.lCell,
+            vCell: fb.vCell,
+            sheet: fb.sheet || ''
+          });
+          return;
+        }
+
+        // Handle accepted/rejected items
         const items = document.querySelectorAll(\`.item[data-cells="\${fb.cells}"]\`);
         items.forEach(item => {
           if (fb.action === 'accepted') {
@@ -3510,7 +3967,7 @@ export class WebReviewGenerator {
       }
     }
 
-    function highlightCells(cellsStr) {
+    function highlightCells(cellsStr, sheetName = null) {
       document.querySelectorAll('.excel-table td.highlighted').forEach(td => {
         td.classList.remove('highlighted');
       });
@@ -3518,11 +3975,46 @@ export class WebReviewGenerator {
       if (!cellsStr) return;
 
       const cells = cellsStr.split(/[→,\\s]+/).map(c => c.trim()).filter(Boolean);
+      let foundInSheet = null;
+
+      // If sheetName provided, try to find and switch to that sheet first
+      if (sheetName) {
+        const tabs = document.querySelectorAll('.sheet-tab');
+        tabs.forEach((tab, idx) => {
+          if (tab.textContent.trim() === sheetName) {
+            foundInSheet = idx;
+          }
+        });
+      }
+
+      // Find cells in all sheets
+      const allSheets = document.querySelectorAll('.sheet-content');
       cells.forEach(cell => {
-        document.querySelectorAll(\`[data-cell="\${cell}"]\`).forEach(td => {
-          td.classList.add('highlighted');
+        allSheets.forEach((sheet, idx) => {
+          const td = sheet.querySelector(\`[data-cell="\${cell}"]\`);
+          if (td) {
+            td.classList.add('highlighted');
+            if (foundInSheet === null) foundInSheet = idx;
+          }
         });
       });
+
+      // Switch to the sheet containing the cells
+      if (foundInSheet !== null) {
+        const tabs = document.querySelectorAll('.sheet-tab');
+        const contents = document.querySelectorAll('.sheet-content');
+        if (tabs[foundInSheet] && !tabs[foundInSheet].classList.contains('active')) {
+          tabs.forEach(t => t.classList.remove('active'));
+          contents.forEach(c => c.classList.remove('active'));
+          tabs[foundInSheet].classList.add('active');
+          contents[foundInSheet].classList.add('active');
+        }
+        // Scroll first highlighted cell into view
+        const firstHighlighted = contents[foundInSheet]?.querySelector('.highlighted');
+        if (firstHighlighted) {
+          firstHighlighted.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
     }
 
     function updateStats() {

@@ -38,6 +38,7 @@ export interface HarvestedItem {
   /** Source provenance */
   source: {
     file: string;
+    sheet?: string;
     lCell: string;
     vCell?: string;
     ref?: string;
@@ -122,6 +123,7 @@ export class AnswerHarvester {
           level: item.level as 'standard' | 'narrative',
           source: {
             file: indexed.source,
+            sheet: section.sheet,
             lCell: item.lCell || '',
             vCell: item.vCell,
             ref: item.ref,

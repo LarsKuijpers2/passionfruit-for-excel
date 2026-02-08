@@ -1,9 +1,9 @@
-id: b7648e29
+id: 6e7b77a1
 updated: 2026-02-08
-total: 18
+total: 69
 byTopic:
   company:
-    - id: 61db91da
+    - id: 6ffd1405
       type: field
       label: Bedrijfsnaam
       value: Kaas-Pack Holland BV
@@ -12,10 +12,11 @@ byTopic:
       level: standard
       source:
         file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        sheet: Questionnaire NL
         lCell: A8
         vCell: C8
         harvestedAt: 2026-02-08
-    - id: 81d67489
+    - id: "10950547"
       type: field
       label: Adres
       value: Buitenvaart 2109
@@ -24,10 +25,11 @@ byTopic:
       level: standard
       source:
         file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        sheet: Questionnaire NL
         lCell: A9
         vCell: C9
         harvestedAt: 2026-02-08
-    - id: db2b821f
+    - id: bdf66bf8
       type: field
       label: Postcode, plaats, land
       value: 7905 SW Hoogeveen, Nederland
@@ -36,10 +38,11 @@ byTopic:
       level: standard
       source:
         file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        sheet: Questionnaire NL
         lCell: A10
         vCell: C10
         harvestedAt: 2026-02-08
-    - id: 1f1310eb
+    - id: db237d2b
       type: field
       label: Contactpersoon
       value: I. Vegter
@@ -48,10 +51,11 @@ byTopic:
       level: standard
       source:
         file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        sheet: Questionnaire NL
         lCell: A11
         vCell: C11
         harvestedAt: 2026-02-08
-    - id: 66bd6692
+    - id: af12e66d
       type: field
       label: Functie
       value: QA Manager
@@ -59,10 +63,11 @@ byTopic:
       level: standard
       source:
         file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        sheet: Questionnaire NL
         lCell: A12
         vCell: C12
         harvestedAt: 2026-02-08
-    - id: "37770775"
+    - id: d9385123
       type: field
       label: Telefoonnummer
       value: 0528-268246
@@ -71,10 +76,11 @@ byTopic:
       level: standard
       source:
         file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        sheet: Questionnaire NL
         lCell: A13
         vCell: C13
         harvestedAt: 2026-02-08
-    - id: 77d3121e
+    - id: 0e8dec1b
       type: field
       label: Email-adres
       value: quality@kaaspack.nl
@@ -83,11 +89,12 @@ byTopic:
       level: standard
       source:
         file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        sheet: Questionnaire NL
         lCell: A14
         vCell: C14
         harvestedAt: 2026-02-08
-    - id: 33c1d26f
-      type: field
+    - id: 6115c1c9
+      type: text
       label: Bedrijfsactiviteiten
       value: versnijden en raspen van kaas
       lang: nl
@@ -95,10 +102,11 @@ byTopic:
       level: narrative
       source:
         file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        sheet: Questionnaire NL
         lCell: A15
         vCell: C15
         harvestedAt: 2026-02-08
-    - id: 4f541d10
+    - id: "91643669"
       type: field
       label: EG-nummer (indien van toepassing)
       value: NL Z 0159 EG
@@ -107,61 +115,389 @@ byTopic:
       level: standard
       source:
         file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        sheet: Questionnaire NL
         lCell: A17
         vCell: C17
         harvestedAt: 2026-02-08
+    - id: 96f36f93
+      type: field
+      label: Company name
+      value: Kaas-Pack Holland B.V.
+      lang: en
+      topic: company
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: General data
+        lCell: B10
+        vCell: C10
+        harvestedAt: 2026-02-08
+    - id: "558253e9"
+      type: field
+      label: Street
+      value: Buitenvaart 2109
+      lang: nl
+      topic: company
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: General data
+        lCell: B11
+        vCell: C11
+        harvestedAt: 2026-02-08
+    - id: 63919aae
+      type: field
+      label: Postal Code
+      value: 7905 SW
+      topic: company
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: General data
+        lCell: B12
+        vCell: C12
+        harvestedAt: 2026-02-08
+    - id: "904e4792"
+      type: field
+      label: City
+      value: Hoogeveen
+      topic: company
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: General data
+        lCell: B13
+        vCell: C13
+        harvestedAt: 2026-02-08
+    - id: 2af98591
+      type: field
+      label: Country
+      value: The Netherlands
+      lang: en
+      topic: company
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: General data
+        lCell: B14
+        vCell: C14
+        harvestedAt: 2026-02-08
+    - id: 4f0797ad
+      type: field
+      label: Website
+      value: https://kaaspack.nl/
+      lang: nl
+      topic: company
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: General data
+        lCell: B15
+        vCell: C15
+        harvestedAt: 2026-02-08
+    - id: 64a93588
+      type: field
+      label: Phone
+      value: +31 528 268 246
+      lang: en
+      topic: company
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: General data
+        lCell: B16
+        vCell: C16
+        harvestedAt: 2026-02-08
+    - id: 189c2113
+      type: field
+      label: General e-mail address
+      value: orderdesk@kaaspack.nl
+      lang: de
+      topic: company
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: General data
+        lCell: B17
+        vCell: C17
+        harvestedAt: 2026-02-08
+    - id: 04abf0bc
+      type: field
+      label: Name contact person
+      value: L. Smit
+      lang: fr
+      topic: company
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: General data
+        lCell: B18
+        vCell: C18
+        harvestedAt: 2026-02-08
+    - id: f603bee0
+      type: field
+      label: Phone contact person
+      value: +31 (0)6 21 86 57 19
+      lang: fr
+      topic: company
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: General data
+        lCell: B19
+        vCell: C19
+        harvestedAt: 2026-02-08
+    - id: ad4138a8
+      type: field
+      label: E-mail address contact person
+      value: l.smit@kaaspack.nl
+      lang: fr
+      topic: company
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: General data
+        lCell: B20
+        vCell: C20
+        harvestedAt: 2026-02-08
+    - id: f71db137
+      type: field
+      label: Tax number
+      value: NL809333120B01
+      lang: fr
+      topic: company
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: General data
+        lCell: B26
+        vCell: C26
+        harvestedAt: 2026-02-08
+    - id: 3dfd625a
+      type: field
+      label: Bank details (IBAN)
+      value: NL67 RABO 0329 0821 16
+      lang: nl
+      topic: company
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: General data
+        lCell: B27
+        vCell: C27
+        harvestedAt: 2026-02-08
+    - id: b706c85e
+      type: field
+      label: Bank details (BIC)
+      value: RABONL2U
+      lang: nl
+      topic: company
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: General data
+        lCell: B28
+        vCell: C28
+        harvestedAt: 2026-02-08
+    - id: 962b169b
+      type: field
+      label: Contact for accounting
+      value: Bookkeeping department
+      lang: en
+      topic: company
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: General data
+        lCell: B29
+        vCell: C29
+        harvestedAt: 2026-02-08
+    - id: 0ea52388
+      type: field
+      label: Phone number accounting
+      value: +31 528 268 246
+      lang: en
+      topic: company
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: General data
+        lCell: B30
+        vCell: C30
+        harvestedAt: 2026-02-08
+    - id: f33387e5
+      type: field
+      label: Email address accounting
+      value: finance@kaaspack.nl
+      lang: en
+      topic: company
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: General data
+        lCell: B31
+        vCell: C31
+        harvestedAt: 2026-02-08
+    - id: 51e4b704
+      type: field
+      label: Contact person for sales
+      value: L. Smit
+      lang: fr
+      topic: company
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: General data
+        lCell: B32
+        vCell: C32
+        harvestedAt: 2026-02-08
+    - id: 10a3938f
+      type: field
+      label: Phone number sales
+      value: +31 (0)6 21 86 57 19
+      lang: fr
+      topic: company
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: General data
+        lCell: B33
+        vCell: C33
+        harvestedAt: 2026-02-08
+    - id: 89b3bb7d
+      type: field
+      label: Email address sales
+      value: l.smit@kaaspack.nl
+      lang: fr
+      topic: company
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: General data
+        lCell: B34
+        vCell: C34
+        harvestedAt: 2026-02-08
+    - id: e156b88d
+      type: field
+      label: Contact person quality management
+      value: Quality department
+      lang: fr
+      topic: company
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: General data
+        lCell: B35
+        vCell: C35
+        harvestedAt: 2026-02-08
+    - id: f4ad3f5a
+      type: field
+      label: Email address quality management
+      value: quality@kaaspack.nl
+      lang: en
+      topic: company
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: General data
+        lCell: B36
+        vCell: C36
+        harvestedAt: 2026-02-08
+    - id: 0cf224a1
+      type: field
+      label: Phone number quality management
+      value: +31 528 268 246
+      lang: en
+      topic: company
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: General data
+        lCell: B37
+        vCell: C37
+        harvestedAt: 2026-02-08
+    - id: 7c4002e6
+      type: choice
+      label: Are you a manufacturer or trader?
+      value: Hersteller-Producer
+      lang: en
+      topic: company
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: General data
+        lCell: B38
+        vCell: C38
+        harvestedAt: 2026-02-08
+    - id: 9ee5c697
+      type: yesno
+      label: Do you agree that F + S conducts an audit at your facility?
+      value: ja-yes
+      lang: en
+      topic: company
+      level: narrative
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: General data
+        lCell: B39
+        vCell: C39
+        harvestedAt: 2026-02-08
   quality:
-    - id: 941430c3
+    - id: c04e829a
       type: text
-      label: Welke kwaliteitsstandaarden zijn in werking binnen uw bedrijf?
+      label: 2.1 Welke kwaliteitsstandaarden zijn in werking binnen uw bedrijf?
       value: VLOG en Weidegang
       lang: nl
       topic: quality
       level: narrative
       source:
         file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        sheet: Questionnaire NL
         lCell: A21
         vCell: C21
         harvestedAt: 2026-02-08
-    - id: 09da28ac
+    - id: 787729d1
       type: text
-      label: Hoe is contaminatie met vreemde delen (metaal, steentjes, hout, etc.) voorkomen?
+      label: Hoe is contaminatie met vreemde delen (metaal, steentjes, hout, plastic) in het eindproduct voorkomen?
       value: Controle op metaaldeeltjes door metaaldetector verder visuele controle
       lang: nl
       topic: quality
       level: narrative
       source:
         file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        sheet: Questionnaire NL
         lCell: A22
         vCell: C22
         harvestedAt: 2026-02-08
   microbiology:
-    - id: a16bb555
+    - id: fcc855f7
       type: text
-      label: Leg kort uit hoe gevaren die via de grondstoffen uw product kunnen beïnvloeden worden beheerst
-      value: Afstemming binnen het HACCP team betreffende gevaren. Daar worden maatregelen genomen.
+      label: Leg kort uit hoe gevaren die via de grondstoffen uw product kunnen binnenkomen, worden gecontroleerd
+      value: Afstemming binnen het HACCP team betreffende gevaren. Daar wordt dit geëvalueerd
       lang: nl
       topic: microbiology
       level: narrative
       source:
         file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        sheet: Questionnaire NL
         lCell: A29
         vCell: C29
         harvestedAt: 2026-02-08
-    - id: "48029418"
+    - id: 285ad285
       type: text
-      label: Voert u Chemische en/of microbiologische analyses uit om de veiligheid van uw product te waarborgen?
-      value: Er worden volgen monsterplanning onderzoeken op microbiologisch gebied uitgevoerd.
+      label: Voert u Chemische en/of microbiologische analyses uit om de kwaliteit van uw producten te monitoren?
+      value: Er worden volgen monsterplanning onderzoeken op microbiologie uitgevoerd
       lang: nl
       topic: microbiology
       level: narrative
       source:
         file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        sheet: Questionnaire NL
         lCell: A30
         vCell: C30
         harvestedAt: 2026-02-08
   food_fraud:
-    - id: 865ff007
+    - id: 3630e91b
       type: yesno
       label: Is er een Food Fraude-analyse uitgevoerd op de grondstoffen en ingrediënten?
       value: Ja
@@ -170,36 +506,39 @@ byTopic:
       level: narrative
       source:
         file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        sheet: Questionnaire NL
         lCell: A35
         vCell: C35
         harvestedAt: 2026-02-08
-    - id: 45c200e9
+    - id: 3a11c068
       type: text
       label: Voert u analyses uit op grondstoffen om fraude eerder in het proces te detecteren?
-      value: Nee. We kopen kaas in van gecertificeerde producenten. Er worden controles uitgevoerd.
+      value: Nee. We kopen kaas in van gecertificeerde producenten. Er worden geen analyses uitgevoerd
       lang: nl
       topic: food_fraud
       level: narrative
       source:
         file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        sheet: Questionnaire NL
         lCell: A36
         vCell: C36
         harvestedAt: 2026-02-08
   environment:
-    - id: 25cbaa42
+    - id: 88ff5565
       type: text
-      label: Bevat het milieubeleid van uw organisatie, zelf toegekende eisen?
+      label: Bevat het milieubeleid van uw organisatie, zelf toegekende en/of extern gecontroleerde milieudoelstellingen?
       value: Er wordt intern gewerkt met een CAP 26000 gebaseerd systeem.
       lang: nl
       topic: environment
       level: narrative
       source:
         file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        sheet: Questionnaire NL
         lCell: A41
         vCell: C41
         harvestedAt: 2026-02-08
   signature:
-    - id: 5d12f8ff
+    - id: ff04b60a
       type: field
       label: Naam
       value: I. Vegter
@@ -207,10 +546,11 @@ byTopic:
       level: standard
       source:
         file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        sheet: Questionnaire NL
         lCell: A45
         vCell: C45
         harvestedAt: 2026-02-08
-    - id: 8d654084
+    - id: "61113774"
       type: date
       label: Datum
       value: 2024-11-12
@@ -218,8 +558,353 @@ byTopic:
       level: standard
       source:
         file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        sheet: Questionnaire NL
         lCell: A47
         vCell: C47
         harvestedAt: 2026-02-08
+  documents:
+    - id: fdc809da
+      type: field
+      label: Document Reference
+      value: ZQM - FO - 403
+      lang: en
+      topic: documents
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: Appendix
+        lCell: A1
+        vCell: H1
+        harvestedAt: 2026-02-08
+  product:
+    - id: "50234338"
+      type: field
+      label: Company Production Plant
+      value: Kaas-Pack Holland B.V.
+      lang: en
+      topic: product
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: Appendix
+        lCell: B8
+        vCell: C9
+        harvestedAt: 2026-02-08
+    - id: 9da4925b
+      type: text
+      label: PCF Boundary Note
+      value: "Hinweis: Als Bilanzgrenzen für den Product Carbon Footprint"
+      lang: en
+      topic: product
+      level: narrative
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: Appendix
+        lCell: A34
+        vCell: A34
+        harvestedAt: 2026-02-08
+  other:
+    - id: 2952e26d
+      type: yesno
+      label: Fallen Sie unter EU Deforestation Regulation (EUDR)? / Are you subject to the EU Deforestation Regulation (EUDR)?
+      value: nein-no
+      lang: en
+      topic: other
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: Non-deforestation
+        lCell: B10
+        vCell: C10:D10
+        harvestedAt: 2026-02-08
+    - id: 07905ec7
+      type: yesno
+      label: Liegt eine Selbstverpflichtung vor, entwaldungsfreie Lieferketten sicherzustellen? / Is there a self-commitment to ensure deforestation-free supply chains?
+      value: nein-no
+      lang: en
+      topic: other
+      level: narrative
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: Non-deforestation
+        lCell: B12
+        vCell: C12:D12
+        harvestedAt: 2026-02-08
+    - id: "05e61231"
+      type: yesno
+      label: Planen Sie, sich zu einer entwaldungsfreien Lieferkette zu verpflichten? / Do you plan to commit to a deforestation-free supply chain?
+      value: nein-no
+      lang: de
+      topic: other
+      level: narrative
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: Non-deforestation
+        lCell: B24
+        vCell: C24:D24
+        harvestedAt: 2026-02-08
+    - id: 77ab5f98
+      type: yesno
+      label: Haben Sie sich CO₂-Reduktionsziele gesetzt? / Have you set yourself CO₂ reduction targets?
+      value: nein-no
+      lang: de
+      topic: other
+      level: narrative
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: Sustainability
+        lCell: B15
+        vCell: C15
+        harvestedAt: 2026-02-08
+    - id: 39b2b07c
+      type: text
+      label: Bemerkungen zu CO₂-Reduktionszielen
+      value: Es wurde ein Konzeptplan erstellt, der noch vom Managementteam
+      lang: de
+      topic: other
+      level: narrative
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: Sustainability
+        lCell: B15
+        vCell: D15
+        harvestedAt: 2026-02-08
+    - id: fe12bc07
+      type: field
+      label: Wenn nein, für wann planen Sie, sich Ziele zu setzen? / If no, when are you planning to set targets?
+      value: end of 2025
+      lang: de
+      topic: other
+      level: narrative
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: Sustainability
+        lCell: B18
+        vCell: C18
+        harvestedAt: 2026-02-08
+    - id: 3931d174
+      type: yesno
+      label: Haben Sie sich zu SBTi verpflichtet? / Have you committed to SBTi?
+      value: nein-no
+      lang: de
+      topic: other
+      level: narrative
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: Sustainability
+        lCell: B19
+        vCell: C19
+        harvestedAt: 2026-02-08
+    - id: 9efb50dc
+      type: text
+      label: Bemerkungen zu SBTi Verpflichtung
+      value: Noch nicht, wir stehen mit SBTi in Kontakt, um die von uns g
+      lang: de
+      topic: other
+      level: narrative
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: Sustainability
+        lCell: B19
+        vCell: D19
+        harvestedAt: 2026-02-08
+    - id: 572de6a7
+      type: yesno
+      label: Haben Sie SBTi-validierte Ziele? / Do you have SBTi-validated targets?
+      value: nein-no
+      lang: de
+      topic: other
+      level: narrative
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: Sustainability
+        lCell: B22
+        vCell: C22
+        harvestedAt: 2026-02-08
+    - id: 08c3b32f
+      type: text
+      label: Bemerkungen zu SBTi-validierten Zielen
+      value: Noch nicht, wir stehen mit SBTi in Kontakt, um die von uns g
+      lang: de
+      topic: other
+      level: narrative
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: Sustainability
+        lCell: B22
+        vCell: D22
+        harvestedAt: 2026-02-08
+    - id: 72102d1d
+      type: yesno
+      label: Planen Sie, sich zu SBTi zu verpflichten? / Are you planning to commit to SBTi?
+      value: ja-yes
+      lang: de
+      topic: other
+      level: narrative
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: Sustainability
+        lCell: B23
+        vCell: C23
+        harvestedAt: 2026-02-08
+    - id: f3a3d277
+      type: field
+      label: Wann planen Sie SBTi Verpflichtung
+      value: Ende 2025 / Anfang 2026
+      lang: de
+      topic: other
+      level: narrative
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: Sustainability
+        lCell: B23
+        vCell: D23
+        harvestedAt: 2026-02-08
+    - id: 59301f54
+      type: yesno
+      label: Hiermit bestätigen wir die Unterzeichnung und die Einhaltung des Lieferantenkodex
+      value: ja-yes
+      lang: de
+      topic: other
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: Sustainability
+        lCell: B36
+        vCell: C36
+        harvestedAt: 2026-02-08
+  animal_welfare:
+    - id: b2a179bb
+      type: yesno
+      label: Gibt es bei Ihren Vorlieferanten Vorgaben, auf bestimmte Herkunftsländer zu verzichten?
+      value: nein-no
+      lang: de
+      topic: animal_welfare
+      level: narrative
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: Sustainability
+        lCell: B26
+        vCell: C26
+        harvestedAt: 2026-02-08
+    - id: 1d389fe8
+      type: yesno
+      label: Gibt es bei Ihren Vorlieferanten bereits verbindliche Vorgaben hinsichtlich der Haltungsformen?
+      value: nein-no
+      lang: de
+      topic: animal_welfare
+      level: narrative
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: Sustainability
+        lCell: B28
+        vCell: C28
+        harvestedAt: 2026-02-08
+    - id: a7c315d3
+      type: yesno
+      label: Die nationalen und Europäischen Gesetze und Verordnungen hinsichtlich Tierwohl werden eingehalten
+      value: ja-yes
+      lang: de
+      topic: animal_welfare
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: Sustainability
+        lCell: B33
+        vCell: C33
+        harvestedAt: 2026-02-08
+  contacts:
+    - id: e5ff7687
+      type: field
+      label: Name / Name
+      value: G. Sok
+      topic: contacts
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: Sustainability
+        lCell: B39
+        vCell: C39
+        harvestedAt: 2026-02-08
+    - id: 0723e2e8
+      type: field
+      label: Telefon / Phone
+      value: +31 528 268 246
+      lang: fr
+      topic: contacts
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: Sustainability
+        lCell: B40
+        vCell: C40
+        harvestedAt: 2026-02-08
+    - id: "2808e910"
+      type: field
+      label: Mobil-Telefon / Mobile Phone
+      value: n/a
+      lang: fr
+      topic: contacts
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: Sustainability
+        lCell: B41
+        vCell: C41
+        harvestedAt: 2026-02-08
+    - id: 8462dc87
+      type: field
+      label: E-Mail-Adresse / Email adress
+      value: quality@kaaspack.nl
+      lang: en
+      topic: contacts
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: Sustainability
+        lCell: B42
+        vCell: C42
+        harvestedAt: 2026-02-08
+  financial:
+    - id: 569b0462
+      type: yesno
+      label: Is your company listed on the stock exchange?
+      value: nein-no
+      lang: en
+      topic: financial
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: General data
+        lCell: B53
+        vCell: C53
+        harvestedAt: 2026-02-08
+    - id: 4f8bec40
+      type: yesno
+      label: Is your company part of a group?
+      value: nein-no
+      lang: en
+      topic: financial
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: General data
+        lCell: B54
+        vCell: C54
+        harvestedAt: 2026-02-08
+    - id: c5c7c0e0
+      type: yesno
+      label: Does the company have subsidiaries?
+      value: nein-no
+      lang: en
+      topic: financial
+      level: standard
+      source:
+        file: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+        sheet: General data
+        lCell: B56
+        vCell: C56
+        harvestedAt: 2026-02-08
 sources:
   - 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+  - F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx

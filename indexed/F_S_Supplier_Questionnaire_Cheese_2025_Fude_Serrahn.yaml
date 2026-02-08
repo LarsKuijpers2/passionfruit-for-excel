@@ -1,0 +1,650 @@
+id: fe46233c
+source: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
+indexed: 2026-02-08
+language: en
+sections:
+  - title: Document Header
+    topic: documents
+    rows: 1-1
+    sheet: Appendix
+    items:
+      - type: field
+        label: Document Reference
+        value: ZQM - FO - 403
+        level: standard
+        lang: en
+        lCell: A1
+        vCell: H1
+  - title: Production Plant Information
+    topic: product
+    rows: 8-15
+    sheet: Appendix
+    items:
+      - type: table
+        label: Production Plant and Product Information
+        level: product
+        lang: en
+        ref: B8:H15
+      - type: field
+        label: Company Production Plant
+        value: Kaas-Pack Holland B.V.
+        level: standard
+        lang: en
+        lCell: B8
+        vCell: C9
+      - type: yesno
+        label: Milk from EU 27 countries exclusively
+        value: ja-yes
+        level: product
+        lang: en
+        lCell: F8
+        vCell: F9
+      - type: field
+        label: Origin/Country codes of milk
+        value: NL, DE, AT
+        level: product
+        lang: en
+        lCell: H8
+        vCell: H9
+  - title: General data
+    topic: company
+    rows: 9-39
+    sheet: General data
+    items:
+      - type: field
+        label: F + S Supplier No.
+        level: standard
+        lang: en
+        lCell: B9
+        vCell: C9
+      - type: field
+        label: Company name
+        value: Kaas-Pack Holland B.V.
+        level: standard
+        lang: en
+        lCell: B10
+        vCell: C10
+      - type: field
+        label: Street
+        value: Buitenvaart 2109
+        level: standard
+        lang: nl
+        lCell: B11
+        vCell: C11
+      - type: field
+        label: Postal Code
+        value: 7905 SW
+        level: standard
+        lCell: B12
+        vCell: C12
+      - type: field
+        label: City
+        value: Hoogeveen
+        level: standard
+        lCell: B13
+        vCell: C13
+      - type: field
+        label: Country
+        value: The Netherlands
+        level: standard
+        lang: en
+        lCell: B14
+        vCell: C14
+      - type: field
+        label: Website
+        value: https://kaaspack.nl/
+        level: standard
+        lang: nl
+        lCell: B15
+        vCell: C15
+      - type: field
+        label: Phone
+        value: +31 528 268 246
+        level: standard
+        lang: en
+        lCell: B16
+        vCell: C16
+      - type: field
+        label: General e-mail address
+        value: orderdesk@kaaspack.nl
+        level: standard
+        lang: de
+        lCell: B17
+        vCell: C17
+      - type: field
+        label: Name contact person
+        value: L. Smit
+        level: standard
+        lang: fr
+        lCell: B18
+        vCell: C18
+      - type: field
+        label: Phone contact person
+        value: +31 (0)6 21 86 57 19
+        level: standard
+        lang: fr
+        lCell: B19
+        vCell: C19
+      - type: field
+        label: E-mail address contact person
+        value: l.smit@kaaspack.nl
+        level: standard
+        lang: fr
+        lCell: B20
+        vCell: C20
+      - type: field
+        label: VAT ID
+        level: standard
+        lCell: B21
+        vCell: C21
+      - type: field
+        label: Tax number
+        value: NL809333120B01
+        level: standard
+        lang: fr
+        lCell: B26
+        vCell: C26
+      - type: field
+        label: Bank details (IBAN)
+        value: NL67 RABO 0329 0821 16
+        level: standard
+        lang: nl
+        lCell: B27
+        vCell: C27
+      - type: field
+        label: Bank details (BIC)
+        value: RABONL2U
+        level: standard
+        lang: nl
+        lCell: B28
+        vCell: C28
+      - type: field
+        label: Contact for accounting
+        value: Bookkeeping department
+        level: standard
+        lang: en
+        lCell: B29
+        vCell: C29
+      - type: field
+        label: Phone number accounting
+        value: +31 528 268 246
+        level: standard
+        lang: en
+        lCell: B30
+        vCell: C30
+      - type: field
+        label: Email address accounting
+        value: finance@kaaspack.nl
+        level: standard
+        lang: en
+        lCell: B31
+        vCell: C31
+      - type: field
+        label: Contact person for sales
+        value: L. Smit
+        level: standard
+        lang: fr
+        lCell: B32
+        vCell: C32
+      - type: field
+        label: Phone number sales
+        value: +31 (0)6 21 86 57 19
+        level: standard
+        lang: fr
+        lCell: B33
+        vCell: C33
+      - type: field
+        label: Email address sales
+        value: l.smit@kaaspack.nl
+        level: standard
+        lang: fr
+        lCell: B34
+        vCell: C34
+      - type: field
+        label: Contact person quality management
+        value: Quality department
+        level: standard
+        lang: fr
+        lCell: B35
+        vCell: C35
+      - type: field
+        label: Email address quality management
+        value: quality@kaaspack.nl
+        level: standard
+        lang: en
+        lCell: B36
+        vCell: C36
+      - type: field
+        label: Phone number quality management
+        value: +31 528 268 246
+        level: standard
+        lang: en
+        lCell: B37
+        vCell: C37
+      - type: choice
+        label: Are you a manufacturer or trader?
+        value: Hersteller-Producer
+        level: standard
+        lang: en
+        lCell: B38
+        vCell: C38
+      - type: yesno
+        label: Do you agree that F + S conducts an audit at your facility?
+        value: ja-yes
+        level: narrative
+        lang: en
+        lCell: B39
+        vCell: C39
+  - title: Product Carbon Footprint (PCF)
+    topic: product
+    rows: 10-12
+    sheet: Sustainability
+    items:
+      - type: yesno
+        label: Liegt Ihnen ein Product Carbon Footprint (PCF) bzw. liegen Ihnen CO₂-Werte vor?
+        value: nein-no
+        level: product
+        lang: de
+        lCell: B10
+        vCell: C10
+      - type: yesno
+        label: Wenn nein, planen Sie die Berechnung eines PCF? / If not, are you planning to calculate a PCF?
+        value: nein-no
+        level: product
+        lang: de
+        lCell: B12
+        vCell: C12
+  - title: Self-commitment to deforestation-free supply chain
+    topic: other
+    rows: 10-24
+    sheet: Non-deforestation
+    items:
+      - type: yesno
+        label: Fallen Sie unter EU Deforestation Regulation (EUDR)? / Are you subject to the EU Deforestation Regulation (EUDR)?
+        value: nein-no
+        level: standard
+        lang: en
+        lCell: B10
+        vCell: C10:D10
+      - type: yesno
+        label: Enthalten die an uns gelieferten Artikeln mind. 5% eines kritischen Rohstoffs? / Do the articles delivered to us contain at least 5% of a critical raw material?
+        value: nein-no
+        level: product
+        lang: en
+        lCell: B11
+        vCell: C11:D11
+      - type: yesno
+        label: Liegt eine Selbstverpflichtung vor, entwaldungsfreie Lieferketten sicherzustellen? / Is there a self-commitment to ensure deforestation-free supply chains?
+        value: nein-no
+        level: narrative
+        lang: en
+        lCell: B12
+        vCell: C12:D12
+      - type: text
+        label: Bitte geben Sie die Risikorohstoffe an, die von Ihrer Verpflichtung abgedeckt werden / Please specify the risk raw materials covered by your commitment
+        level: narrative
+        lang: de
+        lCell: B13
+        vCell: C13
+      - type: date
+        label: Geben Sie bitte das Cut-off-Datum an / Please state the cut-off date
+        level: narrative
+        lang: en
+        lCell: B14
+        vCell: C14
+      - type: date
+        label: Geben Sie bitte das Zieldatum an / Please state the target date
+        level: narrative
+        lang: de
+        lCell: B15
+        vCell: C15
+      - type: yesno
+        label: Haben Sie eine Beschaffungspolitik implementiert, um entwaldungsfreie Rohstoffe zu gewährleisten? / Have you implemented a procurement policy to ensure deforestation-free raw materials?
+        level: narrative
+        lang: de
+        lCell: B16
+        vCell: C16
+      - type: yesno
+        label: Verfügen Sie über ein Mapping-System, das Lieferanten mit Entwaldungsrisiko identifiziert? / Do you have a mapping system that identifies suppliers with deforestation risk?
+        level: narrative
+        lang: de
+        lCell: B17
+        vCell: C17
+      - type: yesno
+        label: Verfügen Sie über ein Rückverfolgbarkeitssystem für Ihre Rohstoffe? / Do you have a traceability system for your raw materials?
+        level: narrative
+        lang: de
+        lCell: B18
+        vCell: C18
+      - type: yesno
+        label: Wird eine Analyse zur Bewertung des Entwaldungsrisikos durchgeführt? / Is an analysis conducted to assess deforestation risk?
+        level: narrative
+        lang: en
+        lCell: B19
+        vCell: C19
+      - type: yesno
+        label: Werden bei erhöhtem Risiko Minderungsmaßnahmen durchgeführt? / Are mitigation measures implemented in case of increased risk?
+        level: narrative
+        lang: de
+        lCell: B20
+        vCell: C20
+      - type: yesno
+        label: Wird über die Risikoanalyse und durchgeführten Minderungsmaßnahmen berichtet? / Is there reporting on risk analysis and implemented mitigation measures?
+        level: narrative
+        lang: en
+        lCell: B21
+        vCell: C21
+      - type: yesno
+        label: Verfügen Sie über ein Überwachungssystem, das die Einhaltung der Richtlinien überwacht? / Do you have a monitoring system that monitors compliance with guidelines?
+        level: narrative
+        lang: de
+        lCell: B22
+        vCell: C22
+      - type: yesno
+        label: Veröffentlichen Sie jährliche Berichte über die Leistung und den Fortschritt? / Do you publish annual reports on performance and progress?
+        level: narrative
+        lang: de
+        lCell: B23
+        vCell: C23
+      - type: yesno
+        label: Planen Sie, sich zu einer entwaldungsfreien Lieferkette zu verpflichten? / Do you plan to commit to a deforestation-free supply chain?
+        value: nein-no
+        level: narrative
+        lang: de
+        lCell: B24
+        vCell: C24:D24
+  - title: CO₂-Reduktionsmaßnahmen / CO₂ reduction measures
+    topic: other
+    rows: 15-23
+    sheet: Sustainability
+    items:
+      - type: yesno
+        label: Haben Sie sich CO₂-Reduktionsziele gesetzt? / Have you set yourself CO₂ reduction targets?
+        value: nein-no
+        level: narrative
+        lang: de
+        lCell: B15
+        vCell: C15
+      - type: text
+        label: Bemerkungen zu CO₂-Reduktionszielen
+        value: Es wurde ein Konzeptplan erstellt, der noch vom Managementteam
+        level: narrative
+        lang: de
+        lCell: B15
+        vCell: D15
+      - type: field
+        label: Wenn nein, für wann planen Sie, sich Ziele zu setzen? / If no, when are you planning to set targets?
+        value: end of 2025
+        level: narrative
+        lang: de
+        lCell: B18
+        vCell: C18
+      - type: yesno
+        label: Haben Sie sich zu SBTi verpflichtet? / Have you committed to SBTi?
+        value: nein-no
+        level: narrative
+        lang: de
+        lCell: B19
+        vCell: C19
+      - type: text
+        label: Bemerkungen zu SBTi Verpflichtung
+        value: Noch nicht, wir stehen mit SBTi in Kontakt, um die von uns g
+        level: narrative
+        lang: de
+        lCell: B19
+        vCell: D19
+      - type: yesno
+        label: Haben Sie SBTi-validierte Ziele? / Do you have SBTi-validated targets?
+        value: nein-no
+        level: narrative
+        lang: de
+        lCell: B22
+        vCell: C22
+      - type: text
+        label: Bemerkungen zu SBTi-validierten Zielen
+        value: Noch nicht, wir stehen mit SBTi in Kontakt, um die von uns g
+        level: narrative
+        lang: de
+        lCell: B22
+        vCell: D22
+      - type: yesno
+        label: Planen Sie, sich zu SBTi zu verpflichten? / Are you planning to commit to SBTi?
+        value: ja-yes
+        level: narrative
+        lang: de
+        lCell: B23
+        vCell: C23
+      - type: field
+        label: Wann planen Sie SBTi Verpflichtung
+        value: Ende 2025 / Anfang 2026
+        level: narrative
+        lang: de
+        lCell: B23
+        vCell: D23
+  - title: Product Carbon Footprint
+    topic: product
+    rows: 20-34
+    sheet: Appendix
+    items:
+      - type: field
+        label: Supplied F + S Company
+        level: standard
+        lang: en
+        lCell: A20
+      - type: field
+        label: Supplied Location
+        level: standard
+        lang: en
+        lCell: B20
+      - type: field
+        label: Products delivered in calendar year 2024
+        value: z.B. Gouda / e.g. gouda
+        level: product
+        lang: en
+        lCell: C20
+        vCell: C21
+      - type: field
+        label: Product Carbon Footprint (Cradle-to-Gate) in g CO₂e / kg
+        value: z. B. 1200 / e. g. 1200
+        level: product
+        lang: en
+        lCell: E20
+        vCell: E21
+      - type: field
+        label: Name of certificate for PCF
+        level: product
+        lang: en
+        lCell: F20
+      - type: text
+        label: PCF Boundary Note
+        value: "Hinweis: Als Bilanzgrenzen für den Product Carbon Footprint"
+        level: narrative
+        lang: en
+        lCell: A34
+        vCell: A34
+  - title: Angaben zum Tierwohl / Information on animal welfare
+    topic: animal_welfare
+    rows: 26-33
+    sheet: Sustainability
+    items:
+      - type: yesno
+        label: Gibt es bei Ihren Vorlieferanten Vorgaben, auf bestimmte Herkunftsländer zu verzichten?
+        value: nein-no
+        level: narrative
+        lang: de
+        lCell: B26
+        vCell: C26
+      - type: text
+        label: Bemerkungen zu Herkunftsländern
+        value: Wir kaufen nur Käse, der aus Milch aus EU-Ländern hergestell
+        level: product
+        lang: de
+        lCell: B26
+        vCell: D26
+      - type: yesno
+        label: Gibt es bei Ihren Vorlieferanten bereits verbindliche Vorgaben hinsichtlich der Haltungsformen?
+        value: nein-no
+        level: narrative
+        lang: de
+        lCell: B28
+        vCell: C28
+      - type: yesno
+        label: Die nationalen und Europäischen Gesetze und Verordnungen hinsichtlich Tierwohl werden eingehalten
+        value: ja-yes
+        level: standard
+        lang: de
+        lCell: B33
+        vCell: C33
+      - type: text
+        label: Bemerkungen zur Einhaltung von Tierwohl-Gesetzen
+        value: Wir kaufen nur Käse, der aus Milch aus EU-Ländern hergestell
+        level: product
+        lang: de
+        lCell: B33
+        vCell: D33
+  - title: Information on soy and palm products as feed
+    topic: product
+    rows: 28-30
+    sheet: Non-deforestation
+    items:
+      - type: yesno
+        label: Liegen Ihnen Daten zur Verwendung von Soja oder/und Palmprodukten als Futtermittel vor? / Do you have data on the use of soy and/or palm products as feed?
+        value: nein-no
+        level: product
+        lang: de
+        lCell: B28
+        vCell: C28:D28
+      - type: text
+        label: Bitte geben Sie die Herkunft der betroffenen Rohstoffe an / Please specify the origin of the affected raw materials
+        level: product
+        lang: en
+        lCell: B29
+        vCell: C29
+      - type: text
+        label: Bitte geben Sie den Anteil der betroffenen Rohstoffe an / Please specify the proportion of affected raw materials
+        level: product
+        lang: en
+        lCell: B30
+        vCell: C30
+  - title: Certificates for deforestation-free soy
+    topic: certifications
+    rows: 33-46
+    sheet: Non-deforestation
+    items:
+      - type: table
+        label: Soy Deforestation-Free Certificates
+        level: standard
+        lang: en
+        ref: A33:E46
+  - title: Lieferantenkodex / Supplier Code of Conduct
+    topic: other
+    rows: 36-36
+    sheet: Sustainability
+    items:
+      - type: yesno
+        label: Hiermit bestätigen wir die Unterzeichnung und die Einhaltung des Lieferantenkodex
+        value: ja-yes
+        level: standard
+        lang: de
+        lCell: B36
+        vCell: C36
+  - title: Kontaktdaten Ansprechpartner Nachhaltigkeitsabteilung
+    topic: contacts
+    rows: 39-42
+    sheet: Sustainability
+    items:
+      - type: field
+        label: Name / Name
+        value: G. Sok
+        level: standard
+        lCell: B39
+        vCell: C39
+      - type: field
+        label: Telefon / Phone
+        value: +31 528 268 246
+        level: standard
+        lang: fr
+        lCell: B40
+        vCell: C40
+      - type: field
+        label: Mobil-Telefon / Mobile Phone
+        value: n/a
+        level: standard
+        lang: fr
+        lCell: B41
+        vCell: C41
+      - type: field
+        label: E-Mail-Adresse / Email adress
+        value: quality@kaaspack.nl
+        level: standard
+        lang: en
+        lCell: B42
+        vCell: C42
+  - title: Crisis management
+    topic: crisis
+    rows: 42-50
+    sheet: General data
+    items:
+      - type: table
+        label: Crisis management contacts
+        level: standard
+        lang: fr
+        ref: B42:E45
+      - type: table
+        label: F + S crisis contacts
+        level: standard
+        lang: fr
+        ref: B47:E50
+  - title: Certificates for deforestation-free palm products
+    topic: certifications
+    rows: 49-54
+    sheet: Non-deforestation
+    items:
+      - type: table
+        label: Palm Products Deforestation-Free Certificates
+        level: standard
+        lang: en
+        ref: A49:E54
+  - title: Financial data
+    topic: financial
+    rows: 53-73
+    sheet: General data
+    items:
+      - type: yesno
+        label: Is your company listed on the stock exchange?
+        value: nein-no
+        level: standard
+        lang: en
+        lCell: B53
+        vCell: C53
+      - type: yesno
+        label: Is your company part of a group?
+        value: nein-no
+        level: standard
+        lang: en
+        lCell: B54
+        vCell: C54
+      - type: text
+        label: If yes, please provide the name and percentage of ownership
+        level: standard
+        lang: en
+        lCell: B55
+        vCell: C55
+      - type: yesno
+        label: Does the company have subsidiaries?
+        value: nein-no
+        level: standard
+        lang: en
+        lCell: B56
+        vCell: C56
+      - type: table
+        label: Subsidiary company details
+        level: standard
+        lang: en
+        ref: B57:E73
+stats:
+  total: 86
+  answered: 61
+  standard: 46
+  narrative: 26
+  product: 14

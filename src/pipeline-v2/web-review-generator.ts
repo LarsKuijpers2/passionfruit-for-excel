@@ -1134,7 +1134,7 @@ export class WebReviewGenerator {
     <!-- Indexed View -->
     <div class="panel visible" id="panel-indexed">
       <div class="panel-header">
-        <span>Indexed Structure</span>
+        <span>Extraction</span>
         <div style="display: flex; align-items: center; gap: 12px;">
           <span class="count">${indexed.sections.length} sections, ${indexed.stats.total} items</span>
           <button class="group-btn accept-all" id="accept-all-indexed" title="Accept all indexed items">✓ Accept All</button>
@@ -1149,7 +1149,7 @@ export class WebReviewGenerator {
     <!-- Library View -->
     <div class="panel" id="panel-library">
       <div class="panel-header">
-        <span>Harvested Library</span>
+        <span>Save as</span>
         <div style="display: flex; align-items: center; gap: 12px;">
           <span class="count">${library ? library.total + ' items' : 'Not harvested'}</span>
           <button class="group-btn accept-all" id="accept-all-library" title="Accept all library items">✓ Accept All</button>
@@ -2807,6 +2807,19 @@ export class WebReviewGenerator {
       background: rgba(34, 197, 94, 0.2);
       color: #4ade80;
     }
+    .topic-badge {
+      display: inline-block;
+      font-size: 9px;
+      padding: 1px 5px;
+      border-radius: 3px;
+      margin-left: 6px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      background: var(--muted);
+      color: var(--muted-foreground);
+      vertical-align: middle;
+    }
 
     /* Cell selection for label/value pairing */
     .excel-table td.label-selected {
@@ -3184,6 +3197,41 @@ export class WebReviewGenerator {
     .command-palette.library-mode .property-row.library-only {
       display: flex;
     }
+    .property-row.multi-only {
+      display: none;
+    }
+    .command-palette.multi-select .property-row.multi-only {
+      display: flex;
+    }
+    .merge-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .checkbox-label input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+    .merge-options select {
+      padding: 6px 10px;
+      background: var(--input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--foreground);
+      font-size: 13px;
+    }
+    .merge-options select:disabled {
+      opacity: 0.5;
+    }
     .command-palette-footer {
       display: flex;
       justify-content: flex-end;
@@ -3278,7 +3326,7 @@ export class WebReviewGenerator {
 
       <div class="panel visible" id="panel-indexed">
         <div class="panel-header">
-          <span>Indexed Structure</span>
+          <span>Extraction</span>
           <span id="indexed-stats"></span>
           <div class="group-btns review-only">
             <button class="group-btn accept-all" id="accept-all-indexed">✓ Accept All</button>
@@ -3290,7 +3338,7 @@ export class WebReviewGenerator {
 
       <div class="panel" id="panel-library">
         <div class="panel-header">
-          <span>Harvested Library</span>
+          <span>Save as</span>
           <span id="library-stats"></span>
           <div class="group-btns review-only">
             <button class="group-btn accept-all" id="accept-all-library">✓ Accept All</button>
@@ -3363,6 +3411,21 @@ export class WebReviewGenerator {
             <option value="reject">Reject</option>
             <option value="reset">Reset (clear review)</option>
           </select>
+        </div>
+        <div class="property-row multi-only">
+          <label>Merge Values</label>
+          <div class="merge-options">
+            <label class="checkbox-label">
+              <input type="checkbox" id="mergeValues">
+              Combine values from selected items
+            </label>
+            <select id="mergeSeparator" disabled>
+              <option value="\\n">New line</option>
+              <option value=", ">Comma</option>
+              <option value="; ">Semicolon</option>
+              <option value=" | ">Pipe</option>
+            </select>
+          </div>
         </div>
       </div>
       <div class="command-palette-footer">
@@ -3534,7 +3597,8 @@ export class WebReviewGenerator {
       }
 
       if (library) {
-        renderLibraryPanel(library);
+        const currentSource = structure?.source?.filename || indexed?.source;
+        renderLibraryPanel(library, currentSource);
       } else {
         document.getElementById('library-content').innerHTML =
           '<div class="empty">Library data not found. Run the harvest command first.</div>';
@@ -3850,105 +3914,114 @@ export class WebReviewGenerator {
         \`\${indexed.sections.length} sections, \${totalItems} items\`;
     }
 
-    function renderLibraryPanel(library) {
+    function renderLibraryPanel(library, currentSourceFile = null) {
       const container = document.getElementById('library-content');
 
       // Library data can be in two formats:
       // 1. library.items (array) - old format
       // 2. library.byTopic (object with topic keys) - new format
-      let byTopic = {};
+      // Group by destination: Company, Product, Answer Library
+      const byDestination = {
+        company: [],
+        product: [],
+        answer_library: []
+      };
 
+      // Helper to check if item belongs to current questionnaire
+      const matchesSource = (item) => {
+        if (!currentSourceFile) return true; // Show all if no filter
+        const source = item.source || item.sources?.[0];
+        return source?.file === currentSourceFile;
+      };
+
+      // Destination mapping based on topic
+      const entityTopics = ['company', 'company_information', 'contact_persons', 'contacts', 'certifications', 'documents', 'signature', 'approval', 'crisis', 'financial'];
+      const productTopics = ['product', 'identification', 'physical_properties', 'sensory', 'analytical', 'formula_composition', 'allergens', 'nutritional', 'regulatory_ids', 'microbiological', 'microbiology', 'contaminants', 'gmo', 'claims', 'rspo_palm', 'packaging', 'storage_transport', 'coding', 'origin_provenance'];
+
+      const getDestination = (item, topic) => {
+        if (productTopics.includes(topic) || item.level === 'product') return 'product';
+        if (entityTopics.includes(topic)) return 'company';
+        return 'answer_library';
+      };
+
+      let idx = 0;
       if (library.byTopic && Object.keys(library.byTopic).length > 0) {
-        // New format - byTopic is already grouped
-        let idx = 0;
         Object.entries(library.byTopic).forEach(([topic, items]) => {
-          byTopic[topic] = items.map(item => ({ ...item, idx: idx++ }));
+          items.filter(matchesSource).forEach(item => {
+            const dest = getDestination(item, topic);
+            byDestination[dest].push({ ...item, topic, idx: idx++ });
+          });
         });
       } else if (library.items && library.items.length > 0) {
-        // Old format - group by topic
-        library.items.forEach((item, idx) => {
+        library.items.filter(matchesSource).forEach(item => {
           const topic = item.topic || 'general';
-          if (!byTopic[topic]) byTopic[topic] = [];
-          byTopic[topic].push({ ...item, idx });
+          const dest = getDestination(item, topic);
+          byDestination[dest].push({ ...item, topic, idx: idx++ });
         });
       }
 
-      if (Object.keys(byTopic).length === 0) {
-        container.innerHTML = '<div class="empty">No library items harvested</div>';
+      const totalItems = byDestination.company.length + byDestination.product.length + byDestination.answer_library.length;
+      if (totalItems === 0) {
+        container.innerHTML = '<div class="empty">No items for this questionnaire</div>';
         return;
       }
 
-      const topicsHtml = Object.entries(byTopic).map(([topic, items]) => {
-        // Collect unique sheets in this topic
-        const sheetsInTopic = new Set();
-        items.forEach(item => {
-          const source = item.source || item.sources?.[0];
-          if (source?.sheet) sheetsInTopic.add(source.sheet);
-        });
+      const destinationLabels = {
+        company: 'Company (Entity)',
+        product: 'Product',
+        answer_library: 'Answer Library'
+      };
 
-        const itemsHtml = items.map(item => {
-          // Handle both source formats: item.source (single) or item.sources (array)
-          const source = item.source || item.sources?.[0];
-          const sheetName = source?.sheet || '';
-          const cells = source?.lCell && source?.vCell
-            ? \`\${source.lCell} → \${source.vCell}\`
-            : (source?.labelCell && source?.valueCell ? \`\${source.labelCell} → \${source.valueCell}\` : '');
+      const destinationsHtml = Object.entries(byDestination)
+        .filter(([_, items]) => items.length > 0)
+        .map(([dest, items]) => {
+          const itemsHtml = items.map(item => {
+            const source = item.source || item.sources?.[0];
+            const sheetName = source?.sheet || '';
+            const cells = source?.lCell && source?.vCell
+              ? \`\${source.lCell} → \${source.vCell}\`
+              : (source?.labelCell && source?.valueCell ? \`\${source.labelCell} → \${source.valueCell}\` : '');
 
-          // Determine destination badge based on topic (from rules.yaml)
-          const entityTopics = ['company', 'company_information', 'contact_persons', 'contacts', 'certifications', 'documents', 'signature', 'approval', 'crisis', 'financial'];
-          const productTopics = ['product', 'identification', 'physical_properties', 'sensory', 'analytical', 'formula_composition', 'allergens', 'nutritional', 'regulatory_ids', 'microbiological', 'microbiology', 'contaminants', 'gmo', 'claims', 'rspo_palm', 'packaging', 'storage_transport', 'coding', 'origin_provenance'];
-          let destination = 'library';
-          if (productTopics.includes(topic) || item.level === 'product') {
-            destination = 'product';
-          } else if (entityTopics.includes(topic)) {
-            destination = 'entity';
-          }
-          const levelBadge = destination === 'product' ? '<span class="level-badge product">product</span>' :
-                            destination === 'entity' ? '<span class="level-badge entity">entity</span>' :
-                            '<span class="level-badge library">library</span>';
+            const topicBadge = \`<span class="topic-badge">\${item.topic}</span>\`;
 
-          return \`
-            <div class="item" data-index="\${item.idx}" data-cells="\${cells}" data-sheet="\${escapeHtml(sheetName)}" data-label="\${escapeHtml(item.label)}" data-topic="\${topic}">
-              <div class="item-label">\${escapeHtml(item.label)}\${levelBadge}</div>
-              <div class="item-value">\${escapeHtml(item.value || '')}</div>
-              <div class="item-ref">\${sheetName ? sheetName + ': ' : ''}\${cells}</div>
-              <div class="item-actions review-only">
-                <button class="action-btn correct" title="Accept (C)">✓</button>
-                <button class="action-btn wrong" title="Reject (W)">✗</button>
-              </div>
-              <div class="wrong-note-container">
-                <input type="text" class="wrong-note-input" placeholder="Reason for rejection (optional)">
-                <div class="wrong-note-btns">
-                  <button class="wrong-note-btn save">Save</button>
-                  <button class="wrong-note-btn cancel">Cancel</button>
+            return \`
+              <div class="item" data-index="\${item.idx}" data-cells="\${cells}" data-sheet="\${escapeHtml(sheetName)}" data-label="\${escapeHtml(item.label)}" data-topic="\${item.topic}" data-destination="\${dest}">
+                <div class="item-label">\${escapeHtml(item.label)}\${topicBadge}</div>
+                <div class="item-value">\${escapeHtml(item.value || '')}</div>
+                <div class="item-ref">\${sheetName ? sheetName + ': ' : ''}\${cells}</div>
+                <div class="item-actions review-only">
+                  <button class="action-btn correct" title="Accept (C)">✓</button>
+                  <button class="action-btn wrong" title="Reject (W)">✗</button>
+                </div>
+                <div class="wrong-note-container">
+                  <input type="text" class="wrong-note-input" placeholder="Reason for rejection (optional)">
+                  <div class="wrong-note-btns">
+                    <button class="wrong-note-btn save">Save</button>
+                    <button class="wrong-note-btn cancel">Cancel</button>
+                  </div>
                 </div>
               </div>
+            \`;
+          }).join('');
+
+          return \`
+            <div class="section" data-destination="\${dest}">
+              <div class="section-header">
+                <div class="section-title">\${destinationLabels[dest]}</div>
+                <div class="section-meta">
+                  <span>\${items.length} items</span>
+                  <div class="group-btns review-only">
+                    <button class="group-btn accept-all" data-destination="\${dest}">✓ All</button>
+                    <button class="group-btn reject-all" data-destination="\${dest}">✗ All</button>
+                  </div>
+                </div>
+              </div>
+              <div class="section-items">\${itemsHtml}</div>
             </div>
           \`;
         }).join('');
 
-        const sheetsStr = sheetsInTopic.size > 0 ? Array.from(sheetsInTopic).join(', ') : '';
-
-        return \`
-          <div class="section" data-topic="\${topic}" data-sheets="\${escapeHtml(sheetsStr)}">
-            <div class="section-header">
-              <div class="section-title">\${topic.toUpperCase()}</div>
-              <div class="section-meta">
-                <span>\${items.length} items</span>
-                <div class="group-btns review-only">
-                  <button class="group-btn accept-all" data-topic="\${topic}">✓ All</button>
-                  <button class="group-btn reject-all" data-topic="\${topic}">✗ All</button>
-                </div>
-              </div>
-            </div>
-            <div class="section-items">\${itemsHtml}</div>
-          </div>
-        \`;
-      }).join('');
-
-      container.innerHTML = topicsHtml;
-      // Calculate total items from byTopic
-      const totalItems = Object.values(byTopic).reduce((sum, items) => sum + items.length, 0);
+      container.innerHTML = destinationsHtml;
       document.getElementById('library-stats').textContent = \`\${totalItems} items\`;
     }
 
@@ -4450,12 +4523,17 @@ export class WebReviewGenerator {
 
         if (count === 1) {
           commandPalette.classList.add('single-select');
+          commandPalette.classList.remove('multi-select');
           document.getElementById('bulkLabel').value = firstItem.dataset.label || '';
           document.getElementById('bulkValue').value = firstItem.querySelector('.item-value')?.textContent || '';
         } else {
           commandPalette.classList.remove('single-select');
+          commandPalette.classList.add('multi-select');
           document.getElementById('bulkLabel').value = '';
           document.getElementById('bulkValue').value = '';
+          // Reset merge options
+          document.getElementById('mergeValues').checked = false;
+          document.getElementById('mergeSeparator').disabled = true;
         }
 
         // Indexed mode: populate sections and topics
@@ -4510,10 +4588,45 @@ export class WebReviewGenerator {
         const action = document.getElementById('bulkAction').value;
         const newLabel = document.getElementById('bulkLabel').value;
         const newValue = document.getElementById('bulkValue').value;
+        const mergeValues = document.getElementById('mergeValues')?.checked;
+        const mergeSeparator = document.getElementById('mergeSeparator')?.value || '\\n';
 
         const items = Array.from(selectedItems);
         const isLibraryMode = commandPalette.classList.contains('library-mode');
         let changes = 0;
+
+        // Handle merge values
+        if (mergeValues && items.length > 1) {
+          const values = items.map(item => {
+            const valueEl = item.querySelector('.item-value');
+            return valueEl?.textContent?.trim() || '';
+          }).filter(v => v && v !== '(empty)');
+
+          const mergedValue = values.join(mergeSeparator.replace(/\\\\n/g, '\\n'));
+
+          // Update first item with merged value
+          const firstItem = items[0];
+          const firstValueEl = firstItem.querySelector('.item-value');
+          if (firstValueEl) {
+            firstValueEl.textContent = mergedValue;
+            changes++;
+          }
+
+          // Mark other items as rejected (they've been merged into first)
+          for (let i = 1; i < items.length; i++) {
+            items[i].classList.add('reviewed', 'wrong', 'rejected');
+            await logFeedback(items[i], 'wrong', 'Merged into another item');
+          }
+
+          // Accept the first item
+          firstItem.classList.add('reviewed', 'correct', 'accepted');
+          await logFeedback(firstItem, 'correct');
+
+          hideCommandPalette();
+          showToast(\`Merged \${values.length} values into 1 item\`);
+          clearSelection();
+          return;
+        }
 
         for (const item of items) {
           // Indexed mode: update topic
@@ -4580,6 +4693,11 @@ export class WebReviewGenerator {
       paletteBackdrop?.addEventListener('click', hideCommandPalette);
       document.getElementById('paletteCancel')?.addEventListener('click', hideCommandPalette);
       document.getElementById('paletteApply')?.addEventListener('click', applyCommandPaletteChanges);
+
+      // Merge checkbox enables/disables separator
+      document.getElementById('mergeValues')?.addEventListener('change', (e) => {
+        document.getElementById('mergeSeparator').disabled = !e.target.checked;
+      });
 
       // Keyboard shortcuts for selection and command palette
       document.addEventListener('keydown', (e) => {

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Dropdowns - 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    h1 {
+      font-size: 18px;
+      margin: 0 0 10px 0;
+      color: #333;
+    }
+    .meta {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 20px;
+    }
+    .table-container {
+      overflow-x: auto;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    table {
+      border-collapse: collapse;
+      font-size: 11px;
+      min-width: 100%;
+    }
+    th, td {
+      border: 1px solid #e0e0e0;
+      padding: 4px 6px;
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    th {
+      background: #f8f9fa;
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .row-num {
+      background: #f8f9fa;
+      color: #666;
+      font-size: 10px;
+      text-align: center;
+      width: 30px;
+      position: sticky;
+      left: 0;
+      z-index: 5;
+    }
+    .empty { background: #fafafa; }
+
+    /* Cell roles */
+    .role-header { background: #e3f2fd !important; font-weight: bold; }
+    .role-section { background: #bbdefb !important; font-weight: bold; font-size: 12px; }
+    .role-label { background: #f5f5f5 !important; }
+    .role-input { background: #fff9c4 !important; }
+    .role-value { background: #fff !important; }
+
+    /* Formatting */
+    .bold { font-weight: bold; }
+    .merged { border: 2px solid #1976d2; }
+
+    /* Hover */
+    td:hover:not(.row-num):not(.empty) {
+      outline: 2px solid #1976d2;
+      cursor: pointer;
+    }
+
+    /* Section overlay */
+    .section-marker {
+      position: absolute;
+      border: 3px solid;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    /* Legend */
+    .legend {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+    }
+    .legend-box {
+      width: 16px;
+      height: 16px;
+      border: 1px solid #ccc;
+    }
+
+    /* Navigation */
+    .nav {
+      margin-bottom: 20px;
+    }
+    .nav a {
+      color: #1976d2;
+      text-decoration: none;
+      margin-right: 15px;
+    }
+    .nav a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="nav">
+    <a href="index.html">← Back to Index</a>
+  </div>
+
+  <h1>Dropdowns</h1>
+  <div class="meta">
+    File: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx |
+    Rows: 7 |
+    Topic: Unknown
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-box" style="background: #bbdefb"></div> Section Header</div>
+    <div class="legend-item"><div class="legend-box" style="background: #e3f2fd"></div> Header</div>
+    <div class="legend-item"><div class="legend-box" style="background: #f5f5f5"></div> Label</div>
+    <div class="legend-item"><div class="legend-box" style="background: #fff9c4"></div> Input Field</div>
+    <div class="legend-item"><div class="legend-box" style="background: #fff"></div> Value</div>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr><th>#</th><th>A</th><th>B</th></tr>
+      </thead>
+      <tbody>
+        <tr data-row="1"><td class="row-num">1</td><td class="role-value" style="color: theme:1" data-cell="A1" title="A1: Dropdowns">Dropdowns</td><td class="empty"></td></tr>
+<tr data-row="2"><td class="row-num">2</td><td class="empty"></td><td class="empty"></td></tr>
+<tr data-row="3"><td class="row-num">3</td><td class="role-value" style="color: theme:1" data-cell="A3" title="A3: Choose type of company:">Choose type of company:</td><td class="role-value" style="" data-cell="B3" title="B3: Choose:">Choose:</td></tr>
+<tr data-row="4"><td class="row-num">4</td><td class="role-value" style="color: theme:1" data-cell="A4" title="A4: Producer">Producer</td><td class="role-value" style="color: theme:1" data-cell="B4" title="B4: Yes">Yes</td></tr>
+<tr data-row="5"><td class="row-num">5</td><td class="role-value" style="color: theme:1" data-cell="A5" title="A5: Trader">Trader</td><td class="role-value" style="color: theme:1" data-cell="B5" title="B5: No">No</td></tr>
+<tr data-row="6"><td class="row-num">6</td><td class="role-value" style="color: theme:1" data-cell="A6" title="A6: Importer">Importer</td><td class="empty"></td></tr>
+<tr data-row="7"><td class="row-num">7</td><td class="role-value" style="color: theme:1" data-cell="A7" title="A7: Distributor">Distributor</td><td class="empty"></td></tr>
+<tr data-row="8"><td class="row-num">8</td><td class="role-value" style="color: theme:1" data-cell="A8" title="A8: If different:">If different:</td><td class="empty"></td></tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    // Click handler to show cell details
+    document.querySelectorAll('td[data-cell]').forEach(td => {
+      td.addEventListener('click', () => {
+        const cell = td.dataset.cell;
+        const value = td.title;
+        console.log('Cell:', cell, value);
+        alert(value);
+      });
+    });
+  </script>
+</body>
+</html>

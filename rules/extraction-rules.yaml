@@ -1,0 +1,268 @@
+# Extraction Rules for Questionnaire Indexing
+#
+# These rules guide the AI in identifying evidence pieces from questionnaire sheets.
+# They define patterns for detecting questions, answers, tables, and section boundaries.
+
+version: "1.0"
+
+# =============================================================================
+# EVIDENCE PIECE TYPES
+# =============================================================================
+# Not everything is a simple Q&A. We extract different types of evidence:
+
+evidence_types:
+  simple_qa:
+    description: "A single question with a single answer"
+    examples:
+      - "Company Name: Kaas-Pack Holland B.V."
+      - "Do you have HACCP? Yes"
+    extract_as: "single pair"
+
+  yes_no:
+    description: "A question expecting Yes/No/NA response"
+    patterns:
+      - ends_with: ["?", "ja/nein", "yes/no", "oui/non"]
+      - answer_values: ["yes", "no", "ja", "nein", "oui", "non", "n/a", "x", "✓"]
+    extract_as: "single pair with boolean normalization"
+
+  table_matrix:
+    description: "A table where multiple rows/columns form ONE piece of evidence"
+    examples:
+      - "Allergen declaration table (14 allergens × present/traces/absent)"
+      - "Nutritional values table"
+      - "Contact persons matrix (name, phone, email per role)"
+    detect_by:
+      - "Consistent column headers across multiple rows"
+      - "Repeated structure per row"
+      - "Merged header cell spanning columns"
+    extract_as: "single evidence piece containing the whole table"
+
+  checklist:
+    description: "A list of items with checkboxes or yes/no per item"
+    examples:
+      - "Certifications: [x] IFS, [x] BRC, [ ] FSSC 22000"
+      - "Export countries checklist"
+    extract_as: "single evidence piece with all checked items"
+
+  narrative:
+    description: "Free-text answer, often a paragraph"
+    examples:
+      - "Describe your quality policy"
+      - "Explain your traceability system"
+    detect_by:
+      - "Large merged cell for answer"
+      - "Multi-line text area"
+      - "Question asks to 'describe', 'explain', 'list'"
+    extract_as: "single pair, flag as narrative"
+
+  attachment_reference:
+    description: "Reference to an attached document"
+    examples:
+      - "Please attach your IFS certificate"
+      - "Provide organic certification"
+    detect_by:
+      - "Keywords: attach, provide, submit, upload, joindre, beifügen"
+    extract_as: "single pair noting document requirement"
+
+# =============================================================================
+# QUESTION/LABEL DETECTION
+# =============================================================================
+
+label_patterns:
+  formatting:
+    - "Bold text"
+    - "Gray or colored background (different from input fields)"
+    - "Left-aligned in columns A-C"
+    - "Merged cells spanning description area"
+
+  text_patterns:
+    - ends_with: [":", "/", "?"]
+    - contains: ["/"]  # Bilingual: "Firmenname / Company name"
+    - starts_with: ["1.", "2.", "a)", "b)", "-"]  # Numbered/bulleted
+
+  position:
+    - "Typically columns A, B, or C"
+    - "To the left of input/answer cells"
+    - "Above input cells in vertical layouts"
+
+# =============================================================================
+# ANSWER/INPUT DETECTION
+# =============================================================================
+
+input_patterns:
+  formatting:
+    - "Yellow, light blue, or light green background"
+    - "Cells with borders (especially if empty)"
+    - "White background with visible borders"
+    - "Merged cells for longer answers"
+
+  position:
+    - "Typically columns C, D, E onwards"
+    - "To the right of label cells"
+    - "Below label cells in vertical layouts"
+
+  empty_indicators:
+    - "Completely empty cell with input formatting"
+    - "Placeholder text: '...', '___', 'enter here'"
+    - "Dropdown not selected"
+
+# =============================================================================
+# SECTION DETECTION
+# =============================================================================
+
+section_patterns:
+  formatting:
+    - "Large merged cell spanning multiple columns"
+    - "Bold, larger font size"
+    - "Distinct background color (often darker)"
+    - "Centered text"
+    - "Row with only one filled cell (the header)"
+
+  text_patterns:
+    - all_caps: true
+    - numbered: ["1.", "2.", "I.", "II.", "A.", "B."]
+    - bilingual: "German / English format"
+
+  examples:
+    - "ALLGEMEINE DATEN / GENERAL DATA"
+    - "1. Company Information"
+    - "SECTION 3: CERTIFICATIONS"
+
+# =============================================================================
+# TABLE BOUNDARY DETECTION
+# =============================================================================
+
+table_detection:
+  start_indicators:
+    - "Row with multiple column headers"
+    - "Merged cell above with table title"
+    - "Consistent borders starting"
+
+  end_indicators:
+    - "Empty row"
+    - "New section header"
+    - "Change in column structure"
+    - "Total/summary row"
+
+  treat_as_single_evidence:
+    - "Allergen tables"
+    - "Nutritional information tables"
+    - "Contact matrices"
+    - "Certification lists"
+    - "Country/export tables"
+
+# =============================================================================
+# TOPIC CLASSIFICATION
+# =============================================================================
+
+topic_keywords:
+  company_info:
+    patterns: ["company", "firma", "société", "bedrijf", "name", "address", "street", "postal", "city", "country", "website", "phone", "email", "contact"]
+    level: entity
+
+  certifications:
+    patterns: ["certif", "zertif", "IFS", "BRC", "FSSC", "ISO", "organic", "bio", "halal", "kosher"]
+    level: entity
+
+  allergens:
+    patterns: ["allerg", "gluten", "milk", "egg", "nut", "soy", "celery", "mustard", "sesame", "sulphur", "lupin", "mollusc", "crustacean", "fish"]
+    level: product
+
+  haccp_food_safety:
+    patterns: ["HACCP", "CCP", "food safety", "hazard", "critical", "lebensmittelsicherheit"]
+    level: entity
+
+  quality:
+    patterns: ["quality", "qualität", "qualité", "kwaliteit", "QM", "QA", "audit", "inspection"]
+    level: entity
+
+  sustainability:
+    patterns: ["sustain", "nachhaltig", "durable", "duurzaam", "CSR", "RSE", "environment", "umwelt", "CO2", "carbon"]
+    level: entity
+
+  packaging:
+    patterns: ["packag", "verpack", "emballage", "primary", "secondary", "tertiary", "pallet", "carton"]
+    level: product
+
+  logistics:
+    patterns: ["logist", "transport", "shipping", "delivery", "lieferung", "livraison", "storage", "lager"]
+    level: entity
+
+  nutrition:
+    patterns: ["nutri", "nährwert", "calorie", "fat", "protein", "carbohydrate", "sugar", "salt", "fiber"]
+    level: product
+
+  origin:
+    patterns: ["origin", "herkunft", "origine", "source", "country of", "made in", "produced in"]
+    level: product
+
+  crisis_management:
+    patterns: ["crisis", "krisen", "crise", "recall", "rückruf", "emergency", "notfall"]
+    level: entity
+
+  financial:
+    patterns: ["bank", "IBAN", "BIC", "tax", "steuer", "VAT", "invoice", "payment"]
+    level: entity
+
+  animal_welfare:
+    patterns: ["animal", "tier", "welfare", "wohl", "farm", "husbandry"]
+    level: entity
+
+  food_fraud:
+    patterns: ["fraud", "betrug", "fraude", "authenticity", "adulteration", "VACCP", "TACCP"]
+    level: entity
+
+# =============================================================================
+# LANGUAGE DETECTION
+# =============================================================================
+
+language_indicators:
+  german:
+    characters: ["ä", "ö", "ü", "ß"]
+    words: ["und", "oder", "nicht", "das", "die", "der", "für", "mit"]
+
+  french:
+    characters: ["é", "è", "ê", "ë", "à", "â", "ù", "û", "ô", "î", "ç"]
+    words: ["et", "ou", "les", "des", "une", "que", "pour", "avec"]
+
+  dutch:
+    words: ["en", "of", "het", "een", "zijn", "voor", "met", "van"]
+
+  english:
+    words: ["and", "or", "the", "is", "are", "for", "with", "have"]
+
+bilingual_separators: ["/", "|", "\n"]
+
+# =============================================================================
+# EXTRACTION INSTRUCTIONS FOR AI
+# =============================================================================
+
+ai_instructions: |
+  When analyzing a questionnaire sheet:
+
+  1. FIRST identify section boundaries (merged headers, visual breaks)
+
+  2. For each section, determine if it contains:
+     - Simple Q&A pairs (label → single answer)
+     - A table/matrix (extract as ONE evidence piece)
+     - A checklist (extract as ONE evidence piece)
+     - Narrative fields (flag appropriately)
+
+  3. For tables:
+     - Do NOT extract each row as a separate question
+     - Extract the ENTIRE table as one evidence piece
+     - Include the table title/header as the "question"
+     - Include all rows/columns as the "answer"
+
+  4. For each evidence piece, identify:
+     - The question/label text
+     - The answer/value (or "EMPTY" if not filled)
+     - The cell references (question cell, answer cell/range)
+     - The topic (company_info, allergens, etc.)
+     - The level (entity or product)
+
+  5. Use confidence scores:
+     - 0.9+ : Clear Q&A pair with obvious formatting
+     - 0.7-0.9 : Likely Q&A but some ambiguity
+     - 0.5-0.7 : Uncertain, needs human review
+     - <0.5 : Probably not a Q&A pair

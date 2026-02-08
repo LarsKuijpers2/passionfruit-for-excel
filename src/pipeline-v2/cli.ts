@@ -1,498 +1,331 @@
 #!/usr/bin/env node
 
 /**
- * CLI for Questionnaire Extraction Pipeline v2
+ * Questionnaire Extraction Pipeline CLI
  *
- * Usage:
- *   npx tsx src/pipeline-v2/cli.ts process <file>           — Process a single file
- *   npx tsx src/pipeline-v2/cli.ts process <file> --vision  — Use visual extraction
- *   npx tsx src/pipeline-v2/cli.ts process <file> -i        — Interactive review
- *   npx tsx src/pipeline-v2/cli.ts stats                    — Show Answer Library stats
+ * Commands:
+ *   store <file>   - Store questionnaire preserving Excel structure
+ *   index <file>   - Index with Claude AI, extract all evidence pieces
+ *   harvest        - Harvest entity-level answers into library
+ *   review         - Interactive review with visual preview
+ *   list           - List stored questionnaires
  */
 
 import { Command } from 'commander';
-import { resolve } from 'path';
-import { readdir } from 'fs/promises';
-import { PipelineV2 } from './pipeline.js';
-import { loadRules } from './rules-loader.js';
-import { SectionExtractor } from './section-extractor.js';
-import { QuestionnaireIndexer } from './questionnaire-index.js';
-import { SourceStorage } from './source-storage.js';
-import { QuestionnaireMatcher } from './questionnaire-matcher.js';
-import type { PipelineV2Options } from './types.js';
+import { resolve, join } from 'path';
+import { readdir, readFile } from 'fs/promises';
+import {
+  ExcelStructureExtractor,
+  StructureStorage,
+  structureToMarkdown,
+} from './excel-structure.js';
+import { VisualAnalyzer } from './visual-analyzer.js';
+import { QuestionnaireIndexer } from './questionnaire-indexer.js';
+import { AnswerHarvester } from './answer-harvester.js';
+import { ReviewCLI } from './review-cli.js';
+import { WebReviewGenerator } from './web-review-generator.js';
 
 const program = new Command();
 
 program
-  .name('pipeline-v2')
-  .description('Questionnaire extraction with smart topic classification and Answer Library')
+  .name('pipeline')
+  .description('Questionnaire extraction pipeline with AI analysis and feedback learning')
   .version('2.0.0');
 
-/** Shared options */
-function addCommonOptions(cmd: Command): Command {
-  return cmd
-    .option('--review-dir <dir>', 'Review output directory', './review')
-    .option('--approved-dir <dir>', 'Approved extractions directory', './approved')
-    .option('--answer-library <dir>', 'Answer Library directory', './answer-library')
-    .option('--rules <file>', 'Rules YAML file', './rules/rules.yaml')
-    .option('--logs-dir <dir>', 'Logs directory', './logs')
-    .option('--region <region>', 'AWS region for Bedrock', 'eu-central-1')
-    .option('--model <model>', 'Bedrock model ID')
-    .option('--offline', 'Skip Bedrock calls (rule-based only)')
-    .option('--dry-run', 'Preview without writing files');
-}
+// =============================================================================
+// STORE - Extract and store questionnaire structure
+// =============================================================================
 
-function buildOptions(opts: Record<string, unknown>): Partial<PipelineV2Options> {
-  return {
-    reviewDir: opts.reviewDir as string,
-    approvedDir: opts.approvedDir as string,
-    answerLibraryDir: opts.answerLibrary as string,
-    rulesFile: opts.rules as string,
-    logsDir: opts.logsDir as string,
-    awsRegion: opts.region as string || process.env.AWS_REGION || 'eu-central-1',
-    bedrockModel: opts.model as string,
-    useBedrock: !opts.offline,
-    dryRun: !!opts.dryRun,
-  };
-}
-
-/** Process a single file */
-addCommonOptions(
-  program
-    .command('process')
-    .description('Process a questionnaire file')
-    .argument('<file>', 'Path to the questionnaire file')
-    .option('--vision', 'Use visual extraction (Claude Vision)')
-    .option('-i, --interactive', 'Interactive review mode')
-    .option('-s, --section-first', 'Classify by section first (more efficient)')
-).action(async (file: string, opts) => {
-  const pipelineOpts = buildOptions(opts);
-  const pipeline = new PipelineV2(pipelineOpts);
-
-  try {
-    const filePath = resolve(file);
-    const result = await pipeline.processFile(filePath, {
-      useVision: !!opts.vision,
-      interactive: !!opts.interactive,
-      sectionFirst: !!opts.sectionFirst,
-    });
-
-    console.log('\n✅ Done.');
-    console.log(`   Questions: ${result.summary.totalQuestions}`);
-    console.log(`   Flagged: ${result.summary.flaggedForReview}`);
-
-  } catch (error) {
-    console.error(`\n❌ Error: ${error instanceof Error ? error.message : error}`);
-    process.exit(1);
-  }
-});
-
-/** Show Answer Library stats */
-addCommonOptions(
-  program
-    .command('stats')
-    .description('Show Answer Library statistics')
-).action(async (opts) => {
-  const pipelineOpts = buildOptions(opts);
-  const pipeline = new PipelineV2(pipelineOpts);
-
-  try {
-    const stats = await pipeline.getLibraryStats();
-
-    console.log('\n📚 Answer Library Statistics\n');
-    console.log(`Total approved answers: ${stats.totalAnswers}`);
-    console.log('\nBy topic:');
-
-    const sortedTopics = Object.entries(stats.byTopic)
-      .sort(([, a], [, b]) => b - a);
-
-    for (const [topic, count] of sortedTopics) {
-      console.log(`  ${topic}: ${count}`);
-    }
-
-  } catch (error) {
-    console.error(`\n❌ Error: ${error instanceof Error ? error.message : error}`);
-    process.exit(1);
-  }
-});
-
-/** List topics from rules */
-addCommonOptions(
-  program
-    .command('topics')
-    .description('List all topics from rules')
-).action(async (opts) => {
-  const { loadRules } = await import('./rules-loader.js');
-
-  try {
-    const rules = await loadRules(opts.rules as string || './rules/rules.yaml');
-
-    console.log('\n📋 Topics Configuration\n');
-
-    console.log('Entity-level topics (→ Answer Library / Entity DB):');
-    for (const topic of rules.config.topics) {
-      if (topic.level.some(l => ['company', 'group', 'site'].includes(l))) {
-        console.log(`  ${topic.id}`);
-        console.log(`    Name: ${topic.name}`);
-        console.log(`    Destination: ${topic.destination}`);
-        console.log(`    Reusable: ${topic.reusable ? 'Yes' : 'No'}`);
-        console.log('');
-      }
-    }
-
-    console.log('\nProduct-level topics (→ Product Spec):');
-    for (const topic of rules.config.topics) {
-      if (topic.level.some(l => ['product', 'product_group'].includes(l))) {
-        console.log(`  ${topic.id}`);
-        console.log(`    Name: ${topic.name}`);
-        console.log(`    Destination: ${topic.destination}`);
-        console.log('');
-      }
-    }
-
-  } catch (error) {
-    console.error(`\n❌ Error: ${error instanceof Error ? error.message : error}`);
-    process.exit(1);
-  }
-});
-
-/** Batch process all files in incoming directory */
-addCommonOptions(
-  program
-    .command('batch')
-    .description('Process all questionnaire files in the incoming directory')
-    .option('--input-dir <dir>', 'Input directory', './incoming')
-    .option('--vision', 'Use visual extraction (Claude Vision)')
-    .option('-i, --interactive', 'Interactive review mode')
-    .option('-s, --section-first', 'Classify by section first (more efficient)')
-).action(async (opts) => {
-  const pipelineOpts = buildOptions(opts);
-  const inputDir = opts.inputDir as string || './incoming';
-  const pipeline = new PipelineV2(pipelineOpts);
-
-  try {
-    // Find all Excel files in incoming directory
-    const files = await readdir(inputDir);
-    const excelFiles = files.filter(f =>
-      f.endsWith('.xlsx') || f.endsWith('.xls')
-    );
-
-    if (excelFiles.length === 0) {
-      console.log(`\nNo Excel files found in ${inputDir}`);
-      return;
-    }
-
-    console.log(`\n📂 Found ${excelFiles.length} files in ${inputDir}\n`);
-
-    let totalQuestions = 0;
-    let totalFlagged = 0;
-    const results: { file: string; questions: number; flagged: number; error?: string }[] = [];
-
-    for (const file of excelFiles) {
-      const filePath = resolve(inputDir, file);
-
-      try {
-        const result = await pipeline.processFile(filePath, {
-          useVision: !!opts.vision,
-          interactive: !!opts.interactive,
-          sectionFirst: !!opts.sectionFirst,
-        });
-
-        totalQuestions += result.summary.totalQuestions;
-        totalFlagged += result.summary.flaggedForReview;
-        results.push({
-          file,
-          questions: result.summary.totalQuestions,
-          flagged: result.summary.flaggedForReview,
-        });
-
-      } catch (error) {
-        const errorMsg = error instanceof Error ? error.message : String(error);
-        console.error(`  ❌ Error: ${errorMsg}`);
-        results.push({ file, questions: 0, flagged: 0, error: errorMsg });
-      }
-    }
-
-    // Print summary
-    console.log('\n' + '='.repeat(60));
-    console.log('📊 Batch Summary');
-    console.log('='.repeat(60));
-    console.log(`Files processed: ${excelFiles.length}`);
-    console.log(`Total questions: ${totalQuestions}`);
-    console.log(`Total flagged: ${totalFlagged}`);
-    console.log('');
-
-    console.log('Per file:');
-    for (const r of results) {
-      if (r.error) {
-        console.log(`  ❌ ${r.file}: ERROR - ${r.error}`);
-      } else {
-        console.log(`  ✅ ${r.file}: ${r.questions} questions, ${r.flagged} flagged`);
-      }
-    }
-
-  } catch (error) {
-    console.error(`\n❌ Error: ${error instanceof Error ? error.message : error}`);
-    process.exit(1);
-  }
-});
-
-/** Extract questionnaire to searchable Markdown */
-addCommonOptions(
-  program
-    .command('extract')
-    .description('Extract questionnaire to searchable Markdown')
-    .argument('<file>', 'Path to the questionnaire file')
-    .option('--output-dir <dir>', 'Output directory', './extracted')
-).action(async (file: string, opts) => {
-  try {
-    const filePath = resolve(file);
-    const outputDir = opts.outputDir as string || './extracted';
-
-    console.log('Loading rules...');
-    const rules = await loadRules(opts.rules as string || './rules/rules.yaml');
-
-    console.log(`\nExtracting: ${file}`);
-    const extractor = new SectionExtractor();
-    const { metadata, sections, questions } = await extractor.extract(filePath);
-
-    const indexer = new QuestionnaireIndexer(rules);
-    const index = indexer.createIndex(metadata, sections, questions, filePath);
-
-    // Generate Markdown
-    const { mkdir, writeFile } = await import('fs/promises');
-    await mkdir(outputDir, { recursive: true });
-
-    const lines: string[] = [];
-    lines.push(`# ${metadata.filename}`);
-    lines.push('');
-    lines.push(`**Customer:** ${metadata.customer || 'Unknown'}`);
-    lines.push(`**Extracted:** ${new Date().toISOString()}`);
-    lines.push(`**Fields:** ${index.summary.filledFields}/${index.summary.totalFields} filled`);
-    lines.push('');
-    lines.push('---');
-    lines.push('');
-
-    // Table of Contents
-    lines.push('## Table of Contents');
-    lines.push('');
-    for (const section of index.toc) {
-      const fill = section.filledFields > 0 ? `${section.filledFields}/${section.totalFields}` : '0';
-      lines.push(`- [${section.title}](#${section.id.toLowerCase().replace(/[^a-z0-9]/g, '-')}) (${fill} filled)`);
-    }
-    lines.push('');
-    lines.push('---');
-    lines.push('');
-
-    // Group fields by section
-    const fieldsBySection = new Map<string, typeof index.fields>();
-    for (const field of index.fields) {
-      if (!fieldsBySection.has(field.sectionId)) {
-        fieldsBySection.set(field.sectionId, []);
-      }
-      fieldsBySection.get(field.sectionId)!.push(field);
-    }
-
-    // Output each section
-    for (const section of index.toc) {
-      const sectionFields = fieldsBySection.get(section.id) || [];
-      const filledFields = sectionFields.filter(f => f.isFilled);
-
-      lines.push(`## ${section.title}`);
-      lines.push('');
-      lines.push(`**Topics:** ${section.topics.join(', ')}`);
-      lines.push('');
-
-      if (filledFields.length === 0) {
-        lines.push('_No filled fields_');
-        lines.push('');
-        continue;
-      }
-
-      lines.push('| Question | Answer | Type |');
-      lines.push('|----------|--------|------|');
-
-      for (const field of filledFields) {
-        const q = field.questionText.replace(/\|/g, '\\|').replace(/\n/g, ' ').substring(0, 60);
-        const a = field.answerText.replace(/\|/g, '\\|').replace(/\n/g, ' ').substring(0, 60);
-        lines.push(`| ${q} | ${a} | ${field.valueType} |`);
-      }
-      lines.push('');
-    }
-
-    // Write file
-    const safeName = metadata.filename.replace(/\.[^.]+$/, '').replace(/[^a-zA-Z0-9-_]/g, '_');
-    const outputPath = `${outputDir}/${safeName}.md`;
-    await writeFile(outputPath, lines.join('\n'), 'utf-8');
-
-    console.log(`\n✅ Extracted to: ${outputPath}`);
-    console.log(`   ${index.summary.filledFields} filled fields`);
-    console.log(`   ${index.toc.length} sections`);
-
-  } catch (error) {
-    console.error(`\n❌ Error: ${error instanceof Error ? error.message : error}`);
-    process.exit(1);
-  }
-});
-
-/** Index a questionnaire and save as source */
-addCommonOptions(
-  program
-    .command('index')
-    .description('Index a questionnaire (create TOC, label values, save as source)')
-    .argument('<file>', 'Path to the questionnaire file')
-    .option('--sources-dir <dir>', 'Sources directory', './sources')
-).action(async (file: string, opts) => {
-  try {
-    const filePath = resolve(file);
-    const sourcesDir = opts.sourcesDir as string || './sources';
-
-    console.log('Loading rules...');
-    const rules = await loadRules(opts.rules as string || './rules/rules.yaml');
-    console.log(`  Loaded ${rules.config.topics.length} topics`);
-
-    console.log(`\nIndexing: ${file}`);
-    const extractor = new SectionExtractor();
-    const { metadata, sections, questions } = await extractor.extract(filePath);
-
-    console.log(`  Found ${sections.length} sections, ${questions.length} fields`);
-
-    const indexer = new QuestionnaireIndexer(rules);
-    const index = indexer.createIndex(metadata, sections, questions, filePath);
-
-    console.log(`\n📋 Table of Contents:`);
-    for (const section of index.toc) {
-      const fill = section.filledFields > 0 ? `✓ ${section.filledFields}/${section.totalFields}` : `○ ${section.totalFields}`;
-      console.log(`  ${section.title} [${fill}]`);
-      if (section.topics.length > 0) {
-        console.log(`    Topics: ${section.topics.join(', ')}`);
-      }
-    }
-
-    console.log(`\n📊 Summary:`);
-    console.log(`  Total fields: ${index.summary.totalFields}`);
-    console.log(`  Filled: ${index.summary.filledFields}`);
-    console.log(`  Empty: ${index.summary.emptyFields}`);
-    console.log(`  Narrative (reusable): ${index.summary.narrativeFields}`);
-    console.log(`  Topics: ${index.summary.topicsCovered.join(', ')}`);
-
-    // Save as source
-    const storage = new SourceStorage(sourcesDir);
-    const savedPath = await storage.save(index);
-    console.log(`\n✅ Saved to: ${savedPath}`);
-
-  } catch (error) {
-    console.error(`\n❌ Error: ${error instanceof Error ? error.message : error}`);
-    process.exit(1);
-  }
-});
-
-/** List/search sources */
 program
-  .command('sources')
-  .description('List and search source questionnaires')
-  .option('--sources-dir <dir>', 'Sources directory', './sources')
-  .option('--search <query>', 'Search for content')
-  .option('--topic <topic>', 'Filter by topic')
-  .action(async (opts) => {
+  .command('store')
+  .description('Store questionnaire preserving Excel structure (sheets/rows/cells/formatting)')
+  .argument('<file>', 'Path to the questionnaire file')
+  .option('--output-dir <dir>', 'Output directory', './questionnaires')
+  .option('--markdown', 'Also export to Markdown')
+  .action(async (file: string, opts) => {
     try {
-      const sourcesDir = opts.sourcesDir as string || './sources';
-      const storage = new SourceStorage(sourcesDir);
+      const filePath = resolve(file);
+      const outputDir = opts.outputDir as string || './questionnaires';
 
-      if (opts.search) {
-        console.log(`\n🔍 Searching for: "${opts.search}"`);
-        const results = await storage.search(opts.search as string);
+      console.log('\nStoring: ' + file);
 
-        if (results.length === 0) {
-          console.log('  No matches found');
-        } else {
-          for (const r of results) {
-            console.log(`\n  📁 ${r.sourceFile} (${r.customer || 'unknown'})`);
-            for (const m of r.matches.slice(0, 3)) {
-              console.log(`    Q: ${m.questionText.substring(0, 60)}...`);
-              console.log(`    A: ${m.answerText.substring(0, 60)}...`);
-            }
-          }
-        }
-      } else if (opts.topic) {
-        console.log(`\n📂 Searching topic: "${opts.topic}"`);
-        const results = await storage.searchByTopic(opts.topic as string);
+      const extractor = new ExcelStructureExtractor();
+      const structure = await extractor.extract(filePath);
 
-        for (const r of results) {
-          console.log(`\n  📁 ${r.sourceFile}: ${r.matches.length} matches`);
-        }
-      } else {
-        // List all sources
-        const summary = await storage.getSummary();
+      console.log('  Sheets: ' + structure.stats.totalSheets);
+      console.log('  Rows: ' + structure.stats.totalRows);
+      console.log('  Filled cells: ' + structure.stats.filledCells + '/' + structure.stats.totalCells);
 
-        console.log(`\n📚 Source Library`);
-        console.log(`  Total sources: ${summary.totalSources}`);
-        console.log(`  Total fields: ${summary.totalFields}`);
-        console.log(`  Filled fields: ${summary.filledFields}`);
-        console.log(`  Narrative answers: ${summary.narrativeFields}`);
-        console.log(`\nTopics covered: ${summary.topicsCovered.join(', ')}`);
-
-        console.log(`\nSources:`);
-        for (const s of summary.sourcesList) {
-          console.log(`  📁 ${s.filename}`);
-          console.log(`     Customer: ${s.customer || 'unknown'}`);
-          console.log(`     Fields: ${s.filled}/${s.fields} filled`);
-        }
+      console.log('\n  Sheets:');
+      for (const sheet of structure.sheets) {
+        const topic = sheet.topic ? ' [' + sheet.topic + ']' : '';
+        console.log('    - ' + sheet.name + topic + ': ' + sheet.stats.filledCells + ' filled');
       }
+
+      // Save JSON
+      const storage = new StructureStorage(outputDir);
+      const jsonPath = await storage.save(structure);
+      console.log('\n✅ Saved: ' + jsonPath);
+
+      // Optionally export Markdown
+      if (opts.markdown) {
+        const { writeFile: write, mkdir: mk } = await import('fs/promises');
+        await mk(outputDir, { recursive: true });
+        const mdContent = structureToMarkdown(structure);
+        const mdPath = jsonPath.replace('.json', '.md');
+        await write(mdPath, mdContent, 'utf-8');
+        console.log('✅ Markdown: ' + mdPath);
+      }
+
     } catch (error) {
-      console.error(`\n❌ Error: ${error instanceof Error ? error.message : error}`);
+      console.error('\n❌ Error: ' + (error instanceof Error ? error.message : error));
       process.exit(1);
     }
   });
 
-/** Match a questionnaire against sources */
-addCommonOptions(
-  program
-    .command('match')
-    .description('Find matching answers for a questionnaire from sources')
-    .argument('<file>', 'Path to the questionnaire file')
-    .option('--sources-dir <dir>', 'Sources directory', './sources')
-).action(async (file: string, opts) => {
-  try {
-    const filePath = resolve(file);
-    const sourcesDir = opts.sourcesDir as string || './sources';
-    const answerLibDir = opts.answerLibrary as string || './answer-library';
+// =============================================================================
+// INDEX - Analyze with Claude AI and extract evidence pieces
+// =============================================================================
 
-    console.log(`\nMatching: ${file}`);
+program
+  .command('index')
+  .description('Index questionnaire with Claude AI - extract all evidence pieces organized by section/topic')
+  .argument('<file>', 'Questionnaire filename (from stored questionnaires)')
+  .option('--dir <dir>', 'Questionnaires directory', './questionnaires')
+  .option('--output <dir>', 'Output directory for indexed questionnaires', './indexed')
+  .action(async (file: string, opts) => {
+    try {
+      const dir = opts.dir as string || './questionnaires';
+      const outputDir = opts.output as string || './indexed';
 
-    // Extract questionnaire
-    const extractor = new SectionExtractor();
-    const { sections, questions } = await extractor.extract(filePath);
-    console.log(`  Found ${questions.length} questions`);
+      console.log('\n📇 Indexing: ' + file + '\n');
 
-    // Match against sources
-    const matcher = new QuestionnaireMatcher(sourcesDir, answerLibDir);
-    await matcher.init();
+      const indexer = new QuestionnaireIndexer(dir);
+      const indexed = await indexer.index(file);
 
-    const result = await matcher.getSuggestions(questions, sections);
+      console.log('\n📊 Index Summary:');
+      console.log('   Language: ' + indexed.language.toUpperCase());
+      console.log('   Total items: ' + indexed.stats.total);
+      console.log('   Answered: ' + indexed.stats.answered);
+      console.log('   Standard: ' + indexed.stats.standard);
+      console.log('   Narrative: ' + indexed.stats.narrative);
+      console.log('   Product: ' + indexed.stats.product);
 
-    console.log(`\n📊 Match Results:`);
-    console.log(`  Already filled: ${result.filled}`);
-    console.log(`  Suggestions found: ${result.suggested}`);
-    console.log(`  No match: ${result.noMatch}`);
-
-    if (result.suggestions.length > 0) {
-      console.log(`\n💡 Suggestions:`);
-      for (const s of result.suggestions.slice(0, 10)) {
-        console.log(`\n  Cell ${s.cell}: ${s.question}`);
-        console.log(`  → ${s.suggestedAnswer}`);
-        console.log(`    Source: ${s.source} (${s.confidence}% confidence)`);
+      console.log('\n📁 Sections:');
+      for (const section of indexed.sections.slice(0, 10)) {
+        const answered = section.items.filter(i => i.value).length;
+        console.log('   ' + section.title);
+        console.log('     Topic: ' + section.topic + ', Items: ' + section.items.length + ' (' + answered + ' answered)');
+      }
+      if (indexed.sections.length > 10) {
+        console.log('   ... and ' + (indexed.sections.length - 10) + ' more sections');
       }
 
-      if (result.suggestions.length > 10) {
-        console.log(`\n  ... and ${result.suggestions.length - 10} more suggestions`);
-      }
+      // Save
+      const outputPath = await indexer.save(indexed, outputDir);
+      console.log('\n💾 Saved to: ' + outputPath);
+
+    } catch (error) {
+      console.error('\n❌ Error: ' + (error instanceof Error ? error.message : error));
+      process.exit(1);
     }
+  });
 
-  } catch (error) {
-    console.error(`\n❌ Error: ${error instanceof Error ? error.message : error}`);
-    process.exit(1);
-  }
-});
+// =============================================================================
+// HARVEST - Extract reusable items for the answer library
+// =============================================================================
+
+program
+  .command('harvest')
+  .description('Harvest standard + narrative items from indexed questionnaires into answer library')
+  .option('--indexed-dir <dir>', 'Indexed questionnaires directory', './indexed')
+  .option('--output <file>', 'Output library file', './answer-library.yaml')
+  .option('--file <name>', 'Harvest from a specific indexed file only')
+  .action(async (opts) => {
+    try {
+      const indexedDir = opts.indexedDir as string || './indexed';
+      const outputFile = opts.output as string || './answer-library.yaml';
+
+      console.log('\n🌾 Harvesting reusable items\n');
+
+      const harvester = new AnswerHarvester(indexedDir, outputFile);
+
+      if (opts.file) {
+        console.log('  From: ' + opts.file);
+        const items = await harvester.harvest(opts.file as string);
+        console.log('  Found ' + items.length + ' reusable items\n');
+
+        for (const item of items.slice(0, 5)) {
+          console.log('   [' + item.topic + '] ' + item.label.substring(0, 50));
+          console.log('   → ' + item.value.substring(0, 60));
+          console.log('   (from: ' + item.source.file + ')\n');
+        }
+      } else {
+        console.log('  From all indexed questionnaires in: ' + indexedDir);
+        const library = await harvester.harvestAll();
+
+        console.log('\n📊 Library Summary:');
+        console.log('   Total items: ' + library.total);
+        console.log('   Sources: ' + library.sources.length);
+
+        console.log('\n📁 By Topic:');
+        const sortedTopics = Object.entries(library.byTopic)
+          .sort((a, b) => b[1].length - a[1].length)
+          .slice(0, 10);
+        for (const [topic, items] of sortedTopics) {
+          console.log('   ' + topic + ': ' + items.length);
+        }
+
+        const outputPath = await harvester.saveLibrary(library);
+        console.log('\n💾 Saved to: ' + outputPath);
+      }
+
+    } catch (error) {
+      console.error('\n❌ Error: ' + (error instanceof Error ? error.message : error));
+      process.exit(1);
+    }
+  });
+
+// =============================================================================
+// REVIEW - Interactive review with visual preview and feedback
+// =============================================================================
+
+program
+  .command('review')
+  .description('Interactive review of indexed questionnaires with visual preview and feedback')
+  .option('--indexed-dir <dir>', 'Indexed questionnaires directory', './indexed')
+  .option('--questionnaires-dir <dir>', 'Raw questionnaires directory', './questionnaires')
+  .option('--review-dir <dir>', 'Review output directory', './review')
+  .action(async (opts) => {
+    try {
+      const reviewCli = new ReviewCLI(
+        opts.indexedDir as string || './indexed',
+        opts.questionnairesDir as string || './questionnaires',
+        opts.reviewDir as string || './review'
+      );
+
+      await reviewCli.start();
+
+    } catch (error) {
+      console.error('\n❌ Error: ' + (error instanceof Error ? error.message : error));
+      process.exit(1);
+    }
+  });
+
+// =============================================================================
+// LIST - List stored questionnaires
+// =============================================================================
+
+program
+  .command('list')
+  .description('List all stored questionnaires')
+  .option('--dir <dir>', 'Storage directory', './questionnaires')
+  .action(async (opts) => {
+    try {
+      const dir = opts.dir as string || './questionnaires';
+      const storage = new StructureStorage(dir);
+
+      const summary = await storage.getSummary();
+
+      console.log('\n📁 Stored Questionnaires: ' + summary.total);
+      console.log('');
+
+      for (const q of summary.questionnaires) {
+        console.log('  📄 ' + q.filename);
+        console.log('     Customer: ' + (q.customer || 'Unknown'));
+        console.log('     Sheets: ' + q.sheets + ', Filled: ' + q.filledCells + ' cells');
+      }
+
+    } catch (error) {
+      console.error('\n❌ Error: ' + (error instanceof Error ? error.message : error));
+      process.exit(1);
+    }
+  });
+
+// =============================================================================
+// WEB-REVIEW - Generate browser-based review interface
+// =============================================================================
+
+program
+  .command('web-review')
+  .description('Generate browser-based review interface with Original/Indexed/Library panels')
+  .argument('<file>', 'Questionnaire filename (without extension)')
+  .option('--questionnaires-dir <dir>', 'Questionnaires directory', './questionnaires')
+  .option('--indexed-dir <dir>', 'Indexed questionnaires directory', './indexed')
+  .option('--library <file>', 'Answer library file', './answer-library.yaml')
+  .option('--output <dir>', 'Output directory', './review')
+  .action(async (file: string, opts) => {
+    try {
+      const questionnairesDir = opts.questionnairesDir as string || './questionnaires';
+      const indexedDir = opts.indexedDir as string || './indexed';
+      const libraryPath = opts.library as string || './answer-library.yaml';
+      const outputDir = opts.output as string || './review';
+
+      // Normalize filename (preserve hyphens like other parts of pipeline)
+      const baseName = file.replace(/\.(xlsx?|json|yaml)$/i, '');
+      const safeName = baseName.replace(/[^a-zA-Z0-9-_]/g, '_');
+
+      // Find the structure file
+      const structurePath = join(questionnairesDir, `${safeName}.json`);
+      const indexedPath = join(indexedDir, `${safeName}.yaml`);
+
+      console.log('\n🌐 Generating web review interface\n');
+      console.log('  Questionnaire: ' + structurePath);
+      console.log('  Indexed: ' + indexedPath);
+      console.log('  Library: ' + libraryPath);
+
+      const generator = new WebReviewGenerator(outputDir);
+      const outputPath = await generator.generate(structurePath, indexedPath, libraryPath);
+
+      console.log('\n✅ Generated: ' + outputPath);
+      console.log('\n   Open in browser to review:');
+      console.log('   open ' + outputPath);
+
+    } catch (error) {
+      console.error('\n❌ Error: ' + (error instanceof Error ? error.message : error));
+      process.exit(1);
+    }
+  });
+
+// =============================================================================
+// HELP - Show the pipeline flow
+// =============================================================================
+
+program
+  .command('flow')
+  .description('Show the pipeline flow')
+  .action(() => {
+    console.log(`
+╔═══════════════════════════════════════════════════════════════╗
+║              QUESTIONNAIRE EXTRACTION PIPELINE                 ║
+╠═══════════════════════════════════════════════════════════════╣
+║                                                                ║
+║  1. STORE                                                      ║
+║     npx tsx src/pipeline-v2/cli.ts store <file.xlsx>           ║
+║     → Extracts Excel structure, preserves formatting           ║
+║     → Output: questionnaires/*.json                            ║
+║                                                                ║
+║  2. INDEX                                                      ║
+║     npx tsx src/pipeline-v2/cli.ts index <file.xlsx>           ║
+║     → Claude AI analyzes layout, identifies evidence pieces    ║
+║     → Output: indexed/*.yaml                                   ║
+║                                                                ║
+║  3. HARVEST                                                    ║
+║     npx tsx src/pipeline-v2/cli.ts harvest                     ║
+║     → Extracts entity-level answers for reuse                  ║
+║     → Output: answer-library.yaml                              ║
+║                                                                ║
+║  4. REVIEW                                                     ║
+║     npx tsx src/pipeline-v2/cli.ts review                      ║
+║     → Interactive review with visual preview                   ║
+║     → Feedback stored for learning                             ║
+║     → Output: feedback/feedback.yaml                           ║
+║                                                                ║
+║  5. FILL (coming soon)                                         ║
+║     → Auto-fill new questionnaires with approved answers       ║
+║                                                                ║
+╚═══════════════════════════════════════════════════════════════╝
+`);
+  });
 
 program.parse();

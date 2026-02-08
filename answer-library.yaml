@@ -1,0 +1,225 @@
+id: 6c0c494c
+updated: 2026-02-08
+total: 18
+byTopic:
+  company:
+    - id: 9b13e776
+      type: field
+      label: Bedrijfsnaam
+      value: Kaas-Pack Holland BV
+      lang: en
+      topic: company
+      level: standard
+      source:
+        file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        lCell: A8
+        vCell: C8
+        harvestedAt: 2026-02-08
+    - id: bf7c25fd
+      type: field
+      label: Adres
+      value: Buitenvaart 2109
+      lang: nl
+      topic: company
+      level: standard
+      source:
+        file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        lCell: A9
+        vCell: C9
+        harvestedAt: 2026-02-08
+    - id: 8efb3766
+      type: field
+      label: Postcode, plaats, land
+      value: 7905 SW Hoogeveen, Nederland
+      lang: nl
+      topic: company
+      level: standard
+      source:
+        file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        lCell: A10
+        vCell: C10
+        harvestedAt: 2026-02-08
+    - id: e29be86b
+      type: field
+      label: Contactpersoon
+      value: I. Vegter
+      lang: fr
+      topic: company
+      level: standard
+      source:
+        file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        lCell: A11
+        vCell: C11
+        harvestedAt: 2026-02-08
+    - id: 4017f267
+      type: field
+      label: Functie
+      value: QA Manager
+      topic: company
+      level: standard
+      source:
+        file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        lCell: A12
+        vCell: C12
+        harvestedAt: 2026-02-08
+    - id: 46e99d7c
+      type: field
+      label: Telefoonnummer
+      value: 0528-268246
+      lang: nl
+      topic: company
+      level: standard
+      source:
+        file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        lCell: A13
+        vCell: C13
+        harvestedAt: 2026-02-08
+    - id: c6a1a1c0
+      type: field
+      label: Email-adres
+      value: quality@kaaspack.nl
+      lang: en
+      topic: company
+      level: standard
+      source:
+        file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        lCell: A14
+        vCell: C14
+        harvestedAt: 2026-02-08
+    - id: 01f070bd
+      type: field
+      label: Bedrijfsactiviteiten
+      value: versnijden en raspen van kaas
+      lang: nl
+      topic: company
+      level: narrative
+      source:
+        file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        lCell: A15
+        vCell: C15
+        harvestedAt: 2026-02-08
+    - id: 003837fa
+      type: field
+      label: EG-nummer (indien van toepassing)
+      value: NL Z 0159 EG
+      lang: nl
+      topic: company
+      level: standard
+      source:
+        file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        lCell: A17
+        vCell: C17
+        harvestedAt: 2026-02-08
+  quality:
+    - id: fe5820b3
+      type: text
+      label: Welke kwaliteitsstandaarden zijn in werking binnen uw bedrijf
+      value: VLOG en Weidegang
+      lang: nl
+      topic: quality
+      level: narrative
+      source:
+        file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        lCell: A21
+        vCell: C21
+        harvestedAt: 2026-02-08
+    - id: 754e110b
+      type: text
+      label: Hoe is contaminatie met vreemde delen gecontroleerd
+      value: Controle op metaaldeeltjes door metaaldetector verder visuel
+      lang: nl
+      topic: quality
+      level: narrative
+      source:
+        file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        lCell: A22
+        vCell: C22
+        harvestedAt: 2026-02-08
+  microbiology:
+    - id: af42e344
+      type: text
+      label: Leg kort uit hoe gevaren die via de grondstoffen uw product kunnen beïnvloeden
+      value: Afstemming binnen het HACCP team betreffende gevaren. Daar w
+      lang: nl
+      topic: microbiology
+      level: narrative
+      source:
+        file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        lCell: A29
+        vCell: C29
+        harvestedAt: 2026-02-08
+    - id: 92c5bc51
+      type: text
+      label: Voert u Chemische en/of microbiologische analyses uit
+      value: Er worden volgen monsterplanning onderzoeken op microbiologi
+      lang: nl
+      topic: microbiology
+      level: narrative
+      source:
+        file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        lCell: A30
+        vCell: C30
+        harvestedAt: 2026-02-08
+  food_fraud:
+    - id: ed7bcb90
+      type: yesno
+      label: Is er een Food Fraude-analyse uitgevoerd op de grondstoffen
+      value: Ja
+      lang: nl
+      topic: food_fraud
+      level: narrative
+      source:
+        file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        lCell: A35
+        vCell: C35
+        harvestedAt: 2026-02-08
+    - id: 92fc0961
+      type: text
+      label: Voert u analyses uit op grondstoffen om fraude eerder in het proces te detecteren
+      value: Nee. We kopen kaas in van gecertificeerde producenten. Er wo
+      lang: nl
+      topic: food_fraud
+      level: narrative
+      source:
+        file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        lCell: A36
+        vCell: C36
+        harvestedAt: 2026-02-08
+  environment:
+    - id: d30abb8d
+      type: text
+      label: Bevat het milieubeleid van uw organisatie
+      value: Er wordt intern gewerkt met een CAP 26000 gebaseerd systeem.
+      lang: nl
+      topic: environment
+      level: narrative
+      source:
+        file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        lCell: A41
+        vCell: C41
+        harvestedAt: 2026-02-08
+  signature:
+    - id: b57b4b31
+      type: field
+      label: Naam
+      value: I. Vegter
+      topic: signature
+      level: standard
+      source:
+        file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        lCell: A45
+        vCell: C45
+        harvestedAt: 2026-02-08
+    - id: 4ebc357c
+      type: date
+      label: Datum
+      value: 2024-11-12
+      topic: signature
+      level: standard
+      source:
+        file: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+        lCell: A47
+        vCell: C47
+        harvestedAt: 2026-02-08
+sources:
+  - 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx

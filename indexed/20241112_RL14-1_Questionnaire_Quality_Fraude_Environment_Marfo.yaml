@@ -1,0 +1,216 @@
+id: efca7b46
+source: 20241112 RL14-1 Questionnaire Quality Fraude Environment_Marfo.xlsx
+indexed: 2026-02-08
+language: nl
+sections:
+  - title: Algemene informatie
+    topic: company
+    rows: 8-17
+    items:
+      - type: field
+        label: Bedrijfsnaam
+        value: Kaas-Pack Holland BV
+        level: standard
+        lang: en
+        lCell: A8
+        vCell: C8
+      - type: field
+        label: Adres
+        value: Buitenvaart 2109
+        level: standard
+        lang: nl
+        lCell: A9
+        vCell: C9
+      - type: field
+        label: Postcode, plaats, land
+        value: 7905 SW Hoogeveen, Nederland
+        level: standard
+        lang: nl
+        lCell: A10
+        vCell: C10
+      - type: field
+        label: Contactpersoon
+        value: I. Vegter
+        level: standard
+        lang: fr
+        lCell: A11
+        vCell: C11
+      - type: field
+        label: Functie
+        value: QA Manager
+        level: standard
+        lCell: A12
+        vCell: C12
+      - type: field
+        label: Telefoonnummer
+        value: 0528-268246
+        level: standard
+        lang: nl
+        lCell: A13
+        vCell: C13
+      - type: field
+        label: Email-adres
+        value: quality@kaaspack.nl
+        level: standard
+        lang: en
+        lCell: A14
+        vCell: C14
+      - type: field
+        label: Bedrijfsactiviteiten
+        value: versnijden en raspen van kaas
+        level: narrative
+        lang: nl
+        lCell: A15
+        vCell: C15
+      - type: field
+        label: Product range
+        value: Zuivel
+        level: product
+        lang: en
+        lCell: A16
+        vCell: C16
+      - type: field
+        label: EG-nummer (indien van toepassing)
+        value: NL Z 0159 EG
+        level: standard
+        lang: nl
+        lCell: A17
+        vCell: C17
+  - title: Kwaliteitsmanagement
+    topic: quality
+    rows: 21-24
+    items:
+      - type: text
+        label: Welke kwaliteitsstandaarden zijn in werking binnen uw bedrijf
+        value: VLOG en Weidegang
+        level: narrative
+        lang: nl
+        lCell: A21
+        vCell: C21
+      - type: text
+        label: Hoe is contaminatie met vreemde delen gecontroleerd
+        value: Controle op metaaldeeltjes door metaaldetector verder visuel
+        level: narrative
+        lang: nl
+        lCell: A22
+        vCell: C22
+      - type: text
+        label: Hoe is verontreiniging met niet gedeclareerde allergenen voorkomen
+        value: Alleen melk, als allergeen, wordt binnen ons pand verwerkt.
+        level: product
+        lang: nl
+        lCell: A23
+        vCell: C23
+      - type: text
+        label: Als uw bedrijf niet gecertificeerd is volgens een van de GFSI
+        level: narrative
+        lang: nl
+        lCell: A24
+        vCell: C24
+  - title: Chemische, Fysische en Microbiologische gevaren
+    topic: microbiology
+    rows: 29-30
+    items:
+      - type: text
+        label: Leg kort uit hoe gevaren die via de grondstoffen uw product kunnen beïnvloeden
+        value: Afstemming binnen het HACCP team betreffende gevaren. Daar w
+        level: narrative
+        lang: nl
+        lCell: A29
+        vCell: C29
+      - type: text
+        label: Voert u Chemische en/of microbiologische analyses uit
+        value: Er worden volgen monsterplanning onderzoeken op microbiologi
+        level: narrative
+        lang: nl
+        lCell: A30
+        vCell: C30
+  - title: Food Fraude management
+    topic: food_fraud
+    rows: 35-36
+    items:
+      - type: yesno
+        label: Is er een Food Fraude-analyse uitgevoerd op de grondstoffen
+        value: Ja
+        level: narrative
+        lang: nl
+        lCell: A35
+        vCell: C35
+      - type: text
+        label: Voert u analyses uit op grondstoffen om fraude eerder in het proces te detecteren
+        value: Nee. We kopen kaas in van gecertificeerde producenten. Er wo
+        level: narrative
+        lang: nl
+        lCell: A36
+        vCell: C36
+  - title: Milieubeleid
+    topic: environment
+    rows: 41-41
+    items:
+      - type: text
+        label: Bevat het milieubeleid van uw organisatie
+        value: Er wordt intern gewerkt met een CAP 26000 gebaseerd systeem.
+        level: narrative
+        lang: nl
+        lCell: A41
+        vCell: C41
+  - title: Ondertekening
+    topic: signature
+    rows: 45-48
+    items:
+      - type: field
+        label: Naam
+        value: I. Vegter
+        level: standard
+        lCell: A45
+        vCell: C45
+      - type: field
+        label: Functie
+        value: QA manager
+        level: standard
+        lCell: A46
+        vCell: C46
+      - type: date
+        label: Datum
+        value: 2024-11-12
+        level: standard
+        lCell: A47
+        vCell: C47
+      - type: signature
+        label: Handtekening
+        level: standard
+        lCell: A48
+        vCell: C48
+  - title: Autorisatie (QA-afdeling Marfo)
+    topic: approval
+    rows: 52-57
+    items:
+      - type: yesno
+        label: Is de questionnaire volledig en naar behoren ingevuld?
+        level: standard
+        lang: nl
+        lCell: A52
+        vCell: B52
+      - type: yesno
+        label: Is aanvullende informatie gewenst?
+        level: standard
+        lang: nl
+        lCell: A53
+        vCell: B53
+      - type: signature
+        label: Handtekening QA-manager
+        level: standard
+        lang: nl
+        lCell: A55
+        vCell: B55
+      - type: date
+        label: Datum
+        level: standard
+        lCell: A57
+        vCell: B57
+stats:
+  total: 27
+  answered: 21
+  standard: 16
+  narrative: 9
+  product: 2

@@ -32,6 +32,9 @@ importers:
       pdf-parse:
         specifier: ^2.4.5
         version: 2.4.5
+      yaml:
+        specifier: ^2.8.2
+        version: 2.8.2
     devDependencies:
       '@types/node':
         specifier: ^22.10.0
@@ -1602,6 +1605,11 @@ packages:
 
   xmlchars@2.2.0:
     resolution: {integrity: sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==}
+
+  yaml@2.8.2:
+    resolution: {integrity: sha512-mplynKqc1C2hTVYxd0PU2xQAc22TI1vShAYGksCCfxbn/dFwnHTNi1bvYsBTkhdUNtGIf5xNOg938rrSSYvS9A==}
+    engines: {node: '>= 14.6'}
+    hasBin: true
 
   yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
@@ -3538,6 +3546,8 @@ snapshots:
   xmlbuilder@10.1.1: {}
 
   xmlchars@2.2.0: {}
+
+  yaml@2.8.2: {}
 
   yocto-queue@0.1.0: {}
 

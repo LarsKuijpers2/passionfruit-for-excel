@@ -1487,14 +1487,200 @@
         }
       });
 
-      // Item click handlers
-      document.querySelectorAll('.item').forEach(item => {
+      // Multi-select state for bulk editing
+      let selectedItems = new Set();
+      let lastSelectedIndex = -1;
+      const allItemElements = Array.from(document.querySelectorAll('.item'));
+
+      function getItemPanel(item) {
+        if (item.closest('#panel-indexed')) return 'indexed';
+        if (item.closest('#panel-library')) return 'library';
+        return null;
+      }
+
+      function clearItemSelection() {
+        selectedItems.forEach(item => item.classList.remove('selected'));
+        selectedItems.clear();
+        lastSelectedIndex = -1;
+      }
+
+      function updateBulkEditModal() {
+        const modal = document.getElementById('bulk-edit-modal');
+        const backdrop = document.getElementById('bulk-edit-backdrop');
+        const count = selectedItems.size;
+
+        if (count === 0) {
+          modal.classList.remove('visible');
+          backdrop.classList.remove('visible');
+          return;
+        }
+
+        // Determine which panel items are from
+        const panels = new Set();
+        selectedItems.forEach(item => {
+          const panel = getItemPanel(item);
+          if (panel) panels.add(panel);
+        });
+
+        // Show appropriate fields based on panel
+        const topicField = document.getElementById('field-topic');
+        const datasourceField = document.getElementById('field-datasource');
+
+        if (panels.has('indexed') && !panels.has('library')) {
+          // Only indexed items - show Topic
+          topicField.style.display = 'block';
+          datasourceField.style.display = 'none';
+        } else if (panels.has('library') && !panels.has('indexed')) {
+          // Only library items - show Data Source
+          topicField.style.display = 'none';
+          datasourceField.style.display = 'block';
+        } else {
+          // Mixed or unknown - show both
+          topicField.style.display = 'block';
+          datasourceField.style.display = 'block';
+        }
+
+        // Update count
+        modal.querySelector('.bulk-edit-count').textContent = `${count} item${count === 1 ? '' : 's'} selected`;
+
+        // Reset fields
+        document.getElementById('edit-topic').value = '';
+        document.getElementById('edit-datasource').value = '';
+      }
+
+      function showBulkEditModal() {
+        if (selectedItems.size === 0) return;
+        updateBulkEditModal();
+        document.getElementById('bulk-edit-modal').classList.add('visible');
+        document.getElementById('bulk-edit-backdrop').classList.add('visible');
+      }
+
+      function hideBulkEditModal() {
+        document.getElementById('bulk-edit-modal').classList.remove('visible');
+        document.getElementById('bulk-edit-backdrop').classList.remove('visible');
+      }
+
+      function applyBulkEdit() {
+        const topic = document.getElementById('edit-topic').value;
+        const datasource = document.getElementById('edit-datasource').value;
+        let changes = 0;
+
+        selectedItems.forEach(item => {
+          if (topic) {
+            item.dataset.topic = topic;
+            // Update badge
+            let badge = item.querySelector('.level-badge');
+            if (badge) {
+              badge.className = 'level-badge topic';
+              badge.textContent = topic;
+            }
+            changes++;
+          }
+          if (datasource) {
+            item.dataset.datasource = datasource;
+            // Update badge for library items
+            let badge = item.querySelector('.level-badge');
+            if (badge && getItemPanel(item) === 'library') {
+              badge.className = 'level-badge';
+              if (datasource === 'entity_db') {
+                badge.classList.add('entity');
+                badge.textContent = 'ENTITY';
+              } else if (datasource === 'product_spec') {
+                badge.classList.add('product');
+                badge.textContent = 'PRODUCT';
+              } else {
+                badge.classList.add('library');
+                badge.textContent = 'LIBRARY';
+              }
+            }
+            changes++;
+          }
+        });
+
+        hideBulkEditModal();
+        if (changes > 0) {
+          showToast(`Updated ${selectedItems.size} item(s)`);
+        }
+        clearItemSelection();
+      }
+
+      // Bulk edit modal event handlers
+      document.getElementById('bulk-edit-backdrop')?.addEventListener('click', hideBulkEditModal);
+      document.getElementById('bulk-edit-cancel')?.addEventListener('click', hideBulkEditModal);
+      document.getElementById('bulk-edit-apply')?.addEventListener('click', applyBulkEdit);
+
+      // Item click handlers with multi-select
+      document.querySelectorAll('.item').forEach((item, idx) => {
         item.addEventListener('click', (e) => {
           if (e.target.closest('.action-btn') || e.target.closest('.wrong-note-container')) return;
-          document.querySelectorAll('.item.selected').forEach(i => i.classList.remove('selected'));
-          item.classList.add('selected');
-          highlightCells(item.dataset.cells, item.dataset.sheet);
+
+          if (e.shiftKey && lastSelectedIndex !== -1) {
+            // Shift+click: select range
+            const start = Math.min(lastSelectedIndex, idx);
+            const end = Math.max(lastSelectedIndex, idx);
+            for (let i = start; i <= end; i++) {
+              const el = allItemElements[i];
+              if (el) {
+                el.classList.add('selected');
+                selectedItems.add(el);
+              }
+            }
+          } else if (e.metaKey || e.ctrlKey) {
+            // Cmd/Ctrl+click: toggle selection
+            if (selectedItems.has(item)) {
+              item.classList.remove('selected');
+              selectedItems.delete(item);
+            } else {
+              item.classList.add('selected');
+              selectedItems.add(item);
+              lastSelectedIndex = idx;
+            }
+          } else {
+            // Normal click: select single
+            clearItemSelection();
+            item.classList.add('selected');
+            selectedItems.add(item);
+            lastSelectedIndex = idx;
+            highlightCells(item.dataset.cells, item.dataset.sheet);
+          }
         });
+      });
+
+      // Keyboard shortcuts for bulk edit
+      document.addEventListener('keydown', (e) => {
+        // Don't handle when typing in inputs
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+        // Escape to clear selection or close modal
+        if (e.key === 'Escape') {
+          if (document.getElementById('bulk-edit-modal').classList.contains('visible')) {
+            hideBulkEditModal();
+          } else {
+            clearItemSelection();
+          }
+          return;
+        }
+
+        // Cmd+A to select all visible items
+        if ((e.metaKey || e.ctrlKey) && e.key === 'a') {
+          e.preventDefault();
+          document.querySelectorAll('.item:not([style*="display: none"])').forEach(item => {
+            item.classList.add('selected');
+            selectedItems.add(item);
+          });
+          return;
+        }
+
+        // Cmd+K to open bulk edit modal
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+          e.preventDefault();
+          if (selectedItems.size > 0) {
+            showBulkEditModal();
+          } else {
+            showToast('Select items first (click, Shift+click, or ⌘A)');
+          }
+          return;
+        }
       });
 
       // Cell selection state for label/value pairing

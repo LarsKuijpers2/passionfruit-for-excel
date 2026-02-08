@@ -2903,22 +2903,29 @@ export class WebReviewGenerator {
     /* Command palette */
     .command-palette {
       position: fixed;
-      inset: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       z-index: 2000;
       display: none;
-    }
-    .command-palette.visible {
-      display: flex;
       align-items: center;
       justify-content: center;
     }
+    .command-palette.visible {
+      display: flex;
+    }
     .command-palette-backdrop {
-      position: absolute;
-      inset: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       background: rgba(0,0,0,0.7);
     }
     .command-palette-modal {
       position: relative;
+      z-index: 1;
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -2985,6 +2992,16 @@ export class WebReviewGenerator {
       display: none;
     }
     .command-palette.single-select .property-row.single-only {
+      display: flex;
+    }
+    .property-row.indexed-only,
+    .property-row.library-only {
+      display: none;
+    }
+    .command-palette.indexed-mode .property-row.indexed-only {
+      display: flex;
+    }
+    .command-palette.library-mode .property-row.library-only {
       display: flex;
     }
     .command-palette-footer {
@@ -3137,34 +3154,25 @@ export class WebReviewGenerator {
           <label>Value</label>
           <textarea id="bulkValue" placeholder="Item value"></textarea>
         </div>
-        <div class="property-row">
+        <div class="property-row indexed-only">
           <label>Section</label>
           <select id="bulkSection">
             <option value="">— Keep current —</option>
           </select>
         </div>
-        <div class="property-row">
+        <div class="property-row indexed-only">
           <label>Topic</label>
           <select id="bulkTopic">
             <option value="">— Keep current —</option>
-            <option value="company">company</option>
-            <option value="product">product</option>
-            <option value="quality">quality</option>
-            <option value="contacts">contacts</option>
-            <option value="certifications">certifications</option>
-            <option value="sustainability">sustainability</option>
-            <option value="animal_welfare">animal_welfare</option>
-            <option value="food_fraud">food_fraud</option>
-            <option value="microbiology">microbiology</option>
-            <option value="other">other</option>
           </select>
         </div>
-        <div class="property-row">
-          <label>Level</label>
-          <select id="bulkLevel">
+        <div class="property-row library-only">
+          <label>Data Source</label>
+          <select id="bulkDataSource">
             <option value="">— Keep current —</option>
-            <option value="entity">entity (reusable)</option>
-            <option value="product">product (specific)</option>
+            <option value="answer_library">Answer Library</option>
+            <option value="entities">Entities (company-level)</option>
+            <option value="products">Products (product-level)</option>
           </select>
         </div>
         <div class="property-row">
@@ -4248,34 +4256,68 @@ export class WebReviewGenerator {
         const count = selectedItems.size;
         commandPalette.querySelector('.selected-count').textContent = count + ' item' + (count === 1 ? '' : 's') + ' selected';
 
+        // Detect which panel the items are from
+        const firstItem = Array.from(selectedItems)[0];
+        const isLibraryItem = firstItem.closest('#panel-library') !== null;
+
+        // Set mode classes
+        commandPalette.classList.remove('indexed-mode', 'library-mode');
+        if (isLibraryItem) {
+          commandPalette.classList.add('library-mode');
+        } else {
+          commandPalette.classList.add('indexed-mode');
+        }
+
         if (count === 1) {
           commandPalette.classList.add('single-select');
-          const item = Array.from(selectedItems)[0];
-          document.getElementById('bulkLabel').value = item.dataset.label || '';
-          document.getElementById('bulkValue').value = item.querySelector('.item-value')?.textContent || '';
+          document.getElementById('bulkLabel').value = firstItem.dataset.label || '';
+          document.getElementById('bulkValue').value = firstItem.querySelector('.item-value')?.textContent || '';
         } else {
           commandPalette.classList.remove('single-select');
           document.getElementById('bulkLabel').value = '';
           document.getElementById('bulkValue').value = '';
         }
 
-        const sectionSelect = document.getElementById('bulkSection');
-        sectionSelect.innerHTML = '<option value="">— Keep current —</option>';
-        const sections = new Set();
-        document.querySelectorAll('.section').forEach(sec => {
-          const topic = sec.dataset.topic;
-          if (topic) sections.add(topic);
-        });
-        sections.forEach(s => {
-          sectionSelect.innerHTML += \`<option value="\${s}">\${s}</option>\`;
-        });
+        // Indexed mode: populate sections and topics
+        if (!isLibraryItem) {
+          const sectionSelect = document.getElementById('bulkSection');
+          sectionSelect.innerHTML = '<option value="">— Keep current —</option>';
+          const sections = new Set();
+          document.querySelectorAll('#panel-indexed .section').forEach(sec => {
+            const topic = sec.dataset.topic;
+            if (topic) sections.add(topic);
+          });
+          sections.forEach(s => {
+            sectionSelect.innerHTML += \`<option value="\${s}">\${s}</option>\`;
+          });
 
-        document.getElementById('bulkTopic').value = '';
-        document.getElementById('bulkLevel').value = '';
+          const topicSelect = document.getElementById('bulkTopic');
+          topicSelect.innerHTML = '<option value="">— Keep current —</option>';
+          const topics = new Set();
+          document.querySelectorAll('#panel-indexed .item[data-topic]').forEach(item => {
+            const t = item.dataset.topic;
+            if (t) topics.add(t);
+          });
+          Array.from(topics).sort().forEach(t => {
+            topicSelect.innerHTML += \`<option value="\${t}">\${t}</option>\`;
+          });
+        }
+
+        // Library mode: reset data source
+        if (isLibraryItem) {
+          document.getElementById('bulkDataSource').value = '';
+        }
+
         document.getElementById('bulkAction').value = '';
 
         commandPalette.classList.add('visible');
-        document.getElementById('bulkTopic').focus();
+
+        // Focus appropriate field
+        if (isLibraryItem) {
+          document.getElementById('bulkDataSource').focus();
+        } else {
+          document.getElementById('bulkTopic').focus();
+        }
       }
 
       function hideCommandPalette() {
@@ -4283,18 +4325,35 @@ export class WebReviewGenerator {
       }
 
       async function applyCommandPaletteChanges() {
-        const topic = document.getElementById('bulkTopic').value;
-        const level = document.getElementById('bulkLevel').value;
+        const topic = document.getElementById('bulkTopic')?.value;
+        const dataSource = document.getElementById('bulkDataSource')?.value;
         const action = document.getElementById('bulkAction').value;
         const newLabel = document.getElementById('bulkLabel').value;
         const newValue = document.getElementById('bulkValue').value;
 
         const items = Array.from(selectedItems);
+        const isLibraryMode = commandPalette.classList.contains('library-mode');
         let changes = 0;
 
         for (const item of items) {
-          if (topic) {
+          // Indexed mode: update topic
+          if (!isLibraryMode && topic) {
             item.dataset.topic = topic;
+            // Update topic badge if present
+            const badge = item.querySelector('.level-badge');
+            if (badge) badge.textContent = topic.toUpperCase();
+            changes++;
+          }
+
+          // Library mode: update data source
+          if (isLibraryMode && dataSource) {
+            item.dataset.dataSource = dataSource;
+            // Update visual indicator
+            const badge = item.querySelector('.level-badge');
+            if (badge) {
+              const labels = { answer_library: 'LIBRARY', entities: 'ENTITY', products: 'PRODUCT' };
+              badge.textContent = labels[dataSource] || dataSource.toUpperCase();
+            }
             changes++;
           }
 
@@ -4303,9 +4362,9 @@ export class WebReviewGenerator {
               item.dataset.label = newLabel;
               const labelEl = item.querySelector('.item-label');
               if (labelEl) {
-                const badge = labelEl.querySelector('.level-badge');
+                const existingBadge = labelEl.querySelector('.level-badge');
                 labelEl.textContent = newLabel;
-                if (badge) labelEl.appendChild(badge);
+                if (existingBadge) labelEl.appendChild(existingBadge);
               }
               changes++;
             }

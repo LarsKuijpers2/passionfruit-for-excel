@@ -763,8 +763,15 @@
     .command-palette.single-select .property-row.single-only {
       display: flex;
     }
-    .command-palette.multi-select .property-row.multi-only {
-      display: flex !important;
+    .property-row.indexed-only,
+    .property-row.library-only {
+      display: none;
+    }
+    .command-palette.indexed-mode .property-row.indexed-only {
+      display: flex;
+    }
+    .command-palette.library-mode .property-row.library-only {
+      display: flex;
     }
     .command-palette-footer {
       display: flex;
@@ -916,24 +923,25 @@
           <label>Value</label>
           <textarea id="bulkValue" placeholder="Item value"></textarea>
         </div>
-        <div class="property-row">
+        <div class="property-row indexed-only">
           <label>Section</label>
           <select id="bulkSection">
             <option value="">— Keep current —</option>
           </select>
         </div>
-        <div class="property-row">
+        <div class="property-row indexed-only">
           <label>Topic</label>
           <select id="bulkTopic">
             <option value="">— Keep current —</option>
           </select>
         </div>
-        <div class="property-row">
-          <label>Level</label>
-          <select id="bulkLevel">
+        <div class="property-row library-only">
+          <label>Data Source</label>
+          <select id="bulkDataSource">
             <option value="">— Keep current —</option>
-            <option value="entity">entity (reusable)</option>
-            <option value="product">product (specific)</option>
+            <option value="answer_library">Answer Library</option>
+            <option value="entities">Entities (company-level)</option>
+            <option value="products">Products (product-level)</option>
           </select>
         </div>
         <div class="property-row">
@@ -944,13 +952,6 @@
             <option value="reject">Reject</option>
             <option value="reset">Reset (clear review)</option>
           </select>
-        </div>
-        <div class="property-row multi-only" style="display:none;">
-          <label>Merge</label>
-          <button id="mergeValuesBtn" style="padding:8px 12px;background:var(--muted);border:1px solid var(--border);border-radius:var(--radius);color:var(--foreground);cursor:pointer;text-align:left;">
-            Merge values as sentences
-          </button>
-          <div id="mergePreview" style="margin-top:8px;padding:8px;background:var(--background);border-radius:var(--radius);font-size:12px;color:var(--muted-foreground);display:none;"></div>
         </div>
       </div>
       <div class="command-palette-footer">
@@ -2024,59 +2025,68 @@
         const count = selectedItems.size;
         commandPalette.querySelector('.selected-count').textContent = count + ' item' + (count === 1 ? '' : 's') + ' selected';
 
-        if (count === 1) {
-          commandPalette.classList.add('single-select');
-          commandPalette.classList.remove('multi-select');
-          const item = Array.from(selectedItems)[0];
-          document.getElementById('bulkLabel').value = item.dataset.label || '';
-          document.getElementById('bulkValue').value = item.querySelector('.item-value')?.textContent || '';
-          document.getElementById('mergePreview').style.display = 'none';
-        } else {
-          commandPalette.classList.remove('single-select');
-          commandPalette.classList.add('multi-select');
-          document.getElementById('bulkLabel').value = '';
-          document.getElementById('bulkValue').value = '';
+        // Detect which panel the items are from
+        const firstItem = Array.from(selectedItems)[0];
+        const isLibraryItem = firstItem.closest('#panel-library') !== null;
 
-          // Show merge preview
-          const values = Array.from(selectedItems).map(item => {
-            const val = item.querySelector('.item-value')?.textContent?.trim() || '';
-            return val === '(empty)' ? '' : val;
-          }).filter(v => v);
-          const mergedPreview = values.join('. ') + (values.length > 0 ? '.' : '');
-          const previewEl = document.getElementById('mergePreview');
-          previewEl.textContent = mergedPreview.length > 100 ? mergedPreview.substring(0, 100) + '...' : mergedPreview;
-          previewEl.style.display = values.length > 1 ? 'block' : 'none';
+        // Set mode classes
+        commandPalette.classList.remove('indexed-mode', 'library-mode');
+        if (isLibraryItem) {
+          commandPalette.classList.add('library-mode');
+        } else {
+          commandPalette.classList.add('indexed-mode');
         }
 
-        const sectionSelect = document.getElementById('bulkSection');
-        sectionSelect.innerHTML = '<option value="">— Keep current —</option>';
-        const sections = new Set();
-        document.querySelectorAll('.section').forEach(sec => {
-          const topic = sec.dataset.topic;
-          if (topic) sections.add(topic);
-        });
-        sections.forEach(s => {
-          sectionSelect.innerHTML += `<option value="${s}">${s}</option>`;
-        });
+        if (count === 1) {
+          commandPalette.classList.add('single-select');
+          document.getElementById('bulkLabel').value = firstItem.dataset.label || '';
+          document.getElementById('bulkValue').value = firstItem.querySelector('.item-value')?.textContent || '';
+        } else {
+          commandPalette.classList.remove('single-select');
+          document.getElementById('bulkLabel').value = '';
+          document.getElementById('bulkValue').value = '';
+        }
 
-        // Populate topics from indexed data
-        const topicSelect = document.getElementById('bulkTopic');
-        topicSelect.innerHTML = '<option value="">— Keep current —</option>';
-        const topics = new Set();
-        document.querySelectorAll('.item[data-topic]').forEach(item => {
-          const t = item.dataset.topic;
-          if (t) topics.add(t);
-        });
-        // Sort and add topics
-        Array.from(topics).sort().forEach(t => {
-          topicSelect.innerHTML += `<option value="${t}">${t}</option>`;
-        });
+        // Indexed mode: populate sections and topics
+        if (!isLibraryItem) {
+          const sectionSelect = document.getElementById('bulkSection');
+          sectionSelect.innerHTML = '<option value="">— Keep current —</option>';
+          const sections = new Set();
+          document.querySelectorAll('#panel-indexed .section').forEach(sec => {
+            const topic = sec.dataset.topic;
+            if (topic) sections.add(topic);
+          });
+          sections.forEach(s => {
+            sectionSelect.innerHTML += `<option value="${s}">${s}</option>`;
+          });
 
-        document.getElementById('bulkLevel').value = '';
+          const topicSelect = document.getElementById('bulkTopic');
+          topicSelect.innerHTML = '<option value="">— Keep current —</option>';
+          const topics = new Set();
+          document.querySelectorAll('#panel-indexed .item[data-topic]').forEach(item => {
+            const t = item.dataset.topic;
+            if (t) topics.add(t);
+          });
+          Array.from(topics).sort().forEach(t => {
+            topicSelect.innerHTML += `<option value="${t}">${t}</option>`;
+          });
+        }
+
+        // Library mode: reset data source
+        if (isLibraryItem) {
+          document.getElementById('bulkDataSource').value = '';
+        }
+
         document.getElementById('bulkAction').value = '';
 
         commandPalette.classList.add('visible');
-        document.getElementById('bulkTopic').focus();
+
+        // Focus appropriate field
+        if (isLibraryItem) {
+          document.getElementById('bulkDataSource').focus();
+        } else {
+          document.getElementById('bulkTopic').focus();
+        }
       }
 
       function hideCommandPalette() {
@@ -2084,18 +2094,35 @@
       }
 
       async function applyCommandPaletteChanges() {
-        const topic = document.getElementById('bulkTopic').value;
-        const level = document.getElementById('bulkLevel').value;
+        const topic = document.getElementById('bulkTopic')?.value;
+        const dataSource = document.getElementById('bulkDataSource')?.value;
         const action = document.getElementById('bulkAction').value;
         const newLabel = document.getElementById('bulkLabel').value;
         const newValue = document.getElementById('bulkValue').value;
 
         const items = Array.from(selectedItems);
+        const isLibraryMode = commandPalette.classList.contains('library-mode');
         let changes = 0;
 
         for (const item of items) {
-          if (topic) {
+          // Indexed mode: update topic
+          if (!isLibraryMode && topic) {
             item.dataset.topic = topic;
+            // Update topic badge if present
+            const badge = item.querySelector('.level-badge');
+            if (badge) badge.textContent = topic.toUpperCase();
+            changes++;
+          }
+
+          // Library mode: update data source
+          if (isLibraryMode && dataSource) {
+            item.dataset.dataSource = dataSource;
+            // Update visual indicator
+            const badge = item.querySelector('.level-badge');
+            if (badge) {
+              const labels = { answer_library: 'LIBRARY', entities: 'ENTITY', products: 'PRODUCT' };
+              badge.textContent = labels[dataSource] || dataSource.toUpperCase();
+            }
             changes++;
           }
 
@@ -2104,9 +2131,9 @@
               item.dataset.label = newLabel;
               const labelEl = item.querySelector('.item-label');
               if (labelEl) {
-                const badge = labelEl.querySelector('.level-badge');
+                const existingBadge = labelEl.querySelector('.level-badge');
                 labelEl.textContent = newLabel;
-                if (badge) labelEl.appendChild(badge);
+                if (existingBadge) labelEl.appendChild(existingBadge);
               }
               changes++;
             }
@@ -2142,47 +2169,6 @@
       paletteBackdrop?.addEventListener('click', hideCommandPalette);
       document.getElementById('paletteCancel')?.addEventListener('click', hideCommandPalette);
       document.getElementById('paletteApply')?.addEventListener('click', applyCommandPaletteChanges);
-
-      // Merge values button
-      document.getElementById('mergeValuesBtn')?.addEventListener('click', async () => {
-        const items = Array.from(selectedItems);
-        if (items.length < 2) {
-          showToast('Select at least 2 items to merge');
-          return;
-        }
-
-        // Get all values and merge them
-        const values = items.map(item => {
-          const val = item.querySelector('.item-value')?.textContent?.trim() || '';
-          return val === '(empty)' ? '' : val;
-        }).filter(v => v);
-
-        const mergedValue = values.join('. ') + (values.length > 0 ? '.' : '');
-
-        // Apply merged value to the first item
-        const firstItem = items[0];
-        const firstValueEl = firstItem.querySelector('.item-value');
-        if (firstValueEl) {
-          firstValueEl.textContent = mergedValue;
-          firstValueEl.classList.remove('empty');
-        }
-
-        // Mark first item as accepted
-        firstItem.classList.remove('wrong', 'rejected', 'show-note');
-        firstItem.classList.add('reviewed', 'correct', 'accepted');
-        await logFeedback(firstItem, 'correct');
-
-        // Mark other items as rejected (merged into first)
-        for (let i = 1; i < items.length; i++) {
-          items[i].classList.remove('correct', 'accepted');
-          items[i].classList.add('reviewed', 'wrong', 'rejected');
-          await logFeedback(items[i], 'wrong', 'Merged into: ' + firstItem.dataset.label);
-        }
-
-        hideCommandPalette();
-        showToast(`Merged ${items.length} values into first item`);
-        clearSelection();
-      });
 
       // Keyboard shortcuts for selection and command palette
       document.addEventListener('keydown', (e) => {

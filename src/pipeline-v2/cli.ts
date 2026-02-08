@@ -4,7 +4,7 @@
  * Questionnaire Extraction Pipeline CLI
  *
  * Commands:
- *   store <file>   - Store questionnaire preserving Excel structure
+ *   store <file>   - Store questionnaire (Excel, Word, PDF)
  *   index <file>   - Index with Claude AI, extract all evidence pieces
  *   harvest        - Harvest entity-level answers into library
  *   review         - Interactive review with visual preview

@@ -78,8 +78,7 @@ export class WebReviewGenerator {
     indexed: IndexedQuestionnaire,
     library: AnswerLibrary | null
   ): string {
-    const docType = structure.source.documentType;
-    const sheetsHtml = structure.sheets.map(sheet => this.buildSheetView(sheet, docType)).join('\n');
+    const sheetsHtml = structure.sheets.map(sheet => this.buildSheetTable(sheet)).join('\n');
     const indexedHtml = this.buildIndexedView(indexed);
     const libraryHtml = library ? this.buildLibraryView(library) : '<p class="empty">Run harvest first to see library items</p>';
 
@@ -256,62 +255,86 @@ export class WebReviewGenerator {
 
     /* Document view (Word/PDF) */
     .document-view {
-      padding: 20px;
+      padding: 16px;
       font-size: 13px;
       line-height: 1.6;
-      max-width: 800px;
     }
-    .doc-type-badge {
-      display: inline-block;
-      background: var(--muted);
-      color: var(--muted-foreground);
-      font-size: 10px;
-      font-weight: 600;
-      padding: 2px 8px;
+    .document-view > div {
+      padding: 8px 12px;
       border-radius: var(--radius);
-      margin-bottom: 16px;
+      margin-bottom: 4px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    .document-view > div:hover {
+      background: var(--secondary);
+    }
+    .document-view > div.highlighted {
+      background: rgba(59, 130, 246, 0.2);
+      outline: 1px solid var(--primary);
     }
     .doc-section {
-      margin-bottom: 24px;
+      margin-top: 16px;
+      margin-bottom: 8px;
+      border-left: 3px solid var(--primary);
+      background: var(--card);
     }
-    .doc-section-title {
+    .doc-section h3 {
+      margin: 0;
       font-size: 14px;
       font-weight: 600;
       color: var(--foreground);
-      padding-bottom: 8px;
-      margin-bottom: 12px;
-      border-bottom: 1px solid var(--border);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
-    .doc-section-content {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+    .doc-qa {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 12px;
+      align-items: baseline;
+      background: var(--card);
+      border-left: 2px solid transparent;
+    }
+    .doc-qa:hover {
+      border-left-color: var(--primary);
     }
     .doc-label {
       color: var(--muted-foreground);
-      font-weight: 500;
+    }
+    .doc-label::after {
+      content: ':';
     }
     .doc-value {
       color: var(--foreground);
-      background: var(--card);
-      padding: 8px 12px;
-      border-radius: var(--radius);
-      border-left: 3px solid #22c55e;
+      font-weight: 500;
+      background: rgba(34, 197, 94, 0.1);
+      padding: 2px 8px;
+      border-radius: 4px;
     }
-    .doc-text {
-      color: var(--foreground);
+    .doc-value.empty {
+      color: var(--muted-foreground);
+      background: transparent;
+      font-style: italic;
+      font-weight: normal;
     }
-    .doc-label:hover,
-    .doc-value:hover,
-    .doc-text:hover {
-      outline: 1px solid var(--muted-foreground);
-      cursor: pointer;
+    .doc-ref {
+      font-family: monospace;
+      font-size: 10px;
+      color: var(--muted-foreground);
+      opacity: 0.6;
     }
-    .doc-label.highlighted,
-    .doc-value.highlighted,
-    .doc-text.highlighted {
-      outline: 2px solid #3b82f6;
-      background: rgba(59, 130, 246, 0.2);
+    .doc-para {
+      color: var(--muted-foreground);
+    }
+    .doc-table-header {
+      display: flex;
+      gap: 16px;
+      background: var(--secondary);
+      font-weight: 600;
+    }
+    .doc-th {
+      flex: 1;
+      min-width: 100px;
     }
 
     /* Sheet tabs */
@@ -1102,7 +1125,7 @@ export class WebReviewGenerator {
         </div>
         ${structure.sheets.map((sheet, i) => `
           <div class="sheet-content${i === 0 ? ' active' : ''}" data-sheet="${i}">
-            ${this.buildSheetTable(sheet)}
+            ${this.buildSheetView(sheet, structure.source.documentType)}
           </div>
         `).join('')}
       </div>
@@ -1443,22 +1466,26 @@ export class WebReviewGenerator {
       });
     }
 
-    // Utility: highlight cells in original panel
+    // Utility: highlight cells in original panel (Excel or Document view)
     function highlightCells(cellRefs, className = 'highlighted') {
       if (!cellRefs) return;
-      const cells = cellRefs.split(',');
-      cells.forEach(ref => {
-        // Try Excel table cell
+      const refs = cellRefs.split(',');
+
+      // Try Excel cells first
+      refs.forEach(ref => {
         const cell = document.querySelector('td[data-cell="' + ref + '"]');
         if (cell) {
           cell.classList.add(className);
           cell.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
         }
-        // Try document view elements (Word/PDF)
-        const docEl = document.querySelector('.document-view [data-cell="' + ref + '"]');
-        if (docEl) {
-          docEl.classList.add(className);
-          docEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+      });
+
+      // Also try document view elements (check if any ref is in the element's data-cell list)
+      document.querySelectorAll('.document-view > div[data-cell]').forEach(elem => {
+        const elemRefs = (elem.dataset.cell || '').split(',');
+        if (refs.some(ref => elemRefs.includes(ref))) {
+          elem.classList.add(className);
+          elem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
       });
     }
@@ -1597,7 +1624,7 @@ export class WebReviewGenerator {
       });
     });
 
-    // Cell tooltip and click
+    // Cell tooltip and click (Excel)
     const tooltip = document.getElementById('tooltip');
     document.querySelectorAll('.excel-table td[data-cell]').forEach(cell => {
       cell.addEventListener('mouseenter', (e) => {
@@ -1616,28 +1643,27 @@ export class WebReviewGenerator {
     });
 
     // Document view click handlers (Word/PDF)
-    document.querySelectorAll('.document-view [data-cell]').forEach(el => {
-      el.addEventListener('click', () => {
-        // Remove previous highlights
-        document.querySelectorAll('.document-view .highlighted').forEach(h => {
-          h.classList.remove('highlighted');
-        });
-        el.classList.add('highlighted');
+    document.querySelectorAll('.document-view > div[data-cell]').forEach(elem => {
+      elem.addEventListener('click', () => {
+        // Clear previous highlights
+        document.querySelectorAll('.document-view > div.highlighted').forEach(e => e.classList.remove('highlighted'));
+        elem.classList.add('highlighted');
 
-        // Find matching items by cell reference
-        const cellRef = el.dataset.cell;
-        const matchingItems = [];
-        allItems.forEach(item => {
-          const cells = item.dataset.cells || '';
-          const cellList = cells.split(/[→,\\s]+/).map(c => c.trim());
-          if (cellList.includes(cellRef)) {
-            matchingItems.push(item);
-          }
-        });
+        if (syncMode) {
+          // Get all cell refs from this element
+          const cellRefs = (elem.dataset.cell || '').split(',');
+          clearHighlights();
+          elem.classList.add('highlighted');
 
-        if (matchingItems.length > 0) {
-          selectItem(matchingItems[0], 'click');
-          currentItemIndex = indexedItems.indexOf(matchingItems[0]);
+          // Find matching indexed items
+          allItems.forEach(item => {
+            const itemCells = (item.dataset.cells || '').split(',');
+            const hasMatch = cellRefs.some(ref => itemCells.includes(ref));
+            if (hasMatch) {
+              item.classList.add('highlighted');
+              item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+          });
         }
       });
     });
@@ -2140,6 +2166,65 @@ export class WebReviewGenerator {
   }
 
   /**
+   * Build sheet view - routes to table or document view based on type
+   */
+  private buildSheetView(sheet: SheetData, documentType?: DocumentType): string {
+    if (documentType === 'word' || documentType === 'pdf') {
+      return this.buildDocumentView(sheet);
+    }
+    return this.buildSheetTable(sheet);
+  }
+
+  /**
+   * Build markdown-style document view for Word/PDF
+   */
+  private buildDocumentView(sheet: SheetData): string {
+    const lines: string[] = [];
+
+    for (const row of sheet.rows) {
+      const cells = Object.values(row.cells).filter(c => c.filled);
+      if (cells.length === 0) continue;
+
+      // Get all cell refs for this row (for clicking/highlighting)
+      const cellRefs = cells.map(c => c.ref).join(',');
+
+      if (row.rowType === 'section' || cells[0]?.role === 'section') {
+        // Section header
+        const text = cells[0]?.value || '';
+        lines.push(`<div class="doc-section" data-cell="${cellRefs}" data-row="${row.row}">`);
+        lines.push(`  <h3>${this.escapeHtml(text)}</h3>`);
+        lines.push(`</div>`);
+      } else if (cells.length >= 2 && (cells[0]?.role === 'label' || cells[1]?.role === 'value')) {
+        // Q&A pair (label + value)
+        const label = cells[0]?.value || '';
+        const value = cells[1]?.value || '';
+        const valueClass = value ? '' : ' empty';
+        lines.push(`<div class="doc-qa" data-cell="${cellRefs}" data-row="${row.row}">`);
+        lines.push(`  <span class="doc-label">${this.escapeHtml(label)}</span>`);
+        lines.push(`  <span class="doc-value${valueClass}">${value ? this.escapeHtml(value) : '(empty)'}</span>`);
+        lines.push(`  <span class="doc-ref">${cells[0]?.ref || ''}${cells[1] ? ' → ' + cells[1].ref : ''}</span>`);
+        lines.push(`</div>`);
+      } else if (row.rowType === 'header') {
+        // Table header row
+        lines.push(`<div class="doc-table-header" data-cell="${cellRefs}" data-row="${row.row}">`);
+        for (const cell of cells) {
+          lines.push(`  <span class="doc-th">${this.escapeHtml(cell.value)}</span>`);
+        }
+        lines.push(`</div>`);
+      } else {
+        // Regular paragraph/text
+        const text = cells.map(c => c.value).join(' ');
+        const role = cells[0]?.role || 'text';
+        lines.push(`<div class="doc-para doc-${role}" data-cell="${cellRefs}" data-row="${row.row}">`);
+        lines.push(`  ${this.escapeHtml(text)}`);
+        lines.push(`</div>`);
+      }
+    }
+
+    return `<div class="document-view">${lines.join('\n')}</div>`;
+  }
+
+  /**
    * Build Excel sheet table
    */
   private buildSheetTable(sheet: SheetData): string {
@@ -2193,82 +2278,6 @@ export class WebReviewGenerator {
       <thead><tr>${headerCells}</tr></thead>
       <tbody>${tableRows}</tbody>
     </table>`;
-  }
-
-  /**
-   * Build sheet view - routes between table and document view based on document type
-   */
-  private buildSheetView(sheet: SheetData, documentType?: DocumentType): string {
-    if (documentType === 'word' || documentType === 'pdf') {
-      return this.buildDocumentView(sheet, documentType);
-    }
-    return this.buildSheetTable(sheet);
-  }
-
-  /**
-   * Build document view for Word/PDF - markdown-style rendering
-   */
-  private buildDocumentView(sheet: SheetData, documentType: DocumentType): string {
-    const sections: Array<{ title: string; content: string[] }> = [];
-    let currentSection = { title: sheet.name, content: [] as string[] };
-
-    for (const row of sheet.rows) {
-      for (const [col, cell] of Object.entries(row.cells)) {
-        if (!cell.filled) continue;
-
-        const value = cell.value.trim();
-        if (!value) continue;
-
-        // Section headers
-        if (cell.role === 'section' || cell.role === 'header') {
-          if (currentSection.content.length > 0) {
-            sections.push(currentSection);
-          }
-          currentSection = { title: value, content: [] };
-          continue;
-        }
-
-        // Build clickable element with cell reference
-        const ref = cell.ref || `${col}${row.row}`;
-        const roleClass = cell.role ? `role-${cell.role}` : '';
-        const escapedValue = this.escapeHtml(value);
-
-        // Format based on role
-        if (cell.role === 'label') {
-          currentSection.content.push(
-            `<div class="doc-label ${roleClass}" data-cell="${ref}">${escapedValue}</div>`
-          );
-        } else if (cell.role === 'input' || cell.role === 'value') {
-          currentSection.content.push(
-            `<div class="doc-value ${roleClass}" data-cell="${ref}">${escapedValue}</div>`
-          );
-        } else {
-          currentSection.content.push(
-            `<div class="doc-text ${roleClass}" data-cell="${ref}">${escapedValue}</div>`
-          );
-        }
-      }
-    }
-
-    // Add last section
-    if (currentSection.content.length > 0) {
-      sections.push(currentSection);
-    }
-
-    // Build HTML
-    const sectionsHtml = sections.map(section => `
-      <div class="doc-section">
-        <div class="doc-section-title">${this.escapeHtml(section.title)}</div>
-        <div class="doc-section-content">
-          ${section.content.join('\n          ')}
-        </div>
-      </div>
-    `).join('\n');
-
-    return `<div class="document-view" data-type="${documentType}">
-      <div class="doc-type-badge">${documentType.toUpperCase()}</div>
-      ${sectionsHtml}
-    </div>`;
   }
 
   /**
@@ -2772,66 +2781,6 @@ export class WebReviewGenerator {
       background: var(--muted);
     }
     .excel-table td.cell-merged-hidden { display: none; }
-
-    /* Document view (Word/PDF) */
-    .document-view {
-      padding: 20px;
-      font-size: 13px;
-      line-height: 1.6;
-      max-width: 800px;
-    }
-    .doc-type-badge {
-      display: inline-block;
-      background: var(--muted);
-      color: var(--muted-foreground);
-      font-size: 10px;
-      font-weight: 600;
-      padding: 2px 8px;
-      border-radius: var(--radius);
-      margin-bottom: 16px;
-    }
-    .doc-section {
-      margin-bottom: 24px;
-    }
-    .doc-section-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--foreground);
-      padding-bottom: 8px;
-      margin-bottom: 12px;
-      border-bottom: 1px solid var(--border);
-    }
-    .doc-section-content {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .doc-label {
-      color: var(--muted-foreground);
-      font-weight: 500;
-    }
-    .doc-value {
-      color: var(--foreground);
-      background: var(--card);
-      padding: 8px 12px;
-      border-radius: var(--radius);
-      border-left: 3px solid #22c55e;
-    }
-    .doc-text {
-      color: var(--foreground);
-    }
-    .doc-label:hover,
-    .doc-value:hover,
-    .doc-text:hover {
-      outline: 1px solid var(--muted-foreground);
-      cursor: pointer;
-    }
-    .doc-label.highlighted,
-    .doc-value.highlighted,
-    .doc-text.highlighted {
-      outline: 2px solid #3b82f6;
-      background: rgba(59, 130, 246, 0.2);
-    }
 
     /* Level badges */
     .level-badge {
@@ -4191,42 +4140,6 @@ export class WebReviewGenerator {
         });
       });
 
-      // Document view click handlers (Word/PDF)
-      document.querySelectorAll('.document-view [data-cell]').forEach(el => {
-        el.style.cursor = 'pointer';
-        el.addEventListener('click', (e) => {
-          const cellId = el.dataset.cell;
-          if (!cellId) return;
-
-          // Remove previous highlights
-          document.querySelectorAll('.document-view .highlighted').forEach(h => {
-            h.classList.remove('highlighted');
-          });
-          el.classList.add('highlighted');
-
-          // Find matching items (exact match)
-          const allItems = document.querySelectorAll('.item[data-cells]');
-          const matchingItems = [];
-          allItems.forEach(item => {
-            const cells = item.dataset.cells || '';
-            const cellRefs = cells.split(/[→,\\s]+/).map(c => c.trim());
-            if (cellRefs.includes(cellId)) {
-              matchingItems.push(item);
-            }
-          });
-
-          document.querySelectorAll('.item.selected').forEach(i => i.classList.remove('selected'));
-
-          if (matchingItems.length > 0) {
-            matchingItems.forEach(item => item.classList.add('selected'));
-            matchingItems[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
-            showToast(\`Found \${matchingItems.length} item(s) for \${cellId}\`);
-          } else {
-            showToast(\`No items reference \${cellId}\`);
-          }
-        });
-      });
-
       // Update cell selection UI
       function updateCellSelectionUI() {
         let existingUI = document.getElementById('cell-selection-ui');
@@ -4798,10 +4711,6 @@ export class WebReviewGenerator {
       document.querySelectorAll('.excel-table td.highlighted').forEach(td => {
         td.classList.remove('highlighted');
       });
-      // Also clear document view highlights
-      document.querySelectorAll('.document-view .highlighted').forEach(el => {
-        el.classList.remove('highlighted');
-      });
 
       if (!cellsStr) return;
 
@@ -4818,20 +4727,13 @@ export class WebReviewGenerator {
         });
       }
 
-      // Find cells in all sheets (Excel tables and document views)
+      // Find cells in all sheets
       const allSheets = document.querySelectorAll('.sheet-content');
       cells.forEach(cell => {
         allSheets.forEach((sheet, idx) => {
-          // Try Excel table cell
-          const td = sheet.querySelector(\`td[data-cell="\${cell}"]\`);
+          const td = sheet.querySelector(\`[data-cell="\${cell}"]\`);
           if (td) {
             td.classList.add('highlighted');
-            if (foundInSheet === null) foundInSheet = idx;
-          }
-          // Try document view element
-          const docEl = sheet.querySelector(\`.document-view [data-cell="\${cell}"]\`);
-          if (docEl) {
-            docEl.classList.add('highlighted');
             if (foundInSheet === null) foundInSheet = idx;
           }
         });

@@ -11,7 +11,7 @@
 import { BedrockRuntimeClient, InvokeModelCommand } from '@aws-sdk/client-bedrock-runtime';
 import { readFile, writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
-import type { SheetData, CellData, RowData, MergedRange, CellRole } from './excel-structure.js';
+import type { SheetData, CellData, RowData, MergedRange, CellRole, DocumentType } from './excel-structure.js';
 
 // =============================================================================
 // TYPES
@@ -82,11 +82,14 @@ export class VisualAnalyzer {
   /**
    * Analyze a sheet's structure using Claude
    */
-  async analyzeSheet(sheet: SheetData): Promise<SheetAnalysis> {
+  async analyzeSheet(sheet: SheetData, documentType: DocumentType = 'excel'): Promise<SheetAnalysis> {
     // Build a text representation of the sheet with formatting hints
-    const sheetText = this.buildSheetRepresentation(sheet);
+    const sheetText = this.buildSheetRepresentation(sheet, documentType);
 
-    const prompt = `Analyze this spreadsheet sheet and identify all data items (fields, tables, etc.).
+    const docTypeLabel = documentType === 'excel' ? 'spreadsheet sheet' :
+                         documentType === 'word' ? 'Word document' : 'PDF document';
+
+    const prompt = `Analyze this ${docTypeLabel} and identify all data items (fields, tables, etc.).
 
 ## Sheet: ${sheet.name}
 ${sheet.topic ? `Detected Topic: ${sheet.topic}` : ''}
@@ -220,11 +223,11 @@ Important:
   /**
    * Build a text representation of the sheet with formatting hints
    */
-  private buildSheetRepresentation(sheet: SheetData): string {
+  private buildSheetRepresentation(sheet: SheetData, documentType: DocumentType = 'excel'): string {
     const lines: string[] = [];
 
-    // Add merged ranges info
-    if (sheet.mergedRanges && sheet.mergedRanges.length > 0) {
+    // Add merged ranges info (only for Excel)
+    if (documentType === 'excel' && sheet.mergedRanges && sheet.mergedRanges.length > 0) {
       lines.push('## Merged Ranges:');
       for (const range of sheet.mergedRanges.slice(0, 20)) {
         if (range.value) {
@@ -305,13 +308,13 @@ Important:
   /**
    * Analyze multiple sheets and combine results
    */
-  async analyzeQuestionnaire(sheets: SheetData[]): Promise<SheetAnalysis[]> {
+  async analyzeQuestionnaire(sheets: SheetData[], documentType: DocumentType = 'excel'): Promise<SheetAnalysis[]> {
     const results: SheetAnalysis[] = [];
 
     for (const sheet of sheets) {
       console.log(`  Analyzing sheet: ${sheet.name}...`);
       try {
-        const analysis = await this.analyzeSheet(sheet);
+        const analysis = await this.analyzeSheet(sheet, documentType);
         results.push(analysis);
         console.log(`    Found ${analysis.items.length} items`);
       } catch (error) {

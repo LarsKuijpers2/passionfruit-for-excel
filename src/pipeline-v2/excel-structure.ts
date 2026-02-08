@@ -135,7 +135,7 @@ export interface QuestionnaireStructure {
     extractedAt: string;
     customer?: string;
     /** Document type (excel, word, pdf) */
-    documentType?: DocumentType;
+    documentType: DocumentType;
   };
   /** All sheets */
   sheets: SheetData[];
@@ -153,6 +153,13 @@ export interface QuestionnaireStructure {
 // =============================================================================
 
 export class ExcelStructureExtractor {
+  /**
+   * Get the document type this extractor handles
+   */
+  getDocumentType(): DocumentType {
+    return 'excel';
+  }
+
   /**
    * Extract complete structure from Excel file
    */
@@ -686,13 +693,6 @@ export class ExcelStructureExtractor {
       col = Math.floor((col - 1) / 26);
     }
     return letter;
-  }
-
-  /**
-   * Get the document type this extractor handles
-   */
-  getDocumentType(): DocumentType {
-    return 'excel';
   }
 }
 

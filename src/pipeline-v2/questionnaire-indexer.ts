@@ -117,7 +117,7 @@ export class QuestionnaireIndexer {
    */
   async index(filename: string): Promise<IndexedQuestionnaire> {
     // Load stored structure
-    const jsonName = filename.replace(/\.(xlsx?|json)$/i, '').replace(/[^a-zA-Z0-9-_]/g, '_');
+    const jsonName = filename.replace(/\.(xlsx?|docx?|pdf|json)$/i, '').replace(/[^a-zA-Z0-9-_]/g, '_');
     const filepath = join(this.storageDir, `${jsonName}.json`);
     const content = await readFile(filepath, 'utf-8');
     const structure: QuestionnaireStructure = JSON.parse(content);
@@ -129,10 +129,11 @@ export class QuestionnaireIndexer {
       console.log(`  Loaded ${ruleStats.index.exclude} exclude + ${ruleStats.index.corrections} correction rules`);
     }
 
-    console.log(`  Analyzing ${structure.sheets.length} sheets with Claude...`);
+    const docType = structure.source.documentType || 'excel';
+    console.log(`  Analyzing ${structure.sheets.length} sheets with Claude... (${docType})`);
 
     // Analyze all sheets
-    const analyses = await this.analyzer.analyzeQuestionnaire(structure.sheets);
+    const analyses = await this.analyzer.analyzeQuestionnaire(structure.sheets, docType);
 
     // Build indexed structure
     const sections: IndexedSection[] = [];

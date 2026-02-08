@@ -1,0 +1,151 @@
+@import "tailwindcss";
+
+@theme {
+  /* Light mode colors (default) */
+  --color-background: #ffffff;
+  --color-foreground: #09090b;
+  --color-card: #f4f4f5;
+  --color-card-foreground: #09090b;
+  --color-muted: #e4e4e7;
+  --color-muted-foreground: #71717a;
+  --color-border: #e4e4e7;
+  --color-input: #e4e4e7;
+  --color-primary: #09090b;
+  --color-primary-foreground: #fafafa;
+  --color-secondary: #f4f4f5;
+  --color-secondary-foreground: #09090b;
+  --color-accent: #f4f4f5;
+  --color-accent-foreground: #09090b;
+  --color-destructive: #dc2626;
+  --color-tab-bar: #f4f4f5;
+  --color-hover-bg: rgba(0,0,0,0.05);
+  --color-selected-bg: rgba(0,0,0,0.08);
+}
+
+/* Dark mode colors */
+.dark {
+  --color-background: #09090b;
+  --color-foreground: #fafafa;
+  --color-card: #0a0a0c;
+  --color-card-foreground: #fafafa;
+  --color-muted: #27272a;
+  --color-muted-foreground: #a1a1aa;
+  --color-border: #27272a;
+  --color-input: #27272a;
+  --color-primary: #fafafa;
+  --color-primary-foreground: #18181b;
+  --color-secondary: #27272a;
+  --color-secondary-foreground: #fafafa;
+  --color-accent: #27272a;
+  --color-accent-foreground: #fafafa;
+  --color-destructive: #7f1d1d;
+  --color-tab-bar: #1a1a1c;
+  --color-hover-bg: rgba(255,255,255,0.05);
+  --color-selected-bg: rgba(255,255,255,0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  height: 100vh;
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Loading spinner */
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-foreground);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Excel table */
+.excel-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.excel-table th,
+.excel-table td {
+  border: 1px solid var(--color-border);
+  padding: 6px 10px;
+  text-align: left;
+  white-space: nowrap;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.excel-table th {
+  background: var(--color-muted);
+  font-weight: 500;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.excel-table .row-header {
+  background: var(--color-muted);
+  color: var(--color-muted-foreground);
+  font-weight: 500;
+  text-align: center;
+  width: 40px;
+}
+
+.excel-table tr:hover td:not(.row-header) {
+  background: var(--color-hover-bg);
+}
+
+.excel-table td.highlighted {
+  background: rgba(59, 130, 246, 0.2) !important;
+  outline: 2px solid #3b82f6;
+}
+
+.excel-table td.cell-bold {
+  font-weight: 600;
+}
+
+.excel-table td.cell-italic {
+  font-style: italic;
+}
+
+.excel-table td.cell-header {
+  background: rgba(59, 130, 246, 0.1);
+  font-weight: 600;
+}
+
+.excel-table td.cell-label {
+  color: var(--color-muted-foreground);
+}
+
+.excel-table td.cell-section {
+  background: var(--color-muted);
+  font-weight: 600;
+  color: var(--color-foreground);
+}
+
+/* Scrollbar hiding */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

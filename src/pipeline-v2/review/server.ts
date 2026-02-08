@@ -525,15 +525,24 @@ export class ReviewServer {
     try {
       const files = await readdir(indexedDir);
 
+      // Also list review HTML files to match against
+      let reviewFiles: string[] = [];
+      try {
+        reviewFiles = await readdir(this.reviewDir);
+      } catch {}
+
       for (const file of files) {
         if (!file.endsWith('.yaml') && !file.endsWith('.yml')) continue;
 
         const name = file.replace(/\.(yaml|yml)$/, '');
         const safeName = name.replace(/[^a-zA-Z0-9]/g, '_');
 
-        // Check if review HTML exists
-        const reviewHtmlPath = join(this.reviewDir, `${safeName}_review.html`);
-        const hasReview = existsSync(reviewHtmlPath);
+        // Find matching review HTML file (may have _xlsx or other suffixes)
+        const reviewFile = reviewFiles.find(f =>
+          f.endsWith('_review.html') &&
+          (f.startsWith(safeName) || f.includes(safeName))
+        );
+        const hasReview = !!reviewFile;
 
         // Check feedback count
         let feedbackCount = 0;
@@ -556,7 +565,7 @@ export class ReviewServer {
           name,
           displayName,
           hasReview,
-          reviewUrl: hasReview ? `${safeName}_review.html` : undefined,
+          reviewUrl: hasReview ? reviewFile : undefined,
           indexed: true,
           feedbackCount
         });

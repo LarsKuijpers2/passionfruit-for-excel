@@ -209,7 +209,7 @@
     /* Main layout */
     .main {
       display: flex;
-      height: calc(100vh - 56px - 40px);
+      height: calc(100vh - 56px - 40px - 44px);
       overflow: hidden;
     }
 
@@ -288,27 +288,57 @@
       color: var(--muted-foreground);
     }
 
-    /* Excel table */
+    /* Global sheet filter tabs - Warp style */
     .sheet-tabs {
       display: flex;
-      gap: 4px;
-      padding: 8px 16px;
-      background: var(--card);
+      gap: 6px;
+      padding: 8px 20px;
+      background: #0d0d0f;
       border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--muted) transparent;
+      flex-shrink: 0;
+    }
+    .sheet-tabs:empty {
+      display: none;
+    }
+    .sheet-tabs::-webkit-scrollbar {
+      height: 4px;
+    }
+    .sheet-tabs::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .sheet-tabs::-webkit-scrollbar-thumb {
+      background: var(--muted);
+      border-radius: 2px;
     }
     .sheet-tab {
-      padding: 6px 12px;
-      background: var(--secondary);
+      padding: 6px 14px;
+      background: transparent;
       border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border-radius: 6px;
       font-size: 12px;
+      font-weight: 500;
       cursor: pointer;
       transition: all 0.15s ease;
+      white-space: nowrap;
+      color: var(--muted-foreground);
+      flex-shrink: 0;
     }
-    .sheet-tab:hover { background: var(--accent); }
+    .sheet-tab:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--muted-foreground);
+      color: var(--foreground);
+    }
     .sheet-tab.active {
       background: var(--foreground);
       color: var(--background);
+      border-color: var(--foreground);
+    }
+    .sheet-tabs-spacer {
+      flex: 1;
+      min-width: 8px;
     }
     .sheet-content { display: none; }
     .sheet-content.active { display: block; }
@@ -407,44 +437,6 @@
       outline: 2px solid #22c55e;
     }
 
-    /* Multi-cell selection & annotation */
-    body.select-mode .excel-table td[data-cell] { cursor: crosshair; user-select: none; }
-    body.select-mode .excel-table td[data-cell]:hover { background: rgba(139, 92, 246, 0.2) !important; }
-    body.select-mode.is-dragging .excel-table td[data-cell] { cursor: cell; }
-    body.select-mode.is-dragging .excel-table td[data-cell]:hover { background: rgba(139, 92, 246, 0.35) !important; }
-    .excel-table td.multi-selected { background: rgba(139, 92, 246, 0.3) !important; outline: 2px solid #8b5cf6; }
-    .toggle.select-active { background: #8b5cf6 !important; color: white !important; border-color: #8b5cf6 !important; }
-    .annotation-panel { position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; z-index: 1000; width: 500px; max-width: 90vw; box-shadow: 0 8px 32px rgba(0,0,0,0.4); display: none; }
-    .annotation-panel.visible { display: block; }
-    .annotation-panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-    .annotation-panel-title { font-weight: 600; font-size: 14px; }
-    .annotation-panel-close { background: none; border: none; color: var(--muted-foreground); cursor: pointer; font-size: 18px; padding: 4px 8px; }
-    .annotation-cells { background: var(--muted); padding: 8px 12px; border-radius: var(--radius); margin-bottom: 12px; font-size: 12px; max-height: 100px; overflow-y: auto; }
-    .annotation-cell { display: flex; gap: 8px; padding: 2px 0; }
-    .annotation-cell-id { color: #8b5cf6; font-family: ui-monospace, monospace; min-width: 40px; }
-    .annotation-cell-value { color: var(--muted-foreground); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .annotation-input { width: 100%; padding: 10px 12px; background: var(--background); border: 1px solid var(--border); border-radius: var(--radius); color: var(--foreground); font-size: 13px; resize: none; margin-bottom: 12px; }
-    .annotation-input:focus { outline: none; border-color: #8b5cf6; }
-    .annotation-actions { display: flex; gap: 8px; justify-content: flex-end; }
-    .annotation-btn { padding: 8px 16px; border-radius: var(--radius); font-size: 13px; font-weight: 500; cursor: pointer; }
-    .annotation-btn-secondary { background: var(--muted); border: 1px solid var(--border); color: var(--foreground); }
-    .annotation-btn-primary { background: #8b5cf6; border: 1px solid #8b5cf6; color: white; }
-    .annotation-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-    .annotation-btn-success { background: #22c55e; border: 1px solid #22c55e; color: white; }
-    .suggestion-box { background: var(--muted); border-radius: var(--radius); padding: 12px; margin-bottom: 12px; display: none; }
-    .suggestion-box.visible { display: block; }
-    .suggestion-action { font-weight: 600; color: #8b5cf6; text-transform: uppercase; font-size: 11px; }
-    .suggestion-description { font-size: 13px; margin-bottom: 8px; }
-    .suggestion-item { background: var(--background); padding: 8px; border-radius: 4px; margin-bottom: 4px; }
-    .suggestion-item-label { font-weight: 500; }
-    .suggestion-item-value { color: var(--muted-foreground); margin-top: 2px; }
-    .suggestion-item-section { font-size: 10px; color: #8b5cf6; margin-top: 4px; }
-    .suggestion-reasoning { font-size: 11px; color: var(--muted-foreground); font-style: italic; margin-top: 8px; }
-    .suggestion-actions { display: flex; gap: 8px; margin-top: 12px; }
-    .annotation-loading { display: none; align-items: center; gap: 8px; color: var(--muted-foreground); font-size: 13px; margin-bottom: 12px; }
-    .annotation-loading.visible { display: flex; }
-    .annotation-loading .loading-spinner { width: 16px; height: 16px; border-width: 2px; }
-
     /* Items */
     .section {
       margin-bottom: 24px;
@@ -477,30 +469,40 @@
     .section-items {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 0;
       padding-left: 12px;
+    }
+    .section-items .item:last-child {
+      border-bottom: none;
     }
     .section.collapsed .section-items { display: none; }
 
     .item {
-      padding: 12px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
+      padding: 8px 12px;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: background 0.1s ease;
     }
-    .item:hover { border-color: var(--muted-foreground); }
+    .item:hover { background: var(--muted); }
     .item.selected {
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 1px #3b82f6;
+      background: rgba(139, 92, 246, 0.15);
+      border-left: 3px solid #8b5cf6;
+      padding-left: 9px;
+    }
+    .item.selected:hover {
+      background: rgba(139, 92, 246, 0.25);
     }
     .item.reviewed.correct, .item.reviewed.accepted {
       border-left: 3px solid #22c55e;
+      padding-left: 9px;
       background: rgba(34, 197, 94, 0.05);
     }
     .item.reviewed.wrong, .item.reviewed.rejected {
       border-left: 3px solid #ef4444;
+      padding-left: 9px;
       background: rgba(239, 68, 68, 0.05);
     }
 
@@ -667,6 +669,149 @@
     .app-container.visible {
       display: flex;
     }
+
+    /* Selection count badge */
+    .selection-badge {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #8b5cf6;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      display: none;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      z-index: 1000;
+    }
+    .selection-badge.visible {
+      display: flex;
+    }
+    .selection-badge kbd {
+      background: rgba(255,255,255,0.2);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+    }
+
+    /* Command palette */
+    .command-palette {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      display: none;
+    }
+    .command-palette.visible {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .command-palette-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+    }
+    .command-palette-modal {
+      position: relative;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      width: 400px;
+      max-width: 90vw;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+    .command-palette-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .command-palette-header .selected-count {
+      font-weight: 500;
+      color: #8b5cf6;
+    }
+    .command-palette-header kbd {
+      background: var(--muted);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      color: var(--muted-foreground);
+    }
+    .command-palette-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .property-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .property-row label {
+      font-size: 11px;
+      color: var(--muted-foreground);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .property-row input,
+    .property-row textarea,
+    .property-row select {
+      background: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 8px 12px;
+      color: var(--foreground);
+      font-size: 13px;
+    }
+    .property-row input:focus,
+    .property-row textarea:focus,
+    .property-row select:focus {
+      outline: none;
+      border-color: #8b5cf6;
+    }
+    .property-row textarea {
+      min-height: 60px;
+      resize: vertical;
+    }
+    .property-row.single-only {
+      display: none;
+    }
+    .command-palette.single-select .property-row.single-only {
+      display: flex;
+    }
+    .command-palette-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+    }
+    .command-palette-footer button {
+      padding: 8px 16px;
+      border-radius: var(--radius);
+      font-size: 13px;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--muted);
+      color: var(--foreground);
+    }
+    .command-palette-footer button:hover {
+      background: var(--border);
+    }
+    .command-palette-footer button.primary {
+      background: #8b5cf6;
+      border-color: #8b5cf6;
+      color: white;
+    }
+    .command-palette-footer button.primary:hover {
+      background: #7c3aed;
+    }
   </style>
 </head>
 <body>
@@ -713,13 +858,15 @@
         <button class="toggle active" data-panel="indexed" title="Toggle Indexed (2)">Indexed</button>
         <button class="toggle" data-panel="library" title="Toggle Library (3)">Library</button>
         <div class="toggle-divider"></div>
-        <button class="toggle" id="select-toggle" title="Multi-select cells to annotate (S)">Select</button>
         <button class="toggle" id="review-toggle" title="Toggle review mode (R)">Review</button>
         <button class="toggle" id="complete-toggle" title="Complete Review">Complete Review (<span id="feedback-count">0</span>)</button>
         <button class="toggle" id="clear-toggle" title="Clear all feedback">Clear</button>
         <button class="toggle" title="Help (?)">?</button>
       </div>
     </div>
+
+    <!-- Global sheet filter tabs -->
+    <div id="sheet-tabs" class="sheet-tabs"></div>
 
     <!-- Main content -->
     <div class="main">
@@ -728,7 +875,6 @@
           <span>Original Questionnaire</span>
           <span id="original-stats"></span>
         </div>
-        <div id="sheet-tabs" class="sheet-tabs"></div>
         <div class="panel-content" id="original-content"></div>
       </div>
 
@@ -764,36 +910,78 @@
     </div>
   </div>
 
-  <!-- Annotation Panel -->
-  <div class="annotation-panel" id="annotation-panel">
-    <div class="annotation-panel-header">
-      <span class="annotation-panel-title">Annotate Selected Cells</span>
-      <button class="annotation-panel-close" id="annotation-close">&times;</button>
-    </div>
-    <div class="annotation-cells" id="annotation-cells"></div>
-    <div class="annotation-loading" id="annotation-loading">
-      <div class="loading-spinner"></div>
-      <span>Sending to Claude...</span>
-    </div>
-    <div class="suggestion-box" id="suggestion-box">
-      <div class="suggestion-header"><span class="suggestion-action" id="suggestion-action">CREATE</span></div>
-      <div class="suggestion-description" id="suggestion-description"></div>
-      <div class="suggestion-items" id="suggestion-items"></div>
-      <div class="suggestion-reasoning" id="suggestion-reasoning"></div>
-      <div class="suggestion-actions">
-        <button class="annotation-btn annotation-btn-secondary" id="suggestion-reject">Reject</button>
-        <button class="annotation-btn annotation-btn-success" id="suggestion-apply">Apply Changes</button>
-      </div>
-    </div>
-    <textarea class="annotation-input" id="annotation-input" rows="2" placeholder="Describe how these cells should be saved..."></textarea>
-    <div class="annotation-actions">
-      <button class="annotation-btn annotation-btn-secondary" id="annotation-clear">Clear Selection</button>
-      <button class="annotation-btn annotation-btn-primary" id="annotation-send" disabled>Send to Claude</button>
-    </div>
-  </div>
-
   <!-- Toast -->
   <div class="toast" id="toast"></div>
+
+  <!-- Selection badge -->
+  <div class="selection-badge" id="selectionBadge">
+    <span class="selection-count">0 items selected</span>
+    <kbd>⌘K</kbd> to edit
+  </div>
+
+  <!-- Command palette -->
+  <div class="command-palette" id="commandPalette">
+    <div class="command-palette-backdrop"></div>
+    <div class="command-palette-modal">
+      <div class="command-palette-header">
+        <span class="selected-count">0 items selected</span>
+        <kbd>Esc</kbd>
+      </div>
+      <div class="command-palette-body">
+        <div class="property-row single-only">
+          <label>Label</label>
+          <input type="text" id="bulkLabel" placeholder="Item label">
+        </div>
+        <div class="property-row single-only">
+          <label>Value</label>
+          <textarea id="bulkValue" placeholder="Item value"></textarea>
+        </div>
+        <div class="property-row">
+          <label>Section</label>
+          <select id="bulkSection">
+            <option value="">— Keep current —</option>
+          </select>
+        </div>
+        <div class="property-row">
+          <label>Topic</label>
+          <select id="bulkTopic">
+            <option value="">— Keep current —</option>
+            <option value="company">company</option>
+            <option value="product">product</option>
+            <option value="quality">quality</option>
+            <option value="contacts">contacts</option>
+            <option value="certifications">certifications</option>
+            <option value="sustainability">sustainability</option>
+            <option value="animal_welfare">animal_welfare</option>
+            <option value="food_fraud">food_fraud</option>
+            <option value="microbiology">microbiology</option>
+            <option value="other">other</option>
+          </select>
+        </div>
+        <div class="property-row">
+          <label>Level</label>
+          <select id="bulkLevel">
+            <option value="">— Keep current —</option>
+            <option value="entity">entity (reusable)</option>
+            <option value="product">product (specific)</option>
+          </select>
+        </div>
+        <div class="property-row">
+          <label>Review Action</label>
+          <select id="bulkAction">
+            <option value="">— No action —</option>
+            <option value="accept">Accept</option>
+            <option value="reject">Reject</option>
+            <option value="reset">Reset (clear review)</option>
+          </select>
+        </div>
+      </div>
+      <div class="command-palette-footer">
+        <button class="cancel-btn" id="paletteCancel">Cancel</button>
+        <button class="apply-btn primary" id="paletteApply">Apply Changes</button>
+      </div>
+    </div>
+  </div>
 
   <script>
     // State
@@ -802,13 +990,6 @@
     let feedbackLog = [];
     let serverConnected = false;
     const API_BASE = '';
-
-    // Multi-cell selection state
-    let selectMode = false;
-    let multiSelectedCells = [];
-    let currentSuggestion = null;
-    let isDragging = false;
-    let dragStartCell = null;
 
     // Initialize
     document.addEventListener('DOMContentLoaded', init);
@@ -1019,13 +1200,21 @@
         });
       });
 
-      // Add "All Sheets" button
+      // Add spacer and "All Sheets" button
+      const spacer = document.createElement('div');
+      spacer.className = 'sheet-tabs-spacer';
+      tabsContainer.appendChild(spacer);
+
       const allSheetsBtn = document.createElement('button');
       allSheetsBtn.className = 'sheet-tab';
       allSheetsBtn.textContent = 'All';
       allSheetsBtn.title = 'Show all sheets';
-      allSheetsBtn.style.marginLeft = 'auto';
       allSheetsBtn.addEventListener('click', () => {
+        // Deselect other tabs visually but keep showing current sheet content
+        tabsContainer.querySelectorAll('.sheet-tab').forEach(t => {
+          if (t !== allSheetsBtn) t.classList.remove('active');
+        });
+        allSheetsBtn.classList.add('active');
         filterPanelsBySheet(null); // Show all
         showToast('Showing all sheets');
       });
@@ -1039,8 +1228,35 @@
       }
     }
 
-    // Filter Indexed and Library sections by sheet name
+    // Filter all panels by sheet name
     function filterPanelsBySheet(sheetName) {
+      const contentContainer = document.getElementById('original-content');
+
+      // Filter Original panel - show/hide sheet contents
+      if (sheetName) {
+        // Find the sheet index by name and show only that sheet
+        contentContainer.querySelectorAll('.sheet-content').forEach(content => {
+          const sheetIdx = content.dataset.sheet;
+          const tabsContainer = document.getElementById('sheet-tabs');
+          const matchingTab = tabsContainer.querySelector(`.sheet-tab[data-sheet="${sheetIdx}"]`);
+          const tabSheetName = matchingTab?.textContent?.trim();
+          if (tabSheetName === sheetName) {
+            content.classList.add('active');
+          } else {
+            content.classList.remove('active');
+          }
+        });
+      } else {
+        // Show all sheets (first one active by default)
+        contentContainer.querySelectorAll('.sheet-content').forEach((content, idx) => {
+          if (idx === 0) {
+            content.classList.add('active');
+          } else {
+            content.classList.remove('active');
+          }
+        });
+      }
+
       // Filter Indexed sections
       document.querySelectorAll('#panel-indexed .section').forEach(section => {
         const sectionSheet = section.dataset.sheet || '';
@@ -1419,13 +1635,88 @@
         }
       });
 
-      // Item click handlers
-      document.querySelectorAll('.item').forEach(item => {
+      // Multi-select state
+      let selectedItems = new Set();
+      let lastSelectedIndex = -1;
+      const allItemElements = Array.from(document.querySelectorAll('.item'));
+
+      function updateSelectionBadge() {
+        const badge = document.getElementById('selectionBadge');
+        const count = selectedItems.size;
+        if (count > 0) {
+          badge.querySelector('.selection-count').textContent = count + ' item' + (count === 1 ? '' : 's') + ' selected';
+          badge.classList.add('visible');
+        } else {
+          badge.classList.remove('visible');
+        }
+      }
+
+      function clearSelection() {
+        selectedItems.forEach(item => item.classList.remove('selected'));
+        selectedItems.clear();
+        lastSelectedIndex = -1;
+        updateSelectionBadge();
+      }
+
+      function selectItem(item, addToSelection = false) {
+        if (!addToSelection) {
+          clearSelection();
+        }
+        item.classList.add('selected');
+        selectedItems.add(item);
+        lastSelectedIndex = allItemElements.indexOf(item);
+        updateSelectionBadge();
+      }
+
+      function toggleItemSelection(item) {
+        if (selectedItems.has(item)) {
+          item.classList.remove('selected');
+          selectedItems.delete(item);
+        } else {
+          item.classList.add('selected');
+          selectedItems.add(item);
+          lastSelectedIndex = allItemElements.indexOf(item);
+        }
+        updateSelectionBadge();
+      }
+
+      function selectRange(fromIndex, toIndex) {
+        const start = Math.min(fromIndex, toIndex);
+        const end = Math.max(fromIndex, toIndex);
+        for (let i = start; i <= end; i++) {
+          const item = allItemElements[i];
+          if (item) {
+            item.classList.add('selected');
+            selectedItems.add(item);
+          }
+        }
+        updateSelectionBadge();
+      }
+
+      function selectAll() {
+        allItemElements.forEach(item => {
+          item.classList.add('selected');
+          selectedItems.add(item);
+        });
+        updateSelectionBadge();
+      }
+
+      // Item click handlers with multi-select support
+      document.querySelectorAll('.item').forEach((item, idx) => {
         item.addEventListener('click', (e) => {
           if (e.target.closest('.action-btn') || e.target.closest('.wrong-note-container')) return;
-          document.querySelectorAll('.item.selected').forEach(i => i.classList.remove('selected'));
-          item.classList.add('selected');
-          highlightCells(item.dataset.cells, item.dataset.sheet);
+
+          if (e.shiftKey && lastSelectedIndex !== -1) {
+            // Shift+click: select range
+            selectRange(lastSelectedIndex, idx);
+          } else if (e.metaKey || e.ctrlKey) {
+            // Cmd/Ctrl+click: toggle selection
+            toggleItemSelection(item);
+          } else {
+            // Normal click: select single
+            selectItem(item);
+            highlightCells(item.dataset.cells, item.dataset.sheet);
+          }
         });
       });
 
@@ -1959,192 +2250,170 @@
         .replace(/"/g, '&quot;');
     }
 
+    // Command palette logic
+    const commandPalette = document.getElementById('commandPalette');
+    const paletteBackdrop = commandPalette.querySelector('.command-palette-backdrop');
+
+    function showCommandPalette() {
+      if (selectedItems.size === 0) {
+        showToast('Select items first (click, Shift+click, or ⌘A)');
+        return;
+      }
+
+      // Update header
+      const count = selectedItems.size;
+      commandPalette.querySelector('.selected-count').textContent = count + ' item' + (count === 1 ? '' : 's') + ' selected';
+
+      // Toggle single-select mode for label/value fields
+      if (count === 1) {
+        commandPalette.classList.add('single-select');
+        const item = Array.from(selectedItems)[0];
+        document.getElementById('bulkLabel').value = item.dataset.label || '';
+        document.getElementById('bulkValue').value = item.querySelector('.item-value')?.textContent || '';
+      } else {
+        commandPalette.classList.remove('single-select');
+        document.getElementById('bulkLabel').value = '';
+        document.getElementById('bulkValue').value = '';
+      }
+
+      // Populate sections dropdown
+      const sectionSelect = document.getElementById('bulkSection');
+      sectionSelect.innerHTML = '<option value="">— Keep current —</option>';
+      const sections = new Set();
+      document.querySelectorAll('.section').forEach(sec => {
+        const topic = sec.dataset.topic;
+        if (topic) sections.add(topic);
+      });
+      sections.forEach(s => {
+        sectionSelect.innerHTML += `<option value="${s}">${s}</option>`;
+      });
+
+      // Reset other fields
+      document.getElementById('bulkTopic').value = '';
+      document.getElementById('bulkLevel').value = '';
+      document.getElementById('bulkAction').value = '';
+
+      commandPalette.classList.add('visible');
+      document.getElementById('bulkTopic').focus();
+    }
+
+    function hideCommandPalette() {
+      commandPalette.classList.remove('visible');
+    }
+
+    async function applyCommandPaletteChanges() {
+      const topic = document.getElementById('bulkTopic').value;
+      const level = document.getElementById('bulkLevel').value;
+      const action = document.getElementById('bulkAction').value;
+      const newLabel = document.getElementById('bulkLabel').value;
+      const newValue = document.getElementById('bulkValue').value;
+
+      const items = Array.from(selectedItems);
+      let changes = 0;
+
+      for (const item of items) {
+        // Update topic
+        if (topic) {
+          item.dataset.topic = topic;
+          const badge = item.querySelector('.level-badge');
+          if (badge) badge.textContent = level === 'product' ? 'PRODUCT' : '';
+          changes++;
+        }
+
+        // Update label/value for single selection
+        if (selectedItems.size === 1) {
+          if (newLabel && newLabel !== item.dataset.label) {
+            item.dataset.label = newLabel;
+            const labelEl = item.querySelector('.item-label');
+            if (labelEl) {
+              // Preserve badges
+              const badge = labelEl.querySelector('.level-badge');
+              labelEl.textContent = newLabel;
+              if (badge) labelEl.appendChild(badge);
+            }
+            changes++;
+          }
+          if (newValue) {
+            const valueEl = item.querySelector('.item-value');
+            if (valueEl && valueEl.textContent !== newValue) {
+              valueEl.textContent = newValue;
+              changes++;
+            }
+          }
+        }
+
+        // Apply review action
+        if (action) {
+          item.classList.remove('reviewed', 'correct', 'wrong', 'accepted', 'rejected', 'show-note');
+          if (action === 'accept') {
+            item.classList.add('reviewed', 'correct', 'accepted');
+            await logFeedback(item, 'correct');
+          } else if (action === 'reject') {
+            item.classList.add('reviewed', 'wrong', 'rejected');
+            await logFeedback(item, 'wrong');
+          }
+          // reset just removes classes, already done above
+          changes++;
+        }
+      }
+
+      hideCommandPalette();
+      if (changes > 0) {
+        showToast(`Updated ${items.length} item(s)`);
+      }
+      clearSelection();
+    }
+
+    // Palette event handlers
+    paletteBackdrop.addEventListener('click', hideCommandPalette);
+    document.getElementById('paletteCancel').addEventListener('click', hideCommandPalette);
+    document.getElementById('paletteApply').addEventListener('click', applyCommandPaletteChanges);
+
     // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
+      // Handle palette-specific shortcuts
+      if (commandPalette.classList.contains('visible')) {
+        if (e.key === 'Escape') {
+          hideCommandPalette();
+          e.preventDefault();
+        } else if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+          applyCommandPaletteChanges();
+          e.preventDefault();
+        }
+        return;
+      }
+
+      // Don't handle shortcuts when typing in inputs
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+      // Escape to clear selection
+      if (e.key === 'Escape') {
+        clearSelection();
+        return;
+      }
+
+      // Cmd+A to select all
+      if ((e.metaKey || e.ctrlKey) && e.key === 'a') {
+        e.preventDefault();
+        selectAll();
+        return;
+      }
+
+      // Cmd+K to open command palette
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        showCommandPalette();
+        return;
+      }
+
       switch(e.key) {
         case '1': document.querySelector('[data-panel="original"]')?.click(); break;
         case '2': document.querySelector('[data-panel="indexed"]')?.click(); break;
         case '3': document.querySelector('[data-panel="library"]')?.click(); break;
         case 'r': case 'R': document.getElementById('review-toggle')?.click(); break;
         case 'b': case 'B': document.getElementById('sidebar-toggle')?.click(); break;
-        case 's': case 'S': document.getElementById('select-toggle')?.click(); break;
-        case 'Escape': if (selectMode) clearMultiSelection(); break;
       }
     });
-
-    // ========== MULTI-CELL SELECTION & ANNOTATION ==========
-    document.getElementById('select-toggle')?.addEventListener('click', function() {
-      selectMode = !selectMode;
-      this.classList.toggle('select-active', selectMode);
-      document.body.classList.toggle('select-mode', selectMode);
-      showToast(selectMode ? 'Select mode ON - Click or drag cells' : 'Select mode OFF');
-      if (!selectMode) clearMultiSelection();
-    });
-
-    function selectCell(cell) {
-      const cellId = cell.dataset.cell;
-      if (!cellId || multiSelectedCells.some(c => c.id === cellId)) return;
-      multiSelectedCells.push({ id: cellId, value: cell.textContent.trim(), row: parseInt(cellId.match(/\d+/)?.[0] || '0'), col: cellId.match(/^[A-Z]+/)?.[0] || '' });
-      cell.classList.add('multi-selected');
-    }
-
-    function setupMultiCellSelection() {
-      document.querySelectorAll('.excel-table td[data-cell]').forEach(cell => {
-        cell.addEventListener('mousedown', (e) => {
-          if (!selectMode || e.button !== 0) return;
-          e.preventDefault();
-          isDragging = true; dragStartCell = cell;
-          document.body.classList.add('is-dragging');
-          selectCell(cell);
-          updateAnnotationPanel();
-        });
-        cell.addEventListener('mouseenter', () => {
-          if (!selectMode || !isDragging) return;
-          selectCell(cell);
-          updateAnnotationPanel();
-        });
-      });
-      document.addEventListener('mouseup', () => {
-        if (isDragging) { isDragging = false; dragStartCell = null; document.body.classList.remove('is-dragging'); }
-      });
-      document.addEventListener('selectstart', (e) => { if (selectMode && isDragging) e.preventDefault(); });
-    }
-
-    function updateAnnotationPanel() {
-      const panel = document.getElementById('annotation-panel');
-      if (multiSelectedCells.length === 0) { panel.classList.remove('visible'); return; }
-      panel.classList.add('visible');
-      document.getElementById('annotation-cells').innerHTML = multiSelectedCells.map(c =>
-        `<div class="annotation-cell"><span class="annotation-cell-id">${c.id}</span><span class="annotation-cell-value">${escapeHtml(c.value.substring(0,60))}${c.value.length>60?'...':''}</span></div>`
-      ).join('');
-      document.getElementById('annotation-send').disabled = document.getElementById('annotation-input').value.trim() === '';
-      document.getElementById('suggestion-box').classList.remove('visible');
-      currentSuggestion = null;
-    }
-
-    function clearMultiSelection() {
-      multiSelectedCells = []; isDragging = false; dragStartCell = null;
-      document.body.classList.remove('is-dragging');
-      document.querySelectorAll('.excel-table td.multi-selected').forEach(td => td.classList.remove('multi-selected'));
-      document.getElementById('annotation-panel').classList.remove('visible');
-      document.getElementById('annotation-input').value = '';
-      document.getElementById('suggestion-box').classList.remove('visible');
-      currentSuggestion = null;
-    }
-
-    document.getElementById('annotation-close')?.addEventListener('click', clearMultiSelection);
-    document.getElementById('annotation-clear')?.addEventListener('click', clearMultiSelection);
-    document.getElementById('annotation-input')?.addEventListener('input', function() {
-      document.getElementById('annotation-send').disabled = this.value.trim() === '' || multiSelectedCells.length === 0;
-    });
-
-    document.getElementById('annotation-send')?.addEventListener('click', async function() {
-      const instruction = document.getElementById('annotation-input').value.trim();
-      if (!instruction || multiSelectedCells.length === 0) return;
-      const activeTab = document.querySelector('.sheet-tab.active');
-      const sheetName = activeTab ? activeTab.textContent.trim() : '';
-      document.getElementById('annotation-loading').classList.add('visible');
-      this.disabled = true;
-      try {
-        const response = await fetch(API_BASE + '/api/annotate', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ cells: multiSelectedCells, instruction, sheetName, questionnaireId: currentQuestionnaire })
-        });
-        if (!response.ok) throw new Error('Failed to get annotation');
-        const data = await response.json();
-        if (data.success && data.suggestion) { currentSuggestion = data.suggestion; displaySuggestion(data.suggestion); }
-        else { showToast('No suggestion received'); }
-      } catch (err) { console.error('Annotation error:', err); showToast('Error: ' + err.message); }
-      finally { document.getElementById('annotation-loading').classList.remove('visible'); this.disabled = false; }
-    });
-
-    function displaySuggestion(suggestion) {
-      document.getElementById('suggestion-action').textContent = suggestion.action.toUpperCase();
-      document.getElementById('suggestion-description').textContent = suggestion.description;
-      document.getElementById('suggestion-items').innerHTML = suggestion.items.map(item =>
-        `<div class="suggestion-item">
-          <div class="suggestion-item-label">${escapeHtml(item.label)}</div>
-          <div class="suggestion-item-value">${escapeHtml(item.value || '(no value)')}</div>
-          ${item.section ? `<div class="suggestion-item-section">Section: ${escapeHtml(item.section)} | Topic: ${item.topic || 'other'}</div>` : ''}
-        </div>`
-      ).join('');
-      document.getElementById('suggestion-reasoning').textContent = suggestion.reasoning;
-      document.getElementById('suggestion-box').classList.add('visible');
-    }
-
-    document.getElementById('suggestion-reject')?.addEventListener('click', () => {
-      document.getElementById('suggestion-box').classList.remove('visible');
-      currentSuggestion = null; showToast('Suggestion rejected');
-    });
-
-    document.getElementById('suggestion-apply')?.addEventListener('click', async () => {
-      if (!currentSuggestion) return;
-      try {
-        const response = await fetch(API_BASE + '/api/annotate/apply', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ suggestion: currentSuggestion, questionnaireId: currentQuestionnaire })
-        });
-        if (!response.ok) throw new Error('Failed to apply');
-        const data = await response.json();
-        showToast(`Applied: ${data.applied} item(s) created`);
-        for (const item of currentSuggestion.items) addAnnotatedItemToSection(item);
-        clearMultiSelection();
-      } catch (err) { console.error('Apply error:', err); showToast('Error: ' + err.message); }
-    });
-
-    function addAnnotatedItemToSection(item) {
-      const container = document.getElementById('indexed-content');
-      if (!container) return;
-      const sectionName = item.section;
-      let targetSection = null;
-
-      // Find matching section by name
-      if (sectionName) {
-        container.querySelectorAll('.section').forEach(sec => {
-          const title = sec.querySelector('.section-title')?.textContent?.trim();
-          if (title && (title === sectionName || title.startsWith(sectionName))) {
-            targetSection = sec;
-          }
-        });
-      }
-
-      // Fallback: create/use "Annotated Items" section
-      if (!targetSection) {
-        targetSection = container.querySelector('.section[data-section="annotated"]');
-        if (!targetSection) {
-          targetSection = document.createElement('div');
-          targetSection.className = 'section';
-          targetSection.dataset.section = 'annotated';
-          targetSection.innerHTML = `<div class="section-header"><div class="section-title">Annotated Items</div><div class="section-meta"><span class="section-badge" style="background:#8b5cf6;color:white;">annotated</span><span class="annotated-count">0 items</span></div></div><div class="section-items"></div>`;
-          container.insertBefore(targetSection, container.firstChild);
-          targetSection.querySelector('.section-header').addEventListener('click', () => targetSection.classList.toggle('collapsed'));
-        }
-      }
-
-      const sectionItems = targetSection.querySelector('.section-items');
-      const cells = item.lCell && item.vCell ? `${item.lCell} → ${item.vCell}` : (item.lCell || '');
-      const itemEl = document.createElement('div');
-      itemEl.className = 'item reviewed correct accepted';
-      itemEl.dataset.cells = cells;
-      itemEl.dataset.label = item.label;
-      itemEl.dataset.section = item.section || '';
-      itemEl.innerHTML = `<div class="item-label">${escapeHtml(item.label)}<span class="level-badge entity">${item.level || 'standard'}</span></div><div class="item-value">${escapeHtml(item.value || '(no value)')}</div><div class="item-ref">${cells}</div>`;
-      itemEl.addEventListener('click', () => {
-        document.querySelectorAll('.item.selected').forEach(i => i.classList.remove('selected'));
-        itemEl.classList.add('selected');
-        highlightCells(cells, null);
-      });
-      sectionItems.appendChild(itemEl);
-
-      // Update count if it's the annotated section
-      const countEl = targetSection.querySelector('.annotated-count');
-      if (countEl) countEl.textContent = sectionItems.querySelectorAll('.item').length + ' items';
-    }
-
-    // Hook into render to setup multi-cell selection
-    const _origRenderOriginalPanel = renderOriginalPanel;
-    renderOriginalPanel = function(structure) { _origRenderOriginalPanel(structure); setTimeout(setupMultiCellSelection, 100); };
   </script>
 </body>
 </html>

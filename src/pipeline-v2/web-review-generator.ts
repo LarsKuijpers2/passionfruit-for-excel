@@ -2689,12 +2689,12 @@ export class WebReviewGenerator {
     }
     .item:hover { background: var(--muted); }
     .item.selected {
-      background: rgba(139, 92, 246, 0.15);
-      border-left: 3px solid #8b5cf6;
-      padding-left: 9px;
+      background: rgba(255, 255, 255, 0.05);
+      border-left: 2px solid var(--muted-foreground);
+      padding-left: 10px;
     }
     .item.selected:hover {
-      background: rgba(139, 92, 246, 0.25);
+      background: rgba(255, 255, 255, 0.08);
     }
     .item.reviewed.correct, .item.reviewed.accepted {
       border-left: 3px solid #22c55e;
@@ -2877,8 +2877,9 @@ export class WebReviewGenerator {
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      background: #8b5cf6;
-      color: white;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--foreground);
       padding: 8px 16px;
       border-radius: 20px;
       font-size: 13px;
@@ -2893,7 +2894,7 @@ export class WebReviewGenerator {
       display: flex;
     }
     .selection-badge kbd {
-      background: rgba(255,255,255,0.2);
+      background: var(--muted);
       padding: 2px 6px;
       border-radius: 4px;
       font-size: 11px;
@@ -2934,7 +2935,7 @@ export class WebReviewGenerator {
     }
     .command-palette-header .selected-count {
       font-weight: 500;
-      color: #8b5cf6;
+      color: var(--foreground);
     }
     .command-palette-header kbd {
       background: var(--muted);
@@ -2974,7 +2975,7 @@ export class WebReviewGenerator {
     .property-row textarea:focus,
     .property-row select:focus {
       outline: none;
-      border-color: #8b5cf6;
+      border-color: var(--muted-foreground);
     }
     .property-row textarea {
       min-height: 60px;
@@ -3006,12 +3007,13 @@ export class WebReviewGenerator {
       background: var(--border);
     }
     .command-palette-footer button.primary {
-      background: #8b5cf6;
-      border-color: #8b5cf6;
-      color: white;
+      background: var(--foreground);
+      border-color: var(--foreground);
+      color: var(--background);
     }
     .command-palette-footer button.primary:hover {
-      background: #7c3aed;
+      background: var(--muted-foreground);
+      border-color: var(--muted-foreground);
     }
   </style>
 </head>
@@ -4232,6 +4234,146 @@ export class WebReviewGenerator {
           header.closest('.section')?.classList.toggle('collapsed');
         });
       });
+
+      // Command palette logic
+      const commandPalette = document.getElementById('commandPalette');
+      const paletteBackdrop = commandPalette?.querySelector('.command-palette-backdrop');
+
+      function showCommandPalette() {
+        if (selectedItems.size === 0) {
+          showToast('Select items first');
+          return;
+        }
+
+        const count = selectedItems.size;
+        commandPalette.querySelector('.selected-count').textContent = count + ' item' + (count === 1 ? '' : 's') + ' selected';
+
+        if (count === 1) {
+          commandPalette.classList.add('single-select');
+          const item = Array.from(selectedItems)[0];
+          document.getElementById('bulkLabel').value = item.dataset.label || '';
+          document.getElementById('bulkValue').value = item.querySelector('.item-value')?.textContent || '';
+        } else {
+          commandPalette.classList.remove('single-select');
+          document.getElementById('bulkLabel').value = '';
+          document.getElementById('bulkValue').value = '';
+        }
+
+        const sectionSelect = document.getElementById('bulkSection');
+        sectionSelect.innerHTML = '<option value="">— Keep current —</option>';
+        const sections = new Set();
+        document.querySelectorAll('.section').forEach(sec => {
+          const topic = sec.dataset.topic;
+          if (topic) sections.add(topic);
+        });
+        sections.forEach(s => {
+          sectionSelect.innerHTML += \`<option value="\${s}">\${s}</option>\`;
+        });
+
+        document.getElementById('bulkTopic').value = '';
+        document.getElementById('bulkLevel').value = '';
+        document.getElementById('bulkAction').value = '';
+
+        commandPalette.classList.add('visible');
+        document.getElementById('bulkTopic').focus();
+      }
+
+      function hideCommandPalette() {
+        commandPalette?.classList.remove('visible');
+      }
+
+      async function applyCommandPaletteChanges() {
+        const topic = document.getElementById('bulkTopic').value;
+        const level = document.getElementById('bulkLevel').value;
+        const action = document.getElementById('bulkAction').value;
+        const newLabel = document.getElementById('bulkLabel').value;
+        const newValue = document.getElementById('bulkValue').value;
+
+        const items = Array.from(selectedItems);
+        let changes = 0;
+
+        for (const item of items) {
+          if (topic) {
+            item.dataset.topic = topic;
+            changes++;
+          }
+
+          if (selectedItems.size === 1) {
+            if (newLabel && newLabel !== item.dataset.label) {
+              item.dataset.label = newLabel;
+              const labelEl = item.querySelector('.item-label');
+              if (labelEl) {
+                const badge = labelEl.querySelector('.level-badge');
+                labelEl.textContent = newLabel;
+                if (badge) labelEl.appendChild(badge);
+              }
+              changes++;
+            }
+            if (newValue) {
+              const valueEl = item.querySelector('.item-value');
+              if (valueEl && valueEl.textContent !== newValue) {
+                valueEl.textContent = newValue;
+                changes++;
+              }
+            }
+          }
+
+          if (action) {
+            item.classList.remove('reviewed', 'correct', 'wrong', 'accepted', 'rejected', 'show-note');
+            if (action === 'accept') {
+              item.classList.add('reviewed', 'correct', 'accepted');
+              await logFeedback(item, 'correct');
+            } else if (action === 'reject') {
+              item.classList.add('reviewed', 'wrong', 'rejected');
+              await logFeedback(item, 'wrong');
+            }
+            changes++;
+          }
+        }
+
+        hideCommandPalette();
+        if (changes > 0) {
+          showToast(\`Updated \${items.length} item(s)\`);
+        }
+        clearSelection();
+      }
+
+      paletteBackdrop?.addEventListener('click', hideCommandPalette);
+      document.getElementById('paletteCancel')?.addEventListener('click', hideCommandPalette);
+      document.getElementById('paletteApply')?.addEventListener('click', applyCommandPaletteChanges);
+
+      // Keyboard shortcuts for selection and command palette
+      document.addEventListener('keydown', (e) => {
+        if (commandPalette?.classList.contains('visible')) {
+          if (e.key === 'Escape') {
+            hideCommandPalette();
+            e.preventDefault();
+          } else if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+            applyCommandPaletteChanges();
+            e.preventDefault();
+          }
+          return;
+        }
+
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+        if (e.key === 'Escape') {
+          clearSelection();
+          return;
+        }
+
+        if ((e.metaKey || e.ctrlKey) && e.key === 'a') {
+          e.preventDefault();
+          selectAll();
+          return;
+        }
+
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+          e.preventDefault();
+          showCommandPalette();
+          return;
+        }
+      });
     }
 
     async function logFeedback(item, action, note = '') {
@@ -4414,162 +4556,9 @@ export class WebReviewGenerator {
         .replace(/"/g, '&quot;');
     }
 
-    // Command palette logic
-    const commandPalette = document.getElementById('commandPalette');
-    const paletteBackdrop = commandPalette.querySelector('.command-palette-backdrop');
-
-    function showCommandPalette() {
-      if (selectedItems.size === 0) {
-        showToast('Select items first (click, Shift+click, or ⌘A)');
-        return;
-      }
-
-      // Update header
-      const count = selectedItems.size;
-      commandPalette.querySelector('.selected-count').textContent = count + ' item' + (count === 1 ? '' : 's') + ' selected';
-
-      // Toggle single-select mode for label/value fields
-      if (count === 1) {
-        commandPalette.classList.add('single-select');
-        const item = Array.from(selectedItems)[0];
-        document.getElementById('bulkLabel').value = item.dataset.label || '';
-        document.getElementById('bulkValue').value = item.querySelector('.item-value')?.textContent || '';
-      } else {
-        commandPalette.classList.remove('single-select');
-        document.getElementById('bulkLabel').value = '';
-        document.getElementById('bulkValue').value = '';
-      }
-
-      // Populate sections dropdown
-      const sectionSelect = document.getElementById('bulkSection');
-      sectionSelect.innerHTML = '<option value="">— Keep current —</option>';
-      const sections = new Set();
-      document.querySelectorAll('.section').forEach(sec => {
-        const topic = sec.dataset.topic;
-        if (topic) sections.add(topic);
-      });
-      sections.forEach(s => {
-        sectionSelect.innerHTML += \`<option value="\${s}">\${s}</option>\`;
-      });
-
-      // Reset other fields
-      document.getElementById('bulkTopic').value = '';
-      document.getElementById('bulkLevel').value = '';
-      document.getElementById('bulkAction').value = '';
-
-      commandPalette.classList.add('visible');
-      document.getElementById('bulkTopic').focus();
-    }
-
-    function hideCommandPalette() {
-      commandPalette.classList.remove('visible');
-    }
-
-    async function applyCommandPaletteChanges() {
-      const topic = document.getElementById('bulkTopic').value;
-      const level = document.getElementById('bulkLevel').value;
-      const action = document.getElementById('bulkAction').value;
-      const newLabel = document.getElementById('bulkLabel').value;
-      const newValue = document.getElementById('bulkValue').value;
-
-      const items = Array.from(selectedItems);
-      let changes = 0;
-
-      for (const item of items) {
-        // Update topic
-        if (topic) {
-          item.dataset.topic = topic;
-          const badge = item.querySelector('.level-badge');
-          if (badge) badge.textContent = level === 'product' ? 'PRODUCT' : '';
-          changes++;
-        }
-
-        // Update label/value for single selection
-        if (selectedItems.size === 1) {
-          if (newLabel && newLabel !== item.dataset.label) {
-            item.dataset.label = newLabel;
-            const labelEl = item.querySelector('.item-label');
-            if (labelEl) {
-              // Preserve badges
-              const badge = labelEl.querySelector('.level-badge');
-              labelEl.textContent = newLabel;
-              if (badge) labelEl.appendChild(badge);
-            }
-            changes++;
-          }
-          if (newValue) {
-            const valueEl = item.querySelector('.item-value');
-            if (valueEl && valueEl.textContent !== newValue) {
-              valueEl.textContent = newValue;
-              changes++;
-            }
-          }
-        }
-
-        // Apply review action
-        if (action) {
-          item.classList.remove('reviewed', 'correct', 'wrong', 'accepted', 'rejected', 'show-note');
-          if (action === 'accept') {
-            item.classList.add('reviewed', 'correct', 'accepted');
-            await logFeedback(item, 'correct');
-          } else if (action === 'reject') {
-            item.classList.add('reviewed', 'wrong', 'rejected');
-            await logFeedback(item, 'wrong');
-          }
-          // reset just removes classes, already done above
-          changes++;
-        }
-      }
-
-      hideCommandPalette();
-      if (changes > 0) {
-        showToast(\`Updated \${items.length} item(s)\`);
-      }
-      clearSelection();
-    }
-
-    // Palette event handlers
-    paletteBackdrop.addEventListener('click', hideCommandPalette);
-    document.getElementById('paletteCancel').addEventListener('click', hideCommandPalette);
-    document.getElementById('paletteApply').addEventListener('click', applyCommandPaletteChanges);
-
-    // Keyboard shortcuts
+    // Basic keyboard shortcuts (panel toggles)
     document.addEventListener('keydown', (e) => {
-      // Handle palette-specific shortcuts
-      if (commandPalette.classList.contains('visible')) {
-        if (e.key === 'Escape') {
-          hideCommandPalette();
-          e.preventDefault();
-        } else if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
-          applyCommandPaletteChanges();
-          e.preventDefault();
-        }
-        return;
-      }
-
-      // Don't handle shortcuts when typing in inputs
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-
-      // Escape to clear selection
-      if (e.key === 'Escape') {
-        clearSelection();
-        return;
-      }
-
-      // Cmd+A to select all
-      if ((e.metaKey || e.ctrlKey) && e.key === 'a') {
-        e.preventDefault();
-        selectAll();
-        return;
-      }
-
-      // Cmd+K to open command palette
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        showCommandPalette();
-        return;
-      }
-
       switch(e.key) {
         case '1': document.querySelector('[data-panel="original"]')?.click(); break;
         case '2': document.querySelector('[data-panel="indexed"]')?.click(); break;

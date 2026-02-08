@@ -888,13 +888,14 @@
 
       const rowsHtml = sheet.rows.map(row => {
         const rowNum = row.rowNumber || row.row;
-        const cells = columns.map(col => {
-          const cell = row.cells?.find(c => c.column === col);
+        const cellsHtml = columns.map(col => {
+          // Cells are stored as object with column letter keys (e.g., cells.A, cells.B)
+          const cell = row.cells?.[col];
           const value = cell?.value ?? '';
           const cellId = `${col}${rowNum}`;
           return `<td data-cell="${cellId}">${escapeHtml(String(value))}</td>`;
         }).join('');
-        return `<tr><td class="row-header">${rowNum}</td>${cells}</tr>`;
+        return `<tr><td class="row-header">${rowNum}</td>${cellsHtml}</tr>`;
       }).join('');
 
       return `<table class="excel-table"><thead>${headerHtml}</thead><tbody>${rowsHtml}</tbody></table>`;
@@ -959,24 +960,38 @@
     function renderLibraryPanel(library) {
       const container = document.getElementById('library-content');
 
-      if (!library.items || library.items.length === 0) {
+      // Library data can be in two formats:
+      // 1. library.items (array) - old format
+      // 2. library.byTopic (object with topic keys) - new format
+      let byTopic = {};
+
+      if (library.byTopic && Object.keys(library.byTopic).length > 0) {
+        // New format - byTopic is already grouped
+        let idx = 0;
+        Object.entries(library.byTopic).forEach(([topic, items]) => {
+          byTopic[topic] = items.map(item => ({ ...item, idx: idx++ }));
+        });
+      } else if (library.items && library.items.length > 0) {
+        // Old format - group by topic
+        library.items.forEach((item, idx) => {
+          const topic = item.topic || 'general';
+          if (!byTopic[topic]) byTopic[topic] = [];
+          byTopic[topic].push({ ...item, idx });
+        });
+      }
+
+      if (Object.keys(byTopic).length === 0) {
         container.innerHTML = '<div class="empty">No library items harvested</div>';
         return;
       }
 
-      // Group by topic
-      const byTopic = {};
-      library.items.forEach((item, idx) => {
-        const topic = item.topic || 'general';
-        if (!byTopic[topic]) byTopic[topic] = [];
-        byTopic[topic].push({ ...item, idx });
-      });
-
       const topicsHtml = Object.entries(byTopic).map(([topic, items]) => {
         const itemsHtml = items.map(item => {
-          const cells = item.sources?.[0]?.labelCell && item.sources?.[0]?.valueCell
-            ? `${item.sources[0].labelCell} → ${item.sources[0].valueCell}`
-            : '';
+          // Handle both source formats: item.source (single) or item.sources (array)
+          const source = item.source || item.sources?.[0];
+          const cells = source?.lCell && source?.vCell
+            ? `${source.lCell} → ${source.vCell}`
+            : (source?.labelCell && source?.valueCell ? `${source.labelCell} → ${source.valueCell}` : '');
 
           return `
             <div class="item" data-index="${item.idx}" data-cells="${cells}" data-label="${escapeHtml(item.label)}" data-topic="${topic}">
@@ -1016,7 +1031,9 @@
       }).join('');
 
       container.innerHTML = topicsHtml;
-      document.getElementById('library-stats').textContent = `${library.items.length} items`;
+      // Calculate total items from byTopic
+      const totalItems = Object.values(byTopic).reduce((sum, items) => sum + items.length, 0);
+      document.getElementById('library-stats').textContent = `${totalItems} items`;
     }
 
     function setupEventHandlers() {
@@ -1280,11 +1297,21 @@
       const indexed = questionnaireData?.indexed;
       const library = questionnaireData?.library;
 
+      // Calculate library count from either format
+      let libraryCount = 0;
+      if (library?.total) {
+        libraryCount = library.total;
+      } else if (library?.byTopic) {
+        libraryCount = Object.values(library.byTopic).reduce((sum, items) => sum + items.length, 0);
+      } else if (library?.items) {
+        libraryCount = library.items.length;
+      }
+
       document.getElementById('stats-left').innerHTML = `
         <span>Sections: ${indexed?.sections?.length || 0}</span>
         <span>Items: ${indexed?.stats?.total || 0}</span>
         <span>Answered: ${indexed?.stats?.answered || 0}</span>
-        <span>Library: ${library?.items?.length || 0}</span>
+        <span>Library: ${libraryCount}</span>
       `;
     }
 

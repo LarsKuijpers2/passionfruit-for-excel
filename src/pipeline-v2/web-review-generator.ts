@@ -620,6 +620,14 @@ export class WebReviewGenerator {
     }
     .group-btn.accept-all:hover { background: #14532d; color: #4ade80; }
     .group-btn.reject-all:hover { background: #7f1d1d; color: #fca5a5; }
+    .group-btn.collapse-toggle {
+      font-size: 10px;
+      padding: 4px 8px;
+      transition: transform 0.15s ease;
+    }
+    .group-btn.collapse-toggle.collapsed {
+      transform: rotate(-90deg);
+    }
 
     /* Stats bar */
     .stats-bar {
@@ -2604,29 +2612,145 @@ export class WebReviewGenerator {
       color: var(--muted-foreground);
     }
 
+    /* Top tab bar (Warp-style) */
+    .top-tab-bar {
+      display: flex;
+      align-items: center;
+      background: #1a1a1c;
+      border-bottom: 1px solid var(--border);
+      padding: 0 8px;
+      height: 40px;
+      gap: 2px;
+      overflow-x: auto;
+    }
+    .top-tab-bar::-webkit-scrollbar { height: 0; }
+    .top-tab {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      background: transparent;
+      border: none;
+      border-radius: 6px 6px 0 0;
+      color: var(--muted-foreground);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      max-width: 200px;
+      transition: all 0.15s ease;
+    }
+    .top-tab:hover { background: rgba(255,255,255,0.05); color: var(--foreground); }
+    .top-tab.active { background: var(--background); color: var(--foreground); }
+    .top-tab .tab-icon { font-size: 14px; opacity: 0.7; }
+    .top-tab .tab-name { overflow: hidden; text-overflow: ellipsis; }
+    .top-tab .tab-close {
+      opacity: 0;
+      width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 3px;
+      font-size: 14px;
+      line-height: 1;
+    }
+    .top-tab:hover .tab-close { opacity: 0.5; }
+    .top-tab .tab-close:hover { opacity: 1; background: rgba(255,255,255,0.1); }
+    .top-tab-add {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      background: transparent;
+      border: none;
+      border-radius: 4px;
+      color: var(--muted-foreground);
+      font-size: 18px;
+      cursor: pointer;
+      margin-left: 4px;
+    }
+    .top-tab-add:hover { background: rgba(255,255,255,0.08); color: var(--foreground); }
+    .top-tab .tab-check { color: #22c55e; margin-left: 4px; }
+    .top-tab-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto;
+      padding-right: 8px;
+    }
+    .top-tab-right .toggle {
+      padding: 4px 10px;
+      font-size: 11px;
+    }
+    .sidebar-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: transparent;
+      border: none;
+      border-radius: 4px;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      margin-right: 8px;
+    }
+    .sidebar-toggle:hover { background: rgba(255,255,255,0.08); color: var(--foreground); }
+    .top-tab-dropdown { position: relative; }
+    .top-tab-dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      min-width: 250px;
+      max-height: 400px;
+      overflow-y: auto;
+      z-index: 1000;
+      display: none;
+    }
+    .top-tab-dropdown-menu.visible { display: block; }
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      color: var(--foreground);
+      cursor: pointer;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+    .dropdown-item:last-child { border-bottom: none; }
+    .dropdown-item:hover { background: var(--muted); }
+    .dropdown-item .item-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .dropdown-item .item-badge { font-size: 11px; color: var(--muted-foreground); }
+
     /* Header */
     .header {
       background: var(--card);
-      padding: 12px 20px;
+      padding: 8px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid var(--border);
+      height: 44px;
     }
     .header h1 {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--foreground);
     }
     .header .meta {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--muted-foreground);
       margin-top: 2px;
     }
     .app-title {
-      font-size: 12px;
-      color: var(--muted-foreground);
-      margin-bottom: 2px;
+      display: none;
     }
 
     /* View toggles */
@@ -2674,30 +2798,98 @@ export class WebReviewGenerator {
     .connection-status.checking { background: #f59e0b; animation: pulse 1s infinite; }
     @keyframes pulse { 50% { opacity: 0.5; } }
 
-    /* Sidebar toggle */
-    .sidebar-toggle {
-      background: transparent;
-      border: none;
-      color: var(--muted-foreground);
+    /* Sidebar overlay */
+    .sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 99;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+    .sidebar-overlay.visible { opacity: 1; visibility: visible; }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 40px;
+      bottom: 40px;
+      width: 300px;
+      background: var(--card);
+      border-right: 1px solid var(--border);
+      flex-direction: column;
+      z-index: 100;
+      transform: translateX(-100%);
+      transition: transform 0.2s ease;
+      display: flex;
+    }
+    .sidebar.open { transform: translateX(0); }
+    .sidebar-header { padding: 12px 16px; border-bottom: 1px solid var(--border); font-weight: 500; font-size: 13px; }
+    .sidebar-content { flex: 1; overflow-y: auto; }
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 16px;
       cursor: pointer;
-      padding: 8px;
-      margin-right: 12px;
-      border-radius: var(--radius);
+      transition: background 0.15s ease;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+      color: inherit;
+      gap: 8px;
+    }
+    .sidebar-item:hover { background: var(--muted); }
+    .sidebar-item.active { background: var(--accent); border-left: 2px solid var(--foreground); }
+    .sidebar-item-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
+    .sidebar-item-badge { font-size: 11px; padding: 2px 6px; background: var(--muted); border-radius: 10px; color: var(--muted-foreground); }
+    .sidebar-item-check { color: #22c55e; font-size: 14px; }
+
+    /* Panel headers row */
+    .panel-headers {
+      display: flex;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+    }
+    .panel-header-item {
+      flex: 1;
+      padding: 8px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 500;
+      font-size: 13px;
+      border-right: 1px solid var(--border);
+      cursor: pointer;
       transition: all 0.15s ease;
     }
-    .sidebar-toggle:hover {
-      background: var(--muted);
-      color: var(--foreground);
+    .panel-header-item:hover { background: var(--muted); }
+    .panel-header-item:last-child { border-right: none; }
+    .panel-header-item.active {
+      background: rgba(255, 255, 255, 0.05);
+      border-bottom: 2px solid var(--foreground);
     }
-    .sidebar-toggle svg {
-      width: 20px;
-      height: 20px;
+    .panel-header-item.hidden {
+      opacity: 0.5;
     }
+    .panel-header-item .panel-toggle {
+      width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 8px;
+      opacity: 0.5;
+    }
+    .panel-header-item.active .panel-toggle { opacity: 1; }
 
-    /* Main layout */
+    /* Main layout: 40px tab bar + 36px sheet tabs + 40px panel headers + 40px stats bar */
     .main {
       display: flex;
-      height: calc(100vh - 56px - 40px);
+      height: calc(100vh - 40px - 36px - 40px - 40px);
       overflow: hidden;
     }
 
@@ -2755,101 +2947,52 @@ export class WebReviewGenerator {
       color: rgba(255,255,255,0.4);
     }
 
-    /* Sidebar overlay */
-    .sidebar-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 99;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.2s ease, visibility 0.2s ease;
-    }
-    .sidebar-overlay.visible {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    /* Sidebar */
-    .sidebar {
-      position: fixed;
-      left: 0;
-      top: 56px;
-      bottom: 40px;
-      width: 280px;
-      background: var(--card);
-      border-right: 1px solid var(--border);
-      flex-direction: column;
-      z-index: 100;
-      transform: translateX(-100%);
-      transition: transform 0.2s ease;
-      display: flex;
-    }
-    .sidebar.open { transform: translateX(0); }
-    .sidebar-header {
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border);
-      font-weight: 500;
-      font-size: 13px;
-    }
-    .sidebar-content {
-      flex: 1;
-      overflow-y: auto;
-    }
-    .sidebar-item {
-      display: flex;
-      align-items: center;
-      padding: 10px 16px;
-      cursor: pointer;
-      transition: background 0.15s ease;
-      border-bottom: 1px solid var(--border);
-      text-decoration: none;
-      color: inherit;
-    }
-    .sidebar-item:hover { background: var(--muted); }
-    .sidebar-item.active { background: var(--accent); border-left: 2px solid var(--foreground); }
-    .sidebar-item-name {
-      flex: 1;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      font-size: 13px;
-    }
-    .sidebar-item-badge {
-      font-size: 11px;
-      padding: 2px 6px;
-      background: var(--muted);
-      border-radius: 10px;
-      color: var(--muted-foreground);
-    }
-
-    /* Excel table */
+    /* Sheet tabs (in header area) */
     .sheet-tabs {
       display: flex;
-      gap: 4px;
-      padding: 8px 16px;
+      align-items: center;
+      gap: 2px;
+      padding: 0 16px;
       background: var(--card);
       border-bottom: 1px solid var(--border);
+      height: 36px;
+      overflow-x: auto;
     }
+    .sheet-tabs::-webkit-scrollbar { height: 0; }
     .sheet-tab {
-      padding: 6px 12px;
-      background: var(--secondary);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
+      padding: 6px 14px;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      border-radius: 0;
       font-size: 12px;
+      font-weight: 500;
+      color: var(--muted-foreground);
       cursor: pointer;
       transition: all 0.15s ease;
+      white-space: nowrap;
     }
-    .sheet-tab:hover { background: var(--accent); }
-    .sheet-tab.active {
-      background: var(--foreground);
-      color: var(--background);
-    }
+    .sheet-tab:hover { color: var(--foreground); background: rgba(255,255,255,0.03); }
+    .sheet-tab.active { color: var(--foreground); border-bottom-color: var(--foreground); background: transparent; }
+    .sheet-tab-check { color: #22c55e; margin-left: 4px; font-size: 11px; }
     .sheet-content { display: none; }
     .sheet-content.active { display: block; }
+
+    /* Open file button */
+    .open-file-btn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--muted-foreground);
+      font-size: 11px;
+      cursor: pointer;
+      margin-left: auto;
+    }
+    .open-file-btn:hover { background: var(--muted); color: var(--foreground); }
 
     .excel-table {
       width: 100%;
@@ -3026,6 +3169,14 @@ export class WebReviewGenerator {
       padding-left: 9px;
       background: rgba(239, 68, 68, 0.05);
     }
+    .item.no-value {
+      opacity: 0.5;
+    }
+    .item.no-value .item-label,
+    .item.no-value .item-value,
+    .item.no-value .item-ref {
+      color: var(--muted-foreground);
+    }
 
     .item-label {
       font-size: 12px;
@@ -3136,6 +3287,14 @@ export class WebReviewGenerator {
     }
     .group-btn.accept-all:hover { background: #14532d; color: #4ade80; }
     .group-btn.reject-all:hover { background: #7f1d1d; color: #fca5a5; }
+    .group-btn.collapse-toggle {
+      font-size: 10px;
+      padding: 4px 8px;
+      transition: transform 0.15s ease;
+    }
+    .group-btn.collapse-toggle.collapsed {
+      transform: rotate(-90deg);
+    }
 
     /* Stats bar */
     .stats-bar {
@@ -3405,6 +3564,24 @@ export class WebReviewGenerator {
 
   <!-- Main app -->
   <div class="app-container" id="app">
+    <!-- Top tab bar (Warp-style) -->
+    <div class="top-tab-bar" id="top-tab-bar">
+      <button class="sidebar-toggle" id="sidebar-toggle" title="Open questionnaire list (B)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <!-- Tabs populated by JS -->
+      <button class="top-tab-add" id="add-tab-btn" title="Open questionnaire (+)">+</button>
+      <div class="top-tab-right">
+        <span id="connection-status" class="connection-status checking"></span>
+        <button class="toggle" id="review-toggle" title="Toggle review mode (R)">Review</button>
+        <button class="toggle" id="complete-toggle" title="Complete Review">Complete (<span id="feedback-count">0</span>)</button>
+      </div>
+    </div>
+
     <!-- Sidebar overlay -->
     <div class="sidebar-overlay" id="sidebar-overlay"></div>
     <!-- Sidebar -->
@@ -3413,55 +3590,51 @@ export class WebReviewGenerator {
       <div class="sidebar-content" id="sidebar-list"></div>
     </div>
 
-    <!-- Header -->
-    <div class="header">
-      <div style="display: flex; align-items: center;">
-        <button class="sidebar-toggle" id="sidebar-toggle" title="Open questionnaire list (B)">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-          </svg>
-        </button>
-        <div>
-          <div class="app-title">Passionfruit Review</div>
-          <h1 id="questionnaire-title">Loading...</h1>
-          <div class="meta" id="questionnaire-meta"></div>
+    <!-- Hidden elements for compatibility -->
+    <div style="display:none;">
+      <span id="questionnaire-title"></span>
+      <span id="questionnaire-meta"></span>
+    </div>
+
+    <!-- Sheet tabs (global - above all panels) -->
+    <div id="sheet-tabs" class="sheet-tabs"></div>
+
+    <!-- Panel headers row -->
+    <div class="panel-headers">
+      <div class="panel-header-item active" data-panel="original">
+        <span class="panel-toggle">●</span>
+        <span>Original Questionnaire</span>
+        <span id="original-stats"></span>
+      </div>
+      <div class="panel-header-item active" data-panel="indexed">
+        <span class="panel-toggle">●</span>
+        <span>Extraction</span>
+        <span id="indexed-stats"></span>
+        <div class="group-btns review-only">
+          <button class="group-btn collapse-toggle" id="toggle-collapse-indexed" title="Collapse/Expand all">▼</button>
+          <button class="group-btn accept-all" id="accept-all-indexed">✓ Accept All</button>
+          <button class="group-btn reject-all" id="reject-all-indexed">✗ Reject All</button>
         </div>
       </div>
-      <div class="toggles">
-        <span id="connection-status" class="connection-status checking"></span>
-        <button class="toggle active" data-panel="original" title="Toggle Original (1)">Original</button>
-        <button class="toggle active" data-panel="indexed" title="Toggle Extraction (2)">Extraction</button>
-        <button class="toggle active" data-panel="library" title="Toggle Save as (3)">Save as</button>
-        <div class="toggle-divider"></div>
-        <button class="toggle" id="review-toggle" title="Toggle review mode (R)">Review</button>
-        <button class="toggle" id="complete-toggle" title="Complete Review">Complete Review (<span id="feedback-count">0</span>)</button>
-        <button class="toggle" id="clear-toggle" title="Clear all feedback">Clear</button>
-        <button class="toggle" title="Help (?)">?</button>
+      <div class="panel-header-item active" data-panel="library">
+        <span class="panel-toggle">●</span>
+        <span>Save as</span>
+        <span id="library-stats"></span>
+        <div class="group-btns review-only">
+          <button class="group-btn collapse-toggle" id="toggle-collapse-library" title="Collapse/Expand all">▼</button>
+          <button class="group-btn accept-all" id="accept-all-library">✓ Accept All</button>
+          <button class="group-btn reject-all" id="reject-all-library">✗ Reject All</button>
+        </div>
       </div>
     </div>
 
     <!-- Main content -->
     <div class="main">
       <div class="panel visible" id="panel-original">
-        <div class="panel-header">
-          <span>Original Questionnaire</span>
-          <span id="original-stats"></span>
-        </div>
-        <div id="sheet-tabs" class="sheet-tabs"></div>
         <div class="panel-content" id="original-content"></div>
       </div>
 
       <div class="panel visible" id="panel-indexed">
-        <div class="panel-header">
-          <span>Extraction</span>
-          <span id="indexed-stats"></span>
-          <div class="group-btns review-only">
-            <button class="group-btn accept-all" id="accept-all-indexed">✓ Accept All</button>
-            <button class="group-btn reject-all" id="reject-all-indexed">✗ Reject All</button>
-          </div>
-        </div>
         <div class="panel-search">
           <input type="text" id="indexed-search" placeholder="Search label or value..." />
         </div>
@@ -3469,14 +3642,6 @@ export class WebReviewGenerator {
       </div>
 
       <div class="panel visible" id="panel-library">
-        <div class="panel-header">
-          <span>Save as</span>
-          <span id="library-stats"></span>
-          <div class="group-btns review-only">
-            <button class="group-btn accept-all" id="accept-all-library">✓ Accept All</button>
-            <button class="group-btn reject-all" id="reject-all-library">✗ Reject All</button>
-          </div>
-        </div>
         <div class="panel-search">
           <input type="text" id="library-search" placeholder="Search label or value..." />
         </div>
@@ -3581,6 +3746,8 @@ export class WebReviewGenerator {
     let feedbackLog = [];
     let serverConnected = false;
     const API_BASE = '';
+    let openTabs = [];
+    let allQuestionnaires = [];
 
     // Initialize
     document.addEventListener('DOMContentLoaded', init);
@@ -3592,6 +3759,19 @@ export class WebReviewGenerator {
 
       // Check server connection
       await checkServerConnection();
+
+      // Setup tab dropdown
+      setupTabDropdown();
+
+      // Load questionnaire list for dropdown
+      try {
+        const res = await fetch(API_BASE + '/api/questionnaires');
+        const data = await res.json();
+        allQuestionnaires = data.questionnaires || [];
+        renderSidebar();
+      } catch (err) {
+        console.error('Failed to load questionnaires:', err);
+      }
 
       if (questionnaireId) {
         await loadQuestionnaire(questionnaireId);
@@ -3618,6 +3798,115 @@ export class WebReviewGenerator {
       }
     }
 
+    // Tab bar management
+    function renderTopTabs() {
+      const tabBar = document.getElementById('top-tab-bar');
+      const addBtn = document.getElementById('add-tab-btn');
+      tabBar.querySelectorAll('.top-tab').forEach(t => t.remove());
+      openTabs.forEach((tab, idx) => {
+        const tabEl = document.createElement('button');
+        tabEl.className = 'top-tab' + (tab.name === currentQuestionnaire ? ' active' : '');
+        const checkHtml = tab.completed ? '<span class="tab-check">✓</span>' : '';
+        tabEl.innerHTML = '<span class="tab-name">' + escapeHtml(tab.displayName) + '</span>' + checkHtml + '<span class="tab-close" title="Close tab">&times;</span>';
+        tabEl.addEventListener('click', (e) => {
+          if (e.target.classList.contains('tab-close')) { closeTab(idx); }
+          else { switchToTab(tab.name); }
+        });
+        tabBar.insertBefore(tabEl, addBtn);
+      });
+    }
+
+    function renderSidebar() {
+      const sidebar = document.getElementById('sidebar-list');
+      if (!sidebar) return;
+      sidebar.innerHTML = allQuestionnaires.map(q => {
+        const isOpen = openTabs.some(t => t.name === q.name);
+        const tab = openTabs.find(t => t.name === q.name);
+        const isCompleted = tab?.completed || q.completed;
+        return '<div class="sidebar-item' + (currentQuestionnaire === q.name ? ' active' : '') + '" data-name="' + escapeHtml(q.name) + '">' +
+          (isCompleted ? '<span class="sidebar-item-check">✓</span>' : '') +
+          '<span class="sidebar-item-name">' + escapeHtml(q.displayName) + '</span>' +
+          (q.feedbackCount ? '<span class="sidebar-item-badge">' + q.feedbackCount + '</span>' : '') +
+          '</div>';
+      }).join('');
+      sidebar.querySelectorAll('.sidebar-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const name = item.dataset.name;
+          if (name) openTab(name);
+          closeSidebar();
+        });
+      });
+    }
+
+    function openTab(name) {
+      const q = allQuestionnaires.find(q => q.name === name);
+      if (!q) return;
+      if (!openTabs.some(t => t.name === name)) {
+        openTabs.push({ name: q.name, displayName: q.displayName, completed: q.completed });
+      }
+      renderTopTabs();
+      renderSidebar();
+      loadQuestionnaire(name);
+    }
+
+    function markTabCompleted(name) {
+      const tab = openTabs.find(t => t.name === name);
+      if (tab) { tab.completed = true; }
+      const q = allQuestionnaires.find(q => q.name === name);
+      if (q) { q.completed = true; }
+      renderTopTabs();
+      renderSidebar();
+    }
+
+    // Sidebar toggle
+    function openSidebar() {
+      document.getElementById('sidebar')?.classList.add('open');
+      document.getElementById('sidebar-overlay')?.classList.add('visible');
+    }
+    function closeSidebar() {
+      document.getElementById('sidebar')?.classList.remove('open');
+      document.getElementById('sidebar-overlay')?.classList.remove('visible');
+    }
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      if (sidebar?.classList.contains('open')) { closeSidebar(); }
+      else { openSidebar(); }
+    }
+
+    function closeTab(idx) {
+      const tab = openTabs[idx];
+      openTabs.splice(idx, 1);
+      renderTopTabs();
+      renderSidebar();
+      if (tab.name === currentQuestionnaire) {
+        if (openTabs.length > 0) {
+          switchToTab(openTabs[Math.min(idx, openTabs.length - 1)].name);
+        } else {
+          currentQuestionnaire = null;
+          history.pushState({}, '', window.location.pathname);
+          showWelcome();
+        }
+      }
+    }
+
+    function switchToTab(name) {
+      if (name === currentQuestionnaire) return;
+      loadQuestionnaire(name);
+    }
+
+    function setupTabDropdown() {
+      const addBtn = document.getElementById('add-tab-btn');
+      const sidebarToggle = document.getElementById('sidebar-toggle');
+      const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+      // Sidebar toggle
+      sidebarToggle?.addEventListener('click', toggleSidebar);
+      sidebarOverlay?.addEventListener('click', closeSidebar);
+
+      // Add button opens sidebar
+      addBtn?.addEventListener('click', openSidebar);
+    }
+
     async function showWelcome() {
       document.getElementById('loading').style.display = 'none';
       document.getElementById('welcome').style.display = 'flex';
@@ -3637,7 +3926,8 @@ export class WebReviewGenerator {
 
     function renderQuestionnaireList(questionnaires) {
       const container = document.getElementById('questionnaire-list');
-      const sidebar = document.getElementById('sidebar-list');
+      allQuestionnaires = questionnaires || [];
+      renderSidebar();
 
       if (!questionnaires || questionnaires.length === 0) {
         container.innerHTML = '<div class="empty">No questionnaires found. Run the index command first.</div>';
@@ -3654,16 +3944,6 @@ export class WebReviewGenerator {
       \`).join('');
 
       container.innerHTML = html;
-
-      // Also populate sidebar
-      const sidebarHtml = questionnaires.map(q => \`
-        <a class="sidebar-item\${currentQuestionnaire === q.name ? ' active' : ''}"
-           href="?q=\${encodeURIComponent(q.name)}">
-          <span class="sidebar-item-name">\${escapeHtml(q.displayName)}</span>
-          \${q.feedbackCount ? \`<span class="sidebar-item-badge">\${q.feedbackCount}</span>\` : ''}
-        </a>
-      \`).join('');
-      sidebar.innerHTML = sidebarHtml;
     }
 
     async function loadQuestionnaire(id) {
@@ -3681,6 +3961,15 @@ export class WebReviewGenerator {
         // Update URL without reload
         history.pushState({}, '', '?q=' + encodeURIComponent(id));
 
+        // Add to open tabs if not already there
+        const q = allQuestionnaires.find(q => q.name === id);
+        const displayName = q?.displayName || questionnaireData.structure?.source?.filename || id;
+        if (!openTabs.some(t => t.name === id)) {
+          openTabs.push({ name: id, displayName });
+        }
+        renderTopTabs();
+        renderSidebar();
+
         // Render the app
         renderApp();
 
@@ -3697,10 +3986,12 @@ export class WebReviewGenerator {
           restoreFeedbackState();
         }
 
-        // Update sidebar
+        // Update questionnaire list
         const questRes = await fetch(API_BASE + '/api/questionnaires');
         const questData = await questRes.json();
+        allQuestionnaires = questData.questionnaires || [];
         renderQuestionnaireList(questData.questionnaires);
+        renderSidebar();
 
       } catch (err) {
         console.error('Failed to load questionnaire:', err);
@@ -3754,10 +4045,14 @@ export class WebReviewGenerator {
       const tabsContainer = document.getElementById('sheet-tabs');
       const contentContainer = document.getElementById('original-content');
 
+      // Store sheet names for later use
+      window.sheetNames = structure.sheets.map(s => s.name);
+
       // Render sheet tabs
       tabsContainer.innerHTML = structure.sheets.map((sheet, idx) => \`
-        <button class="sheet-tab\${idx === 0 ? ' active' : ''}" data-sheet="\${idx}">
-          \${escapeHtml(sheet.name)}
+        <button class="sheet-tab\${idx === 0 ? ' active' : ''}" data-sheet="\${idx}" data-sheet-name="\${escapeHtml(sheet.name)}">
+          <span class="sheet-tab-name">\${escapeHtml(sheet.name)}</span>
+          <span class="sheet-tab-check" style="display:none;">✓</span>
         </button>
       \`).join('');
 
@@ -3787,29 +4082,53 @@ export class WebReviewGenerator {
           contentContainer.querySelector(\`[data-sheet="\${tab.dataset.sheet}"]\`).classList.add('active');
 
           // Filter Indexed and Library panels by sheet
-          const sheetName = tab.textContent.trim();
+          const sheetName = tab.dataset.sheetName;
           filterPanelsBySheet(sheetName);
         });
       });
 
-      // Add "All Sheets" button
-      const allSheetsBtn = document.createElement('button');
-      allSheetsBtn.className = 'sheet-tab';
-      allSheetsBtn.textContent = 'All';
-      allSheetsBtn.title = 'Show all sheets';
-      allSheetsBtn.style.marginLeft = 'auto';
-      allSheetsBtn.addEventListener('click', () => {
-        filterPanelsBySheet(null); // Show all
-        showToast('Showing all sheets');
+      // Add "Open File" button
+      const openFileBtn = document.createElement('button');
+      openFileBtn.className = 'open-file-btn';
+      openFileBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15,3 21,3 21,9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg> Open File';
+      openFileBtn.title = 'Open source file';
+      openFileBtn.addEventListener('click', async () => {
+        try {
+          const res = await fetch(API_BASE + '/api/open-file/' + encodeURIComponent(currentQuestionnaire), { method: 'POST' });
+          if (res.ok) showToast('Opening file...');
+          else showToast('Failed to open file');
+        } catch { showToast('Failed to open file'); }
       });
-      tabsContainer.appendChild(allSheetsBtn);
+      tabsContainer.appendChild(openFileBtn);
 
       // Apply initial filter for first selected sheet
       const firstTab = tabsContainer.querySelector('.sheet-tab.active');
       if (firstTab) {
-        const initialSheetName = firstTab.textContent.trim();
+        const initialSheetName = firstTab.dataset.sheetName;
         filterPanelsBySheet(initialSheetName);
       }
+    }
+
+    // Update sheet tab checkmarks based on reviewed items
+    function updateSheetTabCheckmarks() {
+      const tabsContainer = document.getElementById('sheet-tabs');
+      if (!tabsContainer || !window.sheetNames) return;
+
+      window.sheetNames.forEach((sheetName, idx) => {
+        const tab = tabsContainer.querySelector(\`[data-sheet="\${idx}"]\`);
+        if (!tab) return;
+
+        // Get all items for this sheet in Extraction panel
+        const sheetItems = document.querySelectorAll(\`#panel-indexed .item[data-sheet="\${sheetName}"]\`);
+        if (sheetItems.length === 0) return;
+
+        // Check if all items are reviewed
+        const allReviewed = Array.from(sheetItems).every(item => item.classList.contains('reviewed'));
+        const checkEl = tab.querySelector('.sheet-tab-check');
+        if (checkEl) {
+          checkEl.style.display = allReviewed ? 'inline' : 'none';
+        }
+      });
     }
 
     // Filter Indexed and Library sections by sheet name
@@ -3980,7 +4299,7 @@ export class WebReviewGenerator {
           const topicBadge = \`<span class="topic-badge">\${escapeHtml(topic)}</span>\`;
 
           return \`
-            <div class="item" data-index="\${idx}" data-cells="\${cells}" data-sheet="\${escapeHtml(sheetName)}" data-label="\${escapeHtml(item.label)}" data-section="\${escapeHtml(section.name || section.title)}" data-topic="\${item.topic || section.topic || ''}">
+            <div class="item\${isEmpty ? ' no-value' : ''}" data-index="\${idx}" data-cells="\${cells}" data-sheet="\${escapeHtml(sheetName)}" data-label="\${escapeHtml(item.label)}" data-section="\${escapeHtml(section.name || section.title)}" data-topic="\${item.topic || section.topic || ''}">
               <div class="item-label">\${escapeHtml(item.label)}\${topicBadge}</div>
               <div class="item-value\${isEmpty ? ' empty' : ''}">\${isEmpty ? '(empty)' : escapeHtml(value)}</div>
               <div class="item-ref">\${sheetName ? sheetName + ': ' : ''}\${cells}</div>
@@ -4085,13 +4404,14 @@ export class WebReviewGenerator {
             const cells = source?.lCell && source?.vCell
               ? \`\${source.lCell} → \${source.vCell}\`
               : (source?.labelCell && source?.valueCell ? \`\${source.labelCell} → \${source.valueCell}\` : '');
+            const isEmpty = !item.value || item.value.trim() === '';
 
             const topicBadge = \`<span class="topic-badge">\${item.topic}</span>\`;
 
             return \`
-              <div class="item" data-index="\${item.idx}" data-cells="\${cells}" data-sheet="\${escapeHtml(sheetName)}" data-label="\${escapeHtml(item.label)}" data-topic="\${item.topic}" data-destination="\${dest}">
+              <div class="item\${isEmpty ? ' no-value' : ''}" data-index="\${item.idx}" data-cells="\${cells}" data-sheet="\${escapeHtml(sheetName)}" data-label="\${escapeHtml(item.label)}" data-topic="\${item.topic}" data-destination="\${dest}">
                 <div class="item-label">\${escapeHtml(item.label)}\${topicBadge}</div>
-                <div class="item-value">\${escapeHtml(item.value || '')}</div>
+                <div class="item-value\${isEmpty ? ' empty' : ''}">\${isEmpty ? '(empty)' : escapeHtml(item.value)}</div>
                 <div class="item-ref">\${sheetName ? sheetName + ': ' : ''}\${cells}</div>
                 <div class="item-actions review-only">
                   <button class="action-btn correct" title="Accept (C)">✓</button>
@@ -4130,12 +4450,34 @@ export class WebReviewGenerator {
     }
 
     function setupEventHandlers() {
-      // Panel toggles
+      // Panel toggles (from toggle buttons)
       document.querySelectorAll('.toggle[data-panel]').forEach(btn => {
         btn.addEventListener('click', () => {
           btn.classList.toggle('active');
-          const panel = document.getElementById('panel-' + btn.dataset.panel);
-          panel?.classList.toggle('visible', btn.classList.contains('active'));
+          const panelName = btn.dataset.panel;
+          const panel = document.getElementById('panel-' + panelName);
+          const headerItem = document.querySelector(\`.panel-header-item[data-panel="\${panelName}"]\`);
+          const isVisible = btn.classList.contains('active');
+          panel?.classList.toggle('visible', isVisible);
+          headerItem?.classList.toggle('active', isVisible);
+          headerItem?.classList.toggle('hidden', !isVisible);
+        });
+      });
+
+      // Panel header clicks to toggle panels
+      document.querySelectorAll('.panel-header-item[data-panel]').forEach(header => {
+        header.addEventListener('click', (e) => {
+          // Don't toggle if clicking on buttons inside
+          if (e.target.closest('.group-btn')) return;
+
+          const panelName = header.dataset.panel;
+          const panel = document.getElementById('panel-' + panelName);
+          const isVisible = panel?.classList.contains('visible');
+
+          // Toggle panel visibility
+          panel?.classList.toggle('visible', !isVisible);
+          header.classList.toggle('active', !isVisible);
+          header.classList.toggle('hidden', isVisible);
         });
       });
 
@@ -4191,18 +4533,6 @@ export class WebReviewGenerator {
         this.classList.toggle('active');
         document.body.classList.toggle('review-mode', this.classList.contains('active'));
       });
-
-      // Sidebar toggle
-      const sidebar = document.getElementById('sidebar');
-      const sidebarOverlay = document.getElementById('sidebar-overlay');
-
-      function toggleSidebar() {
-        sidebar?.classList.toggle('open');
-        sidebarOverlay?.classList.toggle('visible');
-      }
-
-      document.getElementById('sidebar-toggle')?.addEventListener('click', toggleSidebar);
-      sidebarOverlay?.addEventListener('click', toggleSidebar);
 
       // Clear feedback
       document.getElementById('clear-toggle')?.addEventListener('click', async () => {
@@ -4581,53 +4911,118 @@ export class WebReviewGenerator {
         });
       });
 
-      // Panel-level Accept/Reject All
+      // Panel-level Accept/Reject All (only for current sheet)
+      function getVisibleItems(panelId) {
+        // Only get items from visible sections (not filtered out by sheet)
+        const items = [];
+        document.querySelectorAll(\`#\${panelId} .section\`).forEach(section => {
+          if (section.style.display !== 'none') {
+            section.querySelectorAll('.item').forEach(item => items.push(item));
+          }
+        });
+        return items;
+      }
+
       document.getElementById('accept-all-indexed')?.addEventListener('click', () => {
-        const items = document.querySelectorAll('#panel-indexed .item');
+        const items = getVisibleItems('panel-indexed');
         items.forEach(item => {
           item.classList.remove('wrong', 'rejected', 'show-note');
           item.classList.add('reviewed', 'correct', 'accepted');
           logFeedback(item, 'correct');
         });
-        showToast(items.length + ' indexed items accepted');
+        showToast(items.length + ' items accepted');
       });
 
       document.getElementById('reject-all-indexed')?.addEventListener('click', () => {
-        const items = document.querySelectorAll('#panel-indexed .item');
+        const items = getVisibleItems('panel-indexed');
         items.forEach(item => {
           item.classList.remove('correct', 'accepted');
           item.classList.add('reviewed', 'wrong', 'rejected');
           logFeedback(item, 'wrong');
         });
-        showToast(items.length + ' indexed items rejected');
+        showToast(items.length + ' items rejected');
       });
 
       document.getElementById('accept-all-library')?.addEventListener('click', () => {
-        const items = document.querySelectorAll('#panel-library .item');
+        const items = getVisibleItems('panel-library');
         items.forEach(item => {
           item.classList.remove('wrong', 'rejected', 'show-note');
           item.classList.add('reviewed', 'correct', 'accepted');
           logFeedback(item, 'correct');
         });
-        showToast(items.length + ' library items accepted');
+        showToast(items.length + ' items accepted');
       });
 
       document.getElementById('reject-all-library')?.addEventListener('click', () => {
-        const items = document.querySelectorAll('#panel-library .item');
+        const items = getVisibleItems('panel-library');
         items.forEach(item => {
           item.classList.remove('correct', 'accepted');
           item.classList.add('reviewed', 'wrong', 'rejected');
           logFeedback(item, 'wrong');
         });
-        showToast(items.length + ' library items rejected');
+        showToast(items.length + ' items rejected');
       });
 
-      // Topic-level Accept/Reject All in library
+      // Topic-level Accept/Reject All in library (for data-topic buttons)
       document.querySelectorAll('#panel-library .group-btn[data-topic]').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
           const topic = btn.dataset.topic;
           const items = document.querySelectorAll(\`#panel-library .item[data-topic="\${topic}"]\`);
+
+          if (btn.classList.contains('accept-all')) {
+            items.forEach(item => {
+              item.classList.remove('wrong', 'rejected', 'show-note');
+              item.classList.add('reviewed', 'correct', 'accepted');
+              logFeedback(item, 'correct');
+            });
+            showToast(items.length + ' items accepted');
+          } else {
+            items.forEach(item => {
+              item.classList.remove('correct', 'accepted');
+              item.classList.add('reviewed', 'wrong', 'rejected');
+              logFeedback(item, 'wrong');
+            });
+            showToast(items.length + ' items rejected');
+          }
+        });
+      });
+
+      // Destination-level Accept/Reject All in library (for data-destination buttons)
+      document.querySelectorAll('#panel-library .group-btn[data-destination]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const dest = btn.dataset.destination;
+          // Get all items in this destination section
+          const section = btn.closest('.section');
+          const items = section ? Array.from(section.querySelectorAll('.item')) : [];
+
+          if (btn.classList.contains('accept-all')) {
+            items.forEach(item => {
+              item.classList.remove('wrong', 'rejected', 'show-note');
+              item.classList.add('reviewed', 'correct', 'accepted');
+              logFeedback(item, 'correct');
+            });
+            showToast(items.length + ' items accepted');
+          } else {
+            items.forEach(item => {
+              item.classList.remove('correct', 'accepted');
+              item.classList.add('reviewed', 'wrong', 'rejected');
+              logFeedback(item, 'wrong');
+            });
+            showToast(items.length + ' items rejected');
+          }
+        });
+      });
+
+      // Section-level Accept/Reject All in indexed panel (for sections filtered by sheet)
+      document.querySelectorAll('#panel-indexed .section .group-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const section = btn.closest('.section');
+          if (!section || section.style.display === 'none') return;
+
+          const items = Array.from(section.querySelectorAll('.item'));
 
           if (btn.classList.contains('accept-all')) {
             items.forEach(item => {
@@ -4654,6 +5049,27 @@ export class WebReviewGenerator {
       document.querySelectorAll('.section-header').forEach(header => {
         header.addEventListener('click', () => {
           header.closest('.section')?.classList.toggle('collapsed');
+        });
+      });
+
+      // Collapse/Expand all toggle for panels
+      document.getElementById('toggle-collapse-indexed')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const btn = e.currentTarget;
+        const isCollapsed = btn.classList.toggle('collapsed');
+        btn.textContent = isCollapsed ? '▶' : '▼';
+        document.querySelectorAll('#panel-indexed .section').forEach(section => {
+          section.classList.toggle('collapsed', isCollapsed);
+        });
+      });
+
+      document.getElementById('toggle-collapse-library')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const btn = e.currentTarget;
+        const isCollapsed = btn.classList.toggle('collapsed');
+        btn.textContent = isCollapsed ? '▶' : '▼';
+        document.querySelectorAll('#panel-library .section').forEach(section => {
+          section.classList.toggle('collapsed', isCollapsed);
         });
       });
 
@@ -4947,6 +5363,7 @@ export class WebReviewGenerator {
         feedbackLog.push(feedbackItem);
       }
       updateFeedbackCount();
+      updateSheetTabCheckmarks();
 
       // Save to server
       if (serverConnected) {
@@ -5029,6 +5446,9 @@ export class WebReviewGenerator {
 
         const rulesRes = await fetch(API_BASE + '/api/apply-rules', { method: 'POST' });
         if (!rulesRes.ok) throw new Error('Rules failed');
+
+        // Mark tab as completed
+        markTabCompleted(currentQuestionnaire);
 
         showToast('Review complete! Data exported and rules applied.');
       } catch (err) {
@@ -5132,7 +5552,7 @@ export class WebReviewGenerator {
         case '2': document.querySelector('[data-panel="indexed"]')?.click(); break;
         case '3': document.querySelector('[data-panel="library"]')?.click(); break;
         case 'r': case 'R': document.getElementById('review-toggle')?.click(); break;
-        case 'b': case 'B': document.getElementById('sidebar-toggle')?.click(); break;
+        case 'b': case 'B': toggleSidebar(); break;
       }
     });
   </script>

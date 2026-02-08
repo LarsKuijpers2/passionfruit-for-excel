@@ -346,6 +346,28 @@ export class ReviewServer {
       }
     });
 
+    // Open source file
+    this.app.post('/api/open-file/:id', async (req, res) => {
+      try {
+        const { id } = req.params;
+        const { exec } = await import('child_process');
+        const { promisify } = await import('util');
+        const execAsync = promisify(exec);
+
+        // Find the source file
+        const indexedPath = join(this.indexedDir, id + '.yaml');
+        const indexed = parseYaml(await readFile(indexedPath, 'utf-8'));
+        const sourcePath = indexed?.source_file || join('./incoming', indexed?.source || id);
+
+        // Open with default application (works on macOS)
+        await execAsync(`open "${sourcePath}"`);
+        res.json({ success: true, path: sourcePath });
+      } catch (error) {
+        console.error('Error opening file:', error);
+        res.status(500).json({ error: 'Failed to open file' });
+      }
+    });
+
     // Get questionnaire data (structure + indexed + library)
     this.app.get('/api/questionnaire/:id', async (req, res) => {
       try {

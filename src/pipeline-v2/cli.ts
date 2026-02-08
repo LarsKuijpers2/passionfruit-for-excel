@@ -24,6 +24,7 @@ import { QuestionnaireIndexer } from './questionnaire-indexer.js';
 import { AnswerHarvester } from './answer-harvester.js';
 import { ReviewCLI } from './review-cli.js';
 import { WebReviewGenerator } from './web-review-generator.js';
+import { ReviewServer } from './review/server.js';
 
 const program = new Command();
 
@@ -93,14 +94,16 @@ program
   .argument('<file>', 'Questionnaire filename (from stored questionnaires)')
   .option('--dir <dir>', 'Questionnaires directory', './questionnaires')
   .option('--output <dir>', 'Output directory for indexed questionnaires', './indexed')
+  .option('--rules-dir <dir>', 'Rules directory', './rules')
   .action(async (file: string, opts) => {
     try {
       const dir = opts.dir as string || './questionnaires';
       const outputDir = opts.output as string || './indexed';
+      const rulesDir = opts.rulesDir as string || './rules';
 
       console.log('\n📇 Indexing: ' + file + '\n');
 
-      const indexer = new QuestionnaireIndexer(dir);
+      const indexer = new QuestionnaireIndexer(dir, 'eu-central-1', rulesDir);
       const indexed = await indexer.index(file);
 
       console.log('\n📊 Index Summary:');
@@ -140,15 +143,17 @@ program
   .description('Harvest standard + narrative items from indexed questionnaires into answer library')
   .option('--indexed-dir <dir>', 'Indexed questionnaires directory', './indexed')
   .option('--output <file>', 'Output library file', './answer-library.yaml')
+  .option('--rules-dir <dir>', 'Rules directory', './rules')
   .option('--file <name>', 'Harvest from a specific indexed file only')
   .action(async (opts) => {
     try {
       const indexedDir = opts.indexedDir as string || './indexed';
       const outputFile = opts.output as string || './answer-library.yaml';
+      const rulesDir = opts.rulesDir as string || './rules';
 
       console.log('\n🌾 Harvesting reusable items\n');
 
-      const harvester = new AnswerHarvester(indexedDir, outputFile);
+      const harvester = new AnswerHarvester(indexedDir, outputFile, rulesDir);
 
       if (opts.file) {
         console.log('  From: ' + opts.file);
@@ -280,6 +285,62 @@ program
       console.log('\n✅ Generated: ' + outputPath);
       console.log('\n   Open in browser to review:');
       console.log('   open ' + outputPath);
+
+    } catch (error) {
+      console.error('\n❌ Error: ' + (error instanceof Error ? error.message : error));
+      process.exit(1);
+    }
+  });
+
+// =============================================================================
+// REVIEW SERVE - Start review server with auto-save
+// =============================================================================
+
+program
+  .command('serve')
+  .description('Start review server with auto-save (replaces manual export)')
+  .argument('<file>', 'Questionnaire filename')
+  .option('--questionnaires-dir <dir>', 'Questionnaires directory', './questionnaires')
+  .option('--indexed-dir <dir>', 'Indexed questionnaires directory', './indexed')
+  .option('--library <file>', 'Answer library file', './answer-library.yaml')
+  .option('--review-dir <dir>', 'Review output directory', './review')
+  .option('--port <port>', 'Server port', '3456')
+  .option('--no-open', 'Do not open browser automatically')
+  .action(async (file: string, opts) => {
+    try {
+      const questionnairesDir = opts.questionnairesDir as string || './questionnaires';
+      const indexedDir = opts.indexedDir as string || './indexed';
+      const libraryPath = opts.library as string || './answer-library.yaml';
+      const reviewDir = opts.reviewDir as string || './review';
+      const port = parseInt(opts.port as string || '3456', 10);
+
+      // Normalize filename
+      const baseName = file.replace(/\.(xlsx?|json|yaml)$/i, '');
+      const safeName = baseName.replace(/[^a-zA-Z0-9-_]/g, '_');
+
+      // Find the files
+      const structurePath = join(questionnairesDir, `${safeName}.json`);
+      const indexedPath = join(indexedDir, `${safeName}.yaml`);
+
+      console.log('\n🚀 Starting review server\n');
+      console.log('  Questionnaire: ' + file);
+      console.log('  Port: ' + port);
+
+      // Generate the review HTML first
+      console.log('\n  Generating review interface...');
+      const generator = new WebReviewGenerator(reviewDir);
+      const htmlPath = await generator.generate(structurePath, indexedPath, libraryPath);
+      const htmlFilename = htmlPath.split('/').pop() || '';
+      console.log('  ✅ Generated: ' + htmlPath);
+
+      // Start server
+      const server = new ReviewServer(file, { port, reviewDir });
+      await server.start();
+
+      // Open browser
+      if (opts.open !== false) {
+        server.openBrowser(htmlFilename);
+      }
 
     } catch (error) {
       console.error('\n❌ Error: ' + (error instanceof Error ? error.message : error));

@@ -12,6 +12,7 @@ import { randomUUID } from 'crypto';
 import { franc } from 'franc';
 import { VisualAnalyzer, type SheetAnalysis, type DetectedItem, type ItemType, type ItemLevel } from './visual-analyzer.js';
 import type { QuestionnaireStructure } from './excel-structure.js';
+import { RulesManager } from './rules/rules-manager.js';
 
 // =============================================================================
 // TYPES
@@ -102,10 +103,12 @@ function normalizeTopic(sectionTitle: string): string {
 export class QuestionnaireIndexer {
   private storageDir: string;
   private analyzer: VisualAnalyzer;
+  private rulesManager: RulesManager;
 
-  constructor(storageDir: string = './questionnaires', region: string = 'eu-central-1') {
+  constructor(storageDir: string = './questionnaires', region: string = 'eu-central-1', rulesDir: string = './rules') {
     this.storageDir = storageDir;
     this.analyzer = new VisualAnalyzer(region);
+    this.rulesManager = new RulesManager(rulesDir);
   }
 
   /**
@@ -117,6 +120,13 @@ export class QuestionnaireIndexer {
     const filepath = join(this.storageDir, `${jsonName}.json`);
     const content = await readFile(filepath, 'utf-8');
     const structure: QuestionnaireStructure = JSON.parse(content);
+
+    // Load rules
+    const rules = await this.rulesManager.loadIndexRules();
+    const ruleStats = this.rulesManager.getStats();
+    if (ruleStats.index.exclude > 0 || ruleStats.index.corrections > 0) {
+      console.log(`  Loaded ${ruleStats.index.exclude} exclude + ${ruleStats.index.corrections} correction rules`);
+    }
 
     console.log(`  Analyzing ${structure.sheets.length} sheets with Claude...`);
 
@@ -145,9 +155,19 @@ export class QuestionnaireIndexer {
         const indexedItems: IndexedItem[] = [];
 
         for (const item of items) {
+          // Check if item should be excluded by rules
+          if (this.rulesManager.shouldExcludeFromIndex({
+            label: item.label,
+            lCell: item.lCell,
+            vCell: item.vCell,
+            ref: item.ref,
+          })) {
+            continue; // Skip excluded items
+          }
+
           const lang = this.detectLanguage(item.label + ' ' + (item.value || ''));
 
-          const indexedItem: IndexedItem = {
+          let indexedItem: IndexedItem = {
             type: item.type,
             label: item.label,
             value: item.value && item.value !== 'EMPTY' ? item.value : undefined,
@@ -162,6 +182,9 @@ export class QuestionnaireIndexer {
             if (item.lCell) indexedItem.lCell = item.lCell;
             if (item.vCell) indexedItem.vCell = item.vCell;
           }
+
+          // Apply corrections from rules
+          indexedItem = this.rulesManager.applyIndexCorrections(indexedItem);
 
           indexedItems.push(indexedItem);
           allItems.push(indexedItem);

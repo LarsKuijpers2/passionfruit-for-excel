@@ -717,6 +717,17 @@ export class WebReviewGenerator {
       transition: opacity 0.2s;
     }
     .toast.visible { opacity: 1; }
+
+    /* Connection status */
+    .connection-status {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+    .connection-status.connected { background: #22c55e; }
+    .connection-status.disconnected { background: #ef4444; }
+    .connection-status.checking { background: #f59e0b; }
   </style>
 </head>
 <body>
@@ -726,6 +737,7 @@ export class WebReviewGenerator {
       <div class="meta">Indexed: ${indexed.indexed} | Language: ${indexed.language.toUpperCase()} | ${indexed.stats.total} items</div>
     </div>
     <div class="toggles">
+      <span id="connection-status" class="connection-status checking" title="Checking server connection..."></span>
       <button class="toggle active" data-panel="original" title="Toggle Original (1)">Original</button>
       <button class="toggle active" data-panel="indexed" title="Toggle Indexed (2)">Indexed</button>
       <button class="toggle" data-panel="library" title="Toggle Library (3)">Library</button>
@@ -734,7 +746,7 @@ export class WebReviewGenerator {
       <button class="toggle" id="sync-toggle" title="Sync panels (S)">
         <span class="sync-icon">⟷</span> Sync
       </button>
-      <button class="toggle" id="export-toggle" title="Export all feedback files">💾 Save</button>
+      <button class="toggle" id="export-toggle" title="Apply rules from feedback">Apply Rules</button>
       <button class="toggle" id="clear-toggle" title="Clear all feedback">Clear</button>
       <button class="toggle" id="help-toggle" title="Show shortcuts (?)">?</button>
     </div>
@@ -843,40 +855,86 @@ export class WebReviewGenerator {
     const libraryItems = Array.from(document.querySelectorAll('#panel-library .item'));
     const allItems = [...indexedItems, ...libraryItems];
 
-    // Storage key for this file
-    const STORAGE_KEY = 'review_${structure.source.filename.replace(/[^a-zA-Z0-9]/g, '_')}';
+    // Server API base URL (same origin when served by review server)
+    const API_BASE = window.location.port === '3456' ? '' : 'http://localhost:3456';
+    let serverConnected = false;
 
-    // Load persisted state on page load
-    function loadPersistedState() {
+    // Check server connection
+    async function checkServerConnection() {
       try {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (!saved) return;
+        const res = await fetch(API_BASE + '/api/health');
+        serverConnected = res.ok;
+        updateConnectionStatus();
+        return serverConnected;
+      } catch {
+        serverConnected = false;
+        updateConnectionStatus();
+        return false;
+      }
+    }
 
-        const data = JSON.parse(saved);
-        window.feedbackLog = data.feedbackLog || [];
+    // Update connection status indicator
+    function updateConnectionStatus() {
+      const indicator = document.getElementById('connection-status');
+      if (indicator) {
+        indicator.className = 'connection-status ' + (serverConnected ? 'connected' : 'disconnected');
+        indicator.title = serverConnected ? 'Connected to server (auto-save enabled)' : 'Server not connected (using localStorage fallback)';
+      }
+    }
 
-        // Restore item states
-        data.feedbackLog.forEach(feedback => {
-          const item = findItemByKey(feedback.cells, feedback.label, feedback.panel);
-          if (item) {
-            item.classList.add('reviewed', feedback.action);
-            if (feedback.note) {
-              const noteDisplay = item.querySelector('.item-note-display');
-              if (noteDisplay) {
-                noteDisplay.textContent = feedback.note;
-                item.classList.add('has-note');
+    // Load persisted state from server or localStorage
+    async function loadPersistedState() {
+      try {
+        // Try server first
+        if (await checkServerConnection()) {
+          const res = await fetch(API_BASE + '/api/feedback');
+          if (res.ok) {
+            const data = await res.json();
+            window.feedbackLog = [];
+
+            // Restore from server data
+            const allFeedback = [...(data.index || []), ...(data.library || [])];
+            allFeedback.forEach(feedback => {
+              const panel = data.library?.includes(feedback) ? 'library' : 'indexed';
+              const item = findItemByKey(feedback.cells, feedback.label, panel);
+              if (item) {
+                item.classList.add('reviewed', feedback.action);
+                if (feedback.reason) {
+                  const noteDisplay = item.querySelector('.item-note-display');
+                  if (noteDisplay) {
+                    noteDisplay.textContent = feedback.reason;
+                    item.classList.add('has-note');
+                  }
+                }
+                if (feedback.editedLabel) {
+                  const labelEl = item.querySelector('.item-label');
+                  if (labelEl) labelEl.textContent = feedback.editedLabel;
+                }
+                if (feedback.editedValue) {
+                  const valueEl = item.querySelector('.item-value');
+                  if (valueEl) valueEl.textContent = feedback.editedValue;
+                }
+                window.feedbackLog.push({ ...feedback, panel });
               }
-            }
-            if (feedback.editedLabel) {
-              const labelEl = item.querySelector('.item-label');
-              if (labelEl) labelEl.textContent = feedback.editedLabel;
-            }
-            if (feedback.editedValue) {
-              const valueEl = item.querySelector('.item-value');
-              if (valueEl) valueEl.textContent = feedback.editedValue;
-            }
+            });
+
+            console.log('Loaded', allFeedback.length, 'feedback items from server');
           }
-        });
+        } else {
+          // Fallback to localStorage
+          const saved = localStorage.getItem('review_fallback');
+          if (saved) {
+            const data = JSON.parse(saved);
+            window.feedbackLog = data.feedbackLog || [];
+            data.feedbackLog.forEach(feedback => {
+              const item = findItemByKey(feedback.cells, feedback.label, feedback.panel);
+              if (item) {
+                item.classList.add('reviewed', feedback.action);
+              }
+            });
+            console.log('Loaded', data.feedbackLog.length, 'feedback items from localStorage (offline mode)');
+          }
+        }
 
         // Update all section statuses
         document.querySelectorAll('.section, .library-topic').forEach(section => {
@@ -885,7 +943,6 @@ export class WebReviewGenerator {
         });
 
         updateFeedbackCount();
-        console.log('Restored', data.feedbackLog.length, 'feedback items');
       } catch (e) {
         console.error('Failed to load persisted state:', e);
       }
@@ -903,18 +960,36 @@ export class WebReviewGenerator {
       return null;
     }
 
-    // Save state to localStorage
-    function saveState() {
+    // Save feedback to server (or localStorage fallback)
+    async function saveFeedback(panel, feedbackItem) {
       try {
-        const data = {
-          savedAt: new Date().toISOString(),
-          source: '${structure.source.filename}',
-          feedbackLog: window.feedbackLog || []
-        };
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        if (serverConnected) {
+          const res = await fetch(API_BASE + '/api/feedback', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ panel, item: feedbackItem })
+          });
+          if (!res.ok) throw new Error('Server save failed');
+          console.log('Saved to server:', feedbackItem.label);
+        } else {
+          // Fallback to localStorage
+          window.feedbackLog = window.feedbackLog || [];
+          window.feedbackLog.push({ ...feedbackItem, panel });
+          localStorage.setItem('review_fallback', JSON.stringify({
+            savedAt: new Date().toISOString(),
+            feedbackLog: window.feedbackLog
+          }));
+          console.log('Saved to localStorage (offline):', feedbackItem.label);
+        }
       } catch (e) {
-        console.error('Failed to save state:', e);
+        console.error('Failed to save feedback:', e);
+        showToast('Failed to save - check server connection');
       }
+    }
+
+    // Legacy saveState function for compatibility
+    function saveState() {
+      // No-op - saving now happens per-item via saveFeedback()
     }
 
     // Utility: show toast
@@ -1165,19 +1240,19 @@ export class WebReviewGenerator {
     });
 
     // Log feedback
-    function logFeedback(item, action, note = '') {
-      const feedback = {
-        action,
+    async function logFeedback(item, action, note = '') {
+      const panel = item.closest('.panel')?.id?.replace('panel-', '') || 'indexed';
+      const feedbackItem = {
+        action: action === 'correct' ? 'accepted' : action === 'wrong' ? 'rejected' : action,
         label: item.querySelector('.item-label')?.textContent,
         value: item.querySelector('.item-value')?.textContent,
         cells: item.dataset.cells,
         topic: item.dataset.topic,
         section: item.dataset.section,
-        panel: item.closest('.panel')?.id?.replace('panel-', ''),
-        note: note || undefined,
-        timestamp: new Date().toISOString()
+        reason: note || undefined,
+        reviewedAt: new Date().toISOString()
       };
-      console.log('Feedback:', feedback);
+      console.log('Feedback:', feedbackItem);
 
       // Show note persistently if provided
       if (note) {
@@ -1190,10 +1265,12 @@ export class WebReviewGenerator {
 
       // Store in session for potential export
       window.feedbackLog = window.feedbackLog || [];
-      window.feedbackLog.push(feedback);
+      window.feedbackLog.push({ ...feedbackItem, panel });
       updateFeedbackCount();
       updateSectionStatus(item);
-      saveState();
+
+      // Save to server (or localStorage fallback)
+      await saveFeedback(panel, feedbackItem);
     }
 
     // Edit item (inline editing)
@@ -1221,7 +1298,7 @@ export class WebReviewGenerator {
       item.querySelector('.edit-label').focus();
 
       // Save handler
-      editActions.querySelector('.save').addEventListener('click', () => {
+      editActions.querySelector('.save').addEventListener('click', async () => {
         const newLabel = item.querySelector('.edit-label').value;
         const newValue = item.querySelector('.edit-value').value;
 
@@ -1234,7 +1311,8 @@ export class WebReviewGenerator {
         editActions.remove();
 
         // Log as edited
-        const feedback = {
+        const panel = item.closest('.panel')?.id?.replace('panel-', '') || 'indexed';
+        const feedbackItem = {
           action: 'edited',
           label: originalLabel,
           value: originalValue,
@@ -1243,14 +1321,13 @@ export class WebReviewGenerator {
           cells: item.dataset.cells,
           section: item.dataset.section,
           topic: item.dataset.topic,
-          panel: item.closest('.panel')?.id?.replace('panel-', ''),
-          timestamp: new Date().toISOString()
+          reviewedAt: new Date().toISOString()
         };
         window.feedbackLog = window.feedbackLog || [];
-        window.feedbackLog.push(feedback);
+        window.feedbackLog.push({ ...feedbackItem, panel });
         updateFeedbackCount();
         updateSectionStatus(item);
-        saveState();
+        await saveFeedback(panel, feedbackItem);
         showToast('Item edited');
       });
 
@@ -1275,12 +1352,13 @@ export class WebReviewGenerator {
       return str.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     }
 
-    // Update feedback count in export button
+    // Update feedback count in apply rules button
     function updateFeedbackCount() {
       const count = window.feedbackLog?.length || 0;
       const exportBtn = document.getElementById('export-toggle');
-      exportBtn.textContent = count > 0 ? 'Export (' + count + ')' : 'Export';
+      exportBtn.textContent = count > 0 ? 'Apply Rules (' + count + ')' : 'Apply Rules';
       if (count > 0) exportBtn.classList.add('has-feedback');
+      else exportBtn.classList.remove('has-feedback');
     }
 
     // Update section status (e.g., "5/10 ✓")
@@ -1335,123 +1413,59 @@ export class WebReviewGenerator {
       });
     });
 
-    // Export feedback - generates multiple structured files
-    document.getElementById('export-toggle').addEventListener('click', exportAll);
+    // Apply rules from feedback
+    document.getElementById('export-toggle').addEventListener('click', applyRules);
 
-    function exportAll() {
+    async function applyRules() {
       if (!window.feedbackLog || window.feedbackLog.length === 0) {
-        showToast('No feedback to export');
+        showToast('No feedback to apply');
         return;
       }
 
-      const timestamp = new Date().toISOString();
-      const dateStr = timestamp.split('T')[0];
-      const sourceFile = '${structure.source.filename}';
-      const safeName = sourceFile.replace(/[^a-zA-Z0-9]/g, '_');
+      if (!serverConnected) {
+        showToast('Server not connected - cannot apply rules');
+        return;
+      }
 
-      // Group feedback
-      const accepted = window.feedbackLog.filter(f => f.action === 'correct');
-      const rejected = window.feedbackLog.filter(f => f.action === 'wrong');
-      const edited = window.feedbackLog.filter(f => f.action === 'edited');
+      try {
+        const res = await fetch(API_BASE + '/api/apply-rules', { method: 'POST' });
+        if (!res.ok) throw new Error('Failed to apply rules');
 
-      // Single comprehensive review file per questionnaire
-      const review = {
-        meta: {
-          source: sourceFile,
-          reviewedAt: timestamp,
-          version: '1.0'
-        },
-        summary: {
-          total: window.feedbackLog.length,
-          accepted: accepted.length,
-          rejected: rejected.length,
-          edited: edited.length
-        },
-        index: {
-          accepted: accepted.filter(f => f.panel === 'indexed').map(f => ({
-            label: f.label,
-            value: f.value,
-            cells: f.cells,
-            section: f.section,
-            reviewedAt: f.timestamp
-          })),
-          rejected: rejected.filter(f => f.panel === 'indexed').map(f => ({
-            label: f.label,
-            value: f.value,
-            cells: f.cells,
-            section: f.section,
-            reason: f.note || null,
-            reviewedAt: f.timestamp
-          })),
-          edited: edited.filter(f => f.panel === 'indexed').map(f => ({
-            original: { label: f.label, value: f.value },
-            corrected: {
-              label: f.editedLabel || f.label,
-              value: f.editedValue || f.value
-            },
-            cells: f.cells,
-            section: f.section,
-            reviewedAt: f.timestamp
-          }))
-        },
-        library: {
-          accepted: accepted.filter(f => f.panel === 'library').map(f => ({
-            label: f.label,
-            value: f.value,
-            topic: f.topic,
-            cells: f.cells,
-            reviewedAt: f.timestamp
-          })),
-          rejected: rejected.filter(f => f.panel === 'library').map(f => ({
-            label: f.label,
-            value: f.value,
-            topic: f.topic,
-            cells: f.cells,
-            reason: f.note || null,
-            reviewedAt: f.timestamp
-          })),
-          edited: edited.filter(f => f.panel === 'library').map(f => ({
-            original: { label: f.label, value: f.value },
-            corrected: {
-              label: f.editedLabel || f.label,
-              value: f.editedValue || f.value
-            },
-            topic: f.topic,
-            cells: f.cells,
-            reviewedAt: f.timestamp
-          }))
-        }
-      };
+        const result = await res.json();
+        const indexCount = (result.rules?.indexRules?.exclude?.length || 0) + (result.rules?.indexRules?.corrections?.length || 0);
+        const harvestCount = (result.rules?.harvestRules?.exclude?.length || 0) + (result.rules?.harvestRules?.corrections?.length || 0);
 
-      // Download single review file
-      downloadJSON(review, safeName + '_review_' + dateStr + '.json');
-      showToast('Saved review for ' + sourceFile);
-    }
-
-    function downloadJSON(data, filename) {
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      a.click();
-      URL.revokeObjectURL(url);
+        showToast('Applied ' + indexCount + ' index + ' + harvestCount + ' harvest rules');
+      } catch (e) {
+        console.error('Failed to apply rules:', e);
+        showToast('Failed to apply rules - check console');
+      }
     }
 
     // Clear all feedback
-    document.getElementById('clear-toggle').addEventListener('click', () => {
+    document.getElementById('clear-toggle').addEventListener('click', async () => {
       if (!window.feedbackLog || window.feedbackLog.length === 0) {
         showToast('Nothing to clear');
         return;
       }
 
       if (confirm('Clear all ' + window.feedbackLog.length + ' feedback items? This cannot be undone.')) {
+        // Clear on server if connected
+        if (serverConnected) {
+          try {
+            await fetch(API_BASE + '/api/feedback', { method: 'DELETE' });
+          } catch (e) {
+            console.error('Failed to clear on server:', e);
+          }
+        }
+
+        // Clear local state
         window.feedbackLog = [];
-        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem('review_fallback');
 
         // Reset all item states
         document.querySelectorAll('.item').forEach(item => {
-          item.classList.remove('reviewed', 'correct', 'wrong', 'edited', 'has-note');
+          item.classList.remove('reviewed', 'correct', 'wrong', 'accepted', 'rejected', 'edited', 'has-note');
           const noteDisplay = item.querySelector('.item-note-display');
           if (noteDisplay) noteDisplay.textContent = '';
         });
@@ -1468,12 +1482,9 @@ export class WebReviewGenerator {
       }
     });
 
-    // Auto-save reminder on page unload
-    window.addEventListener('beforeunload', (e) => {
-      if (window.feedbackLog && window.feedbackLog.length > 0) {
-        e.preventDefault();
-        e.returnValue = 'You have unsaved feedback. Export before leaving?';
-      }
+    // Page unload - no warning needed since we auto-save
+    window.addEventListener('beforeunload', () => {
+      // Auto-save is enabled, no need to warn
     });
 
     // Keyboard shortcuts

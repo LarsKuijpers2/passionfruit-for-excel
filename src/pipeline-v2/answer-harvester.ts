@@ -13,6 +13,7 @@ import { stringify as stringifyYaml, parse as parseYaml } from 'yaml';
 import { randomUUID } from 'crypto';
 import type { IndexedQuestionnaire, IndexedItem, IndexedSection, Language } from './questionnaire-indexer.js';
 import type { ItemType, ItemLevel } from './visual-analyzer.js';
+import { RulesManager } from './rules/rules-manager.js';
 
 // =============================================================================
 // TYPES
@@ -62,16 +63,29 @@ export interface AnswerLibrary {
 export class AnswerHarvester {
   private indexedDir: string;
   private libraryPath: string;
+  private rulesManager: RulesManager;
+  private rulesLoaded: boolean = false;
 
-  constructor(indexedDir: string = './indexed', libraryPath: string = './answer-library.yaml') {
+  constructor(indexedDir: string = './indexed', libraryPath: string = './answer-library.yaml', rulesDir: string = './rules') {
     this.indexedDir = indexedDir;
     this.libraryPath = libraryPath;
+    this.rulesManager = new RulesManager(rulesDir);
   }
 
   /**
    * Harvest reusable items from an indexed questionnaire
    */
   async harvest(indexedFile: string): Promise<HarvestedItem[]> {
+    // Load rules once
+    if (!this.rulesLoaded) {
+      await this.rulesManager.loadHarvestRules();
+      const ruleStats = this.rulesManager.getStats();
+      if (ruleStats.harvest.exclude > 0 || ruleStats.harvest.corrections > 0) {
+        console.log(`  Loaded ${ruleStats.harvest.exclude} exclude + ${ruleStats.harvest.corrections} correction rules`);
+      }
+      this.rulesLoaded = true;
+    }
+
     const filepath = join(this.indexedDir, indexedFile);
     const content = await readFile(filepath, 'utf-8');
     const indexed: IndexedQuestionnaire = parseYaml(content);
@@ -90,7 +104,15 @@ export class AnswerHarvester {
           continue;
         }
 
-        const harvestedItem: HarvestedItem = {
+        // Check if item should be excluded by rules
+        if (this.rulesManager.shouldExcludeFromHarvest({
+          label: item.label,
+          topic: section.topic,
+        })) {
+          continue; // Skip excluded items
+        }
+
+        let harvestedItem: HarvestedItem = {
           id: randomUUID().split('-')[0],
           type: item.type,
           label: item.label,
@@ -106,6 +128,9 @@ export class AnswerHarvester {
             harvestedAt: new Date().toISOString().split('T')[0],
           },
         };
+
+        // Apply corrections from rules
+        harvestedItem = this.rulesManager.applyHarvestCorrections(harvestedItem);
 
         harvested.push(harvestedItem);
       }

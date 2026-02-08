@@ -1434,7 +1434,7 @@
         }).join('');
 
         return `
-          <div class="section" data-section="${sIdx}" data-sheet="${escapeHtml(sheetName)}">
+          <div class="section" data-section="${sIdx}" data-sheet="${escapeHtml(sheetName)}" data-topic="${section.topic || 'general'}">
             <div class="section-header">
               <div class="section-title">${escapeHtml(section.name || section.title)}${sheetName ? ' <span style="opacity:0.5;font-weight:normal">(' + escapeHtml(sheetName) + ')</span>' : ''}</div>
               <div class="section-meta">

@@ -264,6 +264,8 @@ export class PassionfruitAPIClient {
 
   /**
    * Create a new answer
+   *
+   * Note: entities and evidences arrays are required by the API (can be empty)
    */
   async createAnswer(answer: {
     question: string;
@@ -272,11 +274,19 @@ export class PassionfruitAPIClient {
     entities?: number[];
     evidences?: number[];
   }): Promise<AnswerResponse> {
-    return this.request('POST', '/api/v2/answers/', answer);
+    // Ensure entities and evidences are always provided (API requires them)
+    const payload = {
+      ...answer,
+      entities: answer.entities ?? [],
+      evidences: answer.evidences ?? [],
+    };
+    return this.request('POST', '/api/v2/answers/', payload);
   }
 
   /**
    * Update an existing answer
+   *
+   * Note: entities and evidences arrays are required by the API
    */
   async updateAnswer(id: number, answer: Partial<{
     question: string;
@@ -285,7 +295,13 @@ export class PassionfruitAPIClient {
     entities?: number[];
     evidences?: number[];
   }>): Promise<AnswerResponse> {
-    return this.request('PUT', `/api/v2/answers/${id}`, answer);
+    // Ensure entities and evidences are always provided (API requires them)
+    const payload = {
+      ...answer,
+      entities: answer.entities ?? [],
+      evidences: answer.evidences ?? [],
+    };
+    return this.request('PUT', `/api/v2/answers/${id}`, payload);
   }
 
   /**

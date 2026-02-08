@@ -12,6 +12,7 @@ import { join, dirname, basename } from 'path';
 import { existsSync } from 'fs';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
 import { exec } from 'child_process';
+import { BedrockRuntimeClient, InvokeModelCommand } from '@aws-sdk/client-bedrock-runtime';
 
 // Types
 export interface FeedbackItem {
@@ -47,6 +48,40 @@ export interface ReviewStatus {
   pending: number;
 }
 
+/** Annotation request - cells selected + user instruction */
+export interface AnnotationRequest {
+  cells: Array<{
+    id: string;       // e.g., "B10"
+    value: string;    // cell content
+    row: number;
+    col: string;
+  }>;
+  instruction: string;
+  sheetName: string;
+  questionnaireId: string;
+  sections?: Array<{
+    name: string;
+    topic: string;
+    rowRange?: string;
+  }>;
+}
+
+/** Suggested change from Claude */
+export interface SuggestedChange {
+  action: 'create' | 'update' | 'merge' | 'split' | 'delete';
+  description: string;
+  items: Array<{
+    label: string;
+    value: string;
+    lCell?: string;
+    vCell?: string;
+    section?: string;  // Section name to add to
+    topic?: string;
+    level?: string;
+  }>;
+  reasoning: string;
+}
+
 // Server class
 export class ReviewServer {
   private app: express.Application;
@@ -55,11 +90,17 @@ export class ReviewServer {
   private reviewDir: string;
   private feedbackPath: string;
   private feedback: FeedbackData;
+  private bedrockClient: BedrockRuntimeClient;
+  private modelId: string;
 
   constructor(questionnaire: string, options: { port?: number; reviewDir?: string } = {}) {
     this.questionnaire = questionnaire;
     this.port = options.port || 3456;
     this.reviewDir = options.reviewDir || './review';
+
+    // Initialize Bedrock client for Claude annotations
+    this.bedrockClient = new BedrockRuntimeClient({ region: process.env.AWS_REGION || 'eu-central-1' });
+    this.modelId = 'eu.anthropic.claude-sonnet-4-20250514-v1:0';
 
     // Create safe folder name from questionnaire
     const safeName = questionnaire.replace(/[^a-zA-Z0-9-_]/g, '_');
@@ -289,6 +330,84 @@ export class ReviewServer {
       } catch (error) {
         console.error('Error loading questionnaire data:', error);
         res.status(500).json({ error: 'Failed to load questionnaire data' });
+      }
+    });
+
+    // Annotate cells with Claude AI
+    this.app.post('/api/annotate', async (req, res) => {
+      try {
+        const { cells, instruction, sheetName, questionnaireId } = req.body as AnnotationRequest;
+
+        if (!cells || cells.length === 0) {
+          return res.status(400).json({ error: 'No cells selected' });
+        }
+        if (!instruction || instruction.trim() === '') {
+          return res.status(400).json({ error: 'No instruction provided' });
+        }
+
+        console.log(`\nAnnotation request: ${cells.length} cells, instruction: "${instruction}"`);
+
+        // Load indexed data to get sections context
+        let sections: AnnotationRequest['sections'] = [];
+        if (questionnaireId) {
+          try {
+            const data = await this.loadQuestionnaireData(questionnaireId);
+            if (data.indexed?.sections) {
+              sections = data.indexed.sections.map((s: any) => ({
+                name: s.name || s.title,
+                topic: s.topic || 'general',
+                sheet: s.sheet,
+                rowRange: s.startRow && s.endRow ? `${s.startRow}-${s.endRow}` : undefined
+              }));
+            }
+          } catch (e) {
+            console.log('Could not load sections context:', e);
+          }
+        }
+
+        const suggestion = await this.processAnnotation({ cells, instruction, sheetName, questionnaireId, sections });
+        res.json({ success: true, suggestion });
+      } catch (error) {
+        console.error('Error processing annotation:', error);
+        res.status(500).json({ error: 'Failed to process annotation' });
+      }
+    });
+
+    // Apply a suggested change from annotation
+    this.app.post('/api/annotate/apply', async (req, res) => {
+      try {
+        const { suggestion, questionnaireId } = req.body;
+
+        if (!suggestion || !suggestion.items) {
+          return res.status(400).json({ error: 'No suggestion to apply' });
+        }
+
+        // Apply the suggestion by adding items to feedback as 'created'
+        const appliedItems: FeedbackItem[] = [];
+        for (const item of suggestion.items) {
+          const feedbackItem: FeedbackItem = {
+            id: `annotation_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+            action: 'accepted',
+            label: item.label,
+            value: item.value,
+            cells: item.lCell && item.vCell ? `${item.lCell} → ${item.vCell}` : item.lCell,
+            section: item.section,
+            topic: item.topic,
+            reason: `Created via annotation: ${suggestion.description}`,
+            reviewedAt: new Date().toISOString()
+          };
+
+          this.feedback.index.push(feedbackItem);
+          appliedItems.push(feedbackItem);
+        }
+
+        this.feedback.meta.lastUpdatedAt = new Date().toISOString();
+        await this.saveFeedback();
+
+        res.json({ success: true, applied: appliedItems.length });
+      } catch (error) {
+        console.error('Error applying annotation:', error);
+        res.status(500).json({ error: 'Failed to apply annotation' });
       }
     });
 
@@ -645,6 +764,134 @@ export class ReviewServer {
       indexed,
       library,
       feedback
+    };
+  }
+
+  /**
+   * Process an annotation request using Claude
+   */
+  private async processAnnotation(request: AnnotationRequest): Promise<SuggestedChange> {
+    const { cells, instruction, sheetName, sections } = request;
+
+    // Build a representation of the selected cells
+    const cellsDescription = cells.map(c => `${c.id}: "${c.value}"`).join('\n');
+
+    // Build sections context
+    let sectionsContext = '';
+    if (sections && sections.length > 0) {
+      sectionsContext = `\n## Existing Sections in this questionnaire:
+${sections.map(s => `- "${s.name}" (topic: ${s.topic}${s.rowRange ? `, rows ${s.rowRange}` : ''})`).join('\n')}
+
+You MUST assign each item to one of these existing sections based on the cell row numbers and content.
+`;
+    }
+
+    const prompt = `You are helping a user organize data extracted from an Excel questionnaire.
+
+## Selected Cells (from sheet "${sheetName || 'Unknown'}"):
+${cellsDescription}
+${sectionsContext}
+## User Instruction:
+${instruction}
+
+## Task:
+Interpret the user's instruction and suggest how to structure this data.
+The data will be stored as label/value pairs for future auto-filling of similar questionnaires.
+
+Common actions:
+- "create": Create new label/value item(s) from the selected cells
+- "merge": Combine multiple cells into one item
+- "split": Split one cell into multiple items
+- "update": Change how an existing item is labeled/stored
+
+Respond in this exact JSON format:
+{
+  "action": "create|merge|split|update|delete",
+  "description": "Brief description of what will be done",
+  "items": [
+    {
+      "label": "The label/question (human-readable)",
+      "value": "The value/answer",
+      "lCell": "Cell reference for label (e.g., B10)",
+      "vCell": "Cell reference for value (e.g., C10)",
+      "section": "Name of the section this belongs to (must match an existing section name)",
+      "topic": "Topic category (company, contacts, certifications, financial, quality, sustainability, other)",
+      "level": "standard|narrative|product"
+    }
+  ],
+  "reasoning": "Explanation of why this interpretation makes sense"
+}
+
+Only respond with the JSON, no other text.`;
+
+    try {
+      const response = await this.bedrockClient.send(new InvokeModelCommand({
+        modelId: this.modelId,
+        contentType: 'application/json',
+        accept: 'application/json',
+        body: JSON.stringify({
+          anthropic_version: 'bedrock-2023-05-31',
+          max_tokens: 2000,
+          messages: [{
+            role: 'user',
+            content: prompt
+          }]
+        })
+      }));
+
+      const responseBody = JSON.parse(new TextDecoder().decode(response.body));
+      const text = responseBody.content[0].text;
+
+      // Parse the JSON response
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) {
+        throw new Error('No JSON found in response');
+      }
+
+      const suggestion = JSON.parse(jsonMatch[0]) as SuggestedChange;
+      console.log('Claude suggestion:', JSON.stringify(suggestion, null, 2));
+
+      return suggestion;
+    } catch (error) {
+      console.error('Error calling Claude:', error);
+      // Return a fallback suggestion based on basic interpretation
+      return this.createFallbackSuggestion(cells, instruction);
+    }
+  }
+
+  /**
+   * Create a fallback suggestion when Claude call fails
+   */
+  private createFallbackSuggestion(cells: AnnotationRequest['cells'], instruction: string): SuggestedChange {
+    // Simple heuristic: if 2 cells, assume first is label, second is value
+    if (cells.length === 2) {
+      return {
+        action: 'create',
+        description: 'Create item from selected cells (fallback)',
+        items: [{
+          label: cells[0].value,
+          value: cells[1].value,
+          lCell: cells[0].id,
+          vCell: cells[1].id,
+          topic: 'other',
+          level: 'standard'
+        }],
+        reasoning: 'Claude API unavailable - using simple label/value assumption'
+      };
+    }
+
+    // Multiple cells: create separate items or note for manual review
+    return {
+      action: 'create',
+      description: 'Manual review needed',
+      items: cells.map(c => ({
+        label: c.value.substring(0, 50),
+        value: c.value,
+        lCell: c.id,
+        topic: 'other',
+        level: 'standard'
+      })),
+      reasoning: 'Claude API unavailable - cells listed for manual organization'
     };
   }
 

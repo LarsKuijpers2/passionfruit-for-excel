@@ -2670,30 +2670,40 @@ export class WebReviewGenerator {
     .section-items {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 0;
       padding-left: 12px;
+    }
+    .section-items .item:last-child {
+      border-bottom: none;
     }
     .section.collapsed .section-items { display: none; }
 
     .item {
-      padding: 12px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
+      padding: 8px 12px;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: background 0.1s ease;
     }
-    .item:hover { border-color: var(--muted-foreground); }
+    .item:hover { background: var(--muted); }
     .item.selected {
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 1px #3b82f6;
+      background: rgba(139, 92, 246, 0.15);
+      border-left: 3px solid #8b5cf6;
+      padding-left: 9px;
+    }
+    .item.selected:hover {
+      background: rgba(139, 92, 246, 0.25);
     }
     .item.reviewed.correct, .item.reviewed.accepted {
       border-left: 3px solid #22c55e;
+      padding-left: 9px;
       background: rgba(34, 197, 94, 0.05);
     }
     .item.reviewed.wrong, .item.reviewed.rejected {
       border-left: 3px solid #ef4444;
+      padding-left: 9px;
       background: rgba(239, 68, 68, 0.05);
     }
 
@@ -2860,6 +2870,149 @@ export class WebReviewGenerator {
     .app-container.visible {
       display: flex;
     }
+
+    /* Selection count badge */
+    .selection-badge {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #8b5cf6;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      display: none;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      z-index: 1000;
+    }
+    .selection-badge.visible {
+      display: flex;
+    }
+    .selection-badge kbd {
+      background: rgba(255,255,255,0.2);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+    }
+
+    /* Command palette */
+    .command-palette {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      display: none;
+    }
+    .command-palette.visible {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .command-palette-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+    }
+    .command-palette-modal {
+      position: relative;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      width: 400px;
+      max-width: 90vw;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+    .command-palette-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .command-palette-header .selected-count {
+      font-weight: 500;
+      color: #8b5cf6;
+    }
+    .command-palette-header kbd {
+      background: var(--muted);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      color: var(--muted-foreground);
+    }
+    .command-palette-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .property-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .property-row label {
+      font-size: 11px;
+      color: var(--muted-foreground);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .property-row input,
+    .property-row textarea,
+    .property-row select {
+      background: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 8px 12px;
+      color: var(--foreground);
+      font-size: 13px;
+    }
+    .property-row input:focus,
+    .property-row textarea:focus,
+    .property-row select:focus {
+      outline: none;
+      border-color: #8b5cf6;
+    }
+    .property-row textarea {
+      min-height: 60px;
+      resize: vertical;
+    }
+    .property-row.single-only {
+      display: none;
+    }
+    .command-palette.single-select .property-row.single-only {
+      display: flex;
+    }
+    .command-palette-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+    }
+    .command-palette-footer button {
+      padding: 8px 16px;
+      border-radius: var(--radius);
+      font-size: 13px;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--muted);
+      color: var(--foreground);
+    }
+    .command-palette-footer button:hover {
+      background: var(--border);
+    }
+    .command-palette-footer button.primary {
+      background: #8b5cf6;
+      border-color: #8b5cf6;
+      color: white;
+    }
+    .command-palette-footer button.primary:hover {
+      background: #7c3aed;
+    }
   </style>
 </head>
 <body>
@@ -2958,6 +3111,76 @@ export class WebReviewGenerator {
 
   <!-- Toast -->
   <div class="toast" id="toast"></div>
+
+  <!-- Selection badge -->
+  <div class="selection-badge" id="selectionBadge">
+    <span class="selection-count">0 items selected</span>
+    <kbd>⌘K</kbd> to edit
+  </div>
+
+  <!-- Command palette -->
+  <div class="command-palette" id="commandPalette">
+    <div class="command-palette-backdrop"></div>
+    <div class="command-palette-modal">
+      <div class="command-palette-header">
+        <span class="selected-count">0 items selected</span>
+        <kbd>Esc</kbd>
+      </div>
+      <div class="command-palette-body">
+        <div class="property-row single-only">
+          <label>Label</label>
+          <input type="text" id="bulkLabel" placeholder="Item label">
+        </div>
+        <div class="property-row single-only">
+          <label>Value</label>
+          <textarea id="bulkValue" placeholder="Item value"></textarea>
+        </div>
+        <div class="property-row">
+          <label>Section</label>
+          <select id="bulkSection">
+            <option value="">— Keep current —</option>
+          </select>
+        </div>
+        <div class="property-row">
+          <label>Topic</label>
+          <select id="bulkTopic">
+            <option value="">— Keep current —</option>
+            <option value="company">company</option>
+            <option value="product">product</option>
+            <option value="quality">quality</option>
+            <option value="contacts">contacts</option>
+            <option value="certifications">certifications</option>
+            <option value="sustainability">sustainability</option>
+            <option value="animal_welfare">animal_welfare</option>
+            <option value="food_fraud">food_fraud</option>
+            <option value="microbiology">microbiology</option>
+            <option value="other">other</option>
+          </select>
+        </div>
+        <div class="property-row">
+          <label>Level</label>
+          <select id="bulkLevel">
+            <option value="">— Keep current —</option>
+            <option value="entity">entity (reusable)</option>
+            <option value="product">product (specific)</option>
+          </select>
+        </div>
+        <div class="property-row">
+          <label>Review Action</label>
+          <select id="bulkAction">
+            <option value="">— No action —</option>
+            <option value="accept">Accept</option>
+            <option value="reject">Reject</option>
+            <option value="reset">Reset (clear review)</option>
+          </select>
+        </div>
+      </div>
+      <div class="command-palette-footer">
+        <button class="cancel-btn" id="paletteCancel">Cancel</button>
+        <button class="apply-btn primary" id="paletteApply">Apply Changes</button>
+      </div>
+    </div>
+  </div>
 
   <script>
     // State
@@ -3576,13 +3799,88 @@ export class WebReviewGenerator {
         }
       });
 
-      // Item click handlers
-      document.querySelectorAll('.item').forEach(item => {
+      // Multi-select state
+      let selectedItems = new Set();
+      let lastSelectedIndex = -1;
+      const allItemElements = Array.from(document.querySelectorAll('.item'));
+
+      function updateSelectionBadge() {
+        const badge = document.getElementById('selectionBadge');
+        const count = selectedItems.size;
+        if (count > 0) {
+          badge.querySelector('.selection-count').textContent = count + ' item' + (count === 1 ? '' : 's') + ' selected';
+          badge.classList.add('visible');
+        } else {
+          badge.classList.remove('visible');
+        }
+      }
+
+      function clearSelection() {
+        selectedItems.forEach(item => item.classList.remove('selected'));
+        selectedItems.clear();
+        lastSelectedIndex = -1;
+        updateSelectionBadge();
+      }
+
+      function selectItem(item, addToSelection = false) {
+        if (!addToSelection) {
+          clearSelection();
+        }
+        item.classList.add('selected');
+        selectedItems.add(item);
+        lastSelectedIndex = allItemElements.indexOf(item);
+        updateSelectionBadge();
+      }
+
+      function toggleItemSelection(item) {
+        if (selectedItems.has(item)) {
+          item.classList.remove('selected');
+          selectedItems.delete(item);
+        } else {
+          item.classList.add('selected');
+          selectedItems.add(item);
+          lastSelectedIndex = allItemElements.indexOf(item);
+        }
+        updateSelectionBadge();
+      }
+
+      function selectRange(fromIndex, toIndex) {
+        const start = Math.min(fromIndex, toIndex);
+        const end = Math.max(fromIndex, toIndex);
+        for (let i = start; i <= end; i++) {
+          const item = allItemElements[i];
+          if (item) {
+            item.classList.add('selected');
+            selectedItems.add(item);
+          }
+        }
+        updateSelectionBadge();
+      }
+
+      function selectAll() {
+        allItemElements.forEach(item => {
+          item.classList.add('selected');
+          selectedItems.add(item);
+        });
+        updateSelectionBadge();
+      }
+
+      // Item click handlers with multi-select support
+      document.querySelectorAll('.item').forEach((item, idx) => {
         item.addEventListener('click', (e) => {
           if (e.target.closest('.action-btn') || e.target.closest('.wrong-note-container')) return;
-          document.querySelectorAll('.item.selected').forEach(i => i.classList.remove('selected'));
-          item.classList.add('selected');
-          highlightCells(item.dataset.cells, item.dataset.sheet);
+
+          if (e.shiftKey && lastSelectedIndex !== -1) {
+            // Shift+click: select range
+            selectRange(lastSelectedIndex, idx);
+          } else if (e.metaKey || e.ctrlKey) {
+            // Cmd/Ctrl+click: toggle selection
+            toggleItemSelection(item);
+          } else {
+            // Normal click: select single
+            selectItem(item);
+            highlightCells(item.dataset.cells, item.dataset.sheet);
+          }
         });
       });
 
@@ -4116,9 +4414,161 @@ export class WebReviewGenerator {
         .replace(/"/g, '&quot;');
     }
 
+    // Command palette logic
+    const commandPalette = document.getElementById('commandPalette');
+    const paletteBackdrop = commandPalette.querySelector('.command-palette-backdrop');
+
+    function showCommandPalette() {
+      if (selectedItems.size === 0) {
+        showToast('Select items first (click, Shift+click, or ⌘A)');
+        return;
+      }
+
+      // Update header
+      const count = selectedItems.size;
+      commandPalette.querySelector('.selected-count').textContent = count + ' item' + (count === 1 ? '' : 's') + ' selected';
+
+      // Toggle single-select mode for label/value fields
+      if (count === 1) {
+        commandPalette.classList.add('single-select');
+        const item = Array.from(selectedItems)[0];
+        document.getElementById('bulkLabel').value = item.dataset.label || '';
+        document.getElementById('bulkValue').value = item.querySelector('.item-value')?.textContent || '';
+      } else {
+        commandPalette.classList.remove('single-select');
+        document.getElementById('bulkLabel').value = '';
+        document.getElementById('bulkValue').value = '';
+      }
+
+      // Populate sections dropdown
+      const sectionSelect = document.getElementById('bulkSection');
+      sectionSelect.innerHTML = '<option value="">— Keep current —</option>';
+      const sections = new Set();
+      document.querySelectorAll('.section').forEach(sec => {
+        const topic = sec.dataset.topic;
+        if (topic) sections.add(topic);
+      });
+      sections.forEach(s => {
+        sectionSelect.innerHTML += \`<option value="\${s}">\${s}</option>\`;
+      });
+
+      // Reset other fields
+      document.getElementById('bulkTopic').value = '';
+      document.getElementById('bulkLevel').value = '';
+      document.getElementById('bulkAction').value = '';
+
+      commandPalette.classList.add('visible');
+      document.getElementById('bulkTopic').focus();
+    }
+
+    function hideCommandPalette() {
+      commandPalette.classList.remove('visible');
+    }
+
+    async function applyCommandPaletteChanges() {
+      const topic = document.getElementById('bulkTopic').value;
+      const level = document.getElementById('bulkLevel').value;
+      const action = document.getElementById('bulkAction').value;
+      const newLabel = document.getElementById('bulkLabel').value;
+      const newValue = document.getElementById('bulkValue').value;
+
+      const items = Array.from(selectedItems);
+      let changes = 0;
+
+      for (const item of items) {
+        // Update topic
+        if (topic) {
+          item.dataset.topic = topic;
+          const badge = item.querySelector('.level-badge');
+          if (badge) badge.textContent = level === 'product' ? 'PRODUCT' : '';
+          changes++;
+        }
+
+        // Update label/value for single selection
+        if (selectedItems.size === 1) {
+          if (newLabel && newLabel !== item.dataset.label) {
+            item.dataset.label = newLabel;
+            const labelEl = item.querySelector('.item-label');
+            if (labelEl) {
+              // Preserve badges
+              const badge = labelEl.querySelector('.level-badge');
+              labelEl.textContent = newLabel;
+              if (badge) labelEl.appendChild(badge);
+            }
+            changes++;
+          }
+          if (newValue) {
+            const valueEl = item.querySelector('.item-value');
+            if (valueEl && valueEl.textContent !== newValue) {
+              valueEl.textContent = newValue;
+              changes++;
+            }
+          }
+        }
+
+        // Apply review action
+        if (action) {
+          item.classList.remove('reviewed', 'correct', 'wrong', 'accepted', 'rejected', 'show-note');
+          if (action === 'accept') {
+            item.classList.add('reviewed', 'correct', 'accepted');
+            await logFeedback(item, 'correct');
+          } else if (action === 'reject') {
+            item.classList.add('reviewed', 'wrong', 'rejected');
+            await logFeedback(item, 'wrong');
+          }
+          // reset just removes classes, already done above
+          changes++;
+        }
+      }
+
+      hideCommandPalette();
+      if (changes > 0) {
+        showToast(\`Updated \${items.length} item(s)\`);
+      }
+      clearSelection();
+    }
+
+    // Palette event handlers
+    paletteBackdrop.addEventListener('click', hideCommandPalette);
+    document.getElementById('paletteCancel').addEventListener('click', hideCommandPalette);
+    document.getElementById('paletteApply').addEventListener('click', applyCommandPaletteChanges);
+
     // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
+      // Handle palette-specific shortcuts
+      if (commandPalette.classList.contains('visible')) {
+        if (e.key === 'Escape') {
+          hideCommandPalette();
+          e.preventDefault();
+        } else if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+          applyCommandPaletteChanges();
+          e.preventDefault();
+        }
+        return;
+      }
+
+      // Don't handle shortcuts when typing in inputs
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+      // Escape to clear selection
+      if (e.key === 'Escape') {
+        clearSelection();
+        return;
+      }
+
+      // Cmd+A to select all
+      if ((e.metaKey || e.ctrlKey) && e.key === 'a') {
+        e.preventDefault();
+        selectAll();
+        return;
+      }
+
+      // Cmd+K to open command palette
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        showCommandPalette();
+        return;
+      }
 
       switch(e.key) {
         case '1': document.querySelector('[data-panel="original"]')?.click(); break;

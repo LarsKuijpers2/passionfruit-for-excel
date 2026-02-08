@@ -11,6 +11,7 @@ import 'dotenv/config';
 import { readFile } from 'fs/promises';
 import { parse as parseYaml } from 'yaml';
 import { PassionfruitAPIClient } from './api-client.js';
+import { recordEntitySync } from './sync-log.js';
 import type { APIEntity } from '../api-types.js';
 
 interface PreparedEntity {
@@ -55,8 +56,12 @@ async function syncEntity() {
 
     const updated = await client.updateEntity(prepared.existingId, payload);
 
+    // Record to sync log
+    await recordEntitySync(updated.id, updated.name, 'update', client.environment);
+
     console.log(`\n✅ Entity updated: ID ${updated.id}`);
     console.log(`  Name: ${updated.name}`);
+    console.log(`  📝 Recorded to sync-log.yaml`);
 
     // Show updated data
     console.log('\n  Updated data:');
@@ -67,8 +72,12 @@ async function syncEntity() {
 
     const created = await client.createEntity(prepared.entity);
 
+    // Record to sync log
+    await recordEntitySync(created.id, created.name, 'create', client.environment);
+
     console.log(`\n✅ Entity created: ID ${created.id}`);
     console.log(`  Name: ${created.name}`);
+    console.log(`  📝 Recorded to sync-log.yaml`);
   }
 
   console.log();

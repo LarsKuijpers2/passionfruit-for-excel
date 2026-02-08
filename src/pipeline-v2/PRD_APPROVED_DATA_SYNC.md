@@ -122,7 +122,6 @@ The entity has two parts:
   "name": "Kaas-Pack Holland BV",
   "parentId": null,
   "data": {
-    // Company Information fields (shown in UI form)
     "email": "quality@kaaspack.nl",
     "phone": "0528-268246",
     "website": "https://kaaspack.nl",
@@ -130,41 +129,45 @@ The entity has two parts:
     "city": "Hoogeveen",
     "zipCode": "7905 SW",
     "country": "Nederland",
-
-    // Additional Fields (shown as key-value pairs in UI)
-    "contacts": [
-      { "name": "I. Vegter", "role": "QA Manager" }
-    ],
-    "activities": ["versnijden en raspen van kaas"],
-    "egNumber": "NL Z 0159 EG",
-    "certifications": [
-      { "type": "FSSC 22000", "number": "ABC123" }
-    ]
+    "Contact name": "I. Vegter",
+    "Contact role": "QA Manager",
+    "Activities": "versnijden en raspen van kaas",
+    "EG number": "NL Z 0159 EG",
+    "Certification type": "FSSC 22000",
+    "Certification number": "ABC123"
   }
 }
 ```
+
+**IMPORTANT: Flat key-value pairs only!**
+
+The `data` object only supports flat key-value pairs (strings). No nested objects or arrays.
+
+- Use human-readable keys: `Contact name`, `Contact role` (not `contacts_name`, `contacts_role`)
+- Use human-readable keys: `Certification type`, `Certification number` (not `certifications: [{...}]`)
+- Use comma-separated strings for multiple values (e.g., "FSSC 22000, IFS Food")
 
 **Entity Field Mapping from Questionnaires:**
 
 | Questionnaire Label | Entity Field | Notes |
 |---------------------|--------------|-------|
-| Bedrijfsnaam / Company name | `name` | Top-level field |
+| Bedrijfsnaam / Company name | `name` | Top-level field (required) |
 | Adres / Address / Street | `data.street` | |
-| Postcode, plaats, land | Parse into: | Dutch format: "1234 AB City, Country" |
+| Postcode, plaats, land | Parse into 3 fields: | Dutch format: "1234 AB City, Country" |
 | | `data.zipCode` | "7905 SW" |
 | | `data.city` | "Hoogeveen" |
 | | `data.country` | "Nederland" |
 | Email-adres / E-mail | `data.email` | |
 | Telefoonnummer / Phone | `data.phone` | |
 | Website / Homepage | `data.website` | |
-| Contactpersoon | `data.contacts[].name` | |
-| Functie / Function | `data.contacts[].role` | |
-| Bedrijfsactiviteiten | `data.activities[]` | |
-| EG-nummer | `data.egNumber` | |
-| KvK-nummer | `data.kvkNumber` | |
-| BTW-nummer | `data.vatNumber` | |
-| Certificering (FSSC, IFS, etc.) | `data.certifications[].type` | |
-| Certificaatnummer | `data.certifications[].number` | |
+| Contactpersoon | `data["Contact name"]` | Human-readable key |
+| Functie / Function | `data["Contact role"]` | Human-readable key |
+| Bedrijfsactiviteiten | `data["Activities"]` | Single string (comma-separated if multiple) |
+| EG-nummer | `data["EG number"]` | |
+| KvK-nummer | `data["KvK number"]` | |
+| BTW-nummer | `data["VAT number"]` | |
+| Certificering (FSSC, IFS, etc.) | `data["Certification type"]` | Human-readable key |
+| Certificaatnummer | `data["Certification number"]` | Human-readable key |
 
 ### Answers
 

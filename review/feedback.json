@@ -1,0 +1,172 @@
+{
+  "meta": {
+    "source": "",
+    "questionnaire": "",
+    "startedAt": "2026-02-08T16:48:15.318Z",
+    "lastUpdatedAt": "2026-02-08T17:45:06.991Z"
+  },
+  "index": [
+    {
+      "id": "annotation_1770569906764_0j8nlxwud",
+      "action": "accepted",
+      "label": "Crisis Management Person 1 - Phone",
+      "value": "+49(0) 40-300-88-440",
+      "cells": "B48 → C48",
+      "topic": "contacts",
+      "reason": "Created via annotation: Create crisis management contact items for two persons with their phone, mobile, and email details",
+      "reviewedAt": "2026-02-08T16:58:26.764Z"
+    },
+    {
+      "id": "annotation_1770569906764_jwp493n1v",
+      "action": "accepted",
+      "label": "Crisis Management Person 1 - Mobile Phone",
+      "value": "+49(0) 170-321-2465",
+      "cells": "B49 → C49",
+      "topic": "contacts",
+      "reason": "Created via annotation: Create crisis management contact items for two persons with their phone, mobile, and email details",
+      "reviewedAt": "2026-02-08T16:58:26.764Z"
+    },
+    {
+      "id": "annotation_1770569906764_5w05f8yrt",
+      "action": "accepted",
+      "label": "Crisis Management Person 1 - Email Address",
+      "value": "mark.fude@fsmilch.de",
+      "cells": "B50 → C50",
+      "topic": "contacts",
+      "reason": "Created via annotation: Create crisis management contact items for two persons with their phone, mobile, and email details",
+      "reviewedAt": "2026-02-08T16:58:26.764Z"
+    },
+    {
+      "id": "annotation_1770569906764_q5dq9lynn",
+      "action": "accepted",
+      "label": "Crisis Management Person 2 - Phone",
+      "value": "+49(0) 40-300-88-400",
+      "cells": "B48 → D48",
+      "topic": "contacts",
+      "reason": "Created via annotation: Create crisis management contact items for two persons with their phone, mobile, and email details",
+      "reviewedAt": "2026-02-08T16:58:26.764Z"
+    },
+    {
+      "id": "annotation_1770569906764_9f3ffh5wt",
+      "action": "accepted",
+      "label": "Crisis Management Person 2 - Mobile Phone",
+      "value": "+49(0)170-853-2222",
+      "cells": "B49 → D49",
+      "topic": "contacts",
+      "reason": "Created via annotation: Create crisis management contact items for two persons with their phone, mobile, and email details",
+      "reviewedAt": "2026-02-08T16:58:26.764Z"
+    },
+    {
+      "id": "annotation_1770569906764_2v6sf5a9z",
+      "action": "accepted",
+      "label": "Crisis Management Person 2 - Email Address",
+      "value": "a.serrahn@fsmilch.de",
+      "cells": "B50 → D50",
+      "topic": "contacts",
+      "reason": "Created via annotation: Create crisis management contact items for two persons with their phone, mobile, and email details",
+      "reviewedAt": "2026-02-08T16:58:26.764Z"
+    },
+    {
+      "id": "annotation_1770570029267_grt4mqapj",
+      "action": "accepted",
+      "label": "Crisis Management - F + S Phone Number (Person 1)",
+      "value": "+49(0) 40-300-88-440",
+      "cells": "B48 → C48",
+      "topic": "contacts",
+      "reason": "Created via annotation: Create crisis management contact items for F + S personnel with phone, mobile, and email information",
+      "reviewedAt": "2026-02-08T17:00:29.267Z"
+    },
+    {
+      "id": "annotation_1770570029267_m494wll4f",
+      "action": "accepted",
+      "label": "Crisis Management - F + S Phone Number (Person 2)",
+      "value": "+49(0) 40-300-88-400",
+      "cells": "B48 → D48",
+      "topic": "contacts",
+      "reason": "Created via annotation: Create crisis management contact items for F + S personnel with phone, mobile, and email information",
+      "reviewedAt": "2026-02-08T17:00:29.267Z"
+    },
+    {
+      "id": "annotation_1770570029267_6qklj1w51",
+      "action": "accepted",
+      "label": "Crisis Management - F + S Mobile Phone (Person 1)",
+      "value": "+49(0) 170-321-2465",
+      "cells": "B49 → C49",
+      "topic": "contacts",
+      "reason": "Created via annotation: Create crisis management contact items for F + S personnel with phone, mobile, and email information",
+      "reviewedAt": "2026-02-08T17:00:29.267Z"
+    },
+    {
+      "id": "annotation_1770570029267_74n11cpcv",
+      "action": "accepted",
+      "label": "Crisis Management - F + S Mobile Phone (Person 2)",
+      "value": "+49(0)170-853-2222",
+      "cells": "B49 → D49",
+      "topic": "contacts",
+      "reason": "Created via annotation: Create crisis management contact items for F + S personnel with phone, mobile, and email information",
+      "reviewedAt": "2026-02-08T17:00:29.267Z"
+    },
+    {
+      "id": "annotation_1770570029267_g39ttrele",
+      "action": "accepted",
+      "label": "Crisis Management - F + S Email Address (Person 1)",
+      "value": "mark.fude@fsmilch.de",
+      "cells": "B50 → C50",
+      "topic": "contacts",
+      "reason": "Created via annotation: Create crisis management contact items for F + S personnel with phone, mobile, and email information",
+      "reviewedAt": "2026-02-08T17:00:29.267Z"
+    },
+    {
+      "id": "annotation_1770570029267_m5tcd0z0d",
+      "action": "accepted",
+      "label": "Crisis Management - F + S Email Address (Person 2)",
+      "value": "a.serrahn@fsmilch.de",
+      "cells": "B50 → D50",
+      "topic": "contacts",
+      "reason": "Created via annotation: Create crisis management contact items for F + S personnel with phone, mobile, and email information",
+      "reviewedAt": "2026-02-08T17:00:29.267Z"
+    }
+  ],
+  "library": [
+    {
+      "action": "rejected",
+      "label": "Name / Name",
+      "value": "G. Sok",
+      "cells": "B39 → C39",
+      "topic": "contacts",
+      "reason": "",
+      "reviewedAt": "2026-02-08T17:45:06.951Z",
+      "id": "library_1770572706990_r42v7nc7w"
+    },
+    {
+      "action": "rejected",
+      "label": "Telefon / Phone",
+      "value": "+31 528 268 246",
+      "cells": "B40 → C40",
+      "topic": "contacts",
+      "reason": "",
+      "reviewedAt": "2026-02-08T17:45:06.952Z",
+      "id": "library_1770572706990_3fult4919"
+    },
+    {
+      "action": "rejected",
+      "label": "Mobil-Telefon / Mobile Phone",
+      "value": "n/a",
+      "cells": "B41 → C41",
+      "topic": "contacts",
+      "reason": "",
+      "reviewedAt": "2026-02-08T17:45:06.952Z",
+      "id": "library_1770572706990_uo0r6ifuc"
+    },
+    {
+      "action": "rejected",
+      "label": "E-Mail-Adresse / Email adress",
+      "value": "quality@kaaspack.nl",
+      "cells": "B42 → C42",
+      "topic": "contacts",
+      "reason": "",
+      "reviewedAt": "2026-02-08T17:45:06.952Z",
+      "id": "library_1770572706991_w8gmwsvsq"
+    }
+  ]
+}

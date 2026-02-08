@@ -155,23 +155,23 @@ function mapToAPIEntity(raw: RawExtraction): APIEntity {
     country: parsedLocation.country,
   };
 
-  // Build data object for additional fields
+  // Build data object for additional fields (flat key-value pairs, human readable keys)
   const data: EntityAdditionalData = {};
 
-  // Store contacts as separate key-value pairs: contacts_name, contacts_role
+  // Store contacts with human readable keys
   if (raw.contacts.length > 0) {
     const contact = raw.contacts[0]; // Primary contact
-    if (contact.name) data.contacts_name = contact.name;
-    if (contact.role) data.contacts_role = contact.role;
+    if (contact.name) data['Contact name'] = contact.name;
+    if (contact.role) data['Contact role'] = contact.role;
   }
 
   if (raw.activities.length > 0) {
-    // Store activities as comma-separated string for simplicity
-    data.activities = raw.activities.join(', ');
+    // Store activities as comma-separated string
+    data['Activities'] = raw.activities.join(', ');
   }
 
   if (raw.egNumber) {
-    data.egNumber = raw.egNumber;
+    data['EG number'] = raw.egNumber;
   }
 
   // Only add data if there's something in it

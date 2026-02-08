@@ -108,9 +108,16 @@ Identify all data items in this sheet. Each item has a type:
 - "text" = Longer text response to a question
 - "yesno" = Yes/No or Ja/Nee choice
 - "choice" = Dropdown or selection
-- "table" = Tabular data (keep as one item, use ref for the whole range)
+- "table" = Tabular data that has no answers or is pure reference data. AVOID using this - prefer extracting individual items.
 - "signature" = Signature field
 - "date" = Date field
+
+IMPORTANT EXTRACTION RULES:
+1. CERTIFICATION CHECKLISTS: When you see numbered rows (3.1, 3.2, 3.3...) with certification names and yes/no values, extract EACH ROW as a separate "yesno" item, NOT as a table. Example: "RSPO-MB: ja-yes" should be extracted as a yesno item.
+
+2. MULTI-COLUMN ANSWERS: When a row has the SAME question but multiple answer columns (e.g., "Contact Person 1" and "Contact Person 2"), extract MULTIPLE items - one per column. Add the column header to the label, e.g., "Phone (Contact Person 1)" and "Phone (Contact Person 2)".
+
+3. PREFER INDIVIDUAL ITEMS: Only use "table" type for truly tabular reference data with no filled answers. If rows have yes/no answers or text values, extract them individually.
 
 And a level for reusability:
 - "standard" = Factual company data, can be auto-filled (name, address, cert numbers)
@@ -136,12 +143,36 @@ Respond in this JSON format:
       "confidence": 0.95
     },
     {
-      "type": "table",
-      "label": "Allergen Declaration",
-      "ref": "A30:E45",
-      "section": "Allergens",
-      "level": "product",
-      "lang": "nl",
+      "type": "yesno",
+      "label": "RSPO-MB (Palm certification)",
+      "value": "ja-yes",
+      "lCell": "B33",
+      "vCell": "C33",
+      "section": "Palm Certificates",
+      "level": "standard",
+      "lang": "de",
+      "confidence": 0.95
+    },
+    {
+      "type": "field",
+      "label": "Phone (Contact Person 1)",
+      "value": "+31 123 456",
+      "lCell": "B43",
+      "vCell": "C43",
+      "section": "Crisis Management",
+      "level": "standard",
+      "lang": "en",
+      "confidence": 0.9
+    },
+    {
+      "type": "field",
+      "label": "Phone (Contact Person 2)",
+      "value": "+31 789 012",
+      "lCell": "B43",
+      "vCell": "D43",
+      "section": "Crisis Management",
+      "level": "standard",
+      "lang": "en",
       "confidence": 0.9
     }
   ],
@@ -153,7 +184,9 @@ Important:
 - For tables, use "ref" with the full range (e.g., "A30:E45") instead of lCell/vCell
 - Use "EMPTY" for value if the field has no answer filled in
 - Detect language: "en", "de", "fr", "nl" or omit if unknown
-- Confidence should be lower if the pairing is ambiguous`;
+- Confidence should be lower if the pairing is ambiguous
+- CRITICAL: Extract certification checklists (rows with numbered items and yes/no) as individual "yesno" items, NOT as tables
+- CRITICAL: For multi-column contact tables, create separate items for each column`;
 
     const response = await this.invokeModel(prompt);
 
@@ -247,7 +280,7 @@ Important:
   private async invokeModel(prompt: string): Promise<string> {
     const body = {
       anthropic_version: 'bedrock-2023-05-31',
-      max_tokens: 4096,
+      max_tokens: 16384,
       messages: [
         {
           role: 'user',

@@ -107,33 +107,21 @@ export interface APIEntityFields {
  * Additional data stored in entity.data object
  *
  * IMPORTANT: Only flat key-value pairs are supported.
- * No nested objects or arrays - use separate keys instead:
- * - contacts_name, contacts_role (not contacts: [{...}])
- * - certification_type, certification_number (not certifications: [{...}])
+ * No nested objects or arrays - use human-readable keys:
+ * - "Contact name", "Contact role" (not contacts: [{...}])
+ * - "Certification type", "Certification number" (not certifications: [{...}])
+ *
+ * Example keys: "Contact name", "Contact role", "Activities", "EG number"
  */
 export interface EntityAdditionalData {
-  // Contact info (flat keys)
-  contacts_name?: string;
-  contacts_role?: string;
-  contacts_email?: string;
-  contacts_phone?: string;
-
-  // Certification info (flat keys)
-  certification_type?: string;
-  certification_number?: string;
-  certification_validUntil?: string;
-
-  // Business info
-  activities?: string;  // Comma-separated string
-  employees?: string;
-  turnover?: string;
-
-  // Registration numbers
-  egNumber?: string;
-  kvkNumber?: string;
-  vatNumber?: string;
-
-  // Flexible additional data (flat key-value only)
+  // Flexible additional data (flat key-value only, human-readable keys)
+  // Examples:
+  // - "Contact name": "I. Vegter"
+  // - "Contact role": "QA Manager"
+  // - "Activities": "versnijden en raspen van kaas"
+  // - "EG number": "NL Z 0159 EG"
+  // - "Certification type": "FSSC 22000"
+  // - "Certification number": "ABC123"
   [key: string]: string | undefined;
 }
 

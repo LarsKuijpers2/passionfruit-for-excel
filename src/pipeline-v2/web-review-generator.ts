@@ -2602,6 +2602,37 @@ export class WebReviewGenerator {
       background: var(--muted);
     }
     .excel-table td.cell-merged-hidden { display: none; }
+
+    /* Level badges */
+    .level-badge {
+      display: inline-block;
+      font-size: 9px;
+      padding: 1px 5px;
+      border-radius: 3px;
+      margin-left: 6px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      opacity: 0.8;
+      vertical-align: middle;
+    }
+    .level-badge.entity {
+      background: rgba(59, 130, 246, 0.2);
+      color: #60a5fa;
+    }
+    .level-badge.product {
+      background: rgba(168, 85, 247, 0.2);
+      color: #c084fc;
+    }
+    .level-badge.library {
+      background: rgba(34, 197, 94, 0.2);
+      color: #4ade80;
+    }
+    .level-badge.narrative {
+      background: rgba(251, 191, 36, 0.2);
+      color: #fbbf24;
+    }
+
     /* Cell selection for label/value pairing */
     .excel-table td.label-selected {
       background: rgba(251, 191, 36, 0.3) !important;
@@ -3350,9 +3381,15 @@ export class WebReviewGenerator {
           const value = item.value || '';
           const isEmpty = !value || value.trim() === '';
 
+          // Determine level badge
+          const level = item.level || 'standard';
+          const levelBadge = level === 'product' ? '<span class="level-badge product">product</span>' :
+                            level === 'narrative' ? '<span class="level-badge narrative">narrative</span>' :
+                            '<span class="level-badge entity">entity</span>';
+
           return \`
             <div class="item" data-index="\${idx}" data-cells="\${cells}" data-sheet="\${escapeHtml(sheetName)}" data-label="\${escapeHtml(item.label)}" data-section="\${escapeHtml(section.name || section.title)}" data-topic="\${section.topic || ''}">
-              <div class="item-label">\${escapeHtml(item.label)}</div>
+              <div class="item-label">\${escapeHtml(item.label)}\${levelBadge}</div>
               <div class="item-value\${isEmpty ? ' empty' : ''}">\${isEmpty ? '(empty)' : escapeHtml(value)}</div>
               <div class="item-ref">\${sheetName ? sheetName + ': ' : ''}\${cells}</div>
               <div class="item-actions review-only">
@@ -3433,9 +3470,15 @@ export class WebReviewGenerator {
             ? \`\${source.lCell} → \${source.vCell}\`
             : (source?.labelCell && source?.valueCell ? \`\${source.labelCell} → \${source.valueCell}\` : '');
 
+          // Level badge - library items show their level or "library" as default
+          const level = item.level || 'standard';
+          const levelBadge = level === 'product' ? '<span class="level-badge product">product</span>' :
+                            level === 'narrative' ? '<span class="level-badge narrative">narrative</span>' :
+                            '<span class="level-badge library">library</span>';
+
           return \`
             <div class="item" data-index="\${item.idx}" data-cells="\${cells}" data-sheet="\${escapeHtml(sheetName)}" data-label="\${escapeHtml(item.label)}" data-topic="\${topic}">
-              <div class="item-label">\${escapeHtml(item.label)}</div>
+              <div class="item-label">\${escapeHtml(item.label)}\${levelBadge}</div>
               <div class="item-value">\${escapeHtml(item.value || '')}</div>
               <div class="item-ref">\${sheetName ? sheetName + ': ' : ''}\${cells}</div>
               <div class="item-actions review-only">

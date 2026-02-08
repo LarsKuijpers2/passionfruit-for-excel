@@ -3971,23 +3971,13 @@ export class WebReviewGenerator {
           const value = item.value || '';
           const isEmpty = !value || value.trim() === '';
 
-          // Determine destination badge based on topic (from rules.yaml)
-          const topic = section.topic || '';
-          const entityTopics = ['company', 'company_information', 'contact_persons', 'contacts', 'certifications', 'documents', 'signature', 'approval', 'crisis', 'financial'];
-          const productTopics = ['product', 'identification', 'physical_properties', 'sensory', 'analytical', 'formula_composition', 'allergens', 'nutritional', 'regulatory_ids', 'microbiological', 'microbiology', 'contaminants', 'gmo', 'claims', 'rspo_palm', 'packaging', 'storage_transport', 'coding', 'origin_provenance'];
-          let destination = 'library';
-          if (productTopics.includes(topic) || item.level === 'product') {
-            destination = 'product';
-          } else if (entityTopics.includes(topic)) {
-            destination = 'entity';
-          }
-          const levelBadge = destination === 'product' ? '<span class="level-badge product">product</span>' :
-                            destination === 'entity' ? '<span class="level-badge entity">entity</span>' :
-                            '<span class="level-badge library">library</span>';
+          // Show topic badge for the item (use item's topic if available, otherwise section topic)
+          const topic = item.topic || section.topic || 'general';
+          const topicBadge = \`<span class="topic-badge">\${escapeHtml(topic)}</span>\`;
 
           return \`
             <div class="item" data-index="\${idx}" data-cells="\${cells}" data-sheet="\${escapeHtml(sheetName)}" data-label="\${escapeHtml(item.label)}" data-section="\${escapeHtml(section.name || section.title)}" data-topic="\${section.topic || ''}">
-              <div class="item-label">\${escapeHtml(item.label)}\${levelBadge}</div>
+              <div class="item-label">\${escapeHtml(item.label)}\${topicBadge}</div>
               <div class="item-value\${isEmpty ? ' empty' : ''}">\${isEmpty ? '(empty)' : escapeHtml(value)}</div>
               <div class="item-ref">\${sheetName ? sheetName + ': ' : ''}\${cells}</div>
               <div class="item-actions review-only">
@@ -4557,8 +4547,11 @@ export class WebReviewGenerator {
             showToast('Accepted');
             logFeedback(item, 'correct');
           } else if (btn.classList.contains('wrong')) {
-            item.classList.add('show-note');
-            item.querySelector('.wrong-note-input')?.focus();
+            // Immediately reject and save (note is optional)
+            item.classList.remove('correct', 'accepted', 'show-note');
+            item.classList.add('reviewed', 'wrong', 'rejected');
+            showToast('Rejected');
+            logFeedback(item, 'wrong');
           }
         });
       });
@@ -4797,8 +4790,8 @@ export class WebReviewGenerator {
           if (!isLibraryMode && topic) {
             item.dataset.topic = topic;
             // Update topic badge if present
-            const badge = item.querySelector('.level-badge');
-            if (badge) badge.textContent = topic.toUpperCase();
+            const badge = item.querySelector('.topic-badge');
+            if (badge) badge.textContent = topic;
             changes++;
           }
 
@@ -4837,7 +4830,7 @@ export class WebReviewGenerator {
               item.dataset.label = newLabel;
               const labelEl = item.querySelector('.item-label');
               if (labelEl) {
-                const existingBadge = labelEl.querySelector('.level-badge');
+                const existingBadge = labelEl.querySelector('.topic-badge');
                 labelEl.textContent = newLabel;
                 if (existingBadge) labelEl.appendChild(existingBadge);
               }

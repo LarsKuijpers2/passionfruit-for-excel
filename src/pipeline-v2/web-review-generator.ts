@@ -33,7 +33,10 @@ export class WebReviewGenerator {
 
     // Load data
     const structure: QuestionnaireStructure = JSON.parse(await readFile(structurePath, 'utf-8'));
-    const indexed: IndexedQuestionnaire = parseYaml(await readFile(indexedPath, 'utf-8'));
+    const indexedContent = await readFile(indexedPath, 'utf-8');
+    const indexed: IndexedQuestionnaire = indexedPath.endsWith('.json')
+      ? JSON.parse(indexedContent)
+      : parseYaml(indexedContent);
 
     let library: AnswerLibrary | null = null;
     if (libraryPath) {

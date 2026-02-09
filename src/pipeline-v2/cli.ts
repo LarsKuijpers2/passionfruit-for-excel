@@ -175,76 +175,102 @@ program
   });
 
 // =============================================================================
-// HARVEST - Extract reusable items for the answer library
+// TAG - Assign destinations to indexed items based on rules
 // =============================================================================
 
 program
-  .command('harvest')
-  .description('Harvest standard + narrative items from indexed questionnaires into answer library')
+  .command('tag')
+  .description('Assign destinations to indexed items based on tag-rules.yaml (items without matching rules get needs_review=true)')
+  .argument('[file]', 'Specific indexed file to tag (optional - tags all if not provided)')
   .option('-c, --customer <name>', 'Customer name (uses customer folder structure)')
   .option('--indexed-dir <dir>', 'Indexed questionnaires directory (legacy mode)')
-  .option('--output <file>', 'Output library file (legacy mode)')
-  .option('--rules-dir <dir>', 'Rules directory (legacy mode)')
-  .option('--file <name>', 'Harvest from a specific indexed file only')
-  .action(async (opts) => {
+  .action(async (file: string | undefined, opts) => {
     try {
+      const { tagQuestionnaire, tagAllQuestionnaires } = await import('./destination-tagger.js');
       const customer = opts.customer as string | undefined;
 
-      // Determine directories based on customer or legacy mode
       let indexedDir: string;
-      let outputFile: string;
-      let rulesDir: string;
 
       if (customer) {
         const paths = ensureCustomerDirs(customer);
         indexedDir = paths.indexed;
-        outputFile = paths.answerLibrary;
-        rulesDir = getRulesDir(customer);
         console.log(`\n📁 Customer: ${customer}`);
       } else {
         indexedDir = opts.indexedDir as string || './indexed';
-        outputFile = opts.output as string || './answer-library.yaml';
-        rulesDir = opts.rulesDir as string || './rules';
       }
 
-      console.log('\n🌾 Harvesting reusable items\n');
+      console.log('\n🏷️  Tagging destinations\n');
 
-      const harvester = new AnswerHarvester(indexedDir, outputFile, rulesDir);
+      if (file) {
+        // Tag single file
+        const filePath = file.endsWith('.yaml') ? join(indexedDir, file) : join(indexedDir, `${file}.yaml`);
+        console.log(`  File: ${file}`);
+        const result = await tagQuestionnaire(filePath, customer);
 
-      if (opts.file) {
-        console.log('  From: ' + opts.file);
-        const items = await harvester.harvest(opts.file as string);
-        console.log('  Found ' + items.length + ' reusable items\n');
+        console.log('\n📊 Tagging Results:');
+        console.log(`   Total items: ${result.totalItems}`);
+        console.log(`   Tagged: ${result.tagged}`);
+        console.log(`   Needs review: ${result.needsReview}`);
+        console.log(`   Excluded: ${result.excluded}`);
 
-        for (const item of items.slice(0, 5)) {
-          console.log('   [' + item.topic + '] ' + item.label.substring(0, 50));
-          console.log('   → ' + item.value.substring(0, 60));
-          console.log('   (from: ' + item.source.file + ')\n');
+        if (Object.keys(result.byDestination).length > 0) {
+          console.log('\n📁 By Destination:');
+          for (const [dest, count] of Object.entries(result.byDestination)) {
+            console.log(`   ${dest}: ${count}`);
+          }
         }
       } else {
-        console.log('  From all indexed questionnaires in: ' + indexedDir);
-        const library = await harvester.harvestAll();
+        // Tag all files
+        console.log(`  Directory: ${indexedDir}`);
+        const results = await tagAllQuestionnaires(customer);
 
-        console.log('\n📊 Library Summary:');
-        console.log('   Total items: ' + library.total);
-        console.log('   Sources: ' + library.sources.length);
+        // Summary
+        const totals = results.reduce(
+          (acc, r) => ({
+            items: acc.items + r.totalItems,
+            tagged: acc.tagged + r.tagged,
+            review: acc.review + r.needsReview,
+            excluded: acc.excluded + r.excluded,
+          }),
+          { items: 0, tagged: 0, review: 0, excluded: 0 }
+        );
 
-        console.log('\n📁 By Topic:');
-        const sortedTopics = Object.entries(library.byTopic)
-          .sort((a, b) => b[1].length - a[1].length)
-          .slice(0, 10);
-        for (const [topic, items] of sortedTopics) {
-          console.log('   ' + topic + ': ' + items.length);
-        }
-
-        const outputPath = await harvester.saveLibrary(library);
-        console.log('\n💾 Saved to: ' + outputPath);
+        console.log('\n📊 Summary:');
+        console.log(`   Total items: ${totals.items}`);
+        console.log(`   Tagged: ${totals.tagged}`);
+        console.log(`   Needs review: ${totals.review}`);
+        console.log(`   Excluded: ${totals.excluded}`);
       }
 
     } catch (error) {
       console.error('\n❌ Error: ' + (error instanceof Error ? error.message : error));
       process.exit(1);
     }
+  });
+
+// =============================================================================
+// HARVEST - DEPRECATED: Use TAG instead
+// =============================================================================
+
+program
+  .command('harvest')
+  .description('[DEPRECATED] Use "tag" command instead. Harvest was replaced by rule-based destination tagging.')
+  .option('-c, --customer <name>', 'Customer name')
+  .option('--indexed-dir <dir>', 'Indexed questionnaires directory')
+  .option('--output <file>', 'Output library file')
+  .option('--rules-dir <dir>', 'Rules directory')
+  .option('--file <name>', 'Harvest from a specific indexed file only')
+  .action(async (opts) => {
+    console.log('\n⚠️  DEPRECATED: The "harvest" command has been replaced by "tag".\n');
+    console.log('The new workflow is:');
+    console.log('  1. INDEX  - AI extracts items with type, topic, level');
+    console.log('  2. TAG    - Rules assign destinations (company, answer_library, product)');
+    console.log('  3. REVIEW - Human reviews and approves items');
+    console.log('  4. EXPORT - Approved items exported by destination\n');
+    console.log('Run instead:');
+    console.log('  npx tsx src/pipeline-v2/cli.ts tag' + (opts.customer ? ` -c ${opts.customer}` : '') + '\n');
+    console.log('Or run "npx tsx src/pipeline-v2/cli.ts flow" to see the full pipeline.\n');
+    process.exit(0);
   });
 
 // =============================================================================
@@ -753,18 +779,20 @@ program
 ║                                                                ║
 ║  2. INDEX                                                      ║
 ║     npx tsx src/pipeline-v2/cli.ts index <file> -c <customer>  ║
-║     → Claude AI analyzes layout, identifies evidence pieces    ║
+║     → Claude AI extracts: label, value, type, topic, level     ║
 ║     → Output: customers/<customer>/indexed/*.yaml              ║
 ║                                                                ║
-║  3. HARVEST                                                    ║
-║     npx tsx src/pipeline-v2/cli.ts harvest -c <customer>       ║
-║     → Extracts entity-level answers for reuse                  ║
-║     → Output: customers/<customer>/answer-library.yaml         ║
+║  3. TAG                                                        ║
+║     npx tsx src/pipeline-v2/cli.ts tag [file] -c <customer>    ║
+║     → Assigns destinations based on tag-rules.yaml             ║
+║     → Items without matching rules get needs_review=true       ║
+║     → Updates: customers/<customer>/indexed/*.yaml             ║
 ║                                                                ║
 ║  4. REVIEW                                                     ║
 ║     npx tsx src/pipeline-v2/cli.ts serve <file> -c <customer>  ║
 ║     → Interactive review with visual preview                   ║
-║     → Approve items for entity DB and answer library           ║
+║     → Assign destinations for needs_review items               ║
+║     → Approve items for export                                 ║
 ║     → Output: customers/<customer>/approved/*.yaml             ║
 ║                                                                ║
 ║  5. AGGREGATE                                                  ║

@@ -204,9 +204,12 @@ export class WebReviewGenerator {
     .panel-search {
       padding: 8px 16px;
       background: transparent;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     .panel-search input {
-      width: 100%;
+      flex: 1;
       padding: 6px 0;
       background: transparent !important;
       background-color: transparent !important;
@@ -2926,9 +2929,12 @@ export class WebReviewGenerator {
     .panel-search {
       padding: 8px 16px;
       background: transparent;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     .panel-search input {
-      width: 100%;
+      flex: 1;
       padding: 6px 0;
       background: transparent !important;
       background-color: transparent !important;
@@ -3092,6 +3098,27 @@ export class WebReviewGenerator {
       background: var(--muted);
       color: var(--muted-foreground);
       vertical-align: middle;
+    }
+    .item.needs-review {
+      border-color: #f59e0b !important;
+      border-left-width: 3px;
+    }
+    .needs-review-filter {
+      font-size: 10px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: 1px solid #f59e0b80;
+      background: transparent;
+      color: #fbbf24;
+      cursor: pointer;
+      margin-right: 8px;
+    }
+    .needs-review-filter:hover {
+      background: #78350f40;
+    }
+    .needs-review-filter.active {
+      background: #78350f80;
+      border-color: #f59e0b;
     }
     .entity-badge {
       display: inline-block;
@@ -3704,7 +3731,8 @@ export class WebReviewGenerator {
 
       <div class="panel visible" id="panel-indexed">
         <div class="panel-search">
-          <input type="text" id="indexed-search" placeholder="Search label or value..." />
+          <button class="needs-review-filter" id="needs-review-filter" title="Show only items needing review" style="display:none">0 needs review</button>
+          <input type="text" id="indexed-search" placeholder="Search label or value..." style="flex:1" />
         </div>
         <div class="panel-content" id="indexed-content"></div>
       </div>
@@ -4404,9 +4432,22 @@ export class WebReviewGenerator {
           const topic = item.topic || section.topic || 'general';
           const topicBadge = \`<span class="topic-badge">\${escapeHtml(topic)}</span>\`;
 
+          // Destination badge (from TAG step)
+          const dest = item.destination || null;
+          const needsReview = item.needs_review || false;
+          const destColors = {
+            company: 'background:#1e3a5f;color:#93c5fd;border-color:#3b82f6',
+            answer_library: 'background:#14532d;color:#86efac;border-color:#22c55e',
+            product: 'background:#4c1d95;color:#c4b5fd;border-color:#8b5cf6',
+            exclude: 'background:#374151;color:#9ca3af;border-color:#6b7280'
+          };
+          const destLabels = { company: 'company', answer_library: 'library', product: 'product', exclude: 'exclude' };
+          const destBadge = dest ? \`<span class="dest-badge" style="\${destColors[dest] || ''};padding:2px 6px;border-radius:4px;font-size:9px;border:1px solid;margin-left:4px" title="\${item.tag_source || ''}">\${destLabels[dest] || dest}</span>\` : '';
+          const reviewBadge = needsReview ? \`<span class="needs-review-badge" style="background:#78350f;color:#fcd34d;border:1px solid #f59e0b;padding:2px 6px;border-radius:4px;font-size:9px;margin-left:4px">needs review</span>\` : '';
+
           return \`
-            <div class="item\${isEmpty ? ' no-value' : ''}" data-id="\${item.id || ''}" data-index="\${idx}" data-cells="\${cells}" data-sheet="\${escapeHtml(sheetName)}" data-label="\${escapeHtml(item.label)}" data-section="\${escapeHtml(section.name || section.title)}" data-topic="\${item.topic || section.topic || ''}" data-level="\${item.level || 'standard'}" data-ai-destination="\${item.destination || 'answer_library'}">
-              <div class="item-label">\${escapeHtml(item.label)}\${topicBadge}</div>
+            <div class="item\${isEmpty ? ' no-value' : ''}\${needsReview ? ' needs-review' : ''}" data-id="\${item.id || ''}" data-index="\${idx}" data-cells="\${cells}" data-sheet="\${escapeHtml(sheetName)}" data-label="\${escapeHtml(item.label)}" data-section="\${escapeHtml(section.name || section.title)}" data-topic="\${item.topic || section.topic || ''}" data-level="\${item.level || 'standard'}" data-ai-destination="\${item.destination || ''}" data-needs-review="\${needsReview}">
+              <div class="item-label">\${escapeHtml(item.label)}\${topicBadge}\${destBadge}\${reviewBadge}</div>
               <div class="item-value\${isEmpty ? ' empty' : ''}">\${isEmpty ? '(empty)' : escapeHtml(value)}</div>
               <div class="item-ref">\${sheetName ? sheetName + ': ' : ''}\${cells}</div>
               <div class="item-actions review-only">
@@ -4441,6 +4482,32 @@ export class WebReviewGenerator {
       container.innerHTML = sectionsHtml;
       document.getElementById('indexed-stats').textContent =
         \`\${indexed.sections.length} sections, \${totalItems} items\`;
+
+      // Count items needing review and setup filter
+      const needsReviewItems = document.querySelectorAll('#panel-indexed .item[data-needs-review="true"]');
+      const filterBtn = document.getElementById('needs-review-filter');
+      if (needsReviewItems.length > 0) {
+        filterBtn.style.display = 'inline-block';
+        filterBtn.textContent = \`\${needsReviewItems.length} needs review\`;
+        filterBtn.onclick = () => {
+          filterBtn.classList.toggle('active');
+          const showOnlyReview = filterBtn.classList.contains('active');
+          document.querySelectorAll('#panel-indexed .item').forEach(item => {
+            if (showOnlyReview && item.dataset.needsReview !== 'true') {
+              item.style.display = 'none';
+            } else {
+              item.style.display = '';
+            }
+          });
+          // Update section visibility
+          document.querySelectorAll('#panel-indexed .section').forEach(section => {
+            const visibleItems = section.querySelectorAll('.item:not([style*="display: none"])');
+            section.style.display = visibleItems.length > 0 ? '' : 'none';
+          });
+        };
+      } else {
+        filterBtn.style.display = 'none';
+      }
     }
 
     // Save as panel - shows items from Extraction that have destinations assigned

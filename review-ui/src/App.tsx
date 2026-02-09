@@ -13,6 +13,7 @@ import type {
   IndexedItem,
   LibraryItem,
   FeedbackEntry,
+  Destination,
 } from './types';
 import { TabBar } from './components/TabBar';
 import { OriginalPanel } from './components/OriginalPanel';
@@ -103,8 +104,9 @@ export default function App() {
 
   // Set active sheet when questionnaire data loads
   useEffect(() => {
-    if (questionnaireData?.sheets?.length && !activeSheet) {
-      setActiveSheet(questionnaireData.sheets[0].name);
+    const sheets = questionnaireData?.structure?.sheets;
+    if (sheets?.length && !activeSheet) {
+      setActiveSheet(sheets[0].name);
     }
   }, [questionnaireData, activeSheet]);
 
@@ -284,6 +286,37 @@ export default function App() {
     [pendingFeedback]
   );
 
+  // Handle destination change for items needing review
+  const handleDestinationChange = useCallback(
+    (itemId: string, destination: Destination) => {
+      // Update the item in the questionnaire data (optimistic update)
+      if (questionnaireData?.indexed?.sections) {
+        for (const section of questionnaireData.indexed.sections) {
+          const item = section.items.find((i) => i.id === itemId);
+          if (item) {
+            item.destination = destination;
+            item.needs_review = false;
+            item.tag_source = 'manual';
+            break;
+          }
+        }
+        // Force re-render by invalidating the query
+        queryClient.setQueryData(['questionnaire', currentQuestionnaire], { ...questionnaireData });
+      }
+
+      // Also add to pending feedback to save later
+      const entry: FeedbackEntry = {
+        itemId,
+        panel: 'indexed',
+        action: 'accepted',
+        reason: `destination:${destination}`,
+        timestamp: new Date().toISOString(),
+      };
+      setPendingFeedback((prev) => [...prev.filter((f) => f.itemId !== itemId), entry]);
+    },
+    [questionnaireData, currentQuestionnaire, queryClient]
+  );
+
   // Complete review
   const handleCompleteReview = useCallback(() => {
     if (!currentQuestionnaire) return;
@@ -330,9 +363,13 @@ export default function App() {
       });
       return allItems.filter((item) => selectedItems.has(item.id));
     } else {
-      return (questionnaireData.library || []).filter((item) =>
-        selectedItems.has(item.id)
-      );
+      // Library can be object with byTopic or direct array
+      const libraryItems = Array.isArray(questionnaireData.library)
+        ? questionnaireData.library
+        : questionnaireData.library?.byTopic
+          ? Object.values(questionnaireData.library.byTopic).flat() as LibraryItem[]
+          : [];
+      return libraryItems.filter((item) => selectedItems.has(item.id));
     }
   }, [questionnaireData, selectedPanel, selectedItems]);
 
@@ -439,7 +476,7 @@ export default function App() {
 
       {/* Sheet tabs */}
       <div className="flex items-center gap-0.5 px-4 bg-card border-b border-border h-9 overflow-x-auto scrollbar-none">
-        {questionnaireData?.sheets?.map((sheet) => (
+        {questionnaireData?.structure?.sheets?.map((sheet) => (
           <button
             key={sheet.name}
             className={`px-3.5 py-1.5 bg-transparent border-0 border-b-2 border-transparent rounded-none text-xs font-medium text-muted-foreground cursor-pointer transition-all duration-150 whitespace-nowrap hover:text-foreground hover:bg-white/[0.03] ${
@@ -452,48 +489,11 @@ export default function App() {
         ))}
       </div>
 
-      {/* Panel headers */}
-      <div className="flex bg-card border-b border-border">
-        <div
-          className={`flex-1 py-2 px-4 flex justify-between items-center font-medium text-[13px] border-r border-border cursor-pointer transition-all duration-150 hover:bg-muted ${
-            visiblePanels.has('original') ? 'bg-white/5 border-b-2 border-b-foreground' : 'opacity-50'
-          }`}
-          onClick={() => togglePanel('original')}
-        >
-          <span className={`w-4 h-4 flex items-center justify-center mr-2 ${visiblePanels.has('original') ? 'opacity-100' : 'opacity-50'}`}>
-            &#9679;
-          </span>
-          <span>Original Questionnaire</span>
-        </div>
-        <div
-          className={`flex-1 py-2 px-4 flex justify-between items-center font-medium text-[13px] border-r border-border cursor-pointer transition-all duration-150 hover:bg-muted ${
-            visiblePanels.has('indexed') ? 'bg-white/5 border-b-2 border-b-foreground' : 'opacity-50'
-          }`}
-          onClick={() => togglePanel('indexed')}
-        >
-          <span className={`w-4 h-4 flex items-center justify-center mr-2 ${visiblePanels.has('indexed') ? 'opacity-100' : 'opacity-50'}`}>
-            &#9679;
-          </span>
-          <span>Extraction</span>
-        </div>
-        <div
-          className={`flex-1 py-2 px-4 flex justify-between items-center font-medium text-[13px] cursor-pointer transition-all duration-150 hover:bg-muted ${
-            visiblePanels.has('library') ? 'bg-white/5 border-b-2 border-b-foreground' : 'opacity-50'
-          }`}
-          onClick={() => togglePanel('library')}
-        >
-          <span className={`w-4 h-4 flex items-center justify-center mr-2 ${visiblePanels.has('library') ? 'opacity-100' : 'opacity-50'}`}>
-            &#9679;
-          </span>
-          <span>Save as</span>
-        </div>
-      </div>
-
       {/* Main panels */}
       <div className="flex flex-1 overflow-hidden">
         <OriginalPanel
           visible={visiblePanels.has('original')}
-          sheet={questionnaireData?.sheets?.find((s) => s.name === activeSheet)}
+          sheet={questionnaireData?.structure?.sheets?.find((s) => s.name === activeSheet)}
         />
         <IndexedPanel
           visible={visiblePanels.has('indexed')}
@@ -504,10 +504,18 @@ export default function App() {
           onItemSelect={(id, multi) => handleItemSelect('indexed', id, multi)}
           onAccept={(id) => handleAccept('indexed', id)}
           onReject={(id, reason) => handleReject('indexed', id, reason)}
+          onDestinationChange={handleDestinationChange}
         />
         <LibraryPanel
           visible={visiblePanels.has('library')}
-          items={questionnaireData?.library || []}
+          items={
+            // Library can be object with byTopic or direct array
+            Array.isArray(questionnaireData?.library)
+              ? questionnaireData.library
+              : questionnaireData?.library?.byTopic
+                ? Object.values(questionnaireData.library.byTopic).flat()
+                : []
+          }
           selectedItems={selectedPanel === 'library' ? selectedItems : new Set()}
           reviewMode={reviewMode}
           getReviewStatus={getReviewStatus}
@@ -522,6 +530,7 @@ export default function App() {
         <div className="flex gap-4">
           {questionnaireData?.indexed?.sections && (
             <span>
+              {questionnaireData.indexed.sections.length} sections,{' '}
               {questionnaireData.indexed.sections.reduce(
                 (acc, s) => acc + s.items.length,
                 0
@@ -530,7 +539,11 @@ export default function App() {
             </span>
           )}
           {questionnaireData?.library && (
-            <span>{questionnaireData.library.length} library items</span>
+            <span>
+              {Array.isArray(questionnaireData.library)
+                ? questionnaireData.library.length
+                : questionnaireData.library.total || 0} library items
+            </span>
           )}
         </div>
         <div className="flex gap-4">

@@ -1,0 +1,57 @@
+version: "1.0"
+
+# Destination Tagging Rules
+# Items are matched in order: pattern_overrides → topic_destinations → needs_review
+# Customer-specific rules can override these defaults
+
+# Override by pattern (highest priority, checked first)
+# Pattern is case-insensitive regex matched against label
+pattern_overrides:
+  # Exclude signatures - not reusable
+  - pattern: "signature|handtekening|unterschrift|ondertekening"
+    destination: exclude
+
+  # Bank info → company
+  - pattern: "bank|iban|bic|swift|account"
+    destination: company
+
+  # Product-specific contacts
+  - pattern: "contact.*(product|ingredient|specification)"
+    destination: product
+
+# Default destination by topic (checked second)
+# Topic is assigned by AI during INDEX step
+topic_destinations:
+  # Company database
+  company: company
+  contacts: company
+  financial: company
+
+  # Answer library (reusable Q&A)
+  certifications: answer_library
+  quality: answer_library
+  food_safety: answer_library
+  sustainability: answer_library
+  environment: answer_library
+  food_fraud: answer_library
+  crisis: answer_library
+  audits: answer_library
+  animal_welfare: answer_library
+  documents: answer_library
+  approval: answer_library
+
+  # Product database
+  allergens: product
+  ingredients: product
+  nutrition: product
+  product: product
+  microbiology: product
+  packaging: product
+  logistics: product
+  origin: product
+
+  # Exclude
+  signature: exclude
+
+# Items with topics not listed above, or topic "other", get needs_review = true
+# No default_destination - forces human review for unknown items

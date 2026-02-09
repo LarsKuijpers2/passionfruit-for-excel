@@ -189,7 +189,7 @@ Return JSON with the sections found:
   ]
 }
 
-Topics: company, contacts, certifications, allergens, food_safety, quality, sustainability, environment, packaging, logistics, origin, food_fraud, nutrition, crisis, financial, animal_welfare, audits, product, ingredients, microbiology, documents, signature, approval, other
+Topics: company, contacts, certifications, allergens, food_safety, quality, quality_systems, sustainability, environment, packaging, logistics, origin, food_fraud, food_defense, nutrition, crisis, financial, animal_welfare, audits, product, ingredients, microbiology, documents, signature, approval, premises, hygiene, training, cleaning, pest_control, equipment, monitoring, waste, traceability, raw_materials, other
 
 Important:
 - Cover ALL rows from 1 to ${sheet.rows.length}
@@ -364,14 +364,25 @@ And a topic describing what the item is about (choose the most specific one):
 - "allergens" = Allergen information
 - "food_safety" = HACCP, food safety procedures
 - "quality" = Quality management systems
+- "premises" = Building, facilities, zoning, utilities, infrastructure
+- "hygiene" = Personal hygiene, handwashing, protective clothing
+- "training" = Staff training, competency, awareness
+- "cleaning" = Cleaning procedures, sanitation, disinfection
+- "pest_control" = Pest management, pest prevention
+- "equipment" = Production equipment, maintenance, calibration
+- "monitoring" = Environmental monitoring, air/water testing, sampling
+- "waste" = Waste handling, disposal
 - "sustainability" = Sustainability, CSR
 - "environment" = Environmental policies
 - "packaging" = Packaging information
 - "logistics" = Transport, shipping, delivery
 - "origin" = Origin, provenance
+- "traceability" = Traceability systems, batch tracking
+- "raw_materials" = Raw material sourcing, suppliers
 - "food_fraud" = Food fraud prevention
+- "food_defense" = Food defense, security
 - "nutrition" = Nutritional values
-- "crisis" = Crisis management
+- "crisis" = Crisis management, recall
 - "financial" = Financial, banking info
 - "animal_welfare" = Animal welfare
 - "audits" = Audits, inspections
@@ -381,7 +392,7 @@ And a topic describing what the item is about (choose the most specific one):
 - "documents" = Document references
 - "signature" = Signatures (NOT reusable)
 - "approval" = Approvals, authorizations
-- "other" = Anything else
+- "other" = Anything else (use only when no other topic fits)
 
 Respond in this JSON format:
 {

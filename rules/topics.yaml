@@ -62,6 +62,116 @@ topics:
       - food safety
       - QM
 
+  - id: premises
+    name: Premises & Facilities
+    description: Building, facilities, zoning, utilities, infrastructure
+    patterns:
+      - "building|gebäude|bâtiment|gebouw"
+      - "facilit|einrichtung|installation"
+      - "zon(e|ing)|bereich"
+      - "utilit|versorgung"
+      - "infrastruc"
+    keywords:
+      - building
+      - facilities
+      - zoning
+      - utilities
+      - infrastructure
+      - premises
+      - site
+
+  - id: hygiene
+    name: Hygiene
+    description: Personal hygiene, handwashing, protective clothing
+    patterns:
+      - "hygien|hygiëne"
+      - "handwash|händewaschen"
+      - "personal.*clean|persoonlijke.*hygiëne"
+    keywords:
+      - hygiene
+      - handwashing
+      - sanitation
+      - personal hygiene
+      - protective clothing
+      - work clothes
+
+  - id: training
+    name: Training
+    description: Staff training, competency, awareness
+    patterns:
+      - "training|schulung|formation|opleiding"
+      - "competenc|kompetenz"
+    keywords:
+      - training
+      - competency
+      - awareness
+      - education
+
+  - id: cleaning
+    name: Cleaning & Sanitation
+    description: Cleaning procedures, sanitation, disinfection
+    patterns:
+      - "clean|reinig|nettoyage|schoonma"
+      - "sanit|desinfect|désinfect"
+    keywords:
+      - cleaning
+      - sanitation
+      - disinfection
+      - sanitization
+
+  - id: pest_control
+    name: Pest Control
+    description: Pest management, pest prevention
+    patterns:
+      - "pest|schädling|nuisible|ongedierte"
+      - "rodent|insect"
+    keywords:
+      - pest
+      - pest control
+      - rodent
+      - insect
+      - vermin
+
+  - id: equipment
+    name: Equipment & Maintenance
+    description: Production equipment, maintenance, calibration
+    patterns:
+      - "equipment|ausrüstung|équipement|apparatuur"
+      - "maintenan|wartung|entretien|onderhoud"
+      - "calibrat|kalibrier|étalonnage|kalibratie"
+    keywords:
+      - equipment
+      - maintenance
+      - calibration
+      - machinery
+
+  - id: monitoring
+    name: Monitoring & Testing
+    description: Environmental monitoring, air/water testing, sampling
+    patterns:
+      - "monitor|überwach|surveillance"
+      - "air.*quality|luftqualität"
+      - "water.*quality|wasserqualität"
+      - "sampl|proben|échantillon"
+    keywords:
+      - monitoring
+      - air quality
+      - water quality
+      - sampling
+      - testing
+
+  - id: waste
+    name: Waste Management
+    description: Waste handling, disposal, waste water
+    patterns:
+      - "waste|abfall|déchet|afval"
+      - "disposal|entsorgung"
+    keywords:
+      - waste
+      - disposal
+      - garbage
+      - refuse
+
   - id: allergens
     name: Allergens
     description: Allergen management, cross-contamination

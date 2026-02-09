@@ -1,57 +1,68 @@
 version: "1.0"
-
-# Destination Tagging Rules
-# Items are matched in order: pattern_overrides → topic_destinations → needs_review
-# Customer-specific rules can override these defaults
-
-# Override by pattern (highest priority, checked first)
-# Pattern is case-insensitive regex matched against label
 pattern_overrides:
-  # Exclude signatures - not reusable
-  - pattern: "signature|handtekening|unterschrift|ondertekening"
+  - pattern: signature|handtekening|unterschrift|ondertekening
     destination: exclude
-
-  # Bank info → company
-  - pattern: "bank|iban|bic|swift|account"
+  - pattern: bank|iban|bic|swift|account
     destination: company
-
-  # Product-specific contacts
-  - pattern: "contact.*(product|ingredient|specification)"
+  - pattern: contact.*(product|ingredient|specification)
     destination: product
-
-# Default destination by topic (checked second)
-# Topic is assigned by AI during INDEX step
 topic_destinations:
-  # Company database
+  # Company level
   company: company
   contacts: company
   financial: company
 
-  # Answer library (reusable Q&A)
+  # Answer library (reusable across questionnaires)
   certifications: answer_library
   quality: answer_library
+  quality_systems: answer_library
   food_safety: answer_library
   sustainability: answer_library
   environment: answer_library
   food_fraud: answer_library
+  food_defense: answer_library
   crisis: answer_library
+  complaints: answer_library
   audits: answer_library
   animal_welfare: answer_library
+  ethical_social: answer_library
   documents: answer_library
+  declaration: answer_library
   approval: answer_library
+  traceability: answer_library
+  raw_materials: answer_library
 
-  # Product database
+  # New facility/operations topics → answer_library
+  premises: answer_library
+  hygiene: answer_library
+  training: answer_library
+  cleaning: answer_library
+  pest_control: answer_library
+  equipment: answer_library
+  monitoring: answer_library
+  waste: answer_library
+
+  # Product level
   allergens: product
   ingredients: product
+  formula_composition: product
   nutrition: product
+  nutritional: product
   product: product
+  identification: product
   microbiology: product
+  microbiological: product
   packaging: product
   logistics: product
+  storage_transport: product
   origin: product
+  origin_provenance: product
+  shelf_life: product
+  gmo: product
 
   # Exclude
   signature: exclude
 
-# Items with topics not listed above, or topic "other", get needs_review = true
-# No default_destination - forces human review for unknown items
+  # Fallback for unclassified topics
+  other: answer_library
+updatedAt: 2026-02-09

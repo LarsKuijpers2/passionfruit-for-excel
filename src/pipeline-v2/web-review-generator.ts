@@ -5624,6 +5624,7 @@ export class WebReviewGenerator {
               }
               if (originalItem) {
                 originalItem.classList.remove('promoted');
+                originalItem.classList.add('reviewed', 'excluded');
                 originalItem.dataset.promotedTo = 'exclude';
                 originalItem.dataset.destination = 'exclude';
                 // Update badge to show excluded
@@ -5631,10 +5632,29 @@ export class WebReviewGenerator {
                 if (existingBadge) {
                   existingBadge.style.background = '#ef4444';
                   existingBadge.textContent = 'Excluded';
+                } else {
+                  // Add excluded badge if not present
+                  const destBadge = document.createElement('span');
+                  destBadge.className = 'dest-badge';
+                  destBadge.style.cssText = \`
+                    background: #ef4444;
+                    color: white;
+                    padding: 2px 6px;
+                    border-radius: 4px;
+                    font-size: 10px;
+                    font-weight: 500;
+                    margin-left: 8px;
+                  \`;
+                  destBadge.textContent = 'Excluded';
+                  const labelEl = originalItem.querySelector('.item-label');
+                  if (labelEl) labelEl.appendChild(destBadge);
                 }
+                // Log feedback for the original indexed item so it persists correctly
+                await logFeedback(originalItem, 'excluded', 'Excluded from export');
+              } else {
+                // Fallback: log feedback for the removed item
+                await logFeedback(item, 'excluded', 'Excluded from export');
               }
-
-              await logFeedback(item, 'promoted', 'Excluded from export');
 
               // Update section counts
               document.querySelectorAll('#panel-library .section').forEach(section => {

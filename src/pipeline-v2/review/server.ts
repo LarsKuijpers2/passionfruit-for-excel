@@ -455,6 +455,69 @@ export class ReviewServer {
       }
     });
 
+    // Update item destination in indexed YAML (persists changes)
+    this.app.post('/api/update-destination', async (req, res) => {
+      try {
+        const { questionnaireId, itemId, destination } = req.body;
+        console.log(`Update destination: ${questionnaireId} / ${itemId} -> ${destination}`);
+
+        if (!questionnaireId || !itemId || !destination) {
+          return res.status(400).json({ error: 'Missing questionnaireId, itemId, or destination' });
+        }
+
+        // Load the indexed YAML
+        const safeName = questionnaireId.replace(/[^a-zA-Z0-9-_]/g, '_');
+        const indexedPath = join('./indexed', `${safeName}.yaml`);
+
+        if (!existsSync(indexedPath)) {
+          return res.status(404).json({ error: 'Indexed file not found' });
+        }
+
+        const indexed = parseYaml(await readFile(indexedPath, 'utf-8'));
+
+        // Find and update the item
+        let found = false;
+        for (const section of indexed.sections || []) {
+          for (const item of section.items || []) {
+            if (item.id === itemId) {
+              item.destination = destination;
+              item.needs_review = false;
+              item.tag_source = 'manual';
+              found = true;
+              break;
+            }
+          }
+          if (found) break;
+        }
+
+        if (!found) {
+          return res.status(404).json({ error: 'Item not found' });
+        }
+
+        // Save back to YAML
+        await writeFile(indexedPath, stringifyYaml(indexed), 'utf-8');
+        console.log(`Updated destination for ${itemId} to ${destination} in ${indexedPath}`);
+
+        // Regenerate the HTML review file
+        try {
+          const { WebReviewGenerator } = await import('../web-review-generator.js');
+          const generator = new WebReviewGenerator(this.reviewDir);
+          const structurePath = join('./questionnaires', `${safeName}.json`);
+          const libraryPath = './answer-library.yaml';
+          await generator.generate(structurePath, indexedPath, libraryPath);
+          console.log(`Regenerated HTML for ${questionnaireId}`);
+        } catch (e) {
+          console.error('Failed to regenerate HTML:', e);
+          // Don't fail the request, YAML was still updated
+        }
+
+        res.json({ success: true, itemId, destination });
+      } catch (error) {
+        console.error('Error updating destination:', error);
+        res.status(500).json({ error: 'Failed to update destination' });
+      }
+    });
+
     // Apply a suggested change from annotation
     this.app.post('/api/annotate/apply', async (req, res) => {
       try {
@@ -762,10 +825,20 @@ export class ReviewServer {
         continue;
       }
 
+      // Parse cells from "A8 → C9" format to separate lCells and vCells
+      let lCells: string | undefined;
+      let vCells: string | undefined;
+      if (item.cells) {
+        const parts = item.cells.split(/\s*→\s*/);
+        lCells = parts[0]?.trim();
+        vCells = parts[1]?.trim() || lCells; // If no arrow, both are the same cell
+      }
+
       const entry: any = {
         label: item.editedLabel || item.label,
         value: item.editedValue || item.value,
-        cells: item.cells,
+        lCells,
+        vCells,
         section: item.section,
         topic,
         destination,
@@ -792,7 +865,7 @@ export class ReviewServer {
 
   /**
    * Export approved items to database files
-   * Structure: approved-exports/<customer>/<questionnaire>/
+   * Structure: customers/<customer>/approved/<questionnaire>/
    */
   private async exportApproved(): Promise<{
     entityDb: any[];
@@ -822,9 +895,9 @@ export class ReviewServer {
       console.log('Could not determine customer folder, using default');
     }
 
-    // Create export directory: approved-exports/<customer>/<questionnaire>/
-    const exportDir = './approved-exports';
-    const questionnaireDir = join(exportDir, customerFolder, safeName);
+    // Create export directory: customers/<customer>/approved/<questionnaire>/
+    const exportDir = './customers';
+    const questionnaireDir = join(exportDir, customerFolder, 'approved', safeName);
     await mkdir(questionnaireDir, { recursive: true });
 
     const timestamp = new Date().toISOString();
@@ -938,8 +1011,8 @@ export class ReviewServer {
       // Check last exported date
       let lastExported: string | undefined;
       const exportDir = customer
-        ? join('./approved-exports', customer, safeName)
-        : join('./approved-exports', 'default', safeName);
+        ? join('./customers', customer, 'approved', safeName)
+        : join('./customers', 'default', 'approved', safeName);
       const entityDbPath = join(exportDir, 'entity-db.json');
       if (existsSync(entityDbPath)) {
         try {

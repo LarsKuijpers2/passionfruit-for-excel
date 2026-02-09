@@ -4,6 +4,7 @@ export interface QuestionnaireListItem {
   displayName: string;
   completed?: boolean;
   feedbackCount?: number;
+  customer?: string;
 }
 
 // Destination types

@@ -452,25 +452,45 @@ export default function App() {
           Questionnaires
         </div>
         <div className="flex-1 overflow-y-auto">
-          {questionnaires.map((q) => (
-            <div
-              key={q.name}
-              className={`flex items-center py-2.5 px-4 cursor-pointer transition-colors duration-150 border-b border-border gap-2 hover:bg-muted ${
-                currentQuestionnaire === q.name ? 'bg-accent border-l-2 border-l-foreground' : ''
-              }`}
-              onClick={() => openTab(q.name)}
-            >
-              {q.completed && <span className="text-green-500 text-sm">&#10003;</span>}
-              <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-[13px]">
-                {q.displayName}
-              </span>
-              {q.feedbackCount ? (
-                <span className="text-[11px] px-1.5 py-0.5 bg-muted rounded-full text-muted-foreground">
-                  {q.feedbackCount}
-                </span>
-              ) : null}
-            </div>
-          ))}
+          {(() => {
+            // Group questionnaires by customer
+            const grouped: Record<string, typeof questionnaires> = {};
+            questionnaires.forEach((q) => {
+              const customer = q.customer || 'default';
+              if (!grouped[customer]) grouped[customer] = [];
+              grouped[customer].push(q);
+            });
+            const customers = Object.keys(grouped).sort((a, b) =>
+              a === 'default' ? 1 : b === 'default' ? -1 : a.localeCompare(b)
+            );
+
+            return customers.map((customer) => (
+              <div key={customer}>
+                <div className="py-2 px-4 text-[11px] font-semibold text-muted-foreground uppercase tracking-wide bg-muted/50 border-b border-border">
+                  {customer}
+                </div>
+                {grouped[customer].map((q) => (
+                  <div
+                    key={q.name}
+                    className={`flex items-center py-2.5 px-4 cursor-pointer transition-colors duration-150 border-b border-border gap-2 hover:bg-muted ${
+                      currentQuestionnaire === q.name ? 'bg-accent border-l-2 border-l-foreground' : ''
+                    }`}
+                    onClick={() => openTab(q.name)}
+                  >
+                    {q.completed && <span className="text-green-500 text-sm">&#10003;</span>}
+                    <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-[13px]">
+                      {q.displayName}
+                    </span>
+                    {q.feedbackCount ? (
+                      <span className="text-[11px] px-1.5 py-0.5 bg-muted rounded-full text-muted-foreground">
+                        {q.feedbackCount}
+                      </span>
+                    ) : null}
+                  </div>
+                ))}
+              </div>
+            ));
+          })()}
         </div>
       </div>
 

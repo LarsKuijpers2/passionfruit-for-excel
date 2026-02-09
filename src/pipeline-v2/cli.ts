@@ -30,6 +30,13 @@ import { WebReviewGenerator } from './web-review-generator.js';
 import { ReviewServer } from './review/server.js';
 import { printEnvironmentInfo, getConfig, hasApiKey } from './config/environments.js';
 import { PassionfruitAPIClient } from './sync/api-client.js';
+import {
+  getCustomerPaths,
+  ensureCustomerDirs,
+  listCustomers,
+  getRulesDir,
+  getLegacyPaths,
+} from './customer-paths.js';
 
 const program = new Command();
 
@@ -46,12 +53,23 @@ program
   .command('store')
   .description('Store questionnaire preserving structure (Excel, Word, PDF)')
   .argument('<file>', 'Path to the questionnaire file (.xlsx, .docx, .pdf)')
-  .option('--output-dir <dir>', 'Output directory', './questionnaires')
+  .option('-c, --customer <name>', 'Customer name (uses customer folder structure)')
+  .option('--output-dir <dir>', 'Output directory (legacy mode, ignored if --customer is set)')
   .option('--markdown', 'Also export to Markdown')
   .action(async (file: string, opts) => {
     try {
       const filePath = resolve(file);
-      const outputDir = opts.outputDir as string || './questionnaires';
+      const customer = opts.customer as string | undefined;
+
+      // Determine output directory
+      let outputDir: string;
+      if (customer) {
+        const paths = ensureCustomerDirs(customer);
+        outputDir = paths.questionnaires;
+        console.log(`\n📁 Customer: ${customer}`);
+      } else {
+        outputDir = opts.outputDir as string || './questionnaires';
+      }
 
       const docType = getDocumentType(filePath);
       console.log('\nStoring: ' + file + ' (' + docType + ')');
@@ -69,7 +87,7 @@ program
         console.log('    - ' + sheet.name + topic + ': ' + sheet.stats.filledCells + ' filled');
       }
 
-      // Save JSON
+      // Save JSON (TODO: convert to YAML in Phase 3)
       const storage = new StructureStorage(outputDir);
       const jsonPath = await storage.save(structure);
       console.log('\n✅ Saved: ' + jsonPath);
@@ -98,14 +116,30 @@ program
   .command('index')
   .description('Index questionnaire with Claude AI - extract all evidence pieces organized by section/topic')
   .argument('<file>', 'Questionnaire filename (from stored questionnaires)')
-  .option('--dir <dir>', 'Questionnaires directory', './questionnaires')
-  .option('--output <dir>', 'Output directory for indexed questionnaires', './indexed')
-  .option('--rules-dir <dir>', 'Rules directory', './rules')
+  .option('-c, --customer <name>', 'Customer name (uses customer folder structure)')
+  .option('--dir <dir>', 'Questionnaires directory (legacy mode)')
+  .option('--output <dir>', 'Output directory for indexed questionnaires (legacy mode)')
+  .option('--rules-dir <dir>', 'Rules directory (legacy mode)')
   .action(async (file: string, opts) => {
     try {
-      const dir = opts.dir as string || './questionnaires';
-      const outputDir = opts.output as string || './indexed';
-      const rulesDir = opts.rulesDir as string || './rules';
+      const customer = opts.customer as string | undefined;
+
+      // Determine directories based on customer or legacy mode
+      let dir: string;
+      let outputDir: string;
+      let rulesDir: string;
+
+      if (customer) {
+        const paths = ensureCustomerDirs(customer);
+        dir = paths.questionnaires;
+        outputDir = paths.indexed;
+        rulesDir = getRulesDir(customer);
+        console.log(`\n📁 Customer: ${customer}`);
+      } else {
+        dir = opts.dir as string || './questionnaires';
+        outputDir = opts.output as string || './indexed';
+        rulesDir = opts.rulesDir as string || './rules';
+      }
 
       console.log('\n📇 Indexing: ' + file + '\n');
 
@@ -147,15 +181,31 @@ program
 program
   .command('harvest')
   .description('Harvest standard + narrative items from indexed questionnaires into answer library')
-  .option('--indexed-dir <dir>', 'Indexed questionnaires directory', './indexed')
-  .option('--output <file>', 'Output library file', './answer-library.yaml')
-  .option('--rules-dir <dir>', 'Rules directory', './rules')
+  .option('-c, --customer <name>', 'Customer name (uses customer folder structure)')
+  .option('--indexed-dir <dir>', 'Indexed questionnaires directory (legacy mode)')
+  .option('--output <file>', 'Output library file (legacy mode)')
+  .option('--rules-dir <dir>', 'Rules directory (legacy mode)')
   .option('--file <name>', 'Harvest from a specific indexed file only')
   .action(async (opts) => {
     try {
-      const indexedDir = opts.indexedDir as string || './indexed';
-      const outputFile = opts.output as string || './answer-library.yaml';
-      const rulesDir = opts.rulesDir as string || './rules';
+      const customer = opts.customer as string | undefined;
+
+      // Determine directories based on customer or legacy mode
+      let indexedDir: string;
+      let outputFile: string;
+      let rulesDir: string;
+
+      if (customer) {
+        const paths = ensureCustomerDirs(customer);
+        indexedDir = paths.indexed;
+        outputFile = paths.answerLibrary;
+        rulesDir = getRulesDir(customer);
+        console.log(`\n📁 Customer: ${customer}`);
+      } else {
+        indexedDir = opts.indexedDir as string || './indexed';
+        outputFile = opts.output as string || './answer-library.yaml';
+        rulesDir = opts.rulesDir as string || './rules';
+      }
 
       console.log('\n🌾 Harvesting reusable items\n');
 
@@ -198,21 +248,90 @@ program
   });
 
 // =============================================================================
+// CUSTOMERS - List all customers
+// =============================================================================
+
+program
+  .command('customers')
+  .description('List all customers with their data')
+  .action(async () => {
+    try {
+      const customers = listCustomers();
+
+      if (customers.length === 0) {
+        console.log('\n📁 No customers found');
+        console.log('   Create a customer with: npx tsx src/pipeline-v2/cli.ts store <file> --customer <name>\n');
+        return;
+      }
+
+      console.log(`\n📁 Customers (${customers.length}):\n`);
+
+      for (const customer of customers) {
+        const paths = getCustomerPaths(customer);
+        const { existsSync, readdirSync } = await import('fs');
+
+        // Count files in each directory
+        const countFiles = (dir: string, ext?: string) => {
+          if (!existsSync(dir)) return 0;
+          const files = readdirSync(dir);
+          if (ext) return files.filter(f => f.endsWith(ext)).length;
+          return files.filter(f => !f.startsWith('.')).length;
+        };
+
+        const questionnaires = countFiles(paths.questionnaires, '.json') + countFiles(paths.questionnaires, '.yaml');
+        const indexed = countFiles(paths.indexed, '.yaml');
+        const approved = countFiles(paths.approved);
+        const hasLibrary = existsSync(paths.answerLibrary);
+
+        console.log(`  📦 ${customer}`);
+        console.log(`     Questionnaires: ${questionnaires}`);
+        console.log(`     Indexed: ${indexed}`);
+        console.log(`     Approved: ${approved}`);
+        console.log(`     Answer Library: ${hasLibrary ? '✓' : '—'}`);
+        console.log();
+      }
+
+    } catch (error) {
+      console.error('\n❌ Error: ' + (error instanceof Error ? error.message : error));
+      process.exit(1);
+    }
+  });
+
+// =============================================================================
 // REVIEW - Interactive review with visual preview and feedback
 // =============================================================================
 
 program
   .command('review')
   .description('Interactive review of indexed questionnaires with visual preview and feedback')
-  .option('--indexed-dir <dir>', 'Indexed questionnaires directory', './indexed')
-  .option('--questionnaires-dir <dir>', 'Raw questionnaires directory', './questionnaires')
-  .option('--review-dir <dir>', 'Review output directory', './review')
+  .option('-c, --customer <name>', 'Customer name (uses customer folder structure)')
+  .option('--indexed-dir <dir>', 'Indexed questionnaires directory (legacy mode)')
+  .option('--questionnaires-dir <dir>', 'Raw questionnaires directory (legacy mode)')
+  .option('--review-dir <dir>', 'Review output directory (legacy mode)')
   .action(async (opts) => {
     try {
+      const customer = opts.customer as string | undefined;
+
+      let indexedDir: string;
+      let questionnairesDir: string;
+      let reviewDir: string;
+
+      if (customer) {
+        const paths = ensureCustomerDirs(customer);
+        indexedDir = paths.indexed;
+        questionnairesDir = paths.questionnaires;
+        reviewDir = paths.review;
+        console.log(`\n📁 Customer: ${customer}`);
+      } else {
+        indexedDir = opts.indexedDir as string || './indexed';
+        questionnairesDir = opts.questionnairesDir as string || './questionnaires';
+        reviewDir = opts.reviewDir as string || './review';
+      }
+
       const reviewCli = new ReviewCLI(
-        opts.indexedDir as string || './indexed',
-        opts.questionnairesDir as string || './questionnaires',
-        opts.reviewDir as string || './review'
+        indexedDir,
+        questionnairesDir,
+        reviewDir
       );
 
       await reviewCli.start();
@@ -392,6 +511,218 @@ program
   });
 
 // =============================================================================
+// AGGREGATE - Aggregate customer data for import
+// =============================================================================
+
+program
+  .command('aggregate')
+  .description('Aggregate approved exports for a customer, deduplicating items and tracking sources')
+  .argument('<customer>', 'Customer folder name in approved-exports/')
+  .option('--output <path>', 'Output path for aggregated data')
+  .action(async (customer: string, opts) => {
+    try {
+      const { aggregateCustomerData } = await import('./sync/aggregate-customer-data.js');
+      const outputPath = opts.output || `./api-ready/${customer}-aggregated.json`;
+
+      console.log(`\nAggregating data for customer: ${customer}\n`);
+
+      const data = aggregateCustomerData(customer);
+
+      // Ensure output directory exists
+      const { mkdir, writeFile } = await import('fs/promises');
+      const { dirname } = await import('path');
+      await mkdir(dirname(outputPath), { recursive: true });
+
+      await writeFile(outputPath, JSON.stringify(data, null, 2));
+
+      console.log('\n=== AGGREGATION SUMMARY ===\n');
+      console.log(`Customer: ${data.customer}`);
+      console.log(`Questionnaires: ${data.questionnaires.length}`);
+
+      console.log('\nAnswer Library:');
+      console.log(`  Total items: ${data.answerLibrary.total}`);
+      console.log(`  Unique items: ${data.answerLibrary.unique}`);
+      console.log(`  Duplicates removed: ${data.answerLibrary.duplicates}`);
+
+      console.log('\nEntity Data:');
+      console.log(`  Total items: ${data.entityData.total}`);
+      console.log(`  Unique items: ${data.entityData.unique}`);
+      console.log(`  Duplicates removed: ${data.entityData.duplicates}`);
+
+      console.log('\nItems in multiple questionnaires:', data.stats.multiSourceItems);
+      console.log(`\n✅ Output: ${outputPath}`);
+
+    } catch (error) {
+      console.error('\n❌ Error: ' + (error instanceof Error ? error.message : error));
+      process.exit(1);
+    }
+  });
+
+// =============================================================================
+// GROUP - Group related items (question + follow-up comments)
+// =============================================================================
+
+program
+  .command('group')
+  .description('Group related items together (Yes/No questions with their follow-up comments)')
+  .argument('<customer>', 'Customer folder name')
+  .option('--input <path>', 'Path to aggregated data file')
+  .option('--output <path>', 'Output path for grouped data')
+  .action(async (customer: string, opts) => {
+    try {
+      const { groupRelatedItems } = await import('./sync/group-related-items.js');
+      const inputPath = opts.input || `./api-ready/${customer}-aggregated.json`;
+      const outputPath = opts.output || `./api-ready/${customer}-grouped.json`;
+
+      const { existsSync } = await import('fs');
+      if (!existsSync(inputPath)) {
+        console.error(`\n❌ Aggregated data not found: ${inputPath}`);
+        console.error('Run "aggregate" command first');
+        process.exit(1);
+      }
+
+      console.log(`\nGrouping related items for: ${customer}\n`);
+
+      const { readFileSync, writeFileSync } = await import('fs');
+      const data = JSON.parse(readFileSync(inputPath, 'utf-8'));
+      const grouped = groupRelatedItems(data);
+
+      writeFileSync(outputPath, JSON.stringify(grouped, null, 2));
+
+      console.log('=== GROUPING SUMMARY ===\n');
+      console.log(`Original items: ${data.answerLibrary.unique}`);
+      console.log(`Items grouped: ${grouped.answerLibrary.grouped}`);
+      console.log(`Final items: ${grouped.answerLibrary.items.length}`);
+
+      const withFollowUps = grouped.answerLibrary.items.filter((i: any) => i.followUps?.length > 0);
+      console.log(`\nItems with follow-ups merged: ${withFollowUps.length}`);
+      console.log(`\n✅ Output: ${outputPath}`);
+
+    } catch (error) {
+      console.error('\n❌ Error: ' + (error instanceof Error ? error.message : error));
+      process.exit(1);
+    }
+  });
+
+// =============================================================================
+// PREPARE-IMPORT - Prepare aggregated data for API import
+// =============================================================================
+
+program
+  .command('prepare-import')
+  .description('Prepare aggregated customer data for Passionfruit API import')
+  .argument('<customer>', 'Customer folder name')
+  .option('--aggregated <path>', 'Path to aggregated data file')
+  .option('--output <path>', 'Output path for import preview')
+  .action(async (customer: string, opts) => {
+    try {
+      const { prepareCustomerImport } = await import('./sync/prepare-customer-import.js');
+      const aggregatedPath = opts.aggregated || `./api-ready/${customer}-aggregated.json`;
+      const outputPath = opts.output || `./api-ready/${customer}-import-preview.json`;
+
+      const { existsSync } = await import('fs');
+      if (!existsSync(aggregatedPath)) {
+        console.error(`\n❌ Aggregated data not found: ${aggregatedPath}`);
+        console.error('Run "aggregate" command first');
+        process.exit(1);
+      }
+
+      console.log(`\nPreparing import for: ${customer}\n`);
+
+      const preview = prepareCustomerImport(aggregatedPath);
+
+      const { writeFile } = await import('fs/promises');
+      await writeFile(outputPath, JSON.stringify(preview, null, 2));
+
+      console.log('=== IMPORT PREVIEW ===\n');
+      console.log(`Customer: ${preview.customer}`);
+      console.log(`Entity: ${preview.entity.name}`);
+      console.log(`  Top-level fields: ${Object.keys(preview.entity.fields).length}`);
+      console.log(`  Additional data: ${Object.keys(preview.entity.data).length}`);
+      console.log(`\nAnswers: ${preview.stats.totalAnswers}`);
+      console.log(`  To create: ${preview.stats.toCreate}`);
+      console.log(`  To update: ${preview.stats.toUpdate}`);
+      console.log(`\n✅ Output: ${outputPath}`);
+
+    } catch (error) {
+      console.error('\n❌ Error: ' + (error instanceof Error ? error.message : error));
+      process.exit(1);
+    }
+  });
+
+// =============================================================================
+// SYNC-NSLIBRARY - Sync answers to NSLibrary via API
+// =============================================================================
+
+program
+  .command('sync-nslibrary')
+  .description('Sync grouped customer answers to NSLibrary via Passionfruit API')
+  .argument('<customer>', 'Customer folder name')
+  .option('--dry-run', 'Preview changes without making API calls')
+  .option('--entity <id>', 'Link answers to entity ID')
+  .action(async (customer: string, opts) => {
+    try {
+      const { syncToNSLibrary } = await import('./sync/sync-to-nslibrary.js');
+      const groupedPath = `./api-ready/${customer}-grouped.json`;
+
+      const { existsSync } = await import('fs');
+      if (!existsSync(groupedPath)) {
+        console.error(`\n❌ Grouped data not found: ${groupedPath}`);
+        console.error('Run "aggregate" and "group" commands first');
+        process.exit(1);
+      }
+
+      const entityId = opts.entity ? parseInt(opts.entity) : undefined;
+      const result = await syncToNSLibrary(groupedPath, {
+        dryRun: opts.dryRun,
+        entityId,
+      });
+
+      console.log('\n=== SYNC COMPLETE ===');
+      console.log(`Created: ${result.created}`);
+      console.log(`Updated: ${result.updated}`);
+      console.log(`Skipped: ${result.skipped}`);
+      console.log(`Failed: ${result.failed}`);
+
+    } catch (error) {
+      console.error('\n❌ Error: ' + (error instanceof Error ? error.message : error));
+      process.exit(1);
+    }
+  });
+
+// =============================================================================
+// ADD-TO-LIBRARY - Add aggregated data to answer library
+// =============================================================================
+
+program
+  .command('add-to-library')
+  .description('Add grouped customer data to answer-library.yaml')
+  .argument('<customer>', 'Customer folder name')
+  .option('--grouped <path>', 'Path to grouped data file')
+  .option('--library <path>', 'Path to answer library', './answer-library.yaml')
+  .action(async (customer: string, opts) => {
+    try {
+      const { addToAnswerLibrary } = await import('./sync/add-to-answer-library.js');
+      const groupedPath = opts.grouped || `./api-ready/${customer}-grouped.json`;
+      const libraryPath = opts.library || './answer-library.yaml';
+
+      const { existsSync } = await import('fs');
+      if (!existsSync(groupedPath)) {
+        console.error(`\n❌ Grouped data not found: ${groupedPath}`);
+        console.error('Run "aggregate" and "group" commands first');
+        process.exit(1);
+      }
+
+      console.log(`\nAdding ${customer} data to answer library...`);
+      addToAnswerLibrary(groupedPath, libraryPath);
+
+    } catch (error) {
+      console.error('\n❌ Error: ' + (error instanceof Error ? error.message : error));
+      process.exit(1);
+    }
+  });
+
+// =============================================================================
 // HELP - Show the pipeline flow
 // =============================================================================
 
@@ -404,31 +735,64 @@ program
 ║              QUESTIONNAIRE EXTRACTION PIPELINE                 ║
 ╠═══════════════════════════════════════════════════════════════╣
 ║                                                                ║
+║  All commands support --customer <name> for per-customer data  ║
+║                                                                ║
+║  CUSTOMER FOLDER STRUCTURE:                                    ║
+║  customers/<name>/                                             ║
+║    ├── incoming/         # Drop questionnaire files here       ║
+║    ├── questionnaires/   # Stored raw structures               ║
+║    ├── indexed/          # AI-indexed files                    ║
+║    ├── approved/         # Approved exports                    ║
+║    ├── answer-library.yaml                                     ║
+║    └── rules/            # Customer-specific rules             ║
+║                                                                ║
 ║  1. STORE                                                      ║
-║     npx tsx src/pipeline-v2/cli.ts store <file.xlsx>           ║
-║     → Extracts Excel structure, preserves formatting           ║
-║     → Output: questionnaires/*.json                            ║
+║     npx tsx src/pipeline-v2/cli.ts store <file> -c <customer>  ║
+║     → Extracts structure, preserves formatting                 ║
+║     → Output: customers/<customer>/questionnaires/*.json       ║
 ║                                                                ║
 ║  2. INDEX                                                      ║
-║     npx tsx src/pipeline-v2/cli.ts index <file.xlsx>           ║
+║     npx tsx src/pipeline-v2/cli.ts index <file> -c <customer>  ║
 ║     → Claude AI analyzes layout, identifies evidence pieces    ║
-║     → Output: indexed/*.yaml                                   ║
+║     → Output: customers/<customer>/indexed/*.yaml              ║
 ║                                                                ║
 ║  3. HARVEST                                                    ║
-║     npx tsx src/pipeline-v2/cli.ts harvest                     ║
+║     npx tsx src/pipeline-v2/cli.ts harvest -c <customer>       ║
 ║     → Extracts entity-level answers for reuse                  ║
-║     → Output: answer-library.yaml                              ║
+║     → Output: customers/<customer>/answer-library.yaml         ║
 ║                                                                ║
 ║  4. REVIEW                                                     ║
-║     npx tsx src/pipeline-v2/cli.ts serve <file.xlsx>           ║
+║     npx tsx src/pipeline-v2/cli.ts serve <file> -c <customer>  ║
 ║     → Interactive review with visual preview                   ║
 ║     → Approve items for entity DB and answer library           ║
-║     → Output: approved-exports/<name>/*.json                   ║
+║     → Output: customers/<customer>/approved/*.yaml             ║
 ║                                                                ║
-║  5. SYNC (coming soon)                                         ║
-║     npx tsx src/pipeline-v2/cli.ts sync-approved               ║
-║     → Sync approved items to Passionfruit API                  ║
-║     → Uploads evidence, creates entities, saves answers        ║
+║  5. AGGREGATE                                                  ║
+║     npx tsx src/pipeline-v2/cli.ts aggregate <customer>        ║
+║     → Aggregate approved exports for a customer                ║
+║     → Deduplicate items, track sources across questionnaires   ║
+║     → Output: api-ready/<customer>-aggregated.json             ║
+║                                                                ║
+║  6. GROUP                                                      ║
+║     npx tsx src/pipeline-v2/cli.ts group <customer>            ║
+║     → Group related items (Yes/No + follow-up comments)        ║
+║     → Merge comments into parent questions                     ║
+║     → Output: api-ready/<customer>-grouped.json                ║
+║                                                                ║
+║  7. PREPARE-IMPORT                                             ║
+║     npx tsx src/pipeline-v2/cli.ts prepare-import <customer>   ║
+║     → Convert aggregated data to API format                    ║
+║     → Map entity fields, prepare answers                       ║
+║     → Output: api-ready/<customer>-import-preview.json         ║
+║                                                                ║
+║  8. SYNC (coming soon)                                         ║
+║     npx tsx src/pipeline-v2/cli.ts sync-import <customer>      ║
+║     → Sync prepared data to Passionfruit API                   ║
+║     → Creates entity, uploads answers                          ║
+║                                                                ║
+║  CUSTOMERS                                                     ║
+║     npx tsx src/pipeline-v2/cli.ts customers                   ║
+║     → List all customers with their data                       ║
 ║                                                                ║
 ║  ENV                                                           ║
 ║     npx tsx src/pipeline-v2/cli.ts env                         ║

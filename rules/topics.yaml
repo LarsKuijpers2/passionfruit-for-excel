@@ -1,0 +1,301 @@
+# Topic Definitions for Questionnaire Indexing
+#
+# Topics are used to classify sections and items in questionnaires.
+# Each topic has patterns (regex) and keywords for matching section titles.
+#
+# Matching priority:
+# 1. Patterns (regex) - for complex multi-language matching
+# 2. Keywords (exact word boundary) - for simple terms
+
+version: "1.0"
+
+topics:
+  # Company & Contact Information
+  - id: company_information
+    name: Company Information
+    description: General company data, legal info, financial details
+    patterns:
+      - "company|firmierung|entreprise|bedrijf"
+      - "general.*data|allgemeine.*daten|algemene"
+      - "financ|finanz|bank|steuer|tax"
+    keywords:
+      - company
+      - business
+      - legal
+      - financial
+
+  - id: contact_persons
+    name: Contact Persons
+    description: Contact details, responsible persons
+    patterns:
+      - "contact|ansprech|kontakt"
+    keywords:
+      - contact
+      - person
+      - responsible
+
+  # Quality & Food Safety
+  - id: certifications
+    name: Certifications
+    description: Quality certifications, standards, accreditations
+    patterns:
+      - "certif|zertif"
+    keywords:
+      - certification
+      - certificate
+      - accreditation
+      - standard
+      - IFS
+      - BRC
+      - FSSC
+      - ISO
+
+  - id: quality_systems
+    name: Quality Systems
+    description: Quality management, HACCP, food safety systems
+    patterns:
+      - "haccp|food.*safety|lebensmittel.*sicherheit"
+      - "quality|qualität|qualite|kwaliteit|qm.*system"
+    keywords:
+      - quality
+      - HACCP
+      - food safety
+      - QM
+
+  - id: allergens
+    name: Allergens
+    description: Allergen management, cross-contamination
+    patterns:
+      - "allerg"
+    keywords:
+      - allergen
+      - cross-contamination
+
+  - id: microbiological
+    name: Microbiological
+    description: Microbiological testing, bacteria, pathogens
+    patterns:
+      - "bacterio|micro|keime"
+    keywords:
+      - microbiological
+      - bacteria
+      - pathogen
+
+  - id: foreign_bodies
+    name: Foreign Bodies
+    description: Foreign body detection, contamination control
+    patterns:
+      - "foreign.*bod|fremdkörper|corps.*étrang"
+    keywords:
+      - foreign body
+      - metal detection
+      - contamination
+
+  # Sustainability & Environment
+  - id: sustainability
+    name: Sustainability
+    description: Sustainability, CSR, environmental management
+    patterns:
+      - "sustain|nachhaltig|durable|duurzaam|rse|csr"
+      - "environment|umwelt|environnement|milieu"
+    keywords:
+      - sustainability
+      - CSR
+      - environment
+      - carbon
+      - CO2
+
+  - id: ethical_social
+    name: Ethical & Social
+    description: Animal welfare, ethical practices, social responsibility
+    patterns:
+      - "animal|tier|welfare|wohl"
+      - "ethical|ethisch|éthique"
+      - "social|sozial"
+    keywords:
+      - animal welfare
+      - ethical
+      - social
+
+  # Product Information
+  - id: identification
+    name: Product Identification
+    description: Product details, specifications
+    patterns:
+      - "product|produkt|produit"
+    keywords:
+      - product
+      - specification
+
+  - id: formula_composition
+    name: Formula & Composition
+    description: Ingredients, composition, recipe
+    patterns:
+      - "ingredient|zutat|ingrédient|ingrediënt"
+      - "formula|composition|zusammensetzung"
+    keywords:
+      - ingredient
+      - composition
+      - formula
+      - recipe
+
+  - id: nutritional
+    name: Nutritional
+    description: Nutritional values, labeling
+    patterns:
+      - "nutri|nährwert|valeur"
+    keywords:
+      - nutritional
+      - nutrition
+      - calories
+
+  - id: shelf_life
+    name: Shelf Life
+    description: Shelf life, expiry, storage conditions
+    patterns:
+      - "shelf.*life|haltbarkeit|durée.*conservation"
+    keywords:
+      - shelf life
+      - expiry
+      - best before
+
+  - id: gmo
+    name: GMO
+    description: GMO status, genetic modification
+    patterns:
+      - "gmo|genetisch|génétique"
+    keywords:
+      - GMO
+      - genetic
+      - modified
+
+  # Supply Chain
+  - id: raw_materials
+    name: Raw Materials
+    description: Raw material sourcing, suppliers
+    patterns:
+      - "raw.*material|rohstoff|matière.*première"
+    keywords:
+      - raw material
+      - supplier
+      - sourcing
+
+  - id: origin_provenance
+    name: Origin & Provenance
+    description: Product origin, country of origin
+    patterns:
+      - "origin|herkunft|origine|oorsprong"
+    keywords:
+      - origin
+      - provenance
+      - country
+
+  - id: traceability
+    name: Traceability
+    description: Traceability systems, batch tracking
+    patterns:
+      - "traceab|rückverfolgb|traça"
+    keywords:
+      - traceability
+      - batch
+      - lot
+
+  - id: packaging
+    name: Packaging
+    description: Packaging materials, specifications
+    patterns:
+      - "packag|verpack|emballage|verpakking"
+    keywords:
+      - packaging
+      - pack
+      - container
+
+  - id: storage_transport
+    name: Storage & Transport
+    description: Logistics, storage, shipping
+    patterns:
+      - "logist|transport|shipping|lieferung|livraison"
+      - "storage|lager|stockage"
+    keywords:
+      - logistics
+      - transport
+      - storage
+      - shipping
+
+  # Risk & Compliance
+  - id: food_fraud
+    name: Food Fraud
+    description: Food fraud prevention, authenticity
+    patterns:
+      - "fraud|betrug|fraude"
+    keywords:
+      - fraud
+      - authenticity
+      - adulteration
+
+  - id: food_defense
+    name: Food Defense
+    description: Food defense, security, tampering prevention
+    patterns:
+      - "defense|verteidigung|défense"
+    keywords:
+      - defense
+      - security
+      - tampering
+
+  - id: complaints
+    name: Complaints & Crisis
+    description: Complaint handling, crisis management
+    patterns:
+      - "crisis|krisen|crise"
+      - "complaint|reklamation|réclamation"
+    keywords:
+      - complaint
+      - crisis
+      - recall
+
+  - id: country_regulatory
+    name: Country & Regulatory
+    description: Export requirements, country-specific regulations
+    patterns:
+      - "export|regulatory|regulation"
+    keywords:
+      - export
+      - regulatory
+      - country
+
+  # Documentation
+  - id: declaration
+    name: Declaration
+    description: Documents, declarations, statements
+    patterns:
+      - "document|dokument|pièce"
+      - "declaration|erklärung|déclaration"
+    keywords:
+      - document
+      - declaration
+
+  - id: signature
+    name: Signature
+    description: Signatures, sign-off, authorization
+    patterns:
+      - "onderteken|signature|unterschrift"
+    keywords:
+      - signature
+      - sign
+
+  - id: approval
+    name: Approval
+    description: Approvals, authorizations
+    patterns:
+      - "autoris|approval|genehmigung"
+    keywords:
+      - approval
+      - authorization
+
+  # Default
+  - id: other
+    name: Other
+    description: Uncategorized items
+    patterns: []
+    keywords: []

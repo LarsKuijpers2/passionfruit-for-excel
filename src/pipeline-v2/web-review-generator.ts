@@ -2430,7 +2430,7 @@ export class WebReviewGenerator {
         <div class="item${needsReview ? ' needs-review' : ''}" data-id="${item.id || ''}" data-index="${idx}" data-cells="${cells}" data-label="${this.escapeHtml(item.label)}" data-section="${this.escapeHtml(section.title)}" data-topic="${section.topic}" data-destination="${dest}">
           <div class="item-header">
             <span class="item-label">${this.escapeHtml(item.label)}${destBadge}${needsReviewBadge}</span>
-            <span class="item-meta">${item.lCell || ''}${item.vCell ? ' → ' + item.vCell : ''}</span>
+            <span class="item-meta">${item.lCell || ''}${item.vCell && item.vCell !== item.lCell ? ':' + item.vCell : ''}</span>
           </div>
           <div class="item-value${item.value ? '' : ' empty'}">${item.value ? this.escapeHtml(item.value) : '(empty)'}</div>
           <div class="item-note-display"></div>
@@ -2513,7 +2513,7 @@ export class WebReviewGenerator {
           <div class="item" data-cells="${cells}" data-label="${this.escapeHtml(item.label)}" data-topic="${item.topic || ''}" data-destination="${dest}">
             <div class="item-header">
               <span class="item-label">${this.escapeHtml(item.label)}</span>
-              <span class="item-meta">${item.lCell || ''}${item.vCell ? ' → ' + item.vCell : ''}</span>
+              <span class="item-meta">${item.lCell || ''}${item.vCell && item.vCell !== item.lCell ? ':' + item.vCell : ''}</span>
             </div>
             <div class="item-value${item.value ? '' : ' empty'}">${item.value ? this.escapeHtml(item.value) : '(empty)'}</div>
             <div class="item-ref">Section: ${this.escapeHtml(section)} | Topic: ${item.topic || 'other'}</div>
@@ -2995,6 +2995,8 @@ export class WebReviewGenerator {
     .sidebar-item-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
     .sidebar-item-badge { font-size: 11px; padding: 2px 6px; background: var(--muted); border-radius: 10px; color: var(--muted-foreground); }
     .sidebar-item-check { color: #22c55e; font-size: 14px; }
+    .sidebar-section { margin-bottom: 8px; }
+    .sidebar-section-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted-foreground); padding: 8px 16px; background: rgba(255,255,255,0.03); border-bottom: 1px solid var(--border); }
 
     /* Panel headers row */
     .panel-headers {
@@ -3347,6 +3349,7 @@ export class WebReviewGenerator {
       border-bottom: none;
     }
     .section.collapsed .section-items { display: none; }
+    .section.collapsed .collapse-arrow { transform: rotate(-90deg); }
 
     .item {
       padding: 8px 12px;
@@ -4083,16 +4086,39 @@ export class WebReviewGenerator {
     function renderSidebar() {
       const sidebar = document.getElementById('sidebar-list');
       if (!sidebar) return;
-      sidebar.innerHTML = allQuestionnaires.map(q => {
-        const isOpen = openTabs.some(t => t.name === q.name);
-        const tab = openTabs.find(t => t.name === q.name);
-        const isCompleted = tab?.completed || q.completed;
-        return '<div class="sidebar-item' + (currentQuestionnaire === q.name ? ' active' : '') + '" data-name="' + escapeHtml(q.name) + '">' +
-          (isCompleted ? '<span class="sidebar-item-check">✓</span>' : '') +
-          '<span class="sidebar-item-name">' + escapeHtml(q.displayName) + '</span>' +
-          (q.feedbackCount ? '<span class="sidebar-item-badge">' + q.feedbackCount + '</span>' : '') +
-          '</div>';
-      }).join('');
+
+      // Group by customer
+      const grouped = {};
+      allQuestionnaires.forEach(q => {
+        const customer = q.customer || 'default';
+        if (!grouped[customer]) grouped[customer] = [];
+        grouped[customer].push(q);
+      });
+
+      // Sort customers (default last)
+      const customers = Object.keys(grouped).sort((a, b) =>
+        a === 'default' ? 1 : b === 'default' ? -1 : a.localeCompare(b)
+      );
+
+      let html = '';
+      customers.forEach(customer => {
+        html += '<div class="sidebar-section">' +
+          '<div class="sidebar-section-title">' + escapeHtml(customer) + '</div>';
+
+        grouped[customer].forEach(q => {
+          const tab = openTabs.find(t => t.name === q.name);
+          const isCompleted = tab?.completed || q.completed;
+          html += '<div class="sidebar-item' + (currentQuestionnaire === q.name ? ' active' : '') + '" data-name="' + escapeHtml(q.name) + '">' +
+            (isCompleted ? '<span class="sidebar-item-check">✓</span>' : '') +
+            '<span class="sidebar-item-name">' + escapeHtml(q.displayName) + '</span>' +
+            (q.feedbackCount ? '<span class="sidebar-item-badge">' + q.feedbackCount + '</span>' : '') +
+            '</div>';
+        });
+
+        html += '</div>';
+      });
+
+      sidebar.innerHTML = html;
       sidebar.querySelectorAll('.sidebar-item').forEach(item => {
         item.addEventListener('click', () => {
           const name = item.dataset.name;
@@ -4578,13 +4604,13 @@ export class WebReviewGenerator {
           const dest = item.destination || null;
           const needsReview = item.needs_review || false;
           const destColors = {
-            company: 'background:#1e3a5f;color:#93c5fd;border-color:#3b82f6',
-            answer_library: 'background:#14532d;color:#86efac;border-color:#22c55e',
-            product: 'background:#4c1d95;color:#c4b5fd;border-color:#8b5cf6',
-            exclude: 'background:#374151;color:#9ca3af;border-color:#6b7280'
+            company: '#1e40af',
+            answer_library: '#166534',
+            product: '#9a3412',
+            exclude: '#374151'
           };
-          const destLabels = { company: 'company', answer_library: 'library', product: 'product', exclude: 'exclude' };
-          const destBadge = dest ? \`<span class="dest-badge" style="\${destColors[dest] || ''};padding:2px 6px;border-radius:4px;font-size:9px;border:1px solid;margin-left:4px" title="\${item.tag_source || ''}">\${destLabels[dest] || dest}</span>\` : '';
+          const destLabels = { company: 'COMPANY', answer_library: 'LIBRARY', product: 'PRODUCT', exclude: 'EXCLUDE' };
+          const destBadge = dest ? \`<span class="dest-badge" style="background:\${destColors[dest] || '#374151'};color:#fff;padding:2px 8px;border-radius:4px;font-size:9px;font-weight:600;letter-spacing:0.5px;margin-left:4px" title="\${item.tag_source || ''}">\${destLabels[dest] || dest.toUpperCase()}</span>\` : '';
           const reviewBadge = needsReview ? \`<span class="needs-review-badge" style="background:#78350f;color:#fcd34d;border:1px solid #f59e0b;padding:2px 6px;border-radius:4px;font-size:9px;margin-left:4px">needs review</span>\` : '';
 
           return \`
@@ -4721,7 +4747,8 @@ export class WebReviewGenerator {
         const isEmpty = items.length === 0;
         return \`
           <div class="section" data-destination="\${dest}" style="\${isEmpty ? 'display:none;' : ''}">
-            <div class="section-header">
+            <div class="section-header" style="cursor:pointer;">
+              <span class="collapse-arrow" style="margin-right:8px;transition:transform 0.2s;">▼</span>
               <div class="section-title">\${destinationLabels[dest]}</div>
               <div class="section-meta">
                 <span>\${items.length} items</span>
@@ -4757,8 +4784,8 @@ export class WebReviewGenerator {
       }
 
       const items = document.querySelectorAll('#panel-indexed .item');
-      const destLabels = { answer_library: 'Answer Library', company: 'Company', product: 'Product', exclude: 'Excluded' };
-      const destBadgeColors = { answer_library: '#f59e0b', company: '#3b82f6', product: '#22c55e', exclude: '#ef4444' };
+      const destLabels = { answer_library: 'LIBRARY', company: 'COMPANY', product: 'PRODUCT', exclude: 'EXCLUDE' };
+      const destBadgeColors = { answer_library: '#166534', company: '#1e40af', product: '#9a3412', exclude: '#374151' };
 
       let count = 0;
       let excludedCount = 0;
@@ -4777,15 +4804,16 @@ export class WebReviewGenerator {
         const destBadge = document.createElement('span');
         destBadge.className = 'dest-badge';
         destBadge.style.cssText = \`
-          background: \${destBadgeColors[aiDest] || '#6b7280'};
-          color: white;
-          padding: 2px 6px;
+          background: \${destBadgeColors[aiDest] || '#374151'};
+          color: #fff;
+          padding: 2px 8px;
           border-radius: 4px;
-          font-size: 10px;
-          font-weight: 500;
+          font-size: 9px;
+          font-weight: 600;
+          letter-spacing: 0.5px;
           margin-left: 8px;
         \`;
-        destBadge.textContent = destLabels[aiDest] || aiDest;
+        destBadge.textContent = destLabels[aiDest] || aiDest.toUpperCase();
 
         const labelEl = item.querySelector('.item-label');
         if (labelEl && !labelEl.querySelector('.dest-badge')) {
@@ -4815,6 +4843,17 @@ export class WebReviewGenerator {
           panel?.classList.toggle('visible', isVisible);
           headerItem?.classList.toggle('active', isVisible);
           headerItem?.classList.toggle('hidden', !isVisible);
+        });
+      });
+
+      // Section header clicks to toggle collapse in Save as panel
+      document.querySelectorAll('#panel-library .section-header').forEach(header => {
+        header.style.cursor = 'pointer';
+        header.addEventListener('click', (e) => {
+          // Don't toggle if clicking on buttons inside
+          if (e.target.closest('button')) return;
+          const section = header.closest('.section');
+          section?.classList.toggle('collapsed');
         });
       });
 
@@ -5536,6 +5575,7 @@ export class WebReviewGenerator {
       async function applyCommandPaletteChanges() {
         const topic = document.getElementById('bulkTopic')?.value;
         const dataSource = document.getElementById('bulkDataSource')?.value;
+        console.log('applyCommandPaletteChanges - dataSource:', dataSource, 'topic:', topic);
         const entityRole = document.getElementById('bulkEntityRole')?.value;
         const action = document.getElementById('bulkAction').value;
         const newLabel = document.getElementById('bulkLabel').value;
@@ -5547,6 +5587,8 @@ export class WebReviewGenerator {
 
         const items = Array.from(selectedItems);
         const isLibraryMode = commandPalette.classList.contains('library-mode');
+        const firstItemPanel = items[0]?.closest('#panel-library') ? 'library' : items[0]?.closest('#panel-indexed') ? 'indexed' : 'unknown';
+        console.log('items:', items.length, 'isLibraryMode:', isLibraryMode, 'firstItemPanel:', firstItemPanel);
         let changes = 0;
 
         // Handle merge values
@@ -5648,7 +5690,7 @@ export class WebReviewGenerator {
           if (!isLibraryMode && dataSource) {
             const destMap = { answer_library: 'answer_library', entities: 'company', products: 'product', exclude: 'exclude' };
             const newDest = destMap[dataSource] || dataSource;
-            const destLabels = { answer_library: 'Answer Library', company: 'Entities', product: 'Products', exclude: 'Excluded' };
+            const destLabels = { answer_library: 'LIBRARY', company: 'COMPANY', product: 'PRODUCT', exclude: 'EXCLUDE' };
             const entityLabels = { supplier: 'Supplier', client: 'Client', manufacturer: 'Manufacturer', other: 'Other' };
             const entityColors = { supplier: '#3b82f6', client: '#22c55e', manufacturer: '#f59e0b', other: '#6b7280' };
 
@@ -5690,22 +5732,46 @@ export class WebReviewGenerator {
               const destBadge = document.createElement('span');
               destBadge.className = 'dest-badge';
               destBadge.style.cssText = \`
-                background: #ef4444;
-                color: white;
-                padding: 2px 6px;
+                background: #374151;
+                color: #fff;
+                padding: 2px 8px;
                 border-radius: 4px;
-                font-size: 10px;
-                font-weight: 500;
+                font-size: 9px;
+                font-weight: 600;
+                letter-spacing: 0.5px;
                 margin-left: 8px;
               \`;
-              destBadge.textContent = 'Excluded';
+              destBadge.textContent = 'EXCLUDE';
 
               const labelEl = item.querySelector('.item-label');
               if (labelEl) {
                 labelEl.appendChild(destBadge);
               }
 
+              // Hide needs review badge when destination is assigned
+              const needsReviewBadge = item.querySelector('.needs-review-badge');
+              if (needsReviewBadge) needsReviewBadge.style.display = 'none';
+              item.classList.remove('needs-review');
+
               await logFeedback(item, 'excluded', 'Marked as exclude (don\\'t save)');
+
+              // Persist exclude destination to indexed file (itemId already declared above)
+              if (itemId && serverConnected) {
+                try {
+                  await fetch(API_BASE + '/api/update-destination', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      questionnaireId: currentQuestionnaire,
+                      itemId: itemId,
+                      destination: 'exclude'
+                    })
+                  });
+                } catch (e) {
+                  console.error('Failed to persist exclude destination:', e);
+                }
+              }
+
               changes++;
               continue;  // Skip to next item, don't try to add to library
             }
@@ -5784,27 +5850,33 @@ export class WebReviewGenerator {
 
               // Mark original item as promoted and add destination badge
               item.classList.add('reviewed', 'correct', 'promoted');
+              item.classList.remove('needs-review');
               item.dataset.destination = newDest;  // Use destination as primary field
               item.dataset.promotedTo = newDest;   // Keep for backwards compatibility
 
+              // Hide needs review badge when destination is assigned
+              const needsReviewBadge = item.querySelector('.needs-review-badge');
+              if (needsReviewBadge) needsReviewBadge.style.display = 'none';
+
               // Add destination badge to show where it was promoted
-              const destBadgeLabels = { answer_library: 'Answer Library', company: 'Company', product: 'Product', exclude: 'Excluded' };
-              const destBadgeColors = { answer_library: '#f59e0b', company: '#3b82f6', product: '#22c55e', exclude: '#ef4444' };
+              const destBadgeLabels = { answer_library: 'LIBRARY', company: 'COMPANY', product: 'PRODUCT', exclude: 'EXCLUDE' };
+              const destBadgeColors = { answer_library: '#166534', company: '#1e40af', product: '#9a3412', exclude: '#374151' };
               const existingDestBadge = item.querySelector('.dest-badge');
               if (existingDestBadge) existingDestBadge.remove();
 
               const destBadge = document.createElement('span');
               destBadge.className = 'dest-badge';
               destBadge.style.cssText = \`
-                background: \${destBadgeColors[newDest] || '#6b7280'};
-                color: white;
-                padding: 2px 6px;
+                background: \${destBadgeColors[newDest] || '#374151'};
+                color: #fff;
+                padding: 2px 8px;
                 border-radius: 4px;
-                font-size: 10px;
-                font-weight: 500;
+                font-size: 9px;
+                font-weight: 600;
+                letter-spacing: 0.5px;
                 margin-left: 8px;
               \`;
-              destBadge.textContent = destBadgeLabels[newDest] || newDest;
+              destBadge.textContent = destBadgeLabels[newDest] || newDest.toUpperCase()
 
               // Add entity role to badge if applicable
               if (newDest === 'company' && entityRole) {
@@ -5840,9 +5912,11 @@ export class WebReviewGenerator {
 
           // Library mode: update data source and move to correct section
           if (isLibraryMode && dataSource) {
+            console.log('Library mode - changing destination to:', dataSource);
             // Map dropdown values to destination keys
             const destMap = { answer_library: 'answer_library', entities: 'company', products: 'product', exclude: 'exclude' };
             const newDest = destMap[dataSource] || dataSource;
+            console.log('newDest:', newDest, 'item.dataset.id:', item.dataset.id);
             item.dataset.destination = newDest;
 
             // Handle exclude: remove from Save as panel
@@ -5862,29 +5936,33 @@ export class WebReviewGenerator {
                 originalItem = document.querySelector(\`#panel-indexed .item[data-cells="\${itemCells}"][data-label="\${itemLabel}"]\`);
               }
               if (originalItem) {
-                originalItem.classList.remove('promoted');
+                originalItem.classList.remove('promoted', 'needs-review');
                 originalItem.classList.add('reviewed', 'excluded');
                 originalItem.dataset.promotedTo = 'exclude';
                 originalItem.dataset.destination = 'exclude';
+                // Hide needs review badge
+                const needsReviewBadge = originalItem.querySelector('.needs-review-badge');
+                if (needsReviewBadge) needsReviewBadge.style.display = 'none';
                 // Update badge to show excluded
                 const existingBadge = originalItem.querySelector('.dest-badge');
                 if (existingBadge) {
-                  existingBadge.style.background = '#ef4444';
-                  existingBadge.textContent = 'Excluded';
+                  existingBadge.style.background = '#374151';
+                  existingBadge.textContent = 'EXCLUDE';
                 } else {
                   // Add excluded badge if not present
                   const destBadge = document.createElement('span');
                   destBadge.className = 'dest-badge';
                   destBadge.style.cssText = \`
-                    background: #ef4444;
-                    color: white;
-                    padding: 2px 6px;
+                    background: #374151;
+                    color: #fff;
+                    padding: 2px 8px;
                     border-radius: 4px;
-                    font-size: 10px;
-                    font-weight: 500;
+                    font-size: 9px;
+                    font-weight: 600;
+                    letter-spacing: 0.5px;
                     margin-left: 8px;
                   \`;
-                  destBadge.textContent = 'Excluded';
+                  destBadge.textContent = 'EXCLUDE';
                   const labelEl = originalItem.querySelector('.item-label');
                   if (labelEl) labelEl.appendChild(destBadge);
                 }
@@ -5893,6 +5971,23 @@ export class WebReviewGenerator {
               } else {
                 // Fallback: log feedback for the removed item
                 await logFeedback(item, 'excluded', 'Excluded from export');
+              }
+
+              // Persist exclude destination to indexed file
+              if (itemId && serverConnected) {
+                try {
+                  await fetch(API_BASE + '/api/update-destination', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      questionnaireId: currentQuestionnaire,
+                      itemId: itemId,
+                      destination: 'exclude'
+                    })
+                  });
+                } catch (e) {
+                  console.error('Failed to persist exclude destination:', e);
+                }
               }
 
               // Update section counts
@@ -5953,6 +6048,31 @@ export class WebReviewGenerator {
               }
             }
 
+            // Also update the original item in Extraction panel
+            const itemId = item.dataset.id;
+            const itemCells = item.dataset.cells;
+            const itemLabel = item.dataset.label;
+            console.log('Destination change - itemId:', itemId, 'newDest:', newDest, 'serverConnected:', serverConnected);
+            let originalItem = null;
+            if (itemId) {
+              originalItem = document.querySelector(\`#panel-indexed .item[data-id="\${itemId}"]\`);
+            }
+            if (!originalItem && itemCells) {
+              originalItem = document.querySelector(\`#panel-indexed .item[data-cells="\${itemCells}"][data-label="\${itemLabel}"]\`);
+            }
+            if (originalItem) {
+              originalItem.dataset.destination = newDest;
+              originalItem.dataset.promotedTo = newDest;
+              // Update badge in Extraction panel
+              const destBadgeLabels = { answer_library: 'LIBRARY', company: 'COMPANY', product: 'PRODUCT', exclude: 'EXCLUDE' };
+              const destBadgeColors = { answer_library: '#166534', company: '#1e40af', product: '#9a3412', exclude: '#374151' };
+              const existingBadge = originalItem.querySelector('.dest-badge');
+              if (existingBadge) {
+                existingBadge.style.background = destBadgeColors[newDest] || '#374151';
+                existingBadge.textContent = destBadgeLabels[newDest] || newDest.toUpperCase();
+              }
+            }
+
             // Update section item counts
             document.querySelectorAll('#panel-library .section').forEach(section => {
               const count = section.querySelectorAll('.item').length;
@@ -5971,6 +6091,24 @@ export class WebReviewGenerator {
 
             // Save destination change (include entity role)
             await logFeedback(item, 'destination_changed', \`Moved to \${newDest}\${entityRole ? ' (' + entityRole + ')' : ''}\`);
+
+            // Persist destination change to indexed YAML (itemId already declared above)
+            if (itemId && serverConnected) {
+              try {
+                await fetch(API_BASE + '/api/update-destination', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    questionnaireId: currentQuestionnaire,
+                    itemId: itemId,
+                    destination: newDest
+                  })
+                });
+              } catch (e) {
+                console.error('Failed to persist destination:', e);
+              }
+            }
+
             changes++;
           }
 
@@ -6265,8 +6403,8 @@ export class WebReviewGenerator {
           if (!existingLibItem) {
             const targetSection = document.querySelector(\`#panel-library .section[data-destination="\${promotedTo}"]\`);
             if (targetSection) {
-              const destBadgeLabels = { answer_library: 'Answer Library', company: 'Company', product: 'Product', exclude: 'Excluded' };
-              const destBadgeColors = { answer_library: '#f59e0b', company: '#3b82f6', product: '#22c55e', exclude: '#ef4444' };
+              const destBadgeLabels = { answer_library: 'LIBRARY', company: 'COMPANY', product: 'PRODUCT', exclude: 'EXCLUDE' };
+              const destBadgeColors = { answer_library: '#166534', company: '#1e40af', product: '#9a3412', exclude: '#374151' };
               const entityLabels = { supplier: 'Supplier', client: 'Client', manufacturer: 'Manufacturer', other: 'Other' };
               const entityColors = { supplier: '#3b82f6', client: '#22c55e', manufacturer: '#f59e0b', other: '#6b7280' };
 
@@ -6350,8 +6488,13 @@ export class WebReviewGenerator {
           } else if (fb.action === 'excluded') {
             // Restore excluded state
             item.classList.add('reviewed', 'excluded');
+            item.classList.remove('needs-review');
             item.dataset.destination = 'exclude';
             item.dataset.promotedTo = 'exclude';
+
+            // Hide needs review badge
+            const needsReviewBadge = item.querySelector('.needs-review-badge');
+            if (needsReviewBadge) needsReviewBadge.style.display = 'none';
 
             // Add excluded badge if not present
             const existingDestBadge = item.querySelector('.dest-badge');
@@ -6359,15 +6502,16 @@ export class WebReviewGenerator {
               const destBadge = document.createElement('span');
               destBadge.className = 'dest-badge';
               destBadge.style.cssText = \`
-                background: #ef4444;
-                color: white;
-                padding: 2px 6px;
+                background: #374151;
+                color: #fff;
+                padding: 2px 8px;
                 border-radius: 4px;
-                font-size: 10px;
-                font-weight: 500;
+                font-size: 9px;
+                font-weight: 600;
+                letter-spacing: 0.5px;
                 margin-left: 8px;
               \`;
-              destBadge.textContent = 'Excluded';
+              destBadge.textContent = 'EXCLUDE';
 
               const labelEl = item.querySelector('.item-label');
               if (labelEl) {
@@ -6394,8 +6538,8 @@ export class WebReviewGenerator {
             item.dataset.promotedTo = promotedTo;
 
             // Add destination badge to indexed item
-            const destBadgeLabels = { answer_library: 'Answer Library', company: 'Company', product: 'Product', exclude: 'Excluded' };
-            const destBadgeColors = { answer_library: '#f59e0b', company: '#3b82f6', product: '#22c55e', exclude: '#ef4444' };
+            const destBadgeLabels = { answer_library: 'LIBRARY', company: 'COMPANY', product: 'PRODUCT', exclude: 'EXCLUDE' };
+            const destBadgeColors = { answer_library: '#166534', company: '#1e40af', product: '#9a3412', exclude: '#374151' };
             const entityLabels = { supplier: 'Supplier', client: 'Client', manufacturer: 'Manufacturer', other: 'Other' };
             const entityColors = { supplier: '#3b82f6', client: '#22c55e', manufacturer: '#f59e0b', other: '#6b7280' };
 
@@ -6404,15 +6548,16 @@ export class WebReviewGenerator {
               const destBadge = document.createElement('span');
               destBadge.className = 'dest-badge';
               destBadge.style.cssText = \`
-                background: \${destBadgeColors[promotedTo] || '#6b7280'};
-                color: white;
-                padding: 2px 6px;
+                background: \${destBadgeColors[promotedTo] || '#374151'};
+                color: #fff;
+                padding: 2px 8px;
                 border-radius: 4px;
-                font-size: 10px;
-                font-weight: 500;
+                font-size: 9px;
+                font-weight: 600;
+                letter-spacing: 0.5px;
                 margin-left: 8px;
               \`;
-              destBadge.textContent = destBadgeLabels[promotedTo] || promotedTo;
+              destBadge.textContent = destBadgeLabels[promotedTo] || promotedTo.toUpperCase()
 
               // Add entity role to badge if present in reason
               if (entityMatch && entityMatch[1]) {
@@ -6518,8 +6663,8 @@ export class WebReviewGenerator {
      * Shows which Extraction items are included in the final export
      */
     function syncExtractionBadges() {
-      const destBadgeLabels = { answer_library: 'Answer Library', company: 'Company', product: 'Product', exclude: 'Excluded' };
-      const destBadgeColors = { answer_library: '#f59e0b', company: '#3b82f6', product: '#22c55e', exclude: '#ef4444' };
+      const destBadgeLabels = { answer_library: 'LIBRARY', company: 'COMPANY', product: 'PRODUCT', exclude: 'EXCLUDE' };
+      const destBadgeColors = { answer_library: '#166534', company: '#1e40af', product: '#9a3412', exclude: '#374151' };
       const entityLabels = { supplier: 'Supplier', client: 'Client', manufacturer: 'Manufacturer', other: 'Other' };
 
       // Build a map of cells -> destination from Save as panel (accepted items only)
@@ -6556,16 +6701,17 @@ export class WebReviewGenerator {
             const badge = document.createElement('span');
             badge.className = 'dest-badge';
             badge.style.cssText = \`
-              background: \${destBadgeColors[dest] || '#6b7280'};
-              color: white;
-              padding: 2px 6px;
+              background: \${destBadgeColors[dest] || '#374151'};
+              color: #fff;
+              padding: 2px 8px;
               border-radius: 4px;
-              font-size: 10px;
-              font-weight: 500;
+              font-size: 9px;
+              font-weight: 600;
+              letter-spacing: 0.5px;
               margin-left: 8px;
               opacity: \${accepted ? 1 : 0.6};
             \`;
-            let badgeText = destBadgeLabels[dest] || dest;
+            let badgeText = destBadgeLabels[dest] || dest.toUpperCase();
             if (dest === 'company' && entityRole && entityRole !== 'other') {
               badgeText += ' (' + entityLabels[entityRole] + ')';
             }
@@ -6578,9 +6724,9 @@ export class WebReviewGenerator {
             }
           } else {
             // Update existing badge
-            existingBadge.style.background = destBadgeColors[dest] || '#6b7280';
+            existingBadge.style.background = destBadgeColors[dest] || '#374151';
             existingBadge.style.opacity = accepted ? '1' : '0.6';
-            let badgeText = destBadgeLabels[dest] || dest;
+            let badgeText = destBadgeLabels[dest] || dest.toUpperCase();
             if (dest === 'company' && entityRole && entityRole !== 'other') {
               badgeText += ' (' + entityLabels[entityRole] + ')';
             }

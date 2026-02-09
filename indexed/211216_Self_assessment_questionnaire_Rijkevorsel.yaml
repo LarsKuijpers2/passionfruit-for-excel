@@ -1,0 +1,1111 @@
+id: 3f50bc8f
+source: 211216 Self assessment questionnaire Rijkevorsel.pdf
+indexed: 2026-02-09
+language: en
+sections:
+  - title: Quality Management
+    topic: quality_systems
+    rows: 2-7
+    sheet: Document
+    items:
+      - id: 806eb37e
+        type: yesno
+        label: Do you have a quality manual?
+        value: Yes
+        topic: quality
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A2
+        vCell: B2
+      - id: 9f8a5147
+        type: yesno
+        label: Are there procedures in place?
+        value: Yes
+        topic: quality
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A3
+        vCell: B3
+      - id: ba84a9e5
+        type: yesno
+        label: Are internal audits conducted?
+        value: Yes
+        topic: audits
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A4
+        vCell: B4
+      - id: 7bbe3ada
+        type: yesno
+        label: Are hygienic rounds conducted in the facility?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A5
+        vCell: B5
+      - id: f0a5ccc0
+        type: yesno
+        label: Are glass and hard plastic rounds conducted in the facility?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A6
+        vCell: B6
+      - id: f97e6771
+        type: yesno
+        label: Are all audits documented?
+        value: Yes
+        topic: audits
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A7
+        vCell: B7
+  - title: General Building
+    topic: other
+    rows: 9-21
+    sheet: Document
+    items:
+      - id: d7dd1b89
+        type: yesno
+        label: Are buildings and facilities used in the manufacture of products appropriate?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A9
+        vCell: B9
+      - id: a5bffce9
+        type: yesno
+        label: Are buildings and facilities used in the manufacture of products suitable?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A10
+        vCell: B10
+      - id: f2123612
+        type: yesno
+        label: Are buildings and facilities used in the manufacture of products adequate?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A11
+        vCell: B11
+      - id: 761697fe
+        type: yesno
+        label: Are possible sources of pollution considered from the local environment?
+        value: Yes
+        topic: environment
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A12
+        vCell: B12
+      - id: 42f86dcf
+        type: yesno
+        label: Are preventive measures implemented to prevent harmful substances?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A13
+        vCell: B13
+      - id: cfa832fb
+        type: yesno
+        label: Is access to production areas restricted?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A14
+        vCell: B14
+      - id: 63c84a71
+        type: yesno
+        label: Are the boundaries of the terrain clearly indicated?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A21
+        vCell: B21
+  - title: Facilities
+    topic: other
+    rows: 23-30
+    sheet: Document
+    items:
+      - id: e7d9616a
+        type: yesno
+        label: Are there adequate laboratory facilities on site to perform testing?
+        value: Yes
+        topic: quality
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A23
+        vCell: B23
+      - id: 65a39f74
+        type: yesno
+        label: Are adequate, clean washing and toilet facilities provided for personnel?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A24
+        vCell: B24
+      - id: 7509f925
+        type: text
+        label: Are adequate, clean washing and toilet facilities provided (comment)?
+        value: is zelfde vraag als hierboven ?
+        topic: food_safety
+        level: narrative
+        lang: en
+        destination: answer_library
+        lCell: A25
+        vCell: E25
+      - id: 0babf464
+        type: yesno
+        label: Do the above-mentioned facilities have direct access to production areas?
+        value: No
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A26
+        vCell: C26
+      - id: 3f7d4b3d
+        type: yesno
+        label: Are adequate washing facilities provided for personal before entering production areas?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A27
+        vCell: B27
+      - id: 2a1fe4db
+        type: yesno
+        label: Are locker rooms available for the personal?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A28
+        vCell: B28
+      - id: ce69967a
+        type: yesno
+        label: Are there smoking facilities available?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A29
+        vCell: B29
+      - id: 0f5e5e7e
+        type: yesno
+        label: Is there a canteen on site?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A30
+        vCell: B30
+  - title: Zoning
+    topic: other
+    rows: 32-39
+    sheet: Document
+    items:
+      - id: 7b245dcb
+        type: yesno
+        label: Is the production site divided in different zoning areas?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A32
+        vCell: B32
+      - id: 66af276b
+        type: yesno
+        label: Do buildings and facilities have adequate space for the orderly placement of equipment?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A33
+        vCell: B33
+      - id: f5429ead
+        type: yesno
+        label: Is the flow of materials and personnel through the building designed properly?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A34
+        vCell: B34
+      - id: "58620513"
+        type: yesno
+        label: Is the production/packaging area temperature controlled and documented?
+        value: No
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A35
+        vCell: C35
+      - id: 65e985f8
+        type: yesno
+        label: Are production packaging areas relative humidity controlled and documented?
+        value: No
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A36
+        vCell: C36
+      - id: 2282e74f
+        type: yesno
+        label: Are storage/warehouse areas temperature controlled and documented?
+        value: Yes
+        topic: logistics
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A37
+        vCell: B37
+      - id: e1b1003c
+        type: yesno
+        label: Are storage/warehouse areas relative humidity controlled and documented?
+        value: No
+        topic: logistics
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A38
+        vCell: C38
+      - id: 9c7149c7
+        type: yesno
+        label: Are the locker rooms designed in a way that the risk of contamination is minimized?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A39
+        vCell: B39
+  - title: Personal Hygiene
+    topic: other
+    rows: 41-46
+    sheet: Document
+    items:
+      - id: 28cab278
+        type: yesno
+        label: Is there a hygiene procedure in place?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A41
+        vCell: B41
+      - id: 2b43894d
+        type: yesno
+        label: Restriction for eating, drinking, chewing and smoking in production areas?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A43
+        vCell: B43
+      - id: cf8a242d
+        type: yesno
+        label: Restriction for jewellery, false finger nails, perfumes in production areas?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A44
+        vCell: B44
+      - id: fe706521
+        type: yesno
+        label: Requirement for hair and beard restraints?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A45
+        vCell: B45
+      - id: 1683d7da
+        type: yesno
+        label: Requirement for personnel to wear clean uniforms and appropriate shoes?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A46
+        vCell: B46
+  - title: Work & Safety Clothes/Equipment
+    topic: other
+    rows: 49-54
+    sheet: Document
+    items:
+      - id: bcbc1a35
+        type: yesno
+        label: Are appropriate work clothes/equipment provided?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A49
+        vCell: B49
+      - id: "2e455247"
+        type: yesno
+        label: Is there a procedure in place for how and where to wear work clothes?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A50
+        vCell: B50
+      - id: 7b7b4bdc
+        type: text
+        label: How often are the work clothes washed?
+        value: daily
+        topic: food_safety
+        level: narrative
+        lang: en
+        destination: answer_library
+        lCell: A51
+        vCell: E51
+      - id: "28855953"
+        type: yesno
+        label: Are the clothes washed by an external company?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A52
+        vCell: B52
+      - id: fa87110d
+        type: yesno
+        label: Does the personnel have access to blades?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A53
+        vCell: B53
+      - id: 2f8cd5bd
+        type: text
+        label: Does the personnel have access to blades (comment)?
+        value: personal knife, registered by name
+        topic: food_safety
+        level: narrative
+        lang: en
+        destination: answer_library
+        lCell: A53
+        vCell: E53
+      - id: "93687278"
+        type: yesno
+        label: Does the personnel have metal detectable pens if used in the production area?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A54
+        vCell: B54
+  - title: Training
+    topic: other
+    rows: 57-62
+    sheet: Document
+    items:
+      - id: 5c2c8fb9
+        type: yesno
+        label: Training on hygiene programme?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: fr
+        destination: answer_library
+        lCell: A57
+        vCell: B57
+      - id: b37019cf
+        type: yesno
+        label: GMP/Food safety procedures / working instructions training?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A58
+        vCell: B58
+      - id: d05c7596
+        type: yesno
+        label: Training on the CCP's and corrective actions?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A59
+        vCell: B59
+      - id: d169cbe7
+        type: yesno
+        label: Is the training documented?
+        value: Yes
+        topic: quality
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A60
+        vCell: B60
+      - id: 1f79c480
+        type: yesno
+        label: Does the training include both the permanent and temporary personnel?
+        value: Yes
+        topic: quality
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A61
+        vCell: B61
+      - id: 7a217878
+        type: yesno
+        label: Are visitors and contractors instructed on the hygiene programme?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A62
+        vCell: B62
+  - title: Storage
+    topic: other
+    rows: 64-70
+    sheet: Document
+    items:
+      - id: 7bc1f04d
+        type: yesno
+        label: Are raw materials stored on site?
+        value: Yes
+        topic: logistics
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A64
+        vCell: B64
+      - id: ae15efc8
+        type: yesno
+        label: Are finished materials stored on site?
+        value: Yes
+        topic: logistics
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A65
+        vCell: B65
+      - id: 7a39ad43
+        type: yesno
+        label: Is there a separate warehouse for storage?
+        value: No
+        topic: logistics
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A66
+        vCell: C66
+      - id: 16d23621
+        type: yesno
+        label: Are finished products and raw materials stored separately from each other?
+        value: No
+        topic: logistics
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A68
+        vCell: C68
+      - id: f141bc8a
+        type: text
+        label: Are finished products and raw materials stored separately (comment)?
+        value: ik neem aan dat dit 1 lijn moet zijn?
+        topic: logistics
+        level: narrative
+        lang: en
+        destination: answer_library
+        lCell: A68
+        vCell: E68
+      - id: c0e8f3e8
+        type: yesno
+        label: Are all products stored from the floor?
+        value: Yes
+        topic: logistics
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A69
+        vCell: B69
+      - id: "57109003"
+        type: yesno
+        label: Are chemicals, hazardous products and cleaning products stored separately?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A70
+        vCell: B70
+  - title: Transportation
+    topic: storage_transport
+    rows: 72-75
+    sheet: Document
+    items:
+      - id: 6ff0ddc4
+        type: yesno
+        label: Is transportation outsourced?
+        value: Yes
+        topic: logistics
+        level: standard
+        lang: fr
+        destination: answer_library
+        lCell: A72
+        vCell: B72
+      - id: 533a087f
+        type: yesno
+        label: Are there transport procedures in place?
+        value: Yes
+        topic: logistics
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A73
+        vCell: B73
+      - id: 5f4781f0
+        type: yesno
+        label: Do the procedures include training?
+        value: Yes
+        topic: logistics
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A74
+        vCell: B74
+      - id: aef59ac2
+        type: yesno
+        label: If external transportation; are there contracts in place with transportation company?
+        value: Yes
+        topic: logistics
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A75
+        vCell: B75
+  - title: Utilities
+    topic: other
+    rows: 77-78
+    sheet: Document
+    items:
+      - id: cf6abe0c
+        type: text
+        label: What utilities are used during manufacturing (e.g. steam, gas)?
+        value: Deze vraag begrijp ik niet helemaal (wij hebben wel stoom, m
+        topic: food_safety
+        level: narrative
+        lang: nl
+        destination: answer_library
+        lCell: A77
+        vCell: E77
+      - id: 249e7a42
+        type: yesno
+        label: Are all utilities that could have an impact on product quality controlled?
+        value: Yes
+        topic: quality
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A78
+        vCell: B78
+  - title: Air Monitoring
+    topic: other
+    rows: 80-86
+    sheet: Document
+    items:
+      - id: 50c89a2b
+        type: yesno
+        label: Is there an air treatment system for the production area?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A80
+        vCell: B80
+      - id: 58de56d4
+        type: yesno
+        label: Is there an air treatment system for the packaging area?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A81
+        vCell: B81
+      - id: 3a6365b1
+        type: yesno
+        label: Is the air treatment system fitted with filters?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A82
+        vCell: B82
+      - id: 95b2a9c1
+        type: yesno
+        label: Is the air quality checked?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A83
+        vCell: B83
+      - id: 81fd7d58
+        type: text
+        label: Which criteria is tested for air-quality in production & packaging areas?
+        value: yeast and mould, total germs
+        topic: microbiology
+        level: narrative
+        lang: en
+        destination: answer_library
+        lCell: A84
+        vCell: E84
+      - id: aa66ce91
+        type: text
+        label: How are the microbiological tests conducted?
+        value: by extrenal lab
+        topic: microbiology
+        level: narrative
+        lang: en
+        destination: answer_library
+        lCell: A85
+        vCell: E85
+      - id: 1487bde8
+        type: yesno
+        label: Is compressed air used in contact with the product?
+        value: No
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A86
+        vCell: C86
+  - title: Water Monitoring
+    topic: other
+    rows: 90-93
+    sheet: Document
+    items:
+      - id: a1011cbc
+        type: text
+        label: What is the source of water used on your site?
+        value: city water, well water
+        topic: food_safety
+        level: narrative
+        lang: en
+        destination: answer_library
+        lCell: A90
+        vCell: E90
+      - id: e06db790
+        type: text
+        label: "Water is used by the company for:"
+        value: cleaning, processing
+        topic: food_safety
+        level: narrative
+        lang: en
+        destination: answer_library
+        lCell: A91
+        vCell: E91
+      - id: "48146845"
+        type: yesno
+        label: Is there a monitoring plan for water quality?
+        value: Yes
+        topic: food_safety
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A92
+        vCell: B92
+      - id: 8b8fcade
+        type: yesno
+        label: Are microbiological test for water conducted?
+        value: Yes
+        topic: microbiology
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A93
+        vCell: B93
+  - title: Waste
+    topic: other
+    rows: 96-98
+    sheet: Document
+    items:
+      - id: "34e75901"
+        type: yesno
+        label: Are sewage, refuse, and other waste properly disposed of?
+        value: Yes
+        topic: environment
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A96
+        vCell: B96
+      - id: 7b5bfb7d
+        type: text
+        label: Are sewage, refuse, and other waste properly disposed of (comment)?
+        value: ik vind dit een heel moeilijke zin
+        topic: environment
+        level: narrative
+        lang: en
+        destination: answer_library
+        lCell: A96
+        vCell: E96
+      - id: 171f61b3
+        type: yesno
+        label: Are containers for the waste material clearly identified?
+        value: Yes
+        topic: environment
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A97
+        vCell: B97
+      - id: 1eeb9489
+        type: yesno
+        label: Is there a system in place that ensures that waste streams are managed properly?
+        value: Yes
+        topic: environment
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A98
+        vCell: B98
+  - title: Supplier Approval and Raw Material Approval
+    topic: approval
+    rows: 100-103
+    sheet: Document
+    items:
+      - id: fd02ebd4
+        type: yesno
+        label: Are there written procedures in place for supplier approval?
+        value: Yes
+        topic: quality
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A100
+        vCell: B100
+      - id: 6c13821b
+        type: yesno
+        label: Is there a procedure in place explaining the qualification/disqualification of suppliers?
+        value: Yes
+        topic: quality
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A101
+        vCell: B101
+      - id: e1f03981
+        type: yesno
+        label: Is there a system for evaluating the suppliers of materials?
+        value: Yes
+        topic: quality
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A102
+        vCell: B102
+      - id: 89424c7d
+        type: yesno
+        label: Are raw material suppliers audited?
+        value: Yes
+        topic: audits
+        level: standard
+        lang: en
+        destination: answer_library
+        lCell: A103
+        vCell: B103
+      - id: b93ee02b
+        type: text
+        label: Are raw material suppliers audited (comment)?
+        value: according risk assessment
+        topic: audits
+        level: narrative
+        lang: en
+        destination: answer_library
+        lCell: A103
+        vCell: E103
+  - title: Production Process
+    topic: identification
+    rows: 137-137
+    sheet: Document
+    items:
+      - id: 091ed074
+        type: text
+        label: How do the production shifts look?
+        value: 3 shifts, 5 days a week
+        topic: quality
+        level: narrative
+        lang: en
+        destination: answer_library
+        lCell: A137
+        vCell: E137
+  - title: Hazard Assessment
+    topic: other
+    rows: 147-153
+    sheet: Document
+    items:
+      - id: 9bc07db8
+        type: text
+        label: Which CCP's are identified?
+        value: filter, aseptic filter, pasteuristion time/temperature
+        topic: food_safety
+        level: narrative
+        lang: en
+        destination: answer_library
+        lCell: A147
+        vCell: E147
+      - id: 8e38c391
+        type: text
+        label: If yes microbiological hazards; which preventive measures are in place?
+        value: pasteurisation
+        topic: food_safety
+        level: narrative
+        lang: en
+        destination: answer_library
+        lCell: A149
+        vCell: E149
+      - id: ef8d7476
+        type: text
+        label: If yes physical hazards; which preventive measures are in place?
+        value: filter, aseptic filter
+        topic: food_safety
+        level: narrative
+        lang: en
+        destination: answer_library
+        lCell: A153
+        vCell: E153
+  - title: Sampling Operations - Chemical
+    topic: other
+    rows: 160-162
+    sheet: Document
+    items:
+      - id: e45d818b
+        type: text
+        label: At which step in the process is the batch sampled to conduct chemical analysis?
+        value: during filling proces
+        topic: quality
+        level: narrative
+        lang: en
+        destination: answer_library
+        lCell: A160
+        vCell: E160
+      - id: b4fa38a7
+        type: text
+        label: How often are samples tested on chemicals?
+        value: according sampling plan
+        topic: quality
+        level: narrative
+        lang: en
+        destination: answer_library
+        lCell: A162
+        vCell: E162
+  - title: Sampling Operations - Microbiological
+    topic: microbiological
+    rows: 167-167
+    sheet: Document
+    items:
+      - id: 2e9264f6
+        type: text
+        label: How often are samples tested on microbes?
+        value: according sampling plan
+        topic: microbiology
+        level: narrative
+        lang: en
+        destination: answer_library
+        lCell: A167
+        vCell: E167
+  - title: Cleaning Plant and Equipment
+    topic: other
+    rows: 169-177
+    sheet: Document
+    items:
+      - id: e3a1974c
+        type: text
+        label: Is cleaning done by an external company or internal employees?
+        value: internal
+        topic: food_safety
+        level: narrative
+        lang: en
+        destination: answer_library
+        lCell: A169
+        vCell: E169
+      - id: 6f3feebd
+        type: text
+        label: Describe the cleaning system briefly
+        value: according internal procedure (manually and / or CIP)
+        topic: food_safety
+        level: narrative
+        lang: en
+        destination: answer_library
+        lCell: A170
+        vCell: E170
+      - id: 2b8e3996
+        type: text
+        label: Is wet or dry cleaning of the equipment and plant in place?
+        value: wet
+        topic: food_safety
+        level: narrative
+        lang: en
+        destination: answer_library
+        lCell: A171
+        vCell: E171
+      - id: ba5408b1
+        type: text
+        label: How is the cleaning validated?
+        value: visual, ATP, pH, micro
+        topic: food_safety
+        level: narrative
+        lang: en
+        destination: answer_library
+        lCell: A177
+        vCell: E177
+  - title: Environmental Monitoring Plan
+    topic: sustainability
+    rows: 180-181
+    sheet: Document
+    items:
+      - id: "262e7770"
+        type: text
+        label: What is taken into account in the environmental monitoring plan?
+        value: air, listeria, machines, hygiene workers
+        topic: food_safety
+        level: narrative
+        lang: en
+        destination: answer_library
+        lCell: A180
+        vCell: E180
+      - id: 9e41cd48
+        type: text
+        label: What type of methods for analysing are used?
+        value: microbiological methods
+        topic: microbiology
+        level: narrative
+        lang: en
+        destination: answer_library
+        lCell: A181
+        vCell: E181
+  - title: Pest Control
+    topic: other
+    rows: 187-190
+    sheet: Document
+    items:
+      - id: bfd24a74
+        type: text
+        label: What is the scope of the pest control program?
+        value: Rodents, flies, wasps, EFK's, cockroaches and crickets
+        topic: food_safety
+        level: narrative
+        lang: en
+        destination: answer_library
+        lCell: A187
+        vCell: E187
+      - id: 27a57ca5
+        type: text
+        label: What is the interval of monitoring for pest control?
+        value: 8 x year
+        topic: food_safety
+        level: narrative
+        lang: en
+        destination: answer_library
+        lCell: A190
+        vCell: E190
+  - title: Traceability
+    topic: traceability
+    rows: 209-209
+    sheet: Document
+    items:
+      - id: 076bda72
+        type: text
+        label: How long do you hold the retained samples of the finished products?
+        value: minimum shlef life
+        topic: quality
+        level: narrative
+        lang: en
+        destination: answer_library
+        lCell: A209
+        vCell: E209
+  - title: Food Defense
+    topic: food_defense
+    rows: 216-216
+    sheet: Document
+    items:
+      - id: e272c420
+        type: text
+        label: How often is the food defense plan evaluated?
+        value: yearly
+        topic: food_safety
+        level: narrative
+        lang: en
+        destination: answer_library
+        lCell: A216
+        vCell: E216
+  - title: Food Fraud
+    topic: food_fraud
+    rows: 221-221
+    sheet: Document
+    items:
+      - id: e578abbd
+        type: text
+        label: How often is the food fraud assessment evaluated?
+        value: yearly - Hier ga ik vanuit, wordt corporate opgevolgd
+        topic: food_fraud
+        level: narrative
+        lang: en
+        destination: answer_library
+        lCell: A221
+        vCell: E221
+stats:
+  total: 98
+  answered: 98
+  standard: 69
+  narrative: 29
+  product: 0

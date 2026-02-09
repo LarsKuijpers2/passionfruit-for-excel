@@ -502,6 +502,8 @@ export class WebReviewGenerator {
       background: var(--muted);
       padding: 8px 12px;
       border-radius: var(--radius);
+      overflow-wrap: break-word;
+      word-break: break-word;
     }
     .item-value.empty {
       color: var(--muted-foreground);
@@ -3243,6 +3245,8 @@ export class WebReviewGenerator {
       background: var(--muted);
       padding: 8px 12px;
       border-radius: var(--radius);
+      overflow-wrap: break-word;
+      word-break: break-word;
     }
     .item-value.empty {
       color: var(--muted-foreground);
@@ -4219,7 +4223,9 @@ export class WebReviewGenerator {
         if (!tab) return;
 
         // Get all items for this sheet in Extraction panel
-        const sheetItems = document.querySelectorAll(\`#panel-indexed .item[data-sheet="\${sheetName}"]\`);
+        // Use CSS.escape to handle special characters in sheet names (newlines, quotes, etc.)
+        const escapedName = CSS.escape(sheetName);
+        const sheetItems = document.querySelectorAll(\`#panel-indexed .item[data-sheet="\${escapedName}"]\`);
         if (sheetItems.length === 0) return;
 
         // Check if all items are reviewed

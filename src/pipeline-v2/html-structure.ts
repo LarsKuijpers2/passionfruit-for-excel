@@ -57,13 +57,16 @@ export class HtmlStructureExtractor implements DocumentExtractor {
 
       for (const row of rows) {
         const cells = row.querySelectorAll('td, th');
-        const rowCells: CellData[] = [];
+        // Use Record<string, CellData> to match Excel format
+        const rowCells: Record<string, CellData> = {};
         let colIndex = 0;
+        let hasFilledCell = false;
 
         for (const cell of cells) {
           const value = cell.textContent?.trim() || '';
           const colLetter = String.fromCharCode(65 + colIndex); // A, B, C...
           const ref = `${colLetter}${rowNum}`;
+          const filled = value.length > 0;
 
           // Detect cell role based on position
           let role: CellRole = 'unknown';
@@ -72,25 +75,43 @@ export class HtmlStructureExtractor implements DocumentExtractor {
           } else if (colIndex === effectiveQuestionIndex) {
             role = 'label';
           } else if (colIndex >= effectiveAnswerIndex) {
-            role = value ? 'value' : 'empty';
+            role = filled ? 'value' : 'empty';
           }
 
-          rowCells.push({
+          // Store cell in Record format with all required properties
+          rowCells[colLetter] = {
             ref,
-            value: value || undefined,
+            value: value,
+            type: 'string',
+            filled,
             role,
-          });
+          };
 
           sheetTotalCells++;
-          if (value) sheetFilledCells++;
+          if (filled) {
+            sheetFilledCells++;
+            hasFilledCell = true;
+          }
 
           colIndex++;
         }
 
-        if (rowCells.some(c => c.value)) {
+        // Determine row type
+        let rowType: 'header' | 'data' | 'section' | 'empty' | 'unknown' = 'unknown';
+        if (rowNum === 1) {
+          rowType = 'header';
+        } else if (hasFilledCell) {
+          rowType = 'data';
+        } else {
+          rowType = 'empty';
+        }
+
+        if (hasFilledCell || rowNum === 1) {
           sheetRows.push({
             row: rowNum,
             cells: rowCells,
+            isEmpty: !hasFilledCell,
+            rowType,
           });
         }
 
@@ -170,11 +191,17 @@ export class HtmlStructureExtractor implements DocumentExtractor {
       if (text && text.length > 5) {
         rows.push({
           row: rowNum,
-          cells: [{
-            ref: `A${rowNum}`,
-            value: text,
-            role: 'value',
-          }],
+          cells: {
+            'A': {
+              ref: `A${rowNum}`,
+              value: text,
+              type: 'string',
+              filled: true,
+              role: 'value',
+            }
+          },
+          isEmpty: false,
+          rowType: 'data',
         });
         rowNum++;
       }

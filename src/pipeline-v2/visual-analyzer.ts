@@ -89,7 +89,8 @@ export class VisualAnalyzer {
     const sheetText = this.buildSheetRepresentation(sheet, documentType);
 
     const docTypeLabel = documentType === 'excel' ? 'spreadsheet sheet' :
-                         documentType === 'word' ? 'Word document' : 'PDF document';
+                         documentType === 'word' ? 'Word document' :
+                         documentType === 'html' ? 'HTML document/form' : 'PDF document';
 
     const prompt = `Analyze this ${docTypeLabel} and identify all data items (fields, tables, etc.).
 
@@ -123,6 +124,8 @@ IMPORTANT EXTRACTION RULES:
 2. MULTI-COLUMN ANSWERS: When a row has the SAME question but multiple answer columns (e.g., "Contact Person 1" and "Contact Person 2"), extract MULTIPLE items - one per column. Add the column header to the label, e.g., "Phone (Contact Person 1)" and "Phone (Contact Person 2)".
 
 3. PREFER INDIVIDUAL ITEMS: Only use "table" type for truly tabular reference data with no filled answers. If rows have yes/no answers or text values, extract them individually.
+
+4. PDF YES/NO TABLES: In PDFs, you may see questions ending with "x" (e.g., "Is there a procedure in place? x"). This "x" indicates a checkmark in a Yes/No/N/A table and typically means "Yes". Extract these as yesno items with value "Yes". If you see a section header like "Yes No N/A COMMENTS", subsequent questions with "x" are from this table structure. The "x" mark means the answer is affirmative (Yes).
 
 And a level for reusability:
 - "standard" = Factual company data, can be auto-filled (name, address, cert numbers)
@@ -281,7 +284,9 @@ Important:
     // Add rows with formatting hints
     lines.push('## Content:');
 
-    for (const row of sheet.rows.slice(0, 100)) { // Limit to first 100 rows
+    // PDFs can have many more rows than Excel, increase limit
+    const rowLimit = documentType === 'pdf' ? 180 : 150;
+    for (const row of sheet.rows.slice(0, rowLimit)) {
       const cellTexts: string[] = [];
 
       for (const [col, cell] of Object.entries(row.cells)) {
@@ -311,8 +316,8 @@ Important:
       }
     }
 
-    if (sheet.rows.length > 100) {
-      lines.push(`... (${sheet.rows.length - 100} more rows)`);
+    if (sheet.rows.length > rowLimit) {
+      lines.push(`... (${sheet.rows.length - rowLimit} more rows)`);
     }
 
     return lines.join('\n');
@@ -324,7 +329,7 @@ Important:
   private async invokeModel(prompt: string): Promise<string> {
     const body = {
       anthropic_version: 'bedrock-2023-05-31',
-      max_tokens: 16384,
+      max_tokens: 32768,
       messages: [
         {
           role: 'user',
@@ -342,6 +347,11 @@ Important:
 
     const response = await this.client.send(command);
     const responseBody = JSON.parse(new TextDecoder().decode(response.body));
+
+    // Log if response was truncated
+    if (responseBody.stop_reason === 'max_tokens') {
+      console.warn(`    Warning: Claude response truncated (max_tokens reached)`);
+    }
 
     return responseBody.content[0].text;
   }

@@ -203,7 +203,7 @@ program
 
       if (file) {
         // Tag single file
-        const filePath = file.endsWith('.yaml') ? join(indexedDir, file) : join(indexedDir, `${file}.yaml`);
+        const filePath = (file.endsWith('.yaml') || file.endsWith('.json')) ? join(indexedDir, file) : join(indexedDir, `${file}.json`);
         console.log(`  File: ${file}`);
         const result = await tagQuestionnaire(filePath, customer);
 
@@ -305,7 +305,7 @@ program
         };
 
         const questionnaires = countFiles(paths.questionnaires, '.json') + countFiles(paths.questionnaires, '.yaml');
-        const indexed = countFiles(paths.indexed, '.yaml');
+        const indexed = countFiles(paths.indexed, '.json') + countFiles(paths.indexed, '.yaml');
         const approved = countFiles(paths.approved);
         const hasLibrary = existsSync(paths.answerLibrary);
 
@@ -423,7 +423,7 @@ program
 
       // Find the structure file
       const structurePath = join(questionnairesDir, `${safeName}.json`);
-      const indexedPath = join(indexedDir, `${safeName}.yaml`);
+      const indexedPath = join(indexedDir, `${safeName}.json`);
 
       console.log('\n🌐 Generating web review interface\n');
       console.log('  Questionnaire: ' + structurePath);

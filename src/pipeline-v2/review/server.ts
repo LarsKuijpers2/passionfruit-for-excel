@@ -390,8 +390,15 @@ export class ReviewServer {
         const execAsync = promisify(exec);
 
         // Find the source file
-        const indexedPath = join(this.indexedDir, id + '.yaml');
-        const indexed = parseYaml(await readFile(indexedPath, 'utf-8'));
+        // Try JSON first, then YAML for backwards compatibility
+        let indexedPath = join(this.indexedDir, id + '.json');
+        let indexed;
+        if (existsSync(indexedPath)) {
+          indexed = JSON.parse(await readFile(indexedPath, 'utf-8'));
+        } else {
+          indexedPath = join(this.indexedDir, id + '.yaml');
+          indexed = parseYaml(await readFile(indexedPath, 'utf-8'));
+        }
         const sourcePath = indexed?.source_file || join('./incoming', indexed?.source || id);
 
         // Open with default application (works on macOS)
@@ -465,15 +472,23 @@ export class ReviewServer {
           return res.status(400).json({ error: 'Missing questionnaireId, itemId, or destination' });
         }
 
-        // Load the indexed YAML
+        // Load the indexed file (JSON or YAML)
         const safeName = questionnaireId.replace(/[^a-zA-Z0-9-_]/g, '_');
-        const indexedPath = join('./indexed', `${safeName}.yaml`);
+        let indexedPath = join('./indexed', `${safeName}.json`);
+        let isJson = true;
+
+        if (!existsSync(indexedPath)) {
+          indexedPath = join('./indexed', `${safeName}.yaml`);
+          isJson = false;
+        }
 
         if (!existsSync(indexedPath)) {
           return res.status(404).json({ error: 'Indexed file not found' });
         }
 
-        const indexed = parseYaml(await readFile(indexedPath, 'utf-8'));
+        const indexed = isJson
+          ? JSON.parse(await readFile(indexedPath, 'utf-8'))
+          : parseYaml(await readFile(indexedPath, 'utf-8'));
 
         // Find and update the item
         let found = false;
@@ -494,8 +509,8 @@ export class ReviewServer {
           return res.status(404).json({ error: 'Item not found' });
         }
 
-        // Save back to YAML
-        await writeFile(indexedPath, stringifyYaml(indexed), 'utf-8');
+        // Save back to file
+        await writeFile(indexedPath, isJson ? JSON.stringify(indexed, null, 2) : stringifyYaml(indexed), 'utf-8');
         console.log(`Updated destination for ${itemId} to ${destination} in ${indexedPath}`);
 
         // Regenerate the HTML review file
@@ -1101,11 +1116,16 @@ export class ReviewServer {
       structure = JSON.parse(await readFile(structurePath, 'utf-8'));
     }
 
-    // Load indexed (indexed/*.yaml)
-    const indexedPath = join('./indexed', `${safeName}.yaml`);
+    // Load indexed (indexed/*.json or *.yaml for backwards compatibility)
+    let indexedPath = join('./indexed', `${safeName}.json`);
     let indexed = null;
     if (existsSync(indexedPath)) {
-      indexed = parseYaml(await readFile(indexedPath, 'utf-8'));
+      indexed = JSON.parse(await readFile(indexedPath, 'utf-8'));
+    } else {
+      indexedPath = join('./indexed', `${safeName}.yaml`);
+      if (existsSync(indexedPath)) {
+        indexed = parseYaml(await readFile(indexedPath, 'utf-8'));
+      }
     }
 
     // Load library (answer-library.yaml)

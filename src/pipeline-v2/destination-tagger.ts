@@ -155,9 +155,10 @@ export async function tagQuestionnaire(
   // Load rules
   const rules = await loadTagRules(customer);
 
-  // Load indexed questionnaire
+  // Load indexed questionnaire (JSON or YAML)
   const content = await readFile(indexedPath, 'utf-8');
-  const indexed: IndexedQuestionnaire = yaml.parse(content);
+  const isJson = indexedPath.endsWith('.json');
+  const indexed: IndexedQuestionnaire = isJson ? JSON.parse(content) : yaml.parse(content);
 
   // Stats
   const result: TagResult = {
@@ -196,7 +197,7 @@ export async function tagQuestionnaire(
 
   // Save updated file
   indexed.indexedAt = new Date().toISOString();
-  await writeFile(indexedPath, yaml.stringify(indexed), 'utf-8');
+  await writeFile(indexedPath, isJson ? JSON.stringify(indexed, null, 2) : yaml.stringify(indexed), 'utf-8');
 
   return result;
 }
@@ -208,11 +209,11 @@ export async function tagAllQuestionnaires(customer?: string): Promise<TagResult
 
   const { readdir } = await import('fs/promises');
   const files = await readdir(indexedDir);
-  const yamlFiles = files.filter((f) => f.endsWith('.yaml'));
+  const indexedFiles = files.filter((f) => f.endsWith('.json') || f.endsWith('.yaml'));
 
   const results: TagResult[] = [];
 
-  for (const file of yamlFiles) {
+  for (const file of indexedFiles) {
     const filePath = join(indexedDir, file);
     console.log(`Tagging: ${file}`);
     const result = await tagQuestionnaire(filePath, customer);

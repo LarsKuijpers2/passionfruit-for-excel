@@ -765,10 +765,10 @@ export class QuestionnaireIndexer {
       .replace(/\.[^.]+$/, '')
       .replace(/[^a-zA-Z0-9-_]/g, '_');
 
-    const filename = `${safeName}.yaml`;
+    const filename = `${safeName}.json`;
     const filepath = join(outputDir, filename);
 
-    await writeFile(filepath, stringifyYaml(indexed, { lineWidth: 0 }), 'utf-8');
+    await writeFile(filepath, JSON.stringify(indexed, null, 2), 'utf-8');
 
     return filepath;
   }

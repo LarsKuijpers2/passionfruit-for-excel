@@ -4049,17 +4049,13 @@ export class WebReviewGenerator {
       // Store sheet names for later use
       window.sheetNames = structure.sheets.map(s => s.name);
 
-      // Render sheet tabs with "All" tab first
-      const allTab = \`<button class="sheet-tab active" data-sheet="all" data-sheet-name="">
-          <span class="sheet-tab-name">All</span>
-        </button>\`;
-      const sheetTabs = structure.sheets.map((sheet, idx) => \`
-        <button class="sheet-tab" data-sheet="\${idx}" data-sheet-name="\${escapeHtml(sheet.name)}">
+      // Render sheet tabs
+      tabsContainer.innerHTML = structure.sheets.map((sheet, idx) => \`
+        <button class="sheet-tab\${idx === 0 ? ' active' : ''}" data-sheet="\${idx}" data-sheet-name="\${escapeHtml(sheet.name)}">
           <span class="sheet-tab-name">\${escapeHtml(sheet.name)}</span>
           <span class="sheet-tab-check" style="display:none;">✓</span>
         </button>
       \`).join('');
-      tabsContainer.innerHTML = allTab + sheetTabs;
 
       // Render sheet contents
       contentContainer.innerHTML = structure.sheets.map((sheet, idx) => \`
@@ -4082,20 +4078,13 @@ export class WebReviewGenerator {
       tabsContainer.querySelectorAll('.sheet-tab').forEach(tab => {
         tab.addEventListener('click', () => {
           tabsContainer.querySelectorAll('.sheet-tab').forEach(t => t.classList.remove('active'));
+          contentContainer.querySelectorAll('.sheet-content').forEach(c => c.classList.remove('active'));
           tab.classList.add('active');
+          contentContainer.querySelector(\`[data-sheet="\${tab.dataset.sheet}"]\`)?.classList.add('active');
 
-          if (tab.dataset.sheet === 'all') {
-            // Show first sheet content but don't filter Extraction panel
-            contentContainer.querySelectorAll('.sheet-content').forEach(c => c.classList.remove('active'));
-            contentContainer.querySelector('.sheet-content')?.classList.add('active');
-            filterPanelsBySheet(''); // Empty string = no filter, show all
-          } else {
-            contentContainer.querySelectorAll('.sheet-content').forEach(c => c.classList.remove('active'));
-            contentContainer.querySelector(\`[data-sheet="\${tab.dataset.sheet}"]\`)?.classList.add('active');
-            // Filter Indexed panel by sheet
-            const sheetName = tab.dataset.sheetName;
-            filterPanelsBySheet(sheetName);
-          }
+          // Filter Extraction panel by sheet
+          const sheetName = tab.dataset.sheetName;
+          filterPanelsBySheet(sheetName);
         });
       });
 

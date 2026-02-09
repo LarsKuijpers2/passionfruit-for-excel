@@ -101,3 +101,30 @@ export interface SelectionState {
   panel: 'indexed' | 'library';
   itemIds: Set<string>;
 }
+
+// Cell selection for feedback on original panel
+export interface CellSelection {
+  sheet: string;
+  row: number;
+  col: number;
+  cellRef: string; // e.g., "A1"
+  value: string;
+}
+
+// Cell feedback types
+export type CellFeedbackType =
+  | 'mark_as_question'
+  | 'mark_as_answer'
+  | 'mark_as_section'
+  | 'mark_as_header'
+  | 'exclude'
+  | 'correct_topic';
+
+export interface CellFeedback {
+  cellRef: string;
+  sheet: string;
+  feedbackType: CellFeedbackType;
+  topic?: string;
+  reason?: string;
+  timestamp: string;
+}

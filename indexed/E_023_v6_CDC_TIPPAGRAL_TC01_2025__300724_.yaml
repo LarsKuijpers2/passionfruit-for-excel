@@ -1,10 +1,10 @@
-id: 07f988ce
+id: cd42d96e
 source: E.023 v6 CDC TIPPAGRAL TC01 2025 (300724).xlsx
-indexed: 2026-02-08
+indexed: 2026-02-09
 language: en
 sections:
-  - title: Header
-    topic: other
+  - title: Document Header
+    topic: declaration
     rows: 1-6
     sheet: 1.PRESENTATION
     items:
@@ -12,10 +12,18 @@ sections:
         label: Document Type
         value: FICHE TECHNIQUE
         topic: documents
-        level: product
+        level: standard
         lang: fr
         lCell: A1
         vCell: A1
+      - type: field
+        label: Document Title
+        value: CAHIER DES CHARGES / SPECIFICATIONS
+        topic: documents
+        level: standard
+        lang: fr
+        lCell: C1
+        vCell: C1
       - type: field
         label: Company Name
         value: TIPPAGRAL SAS
@@ -25,7 +33,7 @@ sections:
         lCell: F1
         vCell: F1
       - type: field
-        label: Address
+        label: Company Address
         value: 1, rue Professeur Louis Neel
         topic: company
         level: standard
@@ -33,7 +41,7 @@ sections:
         lCell: F2
         vCell: F2
       - type: field
-        label: Address Line 2
+        label: Company Address 2
         value: BP 20 - 21601 Longvic France
         topic: company
         level: standard
@@ -41,7 +49,7 @@ sections:
         lCell: F3
         vCell: F3
       - type: field
-        label: Phone
+        label: Company Phone
         value: +33 (0)3 80 31 66 19
         topic: contacts
         level: standard
@@ -70,7 +78,7 @@ sections:
     sheet: 10.HACCP
     items:
       - type: field
-        label: Product
+        label: Product Name
         value: CHEDDAR RED 50% SLICES shingled 9x9CM à 15G 6x1kg
         topic: product
         level: product
@@ -86,7 +94,7 @@ sections:
         lCell: B3
         vCell: D3
       - type: field
-        label: Reference
+        label: Product Reference
         value: 300724 | TC01
         topic: product
         level: product
@@ -99,7 +107,7 @@ sections:
     sheet: 3.ATTESTATIONS
     items:
       - type: field
-        label: Product Name
+        label: Product
         value: CHEDDAR RED 50% SLICES shingled 9x9CM à 15G 6x1kg
         topic: product
         level: product
@@ -115,7 +123,7 @@ sections:
         lCell: C4
         vCell: E4
       - type: field
-        label: Product Reference
+        label: Reference
         value: 300724 | TC01
         topic: product
         level: product
@@ -180,13 +188,13 @@ sections:
         lang: en
         lCell: B5
         vCell: D5
-  - title: Product Information
+  - title: Product Characteristics
     topic: identification
     rows: 3-5
     sheet: 7.Food fraud
     items:
       - type: field
-        label: Product Name
+        label: Product
         value: CHEDDAR RED 50% SLICES shingled 9x9CM à 15G 6x1kg
         topic: product
         level: product
@@ -267,36 +275,36 @@ sections:
         lang: en
         lCell: B5
         vCell: D5
-  - title: Product Features
+  - title: Product Characteristics
     topic: identification
     rows: 3-5
     sheet: 11.Logistique
     items:
       - type: field
-        label: Product / Produit
+        label: Product Name
         value: CHEDDAR RED 50% SLICES shingled 9x9CM à 15G 6x1kg
         topic: product
         level: product
-        lang: fr
+        lang: en
         lCell: B3
         vCell: D3
       - type: field
-        label: Supplier / Fournisseur
+        label: Supplier
         value: KAAS-PACK HOLLAND B.V.
         topic: company
         level: standard
-        lang: fr
+        lang: de
         lCell: B4
         vCell: D4
       - type: field
-        label: Reference / Référence
+        label: Product Reference
         value: 300724 | TC01
         topic: product
         level: product
         lang: en
         lCell: B5
         vCell: D5
-  - title: Product Information Header
+  - title: Product Header
     topic: identification
     rows: 3-5
     sheet: 12. Packaging
@@ -360,44 +368,50 @@ sections:
     sheet: 14.RSE 1
     items:
       - type: field
-        label: Product
+        label: Product / Produit
         topic: product
         level: product
+        lang: fr
         lCell: B3
-        vCell: D3
+        vCell: C3
       - type: field
-        label: Supplier
+        label: Supplier / Fournisseur
         topic: company
         level: standard
+        lang: fr
         lCell: B4
-        vCell: D4
+        vCell: C4
       - type: field
-        label: Reference
+        label: Reference / Référence
         topic: product
         level: product
+        lang: en
         lCell: B5
-        vCell: D5
+        vCell: C5
   - title: Product Information
     topic: identification
     rows: 3-5
     sheet: 15.RSE 2
     items:
       - type: field
-        label: Product
+        label: Product / Produit
         topic: product
         level: product
+        lang: fr
         lCell: B3
         vCell: D3
       - type: field
-        label: Supplier
+        label: Supplier / Fournisseur
         topic: company
         level: standard
+        lang: fr
         lCell: B4
         vCell: D4
       - type: field
-        label: Reference
+        label: Reference / Référence
         topic: product
         level: product
+        lang: en
         lCell: B5
         vCell: D5
   - title: Product Information
@@ -435,7 +449,7 @@ sections:
     sheet: 4.ALLERGENES
     items:
       - type: field
-        label: Product
+        label: Product Name
         value: CHEDDAR RED 50% SLICES shingled 9x9CM à 15G 6x1kg
         topic: product
         level: product
@@ -451,7 +465,7 @@ sections:
         lCell: B5
         vCell: C5
       - type: field
-        label: Reference
+        label: Product Reference
         value: 300724 | TC01
         topic: product
         level: product
@@ -459,7 +473,7 @@ sections:
         lCell: B6
         vCell: C6
   - title: Supplier Details
-    topic: other
+    topic: company_information
     rows: 5-12
     sheet: 2.INFORMATIONS GENERALES
     items:
@@ -503,9 +517,9 @@ sections:
         lang: en
         lCell: A12
         vCell: C12
-  - title: Specific Requirements
+  - title: Requirements and Comments
     topic: other
-    rows: 7-7
+    rows: 7-9
     sheet: 16.Pièces à joindre au dossier
     items:
       - type: text
@@ -515,6 +529,13 @@ sections:
         lang: fr
         lCell: A7
         vCell: A7
+      - type: text
+        label: Free comment field if needed
+        topic: other
+        level: narrative
+        lang: en
+        lCell: A9
+        vCell: A9
   - title: Animal Welfare
     topic: ethical_social
     rows: 8-18
@@ -537,7 +558,7 @@ sections:
         lCell: A10
         vCell: C11
       - type: text
-        label: Specify at which stage (slaughter, breeding, transport...)
+        label: Specify at which stage (slaughter, breeding, transport)
         value: N/A
         topic: animal_welfare
         level: narrative
@@ -561,23 +582,23 @@ sections:
         lCell: A16
         vCell: C17
       - type: text
-        label: What criteria did you integrate for the selection of your raw materials?
+        label: What criteria did you integrate for the selection of raw materials?
         value: N/A
         topic: animal_welfare
         level: narrative
         lang: en
         lCell: A18
         vCell: C19
-  - title: Certifications and Dietary Requirements
+  - title: Certifications and Dietary Regimes
     topic: certifications
-    rows: 9-21
+    rows: 9-11
     sheet: 5.Product certif
     items:
       - type: yesno
         label: Halal Certified
         value: Non/No
         topic: certifications
-        level: standard
+        level: product
         lang: en
         lCell: C9
         vCell: D9
@@ -585,12 +606,12 @@ sections:
         label: Kosher Certified
         value: Non/No
         topic: certifications
-        level: standard
+        level: product
         lang: en
         lCell: E9
         vCell: F9
       - type: yesno
-        label: Ovo-lacto Vegetarian Suitable
+        label: Ovo-lacto Vegetarian
         value: Oui/Yes
         topic: certifications
         level: product
@@ -600,55 +621,32 @@ sections:
       - type: yesno
         label: Lactose-free
         value: Non/No
-        topic: certifications
+        topic: allergens
         level: product
         lCell: G11
         vCell: H11
       - type: field
         label: Lactose Level (g/100g)
         value: <0,2
-        topic: nutrition
+        topic: allergens
         level: product
         lang: fr
         lCell: I11
         vCell: J11
-      - type: field
-        label: Other PPM Level
-        topic: nutrition
-        level: product
-        lang: en
-        lCell: F17
-        vCell: G17
-      - type: yesno
-        label: Vegan Suitable
-        value: Non/No
-        topic: certifications
-        level: product
-        lang: nl
-        lCell: C21
-        vCell: D21
-      - type: yesno
-        label: Vegetarian Suitable
-        value: Oui/Yes
-        topic: certifications
-        level: product
-        lang: nl
-        lCell: E21
-        vCell: F21
   - title: Legal Name
     topic: company_information
     rows: 9-9
     sheet: 7.Food fraud
     items:
       - type: field
-        label: Legal Name of Food Product
+        label: Legal name of food
         value: COLORED CHEDDAR
         topic: product
         level: product
         lang: en
         lCell: A9
         vCell: F9
-  - title: Cheese/Milk Specifications
+  - title: Cheese/Milk Classification
     topic: allergens
     rows: 9-11
     sheet: 9.Bacterio
@@ -683,7 +681,7 @@ sections:
     sheet: 11.Logistique
     items:
       - type: field
-        label: Best Before Date (DDM/BBD)
+        label: Best Before Date (BBD)
         value: 120 days
         topic: product
         level: product
@@ -691,15 +689,15 @@ sections:
         lCell: A9
         vCell: E9
       - type: field
-        label: Use By Date (DLC/UBD)
+        label: Use By Date (UBD)
         value: NA
         topic: product
         level: product
-        lang: fr
+        lang: de
         lCell: A10
         vCell: E10
       - type: field
-        label: Shelf Life Location / Localisation DDM ou DLC
+        label: Shelf Life Location
         value: On the label
         topic: product
         level: product
@@ -707,28 +705,28 @@ sections:
         lCell: A12
         vCell: E12
       - type: field
-        label: Storage Temperature / Température
+        label: Storage Temperature
         value: 1-7 °C
-        topic: logistics
+        topic: product
         level: product
         lang: fr
         lCell: A14
         vCell: E14
-  - title: Export Certificate
-    topic: certifications
+  - title: Product Compliance Statements
+    topic: identification
     rows: 9-29
     sheet: 13. Export
     items:
       - type: text
-        label: Products intended for human consumption
+        label: Human consumption statement
         value: The products manufactured are intended for human consumption
-        topic: approval
+        topic: food_safety
         level: standard
         lang: en
         lCell: A9
         vCell: A9
       - type: text
-        label: Establishment registration
+        label: Establishment registration statement
         value: The establishment is registered according to the Regulation
         topic: approval
         level: standard
@@ -736,7 +734,7 @@ sections:
         lCell: A11
         vCell: A11
       - type: text
-        label: Production, storage and transport conditions
+        label: Production handling statement
         value: The products manufactured have been produced, stored and tra
         topic: food_safety
         level: standard
@@ -744,23 +742,23 @@ sections:
         lCell: A13
         vCell: A13
       - type: text
-        label: Milk source compliance
+        label: Milk source statement
         value: The products manufactured were made from milk that has been
-        topic: food_safety
+        topic: origin
         level: standard
         lang: en
         lCell: A15
         vCell: A15
       - type: text
-        label: No animal products
+        label: Product derivation statement
         value: The products manufactured do not contain any products derive
         topic: ingredients
-        level: product
+        level: standard
         lang: en
         lCell: A17
         vCell: A17
       - type: text
-        label: Processing and handling
+        label: Processing handling statement
         value: The products manufactured have been processed and handled in
         topic: food_safety
         level: standard
@@ -768,15 +766,15 @@ sections:
         lCell: A19
         vCell: A19
       - type: text
-        label: Raw materials from healthy animals
+        label: Raw materials health statement
         value: The cheeses processed are made from raw materials from healt
-        topic: animal_welfare
+        topic: food_safety
         level: standard
         lang: en
         lCell: A21
         vCell: A21
       - type: text
-        label: No harmful residues
+        label: Residues statement
         value: The products manufactured don't contain residues (antibiotic
         topic: food_safety
         level: standard
@@ -784,7 +782,7 @@ sections:
         lCell: A23
         vCell: A23
       - type: text
-        label: Radioactivity levels
+        label: Radioactivity statement
         value: The radioactivity level of the products manufactured are not
         topic: food_safety
         level: standard
@@ -792,7 +790,7 @@ sections:
         lCell: A25
         vCell: A25
       - type: text
-        label: Packaging materials
+        label: Packaging materials statement
         value: Packaging materials are clean and approved for food packagin
         topic: packaging
         level: standard
@@ -800,7 +798,7 @@ sections:
         lCell: A27
         vCell: A27
       - type: text
-        label: EU manufacture and milk source
+        label: EU manufacturing statement
         value: The products were manufactured in UE and from milk produced
         topic: origin
         level: standard
@@ -808,8 +806,8 @@ sections:
         lCell: A29
         vCell: A29
   - title: Social Standards
-    topic: other
-    rows: 9-23
+    topic: ethical_social
+    rows: 9-24
     sheet: 15.RSE 2
     items:
       - type: yesno
@@ -836,7 +834,7 @@ sections:
         lCell: C11
         vCell: G11
       - type: yesno
-        label: ICS (Initiative for Compliance and Sustainibility)
+        label: ICS (Initiative for Compliance and Sustainability)
         value: No
         topic: certifications
         level: standard
@@ -850,6 +848,13 @@ sections:
         level: standard
         lCell: C13
         vCell: G13
+      - type: field
+        label: Other audit (specify)
+        topic: certifications
+        level: standard
+        lang: en
+        lCell: C15
+        vCell: H15
       - type: yesno
         label: Employee health/safety
         value: Yes
@@ -867,11 +872,10 @@ sections:
         lCell: C18
         vCell: K18
       - type: yesno
-        label: Social dialogue (structuring of social dialogue with staff)
+        label: Social dialogue
         value: Yes
         topic: sustainability
         level: standard
-        lang: en
         lCell: C19
         vCell: K19
       - type: yesno
@@ -906,38 +910,33 @@ sections:
         lang: en
         lCell: C23
         vCell: K23
-  - title: Free Comments
-    topic: other
-    rows: 9-9
-    sheet: 16.Pièces à joindre au dossier
-    items:
-      - type: text
-        label: Free comment field
-        topic: other
-        level: narrative
+      - type: field
+        label: Other code of conduct (specify)
+        topic: sustainability
+        level: standard
         lang: en
-        lCell: A9
-        vCell: A9
-  - title: Conventionality/GMO Attestation
+        lCell: C24
+        vCell: E24
+  - title: Conventionality Attestation (GMO)
     topic: gmo
     rows: 10-10
     sheet: 3.ATTESTATIONS
     items:
       - type: yesno
-        label: Product derived from or uses GMO ingredients in manufacturing process
+        label: Product derived from or uses GMO in production process
         value: Non/No
-        topic: food_safety
+        topic: product
         level: product
         lang: en
         lCell: A10
         vCell: C11
-  - title: Product Quality Criteria
-    topic: quality_systems
+  - title: Product Characteristics
+    topic: identification
     rows: 10-19
     sheet: 8.Caract  VN
     items:
       - type: field
-        label: Appearance (Expected Criteria)
+        label: Appearance / Aspect
         value: Slices
         topic: product
         level: product
@@ -945,7 +944,7 @@ sections:
         lCell: A10
         vCell: C10
       - type: field
-        label: Taste (Expected Criteria)
+        label: Taste / Gout
         value: Good and specific to the cheese
         topic: product
         level: product
@@ -953,7 +952,7 @@ sections:
         lCell: A11
         vCell: C11
       - type: field
-        label: Color (Expected Criteria)
+        label: Color / Couleur
         value: Orange
         topic: product
         level: product
@@ -961,7 +960,7 @@ sections:
         lCell: A12
         vCell: C12
       - type: field
-        label: Smell (Expected Criteria)
+        label: Smell / Odeur
         value: Good and specific to the cheese
         topic: product
         level: product
@@ -969,7 +968,7 @@ sections:
         lCell: A13
         vCell: C13
       - type: field
-        label: Texture/Consistency (Expected Criteria)
+        label: Texture / Consistency
         value: Malleable, sufficiently stiff and sliceable
         topic: product
         level: product
@@ -984,11 +983,11 @@ sections:
         lCell: A15
         vCell: C15
       - type: field
-        label: pH of raw milk
+        label: pH of raw milk / pH du lait cru
         value: <7
         topic: product
         level: product
-        lang: nl
+        lang: fr
         lCell: A16
         vCell: C16
       - type: field
@@ -998,7 +997,7 @@ sections:
         lCell: A17
         vCell: C17
       - type: text
-        label: Melting properties
+        label: Melting properties / Propriété de fonte
         value: "Selon le barême temps/température suivant : 120 sec/ 220°C :"
         topic: product
         level: product
@@ -1006,256 +1005,19 @@ sections:
         lCell: A18
         vCell: C18
       - type: text
-        label: Advice for use
+        label: Advice for use / Conseil d'utilisation
         topic: product
         level: product
         lang: en
         lCell: A19
         vCell: C19
-  - title: Allergen Declaration
-    topic: allergens
-    rows: 11-26
-    sheet: 4.ALLERGENES
-    items:
-      - type: field
-        label: Milk and milk products - Source
-        value: cow's milk
-        topic: allergens
-        level: product
-        lang: en
-        lCell: C11
-        vCell: D20
-      - type: choice
-        label: Sulphur dioxide and sulphites (>10mg/kg) - Presence in recipe
-        value: Absence
-        topic: allergens
-        level: product
-        lang: en
-        lCell: A13
-        vCell: C13
-      - type: choice
-        label: Sulphur dioxide and sulphites (>10mg/kg) - Cross-contamination risk
-        value: Absence
-        topic: allergens
-        level: product
-        lang: en
-        lCell: A13
-        vCell: E13
-      - type: choice
-        label: Peanuts and peanut products - Presence in recipe
-        value: Absence
-        topic: allergens
-        level: product
-        lang: en
-        lCell: A14
-        vCell: C14
-      - type: choice
-        label: Peanuts and peanut products - Cross-contamination risk
-        value: Absence
-        topic: allergens
-        level: product
-        lang: en
-        lCell: A14
-        vCell: E14
-      - type: choice
-        label: Celery and celery products - Presence in recipe
-        value: Absence
-        topic: allergens
-        level: product
-        lang: en
-        lCell: A15
-        vCell: C15
-      - type: choice
-        label: Celery and celery products - Cross-contamination risk
-        value: Absence
-        topic: allergens
-        level: product
-        lang: en
-        lCell: A15
-        vCell: E15
-      - type: choice
-        label: Gluten-containing cereals - Presence in recipe
-        value: Absence
-        topic: allergens
-        level: product
-        lang: fr
-        lCell: A16
-        vCell: C16
-      - type: choice
-        label: Gluten-containing cereals - Cross-contamination risk
-        value: Absence
-        topic: allergens
-        level: product
-        lang: fr
-        lCell: A16
-        vCell: E16
-      - type: choice
-        label: Crustaceans and crustacean products - Presence in recipe
-        value: Absence
-        topic: allergens
-        level: product
-        lang: en
-        lCell: A17
-        vCell: C17
-      - type: choice
-        label: Crustaceans and crustacean products - Cross-contamination risk
-        value: Absence
-        topic: allergens
-        level: product
-        lang: en
-        lCell: A17
-        vCell: E17
-      - type: choice
-        label: Tree nuts - Presence in recipe
-        value: Absence
-        topic: allergens
-        level: product
-        lang: en
-        lCell: A18
-        vCell: C18
-      - type: choice
-        label: Tree nuts - Cross-contamination risk
-        value: Absence
-        topic: allergens
-        level: product
-        lang: fr
-        lCell: A18
-        vCell: E18
-      - type: choice
-        label: Sesame seeds and sesame products - Presence in recipe
-        value: Absence
-        topic: allergens
-        level: product
-        lang: en
-        lCell: A19
-        vCell: C19
-      - type: choice
-        label: Sesame seeds and sesame products - Cross-contamination risk
-        value: Absence
-        topic: allergens
-        level: product
-        lang: en
-        lCell: A19
-        vCell: E19
-      - type: choice
-        label: Milk and milk products - Presence in recipe
-        value: Presence
-        topic: allergens
-        level: product
-        lang: en
-        lCell: A20
-        vCell: C20
-      - type: choice
-        label: Milk and milk products - Cross-contamination risk
-        value: non applicable
-        topic: allergens
-        level: product
-        lang: en
-        lCell: A20
-        vCell: E20
-      - type: choice
-        label: Lupin and lupin products - Presence in recipe
-        value: Absence
-        topic: allergens
-        level: product
-        lang: en
-        lCell: A21
-        vCell: C21
-      - type: choice
-        label: Lupin and lupin products - Cross-contamination risk
-        value: Absence
-        topic: allergens
-        level: product
-        lang: en
-        lCell: A21
-        vCell: E21
-      - type: choice
-        label: Molluscs and mollusc products - Presence in recipe
-        value: Absence
-        topic: allergens
-        level: product
-        lang: en
-        lCell: A22
-        vCell: C22
-      - type: choice
-        label: Molluscs and mollusc products - Cross-contamination risk
-        value: Absence
-        topic: allergens
-        level: product
-        lang: en
-        lCell: A22
-        vCell: E22
-      - type: choice
-        label: Mustard and mustard products - Presence in recipe
-        value: Absence
-        topic: allergens
-        level: product
-        lang: en
-        lCell: A23
-        vCell: C23
-      - type: choice
-        label: Mustard and mustard products - Cross-contamination risk
-        value: Absence
-        topic: allergens
-        level: product
-        lang: en
-        lCell: A23
-        vCell: E23
-      - type: choice
-        label: Eggs and egg products - Presence in recipe
-        value: Absence
-        topic: allergens
-        level: product
-        lang: en
-        lCell: A24
-        vCell: C24
-      - type: choice
-        label: Eggs and egg products - Cross-contamination risk
-        value: Absence
-        topic: allergens
-        level: product
-        lang: en
-        lCell: A24
-        vCell: E24
-      - type: choice
-        label: Fish and fish products - Presence in recipe
-        value: Absence
-        topic: allergens
-        level: product
-        lang: en
-        lCell: A25
-        vCell: C25
-      - type: choice
-        label: Fish and fish products - Cross-contamination risk
-        value: Absence
-        topic: allergens
-        level: product
-        lang: en
-        lCell: A25
-        vCell: E25
-      - type: choice
-        label: Soy and soy products - Presence in recipe
-        value: Absence
-        topic: allergens
-        level: product
-        lang: en
-        lCell: A26
-        vCell: C26
-      - type: choice
-        label: Soy and soy products - Cross-contamination risk
-        value: Absence
-        topic: allergens
-        level: product
-        lang: en
-        lCell: A26
-        vCell: E26
   - title: Packaging Details
     topic: packaging
     rows: 11-15
     sheet: 12. Packaging
     items:
       - type: field
-        label: Primary packaging weight (g)
+        label: Primary Packaging Weight (g)
         value: "25"
         topic: packaging
         level: product
@@ -1263,7 +1025,7 @@ sections:
         lCell: F11
         vCell: F13
       - type: yesno
-        label: Primary packaging - Product contact
+        label: Primary Packaging Product Contact
         value: x
         topic: packaging
         level: product
@@ -1271,7 +1033,7 @@ sections:
         lCell: G11
         vCell: G13
       - type: yesno
-        label: Primary packaging - Recycled material
+        label: Primary Packaging Recycled Material
         value: x
         topic: packaging
         level: product
@@ -1279,7 +1041,7 @@ sections:
         lCell: I11
         vCell: I13
       - type: yesno
-        label: Primary packaging - Recyclable material
+        label: Primary Packaging Recyclable Material
         value: x
         topic: packaging
         level: product
@@ -1287,31 +1049,7 @@ sections:
         lCell: K11
         vCell: K13
       - type: field
-        label: Foil around pallet - Product contact
-        value: x
-        topic: packaging
-        level: product
-        lang: fr
-        lCell: H11
-        vCell: H14
-      - type: field
-        label: Foil around pallet - Recycled material
-        value: x
-        topic: packaging
-        level: product
-        lang: en
-        lCell: I11
-        vCell: I14
-      - type: field
-        label: Foil around pallet - Recyclable material
-        value: x
-        topic: packaging
-        level: product
-        lang: en
-        lCell: K11
-        vCell: K14
-      - type: field
-        label: Wood pallet weight (g)
+        label: Wood Pallet Weight (g)
         value: "25000"
         topic: packaging
         level: product
@@ -1319,23 +1057,7 @@ sections:
         lCell: F11
         vCell: F15
       - type: field
-        label: Wood pallet - Product contact
-        value: x
-        topic: packaging
-        level: product
-        lang: fr
-        lCell: H11
-        vCell: H15
-      - type: field
-        label: Wood pallet - Recycled material
-        value: x
-        topic: packaging
-        level: product
-        lang: nl
-        lCell: I11
-        vCell: I15
-      - type: field
-        label: Wood pallet - Recyclable material percentage
+        label: Wood Pallet Recyclable Percentage
         value: "100"
         topic: packaging
         level: product
@@ -1343,7 +1065,7 @@ sections:
         lCell: L11
         vCell: L15
       - type: field
-        label: Primary packaging material
+        label: Primary Packaging Material
         value: PEEVOH/PET and PE/APET
         topic: packaging
         level: product
@@ -1351,14 +1073,259 @@ sections:
         lCell: A13
         vCell: C13
       - type: field
-        label: Wood pallet material
+        label: Foil Around Pallet - Non-Product Contact
+        value: x
+        topic: packaging
+        level: product
+        lang: en
+        lCell: A14
+        vCell: H14
+      - type: field
+        label: Wood Pallet Material
         value: Wood
         topic: packaging
         level: product
         lang: nl
         lCell: A15
         vCell: C15
-  - title: Ingredients and Geographical Origin
+  - title: Allergen Declaration
+    topic: allergens
+    rows: 13-26
+    sheet: 4.ALLERGENES
+    items:
+      - type: choice
+        label: Sulfur dioxide and sulfites - Recipe Presence
+        value: Absence
+        topic: allergens
+        level: product
+        lang: en
+        lCell: A13
+        vCell: C13
+      - type: choice
+        label: Sulfur dioxide and sulfites - Manufacturing Line Risk
+        value: Absence
+        topic: allergens
+        level: product
+        lang: en
+        lCell: A13
+        vCell: E13
+      - type: choice
+        label: Peanuts - Recipe Presence
+        value: Absence
+        topic: allergens
+        level: product
+        lang: en
+        lCell: A14
+        vCell: C14
+      - type: choice
+        label: Peanuts - Manufacturing Line Risk
+        value: Absence
+        topic: allergens
+        level: product
+        lang: en
+        lCell: A14
+        vCell: E14
+      - type: choice
+        label: Celery - Recipe Presence
+        value: Absence
+        topic: allergens
+        level: product
+        lang: en
+        lCell: A15
+        vCell: C15
+      - type: choice
+        label: Celery - Manufacturing Line Risk
+        value: Absence
+        topic: allergens
+        level: product
+        lang: en
+        lCell: A15
+        vCell: E15
+      - type: choice
+        label: Gluten-containing cereals - Recipe Presence
+        value: Absence
+        topic: allergens
+        level: product
+        lang: fr
+        lCell: A16
+        vCell: C16
+      - type: choice
+        label: Gluten-containing cereals - Manufacturing Line Risk
+        value: Absence
+        topic: allergens
+        level: product
+        lang: fr
+        lCell: A16
+        vCell: E16
+      - type: choice
+        label: Crustaceans - Recipe Presence
+        value: Absence
+        topic: allergens
+        level: product
+        lang: fr
+        lCell: A17
+        vCell: C17
+      - type: choice
+        label: Crustaceans - Manufacturing Line Risk
+        value: Absence
+        topic: allergens
+        level: product
+        lang: en
+        lCell: A17
+        vCell: E17
+      - type: choice
+        label: Tree nuts - Recipe Presence
+        value: Absence
+        topic: allergens
+        level: product
+        lang: fr
+        lCell: A18
+        vCell: C18
+      - type: choice
+        label: Tree nuts - Manufacturing Line Risk
+        value: Absence
+        topic: allergens
+        level: product
+        lang: en
+        lCell: A18
+        vCell: E18
+      - type: choice
+        label: Sesame seeds - Recipe Presence
+        value: Absence
+        topic: allergens
+        level: product
+        lang: en
+        lCell: A19
+        vCell: C19
+      - type: choice
+        label: Sesame seeds - Manufacturing Line Risk
+        value: Absence
+        topic: allergens
+        level: product
+        lang: en
+        lCell: A19
+        vCell: E19
+      - type: choice
+        label: Milk and dairy products - Recipe Presence
+        value: Presence
+        topic: allergens
+        level: product
+        lang: en
+        lCell: A20
+        vCell: C20
+      - type: field
+        label: Milk and dairy products - Source
+        value: cow's milk
+        topic: allergens
+        level: product
+        lang: en
+        lCell: A20
+        vCell: D20
+      - type: choice
+        label: Milk and dairy products - Manufacturing Line Risk
+        value: non applicable
+        topic: allergens
+        level: product
+        lang: en
+        lCell: A20
+        vCell: E20
+      - type: choice
+        label: Lupin - Recipe Presence
+        value: Absence
+        topic: allergens
+        level: product
+        lang: en
+        lCell: A21
+        vCell: C21
+      - type: choice
+        label: Lupin - Manufacturing Line Risk
+        value: Absence
+        topic: allergens
+        level: product
+        lang: en
+        lCell: A21
+        vCell: E21
+      - type: choice
+        label: Molluscs - Recipe Presence
+        value: Absence
+        topic: allergens
+        level: product
+        lang: en
+        lCell: A22
+        vCell: C22
+      - type: choice
+        label: Molluscs - Manufacturing Line Risk
+        value: Absence
+        topic: allergens
+        level: product
+        lang: en
+        lCell: A22
+        vCell: E22
+      - type: choice
+        label: Mustard - Recipe Presence
+        value: Absence
+        topic: allergens
+        level: product
+        lang: en
+        lCell: A23
+        vCell: C23
+      - type: choice
+        label: Mustard - Manufacturing Line Risk
+        value: Absence
+        topic: allergens
+        level: product
+        lang: en
+        lCell: A23
+        vCell: E23
+      - type: choice
+        label: Eggs - Recipe Presence
+        value: Absence
+        topic: allergens
+        level: product
+        lang: en
+        lCell: A24
+        vCell: C24
+      - type: choice
+        label: Eggs - Manufacturing Line Risk
+        value: Absence
+        topic: allergens
+        level: product
+        lang: en
+        lCell: A24
+        vCell: E24
+      - type: choice
+        label: Fish - Recipe Presence
+        value: Absence
+        topic: allergens
+        level: product
+        lang: en
+        lCell: A25
+        vCell: C25
+      - type: choice
+        label: Fish - Manufacturing Line Risk
+        value: Absence
+        topic: allergens
+        level: product
+        lang: en
+        lCell: A25
+        vCell: E25
+      - type: choice
+        label: Soy - Recipe Presence
+        value: Absence
+        topic: allergens
+        level: product
+        lang: fr
+        lCell: A26
+        vCell: C26
+      - type: choice
+        label: Soy - Manufacturing Line Risk
+        value: Absence
+        topic: allergens
+        level: product
+        lang: en
+        lCell: A26
+        vCell: E26
+  - title: Ingredients and Geographic Origin
     topic: origin_provenance
     rows: 13-25
     sheet: 6.LI_ORIGINE
@@ -1374,7 +1341,7 @@ sections:
       - type: field
         label: Pasteurized COW'S MILK - Biological Origin
         value: "A : animale/animal"
-        topic: ingredients
+        topic: origin
         level: product
         lang: en
         lCell: A13
@@ -1398,7 +1365,7 @@ sections:
       - type: field
         label: Salt - Biological Origin
         value: "M : minéral/mineral"
-        topic: ingredients
+        topic: origin
         level: product
         lang: en
         lCell: A14
@@ -1438,7 +1405,7 @@ sections:
       - type: field
         label: Microbial rennet - Biological Origin
         value: "B : bactérienne/bacterial"
-        topic: ingredients
+        topic: origin
         level: product
         lang: en
         lCell: A16
@@ -1468,7 +1435,7 @@ sections:
         lCell: A17
         vCell: F17
       - type: field
-        label: Beta-carotene - E Number
+        label: Beta-carotene - E-Number
         value: E160a
         topic: ingredients
         level: product
@@ -1478,13 +1445,13 @@ sections:
       - type: field
         label: Calcium Chloride - Biological Origin
         value: "M : minéral/mineral"
-        topic: ingredients
+        topic: origin
         level: product
         lang: en
         lCell: A25
         vCell: D25
       - type: field
-        label: Calcium Chloride - E Number
+        label: Calcium Chloride - E-Number
         value: E.509
         topic: ingredients
         level: product
@@ -1492,28 +1459,28 @@ sections:
         lCell: A25
         vCell: J25
       - type: field
-        label: Calcium Chloride - GMO Status
+        label: Calcium Chloride - GMO
         value: Non/No
         topic: ingredients
         level: product
-        lang: en
+        lang: fr
         lCell: A25
         vCell: K25
   - title: Cheese Specifications
-    topic: other
+    topic: physical_properties
     rows: 13-19
     sheet: 7.Food fraud
     items:
       - type: yesno
-        label: Cheese Codex Compliance
+        label: Is your cheese compliant with Codex? Which one?
         value: Yes, Codex STAN 263-1966 v.2018 Cheddar
         topic: food_fraud
         level: product
-        lang: fr
+        lang: en
         lCell: A13
         vCell: F13
       - type: yesno
-        label: All technological auxiliaries declared on page 5
+        label: Have you declared on page 5, all technological aids?
         value: Oui/Yes
         topic: food_fraud
         level: product
@@ -1521,11 +1488,11 @@ sections:
         lCell: A15
         vCell: F15
       - type: yesno
-        label: FDA regulation calcium chloride compliance
+        label: According to FDA regulation, calcium chloride must be declared
         value: oui / yes
         topic: food_fraud
         level: product
-        lang: fr
+        lang: en
         lCell: A16
         vCell: F16
       - type: text
@@ -1535,22 +1502,83 @@ sections:
         lCell: A17
         vCell: F17
       - type: text
-        label: Product denomination/appellation
+        label: Does your product benefit from an appellation? If yes, which one?
         topic: food_fraud
         level: product
         lang: en
         lCell: A18
         vCell: F18
-      - type: text
-        label: Colorant E160b content in cheese (mg/kg)
-        topic: food_fraud
+      - type: field
+        label: "Colorant E160b: specify content in cheese (mg/kg)"
+        topic: ingredients
         level: product
         lang: fr
         lCell: A19
         vCell: F19
+  - title: Contaminants Analysis
+    topic: contaminants
+    rows: 13-19
+    sheet: 10.HACCP
+    items:
+      - type: field
+        label: Analysis Frequency - Pharmacologically Active Substances
+        value: twice a year (report NZO)
+        topic: food_safety
+        level: standard
+        lang: en
+        lCell: A13
+        vCell: J13
+      - type: field
+        label: Analysis Frequency - Pesticides
+        value: twice a year (report NZO)
+        topic: food_safety
+        level: standard
+        lang: en
+        lCell: A14
+        vCell: J14
+      - type: field
+        label: Analysis Frequency - Heavy Metals
+        value: twice a year (report NZO)
+        topic: food_safety
+        level: standard
+        lang: en
+        lCell: A15
+        vCell: J15
+      - type: field
+        label: Analysis Frequency - Mycotoxins
+        value: twice a year (report NZO)
+        topic: food_safety
+        level: standard
+        lang: en
+        lCell: A16
+        vCell: J16
+      - type: field
+        label: Analysis Frequency - Dioxins and PCBs
+        value: twice a year (report NZO)
+        topic: food_safety
+        level: standard
+        lang: en
+        lCell: A17
+        vCell: J17
+      - type: field
+        label: Analysis Frequency - Melamine
+        value: twice a year (report NZO)
+        topic: food_safety
+        level: standard
+        lang: en
+        lCell: A18
+        vCell: J18
+      - type: field
+        label: MOAH Criteria
+        value: < 1 mg/kg
+        topic: food_safety
+        level: standard
+        lang: de
+        lCell: A19
+        vCell: E19
   - title: Product Information
     topic: identification
-    rows: 14-17
+    rows: 14-22
     sheet: 1.PRESENTATION
     items:
       - type: field
@@ -1565,14 +1593,14 @@ sections:
         label: Supplier/Manufacturer
         value: KAAS-PACK HOLLAND B.V.
         topic: company
-        level: product
+        level: standard
         lang: en
         lCell: A15
         vCell: D15
       - type: field
         label: Reference on Delivery Note
         value: "300724"
-        topic: product
+        topic: logistics
         level: product
         lang: en
         lCell: A16
@@ -1585,7 +1613,38 @@ sections:
         lang: en
         lCell: A17
         vCell: D17
-  - title: Documents to Send
+      - type: field
+        label: Signatory Name
+        value: G. Sok
+        topic: signature
+        level: standard
+        lang: en
+        lCell: A19
+        vCell: D19
+      - type: field
+        label: Signatory Position
+        value: QA officer
+        topic: signature
+        level: standard
+        lang: en
+        lCell: A20
+        vCell: D20
+      - type: field
+        label: Location
+        value: Hoogeveen
+        topic: company
+        level: standard
+        lCell: A21
+        vCell: D21
+      - type: date
+        label: Signature Date
+        value: 2025-10-07
+        topic: signature
+        level: standard
+        lang: fr
+        lCell: A22
+        vCell: D22
+  - title: Document Requirements Checklist
     topic: declaration
     rows: 14-27
     sheet: 16.Pièces à joindre au dossier
@@ -1687,8 +1746,21 @@ sections:
         lang: en
         lCell: A27
         vCell: H27
+  - title: Engineered Nanomaterials Attestation
+    topic: declaration
+    rows: 15-15
+    sheet: 3.ATTESTATIONS
+    items:
+      - type: yesno
+        label: Contains engineered nanomaterials
+        value: Non/No
+        topic: product
+        level: product
+        lang: en
+        lCell: A15
+        vCell: C17
   - title: Manufacturer Details
-    topic: other
+    topic: company_information
     rows: 16-20
     sheet: 2.INFORMATIONS GENERALES
     items:
@@ -1716,26 +1788,13 @@ sections:
         lang: en
         lCell: A20
         vCell: C20
-  - title: Nanomaterials Attestation
-    topic: other
-    rows: 16-16
-    sheet: 3.ATTESTATIONS
-    items:
-      - type: yesno
-        label: Contains engineered nanomaterials
-        value: Non/No
-        topic: food_safety
-        level: product
-        lang: en
-        lCell: A16
-        vCell: C17
   - title: Microbiological Criteria
     topic: microbiological
     rows: 16-22
     sheet: 9.Bacterio
     items:
       - type: field
-        label: Escherichia Coli Target
+        label: Escherichia Coli - Target
         value: 100 cfu/g
         topic: microbiology
         level: product
@@ -1743,7 +1802,7 @@ sections:
         lCell: A16
         vCell: D16
       - type: field
-        label: Escherichia Coli Tolerance
+        label: Escherichia Coli - Tolerances
         value: 1.000 cfu/g
         topic: microbiology
         level: product
@@ -1751,15 +1810,15 @@ sections:
         lCell: A16
         vCell: F16
       - type: field
-        label: Escherichia Coli Analysis Method
+        label: Escherichia Coli - Analysis method
         value: ISO 16649-2
         topic: microbiology
-        level: product
+        level: standard
         lang: en
         lCell: A16
         vCell: H16
       - type: field
-        label: Coagulase positive staphylococci Target
+        label: Coagulase positive staphylococci - Target
         value: 100 cfu/g
         topic: microbiology
         level: product
@@ -1767,7 +1826,7 @@ sections:
         lCell: A17
         vCell: D17
       - type: field
-        label: Coagulase positive staphylococci Tolerance
+        label: Coagulase positive staphylococci - Tolerances
         value: 1.000 cfu/g
         topic: microbiology
         level: product
@@ -1775,15 +1834,15 @@ sections:
         lCell: A17
         vCell: F17
       - type: field
-        label: Coagulase positive staphylococci Analysis Method
+        label: Coagulase positive staphylococci - Analysis method
         value: ISO 6888-2
         topic: microbiology
-        level: product
+        level: standard
         lang: en
         lCell: A17
         vCell: H17
       - type: field
-        label: Listeria monocytogenes Target
+        label: Listeria monocytogenes - Target
         value: absence/25g - neg/25g
         topic: microbiology
         level: product
@@ -1791,7 +1850,7 @@ sections:
         lCell: A18
         vCell: D18
       - type: field
-        label: Listeria monocytogenes Tolerance
+        label: Listeria monocytogenes - Tolerances
         value: absence/25g - neg/25g
         topic: microbiology
         level: product
@@ -1799,15 +1858,15 @@ sections:
         lCell: A18
         vCell: F18
       - type: field
-        label: Listeria monocytogenes Analysis Method
+        label: Listeria monocytogenes - Analysis method
         value: ISO 11290-1
         topic: microbiology
-        level: product
+        level: standard
         lang: en
         lCell: A18
         vCell: H18
       - type: field
-        label: Salmonella spp Target
+        label: Salmonella spp - Target
         value: absence/25g - neg/25g
         topic: microbiology
         level: product
@@ -1815,7 +1874,7 @@ sections:
         lCell: A19
         vCell: D19
       - type: field
-        label: Salmonella spp Tolerance
+        label: Salmonella spp - Tolerances
         value: absence/25g - neg/25g
         topic: microbiology
         level: product
@@ -1823,39 +1882,39 @@ sections:
         lCell: A19
         vCell: F19
       - type: field
-        label: Salmonella spp Analysis Method
+        label: Salmonella spp - Analysis method
         value: ISO 6579
         topic: microbiology
-        level: product
+        level: standard
         lang: en
         lCell: A19
         vCell: H19
       - type: field
-        label: Total Coliforms Target
+        label: Coliformes totaux - Target
         value: 100 cfu/g
         topic: microbiology
         level: product
-        lang: en
+        lang: fr
         lCell: A20
         vCell: D20
       - type: field
-        label: Total Coliforms Tolerance
+        label: Coliformes totaux - Tolerances
         value: 1.000 cfu/g
         topic: microbiology
         level: product
-        lang: en
+        lang: fr
         lCell: A20
         vCell: F20
       - type: field
-        label: Total Coliforms Analysis Method
+        label: Coliformes totaux - Analysis method
         value: ISO 4832
         topic: microbiology
-        level: product
+        level: standard
         lang: en
         lCell: A20
         vCell: H20
       - type: field
-        label: Moulds Target
+        label: Moisissures/Moulds - Target
         value: 1.000 cfu/g
         topic: microbiology
         level: product
@@ -1863,23 +1922,23 @@ sections:
         lCell: A21
         vCell: D21
       - type: field
-        label: Moulds Tolerance
+        label: Moisissures/Moulds - Tolerances
         value: 10.000 cfu/g
         topic: microbiology
         level: product
-        lang: en
+        lang: fr
         lCell: A21
         vCell: F21
       - type: field
-        label: Moulds Analysis Method
+        label: Moisissures/Moulds - Analysis method
         value: ISO 21527-1 / -2
         topic: microbiology
-        level: product
+        level: standard
         lang: en
         lCell: A21
         vCell: H21
       - type: field
-        label: Yeasts Target
+        label: Levures/Yeasts - Target
         value: 1.000 cfu/g
         topic: microbiology
         level: product
@@ -1887,21 +1946,33 @@ sections:
         lCell: A22
         vCell: D22
       - type: field
-        label: Yeasts Tolerance
+        label: Levures/Yeasts - Tolerances
         value: 50.000 cfu/g
         topic: microbiology
         level: product
-        lang: en
+        lang: fr
         lCell: A22
         vCell: F22
       - type: field
-        label: Yeasts Analysis Method
+        label: Levures/Yeasts - Analysis method
         value: ISO 21527-1 / -2
         topic: microbiology
-        level: product
+        level: standard
         lang: en
         lCell: A22
         vCell: H22
+  - title: Gluten Free Declaration
+    topic: declaration
+    rows: 17-17
+    sheet: 5.Product certif
+    items:
+      - type: field
+        label: Other PPM Level
+        topic: allergens
+        level: product
+        lang: en
+        lCell: F17
+        vCell: G17
   - title: Primary Packaging
     topic: packaging
     rows: 18-26
@@ -1934,7 +2005,7 @@ sections:
       - type: field
         label: Product Net Weight (Kg)
         value: "1"
-        topic: product
+        topic: packaging
         level: product
         lang: en
         lCell: A20
@@ -1950,73 +2021,56 @@ sections:
       - type: field
         label: Product Gross Weight (Kg)
         value: "1.028"
-        topic: product
+        topic: packaging
         level: product
         lang: en
         lCell: A22
         vCell: E22
       - type: field
-        label: Packaged In / Conditionné sous
+        label: Packaging Atmosphere
         value: Atmosphère protectrice/protective atmosphere
         topic: packaging
         level: product
-        lang: fr
+        lang: en
         lCell: A23
         vCell: E23
       - type: field
-        label: Product Code / Code produit
+        label: Product Code
         value: TC01
         topic: product
         level: product
-        lang: fr
         lCell: A25
         vCell: E25
       - type: field
-        label: Packaging Colour / Couleur emballage
+        label: Packaging Colour
         value: Neutre/Neutral
         topic: packaging
         level: product
         lang: fr
         lCell: A26
         vCell: E26
-  - title: Supplier Signature
-    topic: signature
-    rows: 19-22
-    sheet: 1.PRESENTATION
+  - title: V Label Commitment
+    topic: claims
+    rows: 21-21
+    sheet: 5.Product certif
     items:
-      - type: field
-        label: Signatory Name
-        value: G. Sok
-        topic: signature
+      - type: yesno
+        label: Vegan
+        value: Non/No
+        topic: certifications
         level: product
-        lang: en
-        lCell: A19
-        vCell: D19
-      - type: field
-        label: Signatory Position
-        value: QA officer
-        topic: signature
-        level: product
-        lang: en
-        lCell: A20
-        vCell: D20
-      - type: field
-        label: Location
-        value: Hoogeveen
-        topic: signature
-        level: product
-        lCell: A21
+        lCell: C21
         vCell: D21
-      - type: date
-        label: Date
-        value: 2025-10-07
-        topic: signature
+      - type: yesno
+        label: Vegetarian
+        value: Oui/Yes
+        topic: certifications
         level: product
-        lCell: A22
-        vCell: D22
-  - title: Milk/Dairy
-    topic: allergens
-    rows: 21-41
+        lCell: E21
+        vCell: F21
+  - title: Milk/Dairy Certifications
+    topic: certifications
+    rows: 21-25
     sheet: 14.RSE 1
     items:
       - type: yesno
@@ -2043,134 +2097,58 @@ sections:
         lang: en
         lCell: A25
         vCell: C25
-      - type: yesno
-        label: Have you made a commitment to respect human rights in your milk supply chain?
-        value: No
-        topic: sustainability
-        level: narrative
-        lang: en
-        lCell: A26
-        vCell: C27
-      - type: text
-        label: Which human rights commitment?
-        value: N/A
-        topic: sustainability
-        level: narrative
-        lang: en
-        lCell: A28
-        vCell: C28
-      - type: yesno
-        label: Have you made a non-deforestation and non-conversion commitment?
-        value: No
-        topic: sustainability
-        level: narrative
-        lang: en
-        lCell: A29
-        vCell: C30
-      - type: text
-        label: Which deforestation commitment?
-        value: N/A
-        topic: sustainability
-        level: narrative
-        lang: en
-        lCell: A31
-        vCell: C31
-      - type: yesno
-        label: Is the animal from which the raw material comes fed with soy?
-        value: Yes
-        topic: sustainability
-        level: product
-        lang: en
-        lCell: A32
-        vCell: C33
-      - type: text
-        label: Can you specify where this soy comes from (list of countries)?
-        value: No, but the Dutch dairy industry uses since 2015 only certified soy (RTRS, ProTerra, etc.)
-        topic: sustainability
-        level: product
-        lang: en
-        lCell: A34
-        vCell: C35
-      - type: yesno
-        label: Is the soy used from a source that guarantees its cultivation without deforestation?
-        value: Yes
-        topic: sustainability
-        level: product
-        lang: en
-        lCell: A36
-        vCell: C37
-      - type: yesno
-        label: Have you made a commitment to deforestation/non-conversion on soy?
-        value: No
-        topic: sustainability
-        level: narrative
-        lang: en
-        lCell: A38
-        vCell: C39
-      - type: text
-        label: Details/Précisions
-        value: See remark about the Dutch dairy industry.
-        topic: sustainability
-        level: narrative
-        lang: en
-        lCell: A41
-        vCell: C41
   - title: Additional Information
     topic: other
     rows: 22-24
     sheet: 3.ATTESTATIONS
     items:
       - type: yesno
-        label: Flavoring used in manufacturing
+        label: Flavoring
         value: Non/No
         topic: ingredients
         level: product
-        lang: en
         lCell: A22
         vCell: D22
       - type: yesno
-        label: Colorant used in manufacturing
+        label: Colour
         value: Oui/Yes
         topic: ingredients
         level: product
-        lang: en
         lCell: F22
         vCell: I22
       - type: yesno
-        label: Preservative used in manufacturing
+        label: Preservative
         value: Non/No
         topic: ingredients
         level: product
-        lang: en
         lCell: A23
         vCell: D23
       - type: yesno
-        label: Antioxidant used in manufacturing
+        label: Antioxidant
         value: Non/No
         topic: ingredients
         level: product
-        lang: en
         lCell: F23
         vCell: I23
       - type: yesno
-        label: Flavor enhancer used in manufacturing
+        label: Flavour enhancer
         value: Non/No
         topic: ingredients
         level: product
-        lang: en
+        lang: fr
         lCell: A24
         vCell: D24
   - title: Emergency Committee
-    topic: other
+    topic: contact_persons
     rows: 24-32
     sheet: 2.INFORMATIONS GENERALES
     items:
       - type: yesno
-        label: Have Emergency Procedure
+        label: Crisis Management Procedure Available
         value: Yes
         topic: crisis
-        level: narrative
-        lang: en
+        level: standard
+        lang: fr
         lCell: A24
         vCell: D24
       - type: field
@@ -2205,9 +2183,9 @@ sections:
         lang: en
         lCell: A32
         vCell: D32
-  - title: Signature Block
+  - title: Signature Section
     topic: signature
-    rows: 24-29
+    rows: 24-25
     sheet: 5.Product certif
     items:
       - type: signature
@@ -2219,19 +2197,17 @@ sections:
         lCell: A24
         vCell: B24
       - type: date
-        label: Signature Date
+        label: Date
         value: 2025-10-07
         topic: signature
         level: narrative
-        lang: fr
         lCell: E24
         vCell: F24
       - type: field
-        label: Position/Title
+        label: Position
         value: QA officer
         topic: signature
         level: narrative
-        lang: en
         lCell: A25
         vCell: B25
       - type: field
@@ -2241,98 +2217,21 @@ sections:
         level: narrative
         lCell: E25
         vCell: F25
-      - type: field
-        label: Document Reference
-        value: "Ref E.023 Version: 6"
-        topic: documents
-        level: standard
-        lang: en
-        lCell: A29
-        vCell: A29
-      - type: field
-        label: Page Number
-        value: Page 5/16
-        topic: documents
-        level: standard
-        lang: fr
-        lCell: I29
-        vCell: I29
-  - title: HACCP
-    topic: quality_systems
-    rows: 24-28
-    sheet: 10.HACCP
-    items:
-      - type: field
-        label: CCP identified
-        value: "CCP1: Metal Detection"
-        topic: food_safety
-        level: product
-        lang: en
-        lCell: I24
-        vCell: I25
-      - type: yesno
-        label: Microbiological hazards considered
-        value: Oui/Yes
-        topic: food_safety
-        level: product
-        lang: en
-        lCell: A25
-        vCell: C25
-      - type: yesno
-        label: Food defense hazards considered
-        value: Oui/Yes
-        topic: food_safety
-        level: standard
-        lang: en
-        lCell: E25
-        vCell: G25
-      - type: yesno
-        label: Physical hazards considered
-        value: Oui/Yes
-        topic: food_safety
-        level: product
-        lang: en
-        lCell: A26
-        vCell: C26
-      - type: yesno
-        label: Food fraud hazards considered
-        value: Oui/Yes
-        topic: food_fraud
-        level: standard
-        lang: en
-        lCell: E26
-        vCell: G26
-      - type: yesno
-        label: Chemical hazards considered
-        value: Oui/Yes
-        topic: food_safety
-        level: product
-        lang: en
-        lCell: A27
-        vCell: C27
-      - type: yesno
-        label: Allergen hazards considered
-        value: Oui/Yes
-        topic: allergens
-        level: product
-        lang: de
-        lCell: A28
-        vCell: C28
-  - title: Quality Assurance Questions
-    topic: quality_systems
+  - title: Laboratory Questions
+    topic: analytical
     rows: 25-30
     sheet: 9.Bacterio
     items:
       - type: yesno
-        label: Supplier commits to transmit analysis certificate
+        label: Analysis certificate transmission commitment
         value: Oui/Yes
         topic: quality
-        level: standard
+        level: narrative
         lang: fr
         lCell: A25
         vCell: J25
       - type: yesno
-        label: Product conducive to Listeria Monocytogenes development
+        label: Product suitable for Listeria Monocytogenes development
         value: Non/No
         topic: food_safety
         level: product
@@ -2340,81 +2239,194 @@ sections:
         lCell: A27
         vCell: J27
       - type: yesno
-        label: Do you carry out shelf life studies
+        label: Shelf life studies performed
         value: Oui/Yes
         topic: quality
         level: narrative
-        lang: fr
+        lang: en
         lCell: A28
         vCell: J28
       - type: yesno
-        label: Do you work with external laboratories
+        label: Work with external laboratories
         value: Oui/Yes
         topic: quality
-        level: narrative
+        level: standard
         lang: en
         lCell: A29
         vCell: E29
       - type: yesno
-        label: Are they accredited
+        label: External laboratories accredited
         value: Oui/Yes
         topic: quality
-        level: narrative
+        level: standard
         lang: en
         lCell: F29
         vCell: H29
       - type: yesno
-        label: Do you have an internal laboratory
+        label: Have internal laboratory
         value: Non/No
         topic: quality
-        level: narrative
+        level: standard
         lang: en
         lCell: A30
         vCell: E30
-  - title: Intermediaries - Ingredients
-    topic: formula_composition
-    rows: 27-30
-    sheet: 7.Food fraud
+  - title: HACCP Hazards
+    topic: quality_systems
+    rows: 25-28
+    sheet: 10.HACCP
     items:
+      - type: yesno
+        label: Microbiological Hazards
+        value: Oui/Yes
+        topic: food_safety
+        level: product
+        lang: fr
+        lCell: A25
+        vCell: C25
+      - type: yesno
+        label: Food Defense
+        value: Oui/Yes
+        topic: food_safety
+        level: standard
+        lang: fr
+        lCell: E25
+        vCell: G25
       - type: field
-        label: Ingredient - Pasteurized cow's milk
-        value: pasteurized cow's milk
-        topic: ingredients
+        label: Critical Control Points (CCP)
+        value: "CCP1: Metal Detection"
+        topic: food_safety
+        level: product
+        lang: fr
+        lCell: I25
+        vCell: I25
+      - type: yesno
+        label: Physical Hazards
+        value: Oui/Yes
+        topic: food_safety
+        level: product
+        lang: fr
+        lCell: A26
+        vCell: C26
+      - type: yesno
+        label: Food Fraud
+        value: Oui/Yes
+        topic: food_fraud
+        level: standard
+        lCell: E26
+        vCell: G26
+      - type: yesno
+        label: Chemical Hazards
+        value: Oui/Yes
+        topic: food_safety
         level: product
         lang: fr
         lCell: A27
-        vCell: A27
+        vCell: C27
+      - type: yesno
+        label: Allergen Hazards
+        value: Oui/Yes
+        topic: allergens
+        level: product
+        lang: de
+        lCell: A28
+        vCell: C28
+  - title: Primary Packaging Conformity
+    topic: packaging
+    rows: 25-25
+    sheet: 12. Packaging
+    items:
+      - type: yesno
+        label: Packaging Contains No Intentional Harmful Substances
+        value: Oui / Yes
+        topic: packaging
+        level: product
+        lang: en
+        lCell: A25
+        vCell: H26
+  - title: Human Rights & Environmental Commitments
+    topic: sustainability
+    rows: 26-31
+    sheet: 14.RSE 1
+    items:
+      - type: yesno
+        label: Have you made a commitment to respect human rights in your milk supply chain?
+        value: No
+        topic: sustainability
+        level: narrative
+        lang: en
+        lCell: A26
+        vCell: C27
+      - type: text
+        label: Which human rights commitment?
+        value: N/A
+        topic: sustainability
+        level: narrative
+        lang: en
+        lCell: A28
+        vCell: C28
+      - type: yesno
+        label: Have you made a non-deforestation and non-conversion commitment?
+        value: No
+        topic: sustainability
+        level: narrative
+        lang: en
+        lCell: A29
+        vCell: C30
+      - type: text
+        label: Which deforestation commitment?
+        value: N/A
+        topic: sustainability
+        level: narrative
+        lang: en
+        lCell: A31
+        vCell: C31
+  - title: Intermediaries
+    topic: company_information
+    rows: 27-34
+    sheet: 7.Food fraud
+    items:
       - type: field
-        label: Ingredient - Salt
-        value: Salt
+        label: "Ingredient: pasteurized cow's milk"
+        topic: ingredients
+        level: product
+        lang: en
+        lCell: A27
+        vCell: C27
+      - type: field
+        label: "Ingredient: Salt"
         topic: ingredients
         level: product
         lang: fr
         lCell: A28
-        vCell: A28
+        vCell: C28
       - type: field
-        label: Ingredient - Cheese culture
-        value: cheese culture
+        label: "Ingredient: cheese culture"
         topic: ingredients
         level: product
-        lang: fr
+        lang: en
         lCell: A29
-        vCell: A29
+        vCell: C29
       - type: field
-        label: Ingredient - Microbial rennet
-        value: Microbial rennet
+        label: "Ingredient: Microbial rennet"
         topic: ingredients
         level: product
         lang: nl
         lCell: A30
-        vCell: A30
+        vCell: C30
+      - type: field
+        label: Final product intermediary risk
+        topic: food_fraud
+        level: product
+        lang: en
+        lCell: A34
+        vCell: C34
   - title: Nutritional Values
     topic: nutritional
     rows: 27-39
     sheet: 8.Caract  VN
     items:
       - type: field
-        label: Fat in dry matter (Min)
+        label: Fat in dry matter / Gras Sec (Min)
         value: "0.48"
         topic: nutrition
         level: product
@@ -2422,7 +2434,7 @@ sections:
         lCell: A27
         vCell: E27
       - type: field
-        label: Fat in dry matter (Target)
+        label: Fat in dry matter / Gras Sec (Target)
         value: "0.5"
         topic: nutrition
         level: product
@@ -2430,7 +2442,7 @@ sections:
         lCell: A27
         vCell: F27
       - type: field
-        label: Fat in dry matter (Max)
+        label: Fat in dry matter / Gras Sec (Max)
         value: "0.64"
         topic: nutrition
         level: product
@@ -2454,14 +2466,15 @@ sections:
         lCell: A29
         vCell: F29
       - type: field
-        label: Fat (g)
+        label: Fat / Lipides (g)
         value: "33"
         topic: nutrition
         level: product
+        lang: fr
         lCell: A30
         vCell: F30
       - type: field
-        label: Saturated fat acids (g)
+        label: Saturated fat acids / Acides gras saturés (g)
         value: "21"
         topic: nutrition
         level: product
@@ -2469,14 +2482,15 @@ sections:
         lCell: A31
         vCell: F31
       - type: field
-        label: Proteins (g)
+        label: Proteins / Protéines (g)
         value: "25"
         topic: nutrition
         level: product
+        lang: fr
         lCell: A35
         vCell: F35
       - type: field
-        label: Carbohydrates (g)
+        label: Carbohydrates / Glucides (g)
         value: <0,1
         topic: nutrition
         level: product
@@ -2484,58 +2498,39 @@ sections:
         lCell: A36
         vCell: F36
       - type: field
-        label: Sugars (g)
+        label: Sugars / dont sucres (g)
         value: <0,1
         topic: nutrition
         level: product
+        lang: fr
         lCell: A37
         vCell: F37
       - type: field
-        label: Salt (g)
+        label: Salt (NaCl) / Sel (g)
         value: "1.8"
         topic: nutrition
         level: product
+        lang: fr
         lCell: A39
         vCell: F39
-  - title: Primary Packaging Conformity
-    topic: packaging
-    rows: 27-28
-    sheet: 12. Packaging
-    items:
-      - type: yesno
-        label: Contains Bisphenol A
-        value: Oui / Yes
-        topic: packaging
-        level: product
-        lang: fr
-        lCell: A27
-        vCell: H26
-      - type: yesno
-        label: Contains Phtalates
-        value: Non / No
-        topic: packaging
-        level: product
-        lang: fr
-        lCell: A28
-        vCell: I26
-  - title: Engagement Agreement
-    topic: other
+  - title: Engagement/Agreement
+    topic: declaration
     rows: 28-32
     sheet: 1.PRESENTATION
     items:
       - type: field
-        label: Agreement Signatory Name
+        label: Agreement Signatory
         value: G. Sok
         topic: signature
-        level: product
-        lang: fr
+        level: standard
+        lang: en
         lCell: A28
         vCell: C28
       - type: date
         label: Agreement Date
         value: 2025-10-07
         topic: signature
-        level: product
+        level: standard
         lang: fr
         lCell: E28
         vCell: F28
@@ -2543,7 +2538,7 @@ sections:
         label: Agreement Signatory Position
         value: QA officer
         topic: signature
-        level: product
+        level: standard
         lang: en
         lCell: A29
         vCell: C29
@@ -2551,26 +2546,26 @@ sections:
         label: Agreement Location
         value: Hoogeveen
         topic: signature
-        level: product
+        level: standard
         lang: fr
         lCell: E29
         vCell: F29
       - type: signature
         label: Supplier Signature & Stamp
         topic: signature
-        level: product
+        level: standard
         lang: en
         lCell: A32
-        vCell: D32
+        vCell: A32
       - type: field
-        label: Client Company
+        label: Company Approval
         value: TIPPAGRAL
-        topic: company
+        topic: approval
         level: standard
         lang: en
         lCell: E32
         vCell: E32
-  - title: Certification Agreement
+  - title: Certification
     topic: certifications
     rows: 29-30
     sheet: 4.ALLERGENES
@@ -2579,42 +2574,44 @@ sections:
         label: Signatory Name
         value: G. Sok
         topic: signature
-        level: narrative
+        level: standard
         lang: en
         lCell: A29
         vCell: B29
       - type: date
-        label: Date
+        label: Certification Date
         value: 2025-10-07
         topic: signature
-        level: narrative
+        level: standard
+        lang: fr
         lCell: C29
         vCell: D29
       - type: field
-        label: Position
+        label: Signatory Position
         value: QA officer
         topic: signature
-        level: narrative
+        level: standard
+        lang: en
         lCell: A30
         vCell: B30
       - type: field
         label: Location
         value: Hoogeveen
         topic: signature
-        level: narrative
+        level: standard
         lCell: C30
         vCell: D30
   - title: Responsible Purchasing
-    topic: other
+    topic: ethical_social
     rows: 29-35
     sheet: 15.RSE 2
     items:
       - type: yesno
-        label: Environmental issues
+        label: Environmental issues (responsible purchasing)
         value: Yes
-        topic: environment
+        topic: sustainability
         level: standard
-        lang: fr
+        lang: en
         lCell: C29
         vCell: K29
       - type: yesno
@@ -2633,6 +2630,13 @@ sections:
         lang: en
         lCell: C31
         vCell: K31
+      - type: field
+        label: Other responsible purchasing (specify)
+        topic: sustainability
+        level: standard
+        lang: en
+        lCell: C32
+        vCell: E32
       - type: yesno
         label: Key performance indicators (KPIs) in responsible purchasing
         value: Yes
@@ -2649,7 +2653,7 @@ sections:
         lang: en
         lCell: A35
         vCell: C36
-  - title: Signature Section
+  - title: Signature
     topic: signature
     rows: 30-31
     sheet: 3.ATTESTATIONS
@@ -2658,32 +2662,29 @@ sections:
         label: Signatory Name
         value: G. Sok
         topic: signature
-        level: standard
+        level: product
         lang: en
         lCell: A30
         vCell: D30
       - type: date
-        label: Signature Date
+        label: Date
         value: 2025-10-07
         topic: signature
-        level: standard
-        lang: fr
+        level: product
         lCell: G30
         vCell: H30
       - type: field
-        label: Signatory Position
+        label: Position
         value: QA officer
         topic: signature
-        level: standard
-        lang: en
+        level: product
         lCell: A31
         vCell: D31
       - type: field
-        label: Signature Location
+        label: Location
         value: Hoogeveen
         topic: signature
-        level: standard
-        lang: fr
+        level: product
         lCell: G31
         vCell: H31
   - title: Secondary Packaging
@@ -2713,11 +2714,10 @@ sections:
         lCell: G30
         vCell: H30
       - type: field
-        label: Number of Products per Box
+        label: Products per Box
         value: "6"
         topic: packaging
         level: product
-        lang: en
         lCell: A32
         vCell: E32
       - type: field
@@ -2736,17 +2736,16 @@ sections:
         lang: en
         lCell: A34
         vCell: E34
-  - title: Agreement/Signature
+  - title: Signature Section
     topic: signature
     rows: 30-31
     sheet: 16.Pièces à joindre au dossier
     items:
       - type: field
-        label: Signatory name
+        label: Undersigned
         value: G. Sok
         topic: signature
         level: standard
-        lang: en
         lCell: A30
         vCell: C30
       - type: date
@@ -2776,30 +2775,29 @@ sections:
     sheet: 10.HACCP
     items:
       - type: yesno
-        label: Metal detector used
+        label: Metal Detector
         value: Oui/Yes
         topic: food_safety
         level: standard
-        lang: en
+        lang: fr
         lCell: B32
         vCell: B33
       - type: yesno
-        label: Magnet used
+        label: Magnet
         value: Non/No
         topic: food_safety
         level: standard
         lCell: D32
         vCell: D33
       - type: yesno
-        label: Sieve/filters used
+        label: Sieve/Filter
         value: Non/No
         topic: food_safety
         level: standard
-        lang: en
         lCell: F32
         vCell: F33
       - type: field
-        label: Metal detection size specifications
+        label: Metal Detection Sensitivity
         value: "Ferro: 3,0mm Non Ferro: 3,0mm RVS: 4,0mm"
         topic: food_safety
         level: product
@@ -2807,7 +2805,7 @@ sections:
         lCell: A34
         vCell: B34
       - type: field
-        label: Metal detection process step
+        label: Metal Detection Process Step
         value: After packaging
         topic: food_safety
         level: product
@@ -2815,7 +2813,7 @@ sections:
         lCell: A35
         vCell: B35
       - type: yesno
-        label: Sieve/filters for glass and hard plastic
+        label: Glass & Hard Plastic - Sieve/Filter
         value: Non/No
         topic: food_safety
         level: standard
@@ -2823,15 +2821,15 @@ sections:
         lCell: B37
         vCell: B38
       - type: yesno
-        label: X-ray for glass and hard plastic
+        label: Glass & Hard Plastic - X-Ray
         value: Non/No
         topic: food_safety
         level: standard
         lang: en
         lCell: D37
         vCell: D38
-  - title: Agreement
-    topic: other
+  - title: Agreement Section
+    topic: declaration
     rows: 32-36
     sheet: 13. Export
     items:
@@ -2839,7 +2837,7 @@ sections:
         label: Undersigned name
         value: G. Sok
         topic: signature
-        level: standard
+        level: product
         lang: de
         lCell: A32
         vCell: C32
@@ -2847,21 +2845,21 @@ sections:
         label: Date
         value: 2025-10-07
         topic: signature
-        level: standard
+        level: product
         lCell: E32
         vCell: H32
       - type: field
         label: Position
         value: QA officer
         topic: signature
-        level: standard
+        level: product
         lCell: A33
         vCell: C33
       - type: field
         label: Location
         value: Hoogeveen
         topic: signature
-        level: standard
+        level: product
         lCell: E33
         vCell: H33
       - type: signature
@@ -2880,22 +2878,67 @@ sections:
         lCell: A36
         vCell: A36
       - type: field
-        label: Page reference
+        label: Page number
         value: Page 13/16
         topic: documents
         level: standard
-        lang: en
+        lang: fr
         lCell: K36
         vCell: K36
+  - title: Soy Sourcing & Deforestation
+    topic: allergens
+    rows: 32-41
+    sheet: 14.RSE 1
+    items:
+      - type: yesno
+        label: Is the animal fed with soy?
+        value: Yes
+        topic: sustainability
+        level: product
+        lang: en
+        lCell: A32
+        vCell: C33
+      - type: text
+        label: Can you specify where this soy comes from (list of countries)?
+        value: No, but the Dutch dairy industry uses since 2015 only certified soy
+        topic: sustainability
+        level: product
+        lang: en
+        lCell: A34
+        vCell: C35
+      - type: yesno
+        label: Is the soy used from a source that guarantees cultivation without deforestation?
+        value: Yes
+        topic: sustainability
+        level: product
+        lang: en
+        lCell: A36
+        vCell: C37
+      - type: yesno
+        label: Have you made a commitment to deforestation/non-conversion on soy?
+        value: No
+        topic: sustainability
+        level: narrative
+        lang: en
+        lCell: A38
+        vCell: C39
+      - type: text
+        label: Details / Précisions
+        value: See remark about the Dutch dairy industry.
+        topic: sustainability
+        level: narrative
+        lang: en
+        lCell: A41
+        vCell: C41
   - title: Labelling
-    topic: other
+    topic: packaging
     rows: 33-33
     sheet: 6.LI_ORIGINE
     items:
       - type: text
         label: Ingredient List for Labelling
-        value: "Pasteurised cow's MILK, salt, cheese cultures, microbial rennet, colour: E160a"
-        topic: ingredients
+        value: Pasteurised cow's MILK, salt, cheese cultures, microbial ren
+        topic: product
         level: product
         lang: fr
         lCell: A33
@@ -2905,7 +2948,7 @@ sections:
     rows: 33-33
     sheet: 9.Bacterio
     items:
-      - type: signature
+      - type: field
         label: Name
         value: G. Sok
         topic: signature
@@ -2919,18 +2962,113 @@ sections:
         level: standard
         lCell: I33
         vCell: J33
-  - title: Quality Department
-    topic: quality_systems
-    rows: 39-46
-    sheet: 2.INFORMATIONS GENERALES
+  - title: Salt
+    topic: nutritional
+    rows: 39-41
+    sheet: 6.LI_ORIGINE
+    items:
+      - type: yesno
+        label: Is salt iodized?
+        topic: ingredients
+        level: product
+        lang: en
+        lCell: A39
+      - type: yesno
+        label: Does salt contain an anti-caking agent?
+        topic: ingredients
+        level: product
+        lang: en
+        lCell: A40
+      - type: field
+        label: Anti-caking agent E-Number and quantity
+        value: E535
+        topic: ingredients
+        level: product
+        lang: en
+        lCell: A41
+        vCell: D41
+  - title: Palletisation
+    topic: packaging
+    rows: 39-47
+    sheet: 11.Logistique
     items:
       - type: field
-        label: Quality Department Name
-        topic: contacts
-        level: standard
+        label: Pallet Product Code
+        value: TC01
+        topic: product
+        level: product
         lang: fr
         lCell: A39
-        vCell: B39
+        vCell: E39
+      - type: field
+        label: Layers per Pallet
+        value: "11"
+        topic: logistics
+        level: product
+        lang: fr
+        lCell: A40
+        vCell: E40
+      - type: field
+        label: Products per Layer
+        value: "54"
+        topic: logistics
+        level: product
+        lang: fr
+        lCell: A41
+        vCell: E41
+      - type: field
+        label: Products per Pallet
+        value: "594"
+        topic: logistics
+        level: product
+        lang: fr
+        lCell: A42
+        vCell: E42
+      - type: field
+        label: Pallet Net Weight (Kg)
+        value: "594"
+        topic: logistics
+        level: product
+        lang: nl
+        lCell: A43
+        vCell: E43
+      - type: field
+        label: Pallet Gross Weight (Kg)
+        value: "664.2"
+        topic: logistics
+        level: product
+        lang: nl
+        lCell: A44
+        vCell: E44
+      - type: field
+        label: Pallet Dimensions
+        value: Euro 80x120
+        topic: logistics
+        level: standard
+        lang: fr
+        lCell: A45
+        vCell: E45
+      - type: field
+        label: Pallet Type
+        value: bois/wood
+        topic: logistics
+        level: standard
+        lang: nl
+        lCell: A46
+        vCell: E46
+      - type: field
+        label: Pallet Height (mm)
+        value: "1827"
+        topic: logistics
+        level: product
+        lang: nl
+        lCell: A47
+        vCell: E47
+  - title: Quality Department
+    topic: quality_systems
+    rows: 41-46
+    sheet: 2.INFORMATIONS GENERALES
+    items:
       - type: field
         label: Quality Department Email
         value: quality@kaaspack.nl
@@ -2963,103 +3101,13 @@ sections:
         lang: fr
         lCell: F46
         vCell: G46
-  - title: Palletisation
-    topic: other
-    rows: 39-47
-    sheet: 11.Logistique
-    items:
-      - type: field
-        label: Pallet Product Code
-        value: TC01
-        topic: product
-        level: product
-        lang: fr
-        lCell: A39
-        vCell: E39
-      - type: field
-        label: Number of Layers per Pallet
-        value: "11"
-        topic: logistics
-        level: product
-        lang: fr
-        lCell: A40
-        vCell: E40
-      - type: field
-        label: Number of Products per Layer
-        value: "54"
-        topic: logistics
-        level: product
-        lang: fr
-        lCell: A41
-        vCell: E41
-      - type: field
-        label: Number of Products per Pallet
-        value: "594"
-        topic: logistics
-        level: product
-        lang: fr
-        lCell: A42
-        vCell: E42
-      - type: field
-        label: Pallet Net Weight (Kg)
-        value: "594"
-        topic: logistics
-        level: product
-        lang: nl
-        lCell: A43
-        vCell: E43
-      - type: field
-        label: Pallet Gross Weight (Kg)
-        value: "664.2"
-        topic: logistics
-        level: product
-        lang: nl
-        lCell: A44
-        vCell: E44
-      - type: field
-        label: Pallet Size (mm)
-        value: Euro 80x120
-        topic: logistics
-        level: product
-        lang: fr
-        lCell: A45
-        vCell: E45
-      - type: field
-        label: Pallet Type
-        value: bois/wood
-        topic: logistics
-        level: product
-        lang: nl
-        lCell: A46
-        vCell: E46
-      - type: field
-        label: Pallet Height (mm)
-        value: "1827"
-        topic: logistics
-        level: product
-        lang: nl
-        lCell: A47
-        vCell: E47
-  - title: Salt
-    topic: nutritional
-    rows: 41-41
-    sheet: 6.LI_ORIGINE
-    items:
-      - type: field
-        label: Salt Anti-caking Agent E Number
-        value: E535
-        topic: ingredients
-        level: product
-        lang: fr
-        lCell: A41
-        vCell: D41
-  - title: Signature
-    topic: signature
+  - title: Agreement
+    topic: declaration
     rows: 41-42
     sheet: 7.Food fraud
     items:
       - type: field
-        label: Signatory Name
+        label: Signatory name
         value: G. Sok
         topic: signature
         level: standard
@@ -3067,19 +3115,17 @@ sections:
         lCell: A41
         vCell: B41
       - type: date
-        label: Signature Date
+        label: Date
         value: 2025-10-07
         topic: signature
         level: standard
-        lang: fr
         lCell: E41
         vCell: F41
       - type: field
-        label: Position/Title
+        label: Position
         value: QA officer
         topic: signature
         level: standard
-        lang: en
         lCell: A42
         vCell: B42
       - type: field
@@ -3089,29 +3135,29 @@ sections:
         level: standard
         lCell: E42
         vCell: F42
-  - title: Ingredient Specifications
-    topic: formula_composition
+  - title: Palm Oil and Additives
+    topic: rspo_palm
     rows: 43-48
     sheet: 8.Caract  VN
     items:
       - type: yesno
-        label: Presence of palm fat/oils in composition
+        label: Palm oil/fats presence in product / Présence de matières grasses origine PALME dans la
         value: Non/No
         topic: ingredients
         level: product
-        lang: en
+        lang: fr
         lCell: A43
         vCell: H43
       - type: yesno
-        label: Presence of palm fat/oils in packaging
+        label: Palm oil/fats presence in packaging / Présence de matières grasses origine PALME dans l'
         value: Non/No
         topic: ingredients
         level: product
-        lang: en
+        lang: fr
         lCell: A44
         vCell: H44
       - type: yesno
-        label: Use of propionic acid and benzoic acid as additives
+        label: Use of propionic and benzoic acid / Utilisation d'acide propionique et d'acide benzoïque
         value: Non/No
         topic: ingredients
         level: product
@@ -3119,31 +3165,31 @@ sections:
         lCell: A45
         vCell: H45
       - type: yesno
-        label: Presence of totally hydrogenated fats/oils
+        label: Fully hydrogenated fats/oils presence / Présence de matières grasses/huiles totalement hydrogénées
         value: Non/No
         topic: ingredients
         level: product
-        lang: en
+        lang: fr
         lCell: A46
         vCell: H46
       - type: yesno
-        label: Presence of partially hydrogenated fats/oils
+        label: Partially hydrogenated fats/oils presence / Présence de matières grasses/huiles partiellement hydrogénée
         value: Non/No
         topic: ingredients
         level: product
-        lang: en
+        lang: fr
         lCell: A47
         vCell: H47
       - type: yesno
-        label: Presence of non-natural trans fatty acids
+        label: Non-natural trans fatty acids presence / Présence d'acides gras trans d'origine non naturelle
         value: Non/No
         topic: ingredients
         level: product
         lang: en
         lCell: A48
         vCell: H48
-  - title: Agreement
-    topic: other
+  - title: Agreement/Signature
+    topic: signature
     rows: 44-45
     sheet: 6.LI_ORIGINE
     items:
@@ -3164,19 +3210,17 @@ sections:
         lCell: E44
         vCell: F44
       - type: field
-        label: Signatory Position
+        label: Position
         value: QA officer
         topic: signature
         level: standard
-        lang: en
         lCell: A45
         vCell: B45
       - type: field
-        label: Signature Location
+        label: Location
         value: Hoogeveen
         topic: signature
         level: standard
-        lang: fr
         lCell: E45
         vCell: F45
   - title: Signature
@@ -3189,7 +3233,7 @@ sections:
         topic: signature
         level: standard
         lCell: A44
-        vCell: B44
+        vCell: EMPTY
       - type: date
         label: Date
         value: 1899-12-30
@@ -3199,31 +3243,31 @@ sections:
         vCell: J44
   - title: Environment
     topic: sustainability
-    rows: 44-65
+    rows: 44-69
     sheet: 15.RSE 2
     items:
-      - type: yesno
-        label: Formalized environmental policy
+      - type: choice
+        label: Environmental policy status
         value: Not yet
         topic: environment
         level: standard
-        lang: en
+        lang: fr
         lCell: A44
         vCell: I44
       - type: text
-        label: Key performance indicators (KPIs) in environment
+        label: Environmental KPIs
         value: See previous remark
         topic: environment
         level: narrative
-        lang: en
+        lang: fr
         lCell: A46
         vCell: I46
       - type: text
-        label: Environmental KPIs in place
+        label: Environmental KPIs details
         value: See previous remark
         topic: environment
         level: narrative
-        lang: en
+        lang: fr
         lCell: A47
         vCell: C48
       - type: choice
@@ -3243,7 +3287,7 @@ sections:
         lCell: A54
         vCell: C55
       - type: yesno
-        label: Target for reducing greenhouse gas emissions
+        label: Greenhouse gas reduction target
         value: Yes
         topic: environment
         level: standard
@@ -3251,15 +3295,15 @@ sections:
         lCell: A57
         vCell: H57
       - type: text
-        label: Greenhouse gas reduction objective
-        value: We are woking on it
+        label: Greenhouse gas reduction objective details
+        value: We are working on it
         topic: environment
         level: narrative
         lang: en
         lCell: A58
         vCell: C59
       - type: yesno
-        label: Project related to recyclable packaging
+        label: Recyclable packaging project
         value: Yes
         topic: packaging
         level: standard
@@ -3267,13 +3311,13 @@ sections:
         lCell: A61
         vCell: H61
       - type: text
-        label: Anti-waste law knowledge
-        value: Which law are you refering to?
+        label: Anti-waste law awareness
+        value: Which law are you referring to?
         topic: environment
         level: narrative
         lang: en
         lCell: C62
-        vCell: K62
+        vCell: L62
       - type: yesno
         label: Industrial testing with recycled packaging
         value: Yes
@@ -3281,15 +3325,15 @@ sections:
         level: standard
         lang: en
         lCell: C63
-        vCell: K63
+        vCell: L63
       - type: text
-        label: Recyclable materials for packaging
+        label: Recyclable materials planned
         value: Mono foils
         topic: packaging
         level: product
         lang: en
         lCell: C64
-        vCell: K64
+        vCell: L64
       - type: text
         label: Recyclable packaging objectives
         value: No, work in progress
@@ -3298,13 +3342,28 @@ sections:
         lang: en
         lCell: A65
         vCell: C66
+      - type: signature
+        label: Signature Name
+        topic: signature
+        level: standard
+        lang: fr
+        lCell: A69
+        vCell: B69
+      - type: date
+        label: Signature Date
+        value: 1899-12-30
+        topic: signature
+        level: standard
+        lang: fr
+        lCell: I69
+        vCell: J69
   - title: Traceability
     topic: traceability
     rows: 46-51
     sheet: 10.HACCP
     items:
       - type: field
-        label: Batch number description
+        label: Batch Number Description
         value: Increasing meaningless number
         topic: food_safety
         level: standard
@@ -3312,7 +3371,7 @@ sections:
         lCell: A46
         vCell: F46
       - type: field
-        label: Batch number location
+        label: Batch Number Location
         value: On the package / on the carton
         topic: food_safety
         level: standard
@@ -3320,7 +3379,7 @@ sections:
         lCell: A47
         vCell: F47
       - type: yesno
-        label: Traceability system allows retrieval within 4 hours
+        label: Upstream/Downstream Traceability within 4 hours
         value: Oui/Yes
         topic: food_safety
         level: standard
@@ -3328,36 +3387,36 @@ sections:
         lCell: A49
         vCell: H49
       - type: yesno
-        label: Finished product samples retained
+        label: Keep Production Samples
         value: Non/No
         topic: food_safety
         level: standard
-        lang: en
+        lang: fr
         lCell: A51
         vCell: E51
-  - title: Declaration Basis
+  - title: Compliance Evidence
     topic: declaration
     rows: 46-48
     sheet: 12. Packaging
     items:
       - type: yesno
-        label: Declaration by raw material suppliers available
+        label: Declaration Based on Raw Material Suppliers
         value: Oui/Yes
-        topic: packaging
-        level: product
-        lang: fr
-        lCell: A46
-        vCell: G46
-      - type: text
-        label: Declaration by raw material suppliers note
-        value: "* Joindre le certificat d'alimentarité / Forward the certifi"
         topic: packaging
         level: product
         lang: en
         lCell: A46
+        vCell: G46
+      - type: text
+        label: Raw Material Suppliers Certificate Note
+        value: "* Joindre le certificat d'alimentarité / Forward the certifi"
+        topic: packaging
+        level: narrative
+        lang: fr
+        lCell: A46
         vCell: H46
       - type: yesno
-        label: Analyses of Global Migration Limits available
+        label: Global Migration Limits Analysis
         value: Oui/Yes
         topic: packaging
         level: product
@@ -3365,15 +3424,15 @@ sections:
         lCell: A47
         vCell: G47
       - type: text
-        label: Global Migration Limits note
+        label: Global Migration Analysis Note
         value: report available on demand
         topic: packaging
-        level: product
+        level: narrative
         lang: en
         lCell: A47
         vCell: H47
       - type: yesno
-        label: Analyses of restricted substances available
+        label: Restricted Substances Analysis
         value: Oui/Yes
         topic: packaging
         level: product
@@ -3381,10 +3440,10 @@ sections:
         lCell: A48
         vCell: G48
       - type: text
-        label: Restricted substances note
+        label: Restricted Substances Analysis Note
         value: report available on demand
         topic: packaging
-        level: product
+        level: narrative
         lang: en
         lCell: A48
         vCell: H48
@@ -3394,17 +3453,19 @@ sections:
     sheet: 11.Logistique
     items:
       - type: signature
-        label: Name
+        label: Signatory Name
         value: G. Sok
         topic: signature
         level: standard
+        lang: en
         lCell: A50
         vCell: B50
       - type: date
-        label: Date
+        label: Signature Date
         value: 2025-10-07
         topic: signature
         level: standard
+        lang: fr
         lCell: I50
         vCell: J50
   - title: Signature
@@ -3412,18 +3473,20 @@ sections:
     rows: 51-51
     sheet: 8.Caract  VN
     items:
-      - type: signature
-        label: Name
+      - type: field
+        label: Signatory Name
         value: G. Sok
         topic: signature
         level: standard
+        lang: en
         lCell: A51
         vCell: B51
       - type: date
-        label: Date
+        label: Signature Date
         value: 2025-10-07
         topic: signature
         level: standard
+        lang: fr
         lCell: F51
         vCell: G51
   - title: Signature
@@ -3432,17 +3495,19 @@ sections:
     sheet: 12. Packaging
     items:
       - type: signature
-        label: Name
+        label: Signatory Name
         value: G. Sok
         topic: signature
-        level: product
+        level: standard
+        lang: en
         lCell: A52
         vCell: B52
       - type: date
-        label: Date
+        label: Signature Date
         value: 2025-10-07
         topic: signature
-        level: product
+        level: standard
+        lang: fr
         lCell: J52
         vCell: K52
   - title: Signature
@@ -3450,41 +3515,25 @@ sections:
     rows: 54-54
     sheet: 10.HACCP
     items:
-      - type: signature
-        label: Name
+      - type: field
+        label: Signatory Name
         value: G. Sok
         topic: signature
         level: narrative
+        lang: en
         lCell: A54
         vCell: B54
       - type: date
-        label: Date
+        label: Signature Date
         value: 2025-10-07
         topic: signature
         level: narrative
+        lang: fr
         lCell: I54
         vCell: J54
-  - title: Signature
-    topic: signature
-    rows: 69-69
-    sheet: 15.RSE 2
-    items:
-      - type: signature
-        label: Name
-        topic: signature
-        level: standard
-        lCell: A69
-        vCell: B69
-      - type: date
-        label: Date
-        value: 1899-12-30
-        topic: signature
-        level: standard
-        lCell: I69
-        vCell: J69
 stats:
-  total: 400
-  answered: 367
-  standard: 128
-  narrative: 33
-  product: 239
+  total: 406
+  answered: 364
+  standard: 156
+  narrative: 29
+  product: 221

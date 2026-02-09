@@ -1,30 +1,31 @@
-id: ee511cfe
+id: 1972bb75
 source: Questionnaire emballages Kaaspack.xlsx
-indexed: 2026-02-08
-language: en
+indexed: 2026-02-09
+language: fr
 sections:
-  - title: Product Information
+  - title: Basic Product Information
     topic: identification
     rows: 2-2
     sheet: Questionnaire fournisseurs
     items:
       - type: field
-        label: Supplier
+        label: Supplier (Fournisseur)
         value: Kaaspack
         topic: company
         level: standard
+        lang: fr
         lCell: A2
         vCell: A5
       - type: field
-        label: Product Type
+        label: Product Type (Type de produit)
         value: Tranche/Slice
         topic: product
         level: product
-        lang: en
+        lang: fr
         lCell: B2
         vCell: B5
       - type: field
-        label: Tippagral Product Code
+        label: Tippagral Product Code (Code produit Tippagral)
         value: TC01
         topic: product
         level: product
@@ -32,7 +33,7 @@ sections:
         lCell: C2
         vCell: C5
       - type: field
-        label: Supplier Product Code
+        label: Supplier Product Code (Code produit fournisseur)
         value: "300724"
         topic: product
         level: product
@@ -40,19 +41,20 @@ sections:
         lCell: D2
         vCell: D5
       - type: field
-        label: Weight (kg)
+        label: Weight (kg) (Poids)
         value: "1"
         topic: product
         level: product
+        lang: en
         lCell: E2
         vCell: E5
-  - title: Packaging Reduction Actions
-    topic: packaging
+  - title: Sustainability Actions
+    topic: sustainability
     rows: 2-2
     sheet: Questionnaire fournisseurs
     items:
       - type: text
-        label: Have you implemented packaging reduction actions
+        label: Packaging Reduction Actions
         value: Our packaging is designed for the most efficient use of mate
         topic: sustainability
         level: narrative
@@ -60,7 +62,7 @@ sections:
         lCell: F2
         vCell: F5
       - type: text
-        label: Have you implemented actions to develop recycled material incorporation
+        label: Recycled Material Development Actions
         value: The second packaging (cardboard) consists of partially recyc
         topic: sustainability
         level: narrative
@@ -73,101 +75,45 @@ sections:
     sheet: Listes
     items:
       - type: choice
-        label: Questions - oui / yes
-        value: oui / yes
+        label: Questions - General Response
+        value: oui / yes, non / no
         topic: other
-        level: product
+        level: standard
         lang: fr
         lCell: B2
-        vCell: B3
+        vCell: B3:B4
       - type: choice
-        label: Questions - non / no
-        value: non / no
-        topic: other
-        level: product
-        lang: fr
-        lCell: B2
-        vCell: B4
-      - type: choice
-        label: PFAS (respect des 3 seuils) - conforme à la réglementation PPWR
-        value: conforme à la réglementation PPWR / compliant with PPWR reg
-        topic: packaging
-        level: product
-        lang: fr
-        lCell: C2
-        vCell: C3
-      - type: choice
-        label: PFAS (respect des 3 seuils) - non-conforme à la réglementation PPWR
-        value: non-conforme à la réglementation PPWR / not compliant with P
-        topic: packaging
-        level: product
-        lang: fr
-        lCell: C2
-        vCell: C4
-      - type: choice
-        label: MOSH - absent
-        value: absent
-        topic: packaging
-        level: product
-        lang: fr
-        lCell: D2
-        vCell: D3
-      - type: choice
-        label: MOSH - inférieure à 0,1%
-        value: inférieure à 0,1% / less than 0.1%
-        topic: packaging
-        level: product
-        lang: fr
-        lCell: D2
-        vCell: D4
-      - type: choice
-        label: MOSH - supérieure à 0,1%
-        value: supérieure à 0,1% / greater than 0.1%
+        label: PFAS (respect des 3 seuils / respect of the 3 concentration)
+        value: conforme à la réglementation PPWR / compliant with PPWR reg, non-conforme à la réglementation PPWR / not compliant with P
         topic: packaging
         level: product
         lang: en
+        lCell: C2
+        vCell: C3:C4
+      - type: choice
+        label: MOSH
+        value: absent, inférieure à 0,1% / less than 0.1%, supérieure à 0,1% / greater than 0.1%
+        topic: packaging
+        level: product
+        lang: fr
         lCell: D2
-        vCell: D5
+        vCell: D3:D5
       - type: choice
-        label: MOAH - absent
-        value: absent
+        label: MOAH
+        value: absent, inférieure à 0,1% et [composés de 3 à 7 cycles aromatiques], supérieure à 0,1% ou/et [composés de 3 à 7 cycles aromatique
         topic: packaging
         level: product
         lang: fr
         lCell: E2
-        vCell: E3
+        vCell: E3:E5
       - type: choice
-        label: MOAH - inférieure à 0,1% et [composés de 3 à 7 cycles aromatiques]
-        value: inférieure à 0,1% et [composés de 3 à 7 cycles aromatiques]
-        topic: packaging
-        level: product
-        lang: fr
-        lCell: E2
-        vCell: E4
-      - type: choice
-        label: MOAH - supérieure à 0,1% ou/et [composés de 3 à 7 cycles aromatiques]
-        value: supérieure à 0,1% ou/et [composés de 3 à 7 cycles aromatique
-        topic: packaging
-        level: product
-        lang: fr
-        lCell: E2
-        vCell: E5
-      - type: choice
-        label: Réemployable - oui / yes
-        value: oui / yes
+        label: Réemployable
+        value: oui / yes, non / no
         topic: packaging
         level: product
         lang: fr
         lCell: F2
-        vCell: F3
-      - type: choice
-        label: Réemployable - non / no
-        value: non / no
-        topic: packaging
-        level: product
-        lang: en
-        lCell: F2
-        vCell: F4
+        vCell: F3:F4
   - title: Primary Packaging
     topic: packaging
     rows: 3-3
@@ -206,15 +152,15 @@ sections:
         lCell: L3
         vCell: L5
       - type: field
-        label: Primary Element 1 Recycled Material (%)
+        label: Primary Element 1 Recycled Content (%)
         value: "0"
         topic: packaging
         level: product
-        lang: en
+        lang: fr
         lCell: M3
         vCell: M5
-      - type: field
-        label: Primary Element 1 Recyclable in France
+      - type: yesno
+        label: Primary Element 1 Recyclable in France?
         value: /
         topic: packaging
         level: product
@@ -254,15 +200,15 @@ sections:
         lCell: T3
         vCell: T5
       - type: field
-        label: Primary Element 2 Recycled Material (%)
+        label: Primary Element 2 Recycled Content (%)
         value: "0"
         topic: packaging
         level: product
-        lang: en
+        lang: fr
         lCell: U3
         vCell: U5
-      - type: field
-        label: Primary Element 2 Recyclable in France
+      - type: yesno
+        label: Primary Element 2 Recyclable in France?
         value: /
         topic: packaging
         level: product
@@ -294,7 +240,7 @@ sections:
         lCell: AA3
         vCell: AA5
       - type: field
-        label: PFAS Presence in Primary Packaging
+        label: PFAS Presence in Primary Elements
         value: conforme à la réglementation PPWR /  compliant with PPWR reg
         topic: packaging
         level: product
@@ -339,15 +285,15 @@ sections:
         lCell: AL3
         vCell: AL5
       - type: field
-        label: Secondary Element 1 Recycled Material (%)
+        label: Secondary Element 1 Recycled Content (%)
         value: "0.81"
         topic: packaging
         level: product
-        lang: en
+        lang: fr
         lCell: AM3
         vCell: AM5
       - type: yesno
-        label: Secondary Element 1 Recyclable in France
+        label: Secondary Element 1 Recyclable in France?
         value: oui / yes
         topic: packaging
         level: product
@@ -363,7 +309,7 @@ sections:
         lCell: AP3
         vCell: AP5
       - type: field
-        label: Secondary Element 2
+        label: Secondary Element 2 Type
         value: n/a
         topic: packaging
         level: product
@@ -395,7 +341,7 @@ sections:
         vCell: BJ5
       - type: field
         label: MOAH Presence
-        value: "inférieure à 0,1% et [composés de 3 à 7 cycles aromatiques] "
+        value: inférieure à 0,1% et [composés de 3 à 7 cycles aromatiques]
         topic: packaging
         level: product
         lang: fr
@@ -431,11 +377,11 @@ sections:
         lCell: BN3
         vCell: BN5
       - type: field
-        label: Tertiary Element 1 Recycled Material (%)
+        label: Tertiary Element 1 Recycled Content (%)
         value: "0"
         topic: packaging
         level: product
-        lang: en
+        lang: fr
         lCell: BO3
         vCell: BO5
       - type: field
@@ -447,7 +393,7 @@ sections:
         lCell: BP3
         vCell: BP5
       - type: yesno
-        label: Tertiary Element 1 Reusable
+        label: Tertiary Element 1 Reusable?
         value: oui / yes
         topic: packaging
         level: product
@@ -487,15 +433,15 @@ sections:
         lCell: BU3
         vCell: BU5
       - type: field
-        label: Tertiary Element 2 Recycled Material (%)
+        label: Tertiary Element 2 Recycled Content (%)
         value: "0"
         topic: packaging
         level: product
-        lang: en
+        lang: fr
         lCell: BV3
         vCell: BV5
       - type: yesno
-        label: Tertiary Element 2 Recyclable in France
+        label: Tertiary Element 2 Recyclable in France?
         value: oui / yes
         topic: packaging
         level: product
@@ -511,8 +457,8 @@ sections:
         lCell: BY3
         vCell: BY5
 stats:
-  total: 60
-  answered: 60
-  standard: 1
+  total: 53
+  answered: 53
+  standard: 2
   narrative: 2
-  product: 57
+  product: 49

@@ -11,6 +11,7 @@ import { join } from 'path';
 import { stringify as stringifyYaml, parse as parseYaml } from 'yaml';
 import { randomUUID } from 'crypto';
 import { franc } from 'franc';
+import { BedrockRuntimeClient, InvokeModelCommand } from '@aws-sdk/client-bedrock-runtime';
 import { VisualAnalyzer, type SheetAnalysis, type DetectedItem, type ItemType, type ItemLevel } from './visual-analyzer.js';
 import type { QuestionnaireStructure } from './excel-structure.js';
 import { RulesManager } from './rules/rules-manager.js';
@@ -29,9 +30,24 @@ interface TopicDefinition {
 
 interface TopicRules {
   topics: TopicDefinition[];
+  table_grouping?: TableGroupingRules;
+}
+
+interface TableGroupingPattern {
+  name: string;
+  trigger_patterns: string[];
+  topics: string[];
+  min_items: number;
+}
+
+interface TableGroupingRules {
+  min_items: number;
+  max_row_gap: number;
+  patterns: TableGroupingPattern[];
 }
 
 let loadedTopics: TopicDefinition[] | null = null;
+let loadedTableGrouping: TableGroupingRules | null = null;
 
 async function loadTopicsFromRules(rulesDir: string): Promise<TopicDefinition[]> {
   if (loadedTopics) return loadedTopics;
@@ -46,11 +62,16 @@ async function loadTopicsFromRules(rulesDir: string): Promise<TopicDefinition[]>
     const content = await readFile(rulesPath, 'utf-8');
     const rules = parseYaml(content) as TopicRules;
     loadedTopics = rules.topics || [];
+    loadedTableGrouping = rules.table_grouping || null;
     return loadedTopics;
   } catch (error) {
     console.warn(`  Warning: Failed to load topics from rules.yaml: ${error}`);
     return [];
   }
+}
+
+function getTableGroupingRules(): TableGroupingRules | null {
+  return loadedTableGrouping;
 }
 
 // =============================================================================
@@ -179,6 +200,196 @@ function normalizeTopicWithRules(sectionTitle: string, topics: TopicDefinition[]
 }
 
 // =============================================================================
+// AI TOPIC CLASSIFIER (fallback for unmatched sections)
+// =============================================================================
+
+class AITopicClassifier {
+  private client: BedrockRuntimeClient;
+  private modelId: string;
+  private topics: TopicDefinition[];
+
+  constructor(region: string, topics: TopicDefinition[]) {
+    this.client = new BedrockRuntimeClient({ region });
+    this.modelId = 'eu.anthropic.claude-sonnet-4-20250514-v1:0';
+    this.topics = topics;
+  }
+
+  /**
+   * Classify multiple section titles that couldn't be matched by patterns
+   */
+  async classifyUnmatchedSections(sectionTitles: string[]): Promise<Map<string, string>> {
+    if (sectionTitles.length === 0 || this.topics.length === 0) {
+      return new Map();
+    }
+
+    // Build topic list for the prompt
+    const topicList = this.topics.map(t => `- ${t.id}: ${t.name} - ${t.description}`).join('\n');
+
+    const prompt = `You are classifying questionnaire section titles into predefined topics for a food industry supplier questionnaire system.
+
+## Available Topics:
+${topicList}
+
+## Section Titles to Classify:
+${sectionTitles.map((t, i) => `${i + 1}. "${t}"`).join('\n')}
+
+For each section title, determine the most appropriate topic from the list above. Consider that:
+- Titles may be in English, German, French, Dutch, or other languages
+- Some titles are abbreviations or domain-specific terms
+- If no topic fits well, use "other"
+
+Respond with a JSON array of objects, one for each title:
+[
+  {"title": "exact title", "topic": "topic_id", "confidence": 0.0-1.0}
+]
+
+Only output the JSON array, no other text.`;
+
+    try {
+      const response = await this.client.send(new InvokeModelCommand({
+        modelId: this.modelId,
+        contentType: 'application/json',
+        accept: 'application/json',
+        body: JSON.stringify({
+          anthropic_version: 'bedrock-2023-05-31',
+          max_tokens: 2000,
+          messages: [{ role: 'user', content: prompt }],
+        }),
+      }));
+
+      const responseBody = JSON.parse(new TextDecoder().decode(response.body));
+      const text = responseBody.content?.[0]?.text || '';
+
+      // Parse JSON from response
+      const jsonMatch = text.match(/\[[\s\S]*\]/);
+      if (!jsonMatch) {
+        console.warn('  Warning: AI classifier returned no valid JSON');
+        return new Map();
+      }
+
+      const results = JSON.parse(jsonMatch[0]) as Array<{ title: string; topic: string; confidence: number }>;
+      const topicMap = new Map<string, string>();
+
+      for (const result of results) {
+        // Only use high-confidence classifications
+        if (result.confidence >= 0.6) {
+          topicMap.set(result.title, result.topic);
+        }
+      }
+
+      return topicMap;
+    } catch (error) {
+      console.warn(`  Warning: AI topic classification failed: ${error}`);
+      return new Map();
+    }
+  }
+}
+
+// =============================================================================
+// TABLE GROUPING (groups consecutive product data items as single evidence)
+// =============================================================================
+
+interface GroupedTable {
+  type: 'table';
+  label: string;
+  value: string;
+  ref: string;
+  topic: string;
+  level: ItemLevel;
+  itemCount: number;
+  items: IndexedItem[];
+}
+
+function shouldGroupAsTable(
+  items: IndexedItem[],
+  sectionTitle: string,
+  groupingRules: TableGroupingRules | null
+): GroupedTable | null {
+  if (!groupingRules || items.length < groupingRules.min_items) {
+    return null;
+  }
+
+  // Check if section/items match any grouping pattern
+  for (const pattern of groupingRules.patterns) {
+    // Check if topic matches
+    const topicMatches = items.some(item => pattern.topics.includes(item.topic));
+    if (!topicMatches) continue;
+
+    // Check if section title or item labels match trigger patterns
+    let patternMatches = false;
+    for (const triggerPattern of pattern.trigger_patterns) {
+      try {
+        const regex = new RegExp(triggerPattern, 'i');
+        if (regex.test(sectionTitle)) {
+          patternMatches = true;
+          break;
+        }
+        // Also check item labels
+        if (items.some(item => regex.test(item.label))) {
+          patternMatches = true;
+          break;
+        }
+      } catch {
+        // Invalid regex, skip
+      }
+    }
+
+    if (!patternMatches) continue;
+
+    // Check if we have enough items
+    if (items.length < pattern.min_items) continue;
+
+    // Check if items are in consecutive rows
+    const rows = items.map(item => extractRowFromCell(item.lCell || item.ref || ''));
+    const validRows = rows.filter(r => r > 0).sort((a, b) => a - b);
+
+    if (validRows.length < pattern.min_items) continue;
+
+    // Check for max row gap
+    let isConsecutive = true;
+    for (let i = 1; i < validRows.length; i++) {
+      if (validRows[i] - validRows[i - 1] > groupingRules.max_row_gap) {
+        isConsecutive = false;
+        break;
+      }
+    }
+
+    if (!isConsecutive) continue;
+
+    // Create grouped table
+    const startRow = Math.min(...validRows);
+    const endRow = Math.max(...validRows);
+    const primaryTopic = items[0]?.topic || 'other';
+
+    // Build summary value from items
+    const summaryParts = items.slice(0, 5).map(item =>
+      `${item.label}: ${item.value || '(empty)'}`
+    );
+    if (items.length > 5) {
+      summaryParts.push(`... and ${items.length - 5} more`);
+    }
+
+    return {
+      type: 'table',
+      label: `${sectionTitle} (${pattern.name})`,
+      value: summaryParts.join('\n'),
+      ref: `${startRow}:${endRow}`,
+      topic: primaryTopic,
+      level: 'product',
+      itemCount: items.length,
+      items: items,
+    };
+  }
+
+  return null;
+}
+
+function extractRowFromCell(cellRef: string): number {
+  const match = cellRef.match(/\d+/);
+  return match ? parseInt(match[0], 10) : 0;
+}
+
+// =============================================================================
 // QUESTIONNAIRE INDEXER
 // =============================================================================
 
@@ -187,6 +398,7 @@ export class QuestionnaireIndexer {
   private analyzer: VisualAnalyzer;
   private rulesManager: RulesManager;
   private rulesDir: string;
+  private region: string;
   private topics: TopicDefinition[] = [];
 
   constructor(storageDir: string = './questionnaires', region: string = 'eu-central-1', rulesDir: string = './rules') {
@@ -194,6 +406,7 @@ export class QuestionnaireIndexer {
     this.analyzer = new VisualAnalyzer(region);
     this.rulesManager = new RulesManager(rulesDir);
     this.rulesDir = rulesDir;
+    this.region = region;
   }
 
   /**
@@ -228,6 +441,7 @@ export class QuestionnaireIndexer {
     // Build indexed structure
     const sections: IndexedSection[] = [];
     const allItems: IndexedItem[] = [];
+    const unmatchedSectionTitles: string[] = [];
 
     for (const analysis of analyses) {
       // Group items by section
@@ -245,6 +459,11 @@ export class QuestionnaireIndexer {
       for (const [sectionTitle, items] of sectionMap) {
         const topic = normalizeTopicWithRules(sectionTitle, this.topics);
         const indexedItems: IndexedItem[] = [];
+
+        // Track unmatched sections for AI classification
+        if (topic === 'other' && !unmatchedSectionTitles.includes(sectionTitle)) {
+          unmatchedSectionTitles.push(sectionTitle);
+        }
 
         for (const item of items) {
           // Check if item should be excluded by rules
@@ -303,6 +522,65 @@ export class QuestionnaireIndexer {
       }
     }
 
+    // Use AI to classify unmatched sections
+    if (unmatchedSectionTitles.length > 0 && this.topics.length > 0) {
+      console.log(`  Classifying ${unmatchedSectionTitles.length} unmatched sections with AI...`);
+      const classifier = new AITopicClassifier(this.region, this.topics);
+      const aiTopics = await classifier.classifyUnmatchedSections(unmatchedSectionTitles);
+
+      // Update sections and their items with AI-classified topics
+      for (const section of sections) {
+        if (section.topic === 'other' && aiTopics.has(section.title)) {
+          const newTopic = aiTopics.get(section.title)!;
+          section.topic = newTopic;
+          // Also update items that inherited the section topic
+          for (const item of section.items) {
+            if (item.topic === 'other') {
+              item.topic = newTopic;
+            }
+          }
+        }
+      }
+
+      const classified = [...aiTopics.values()].length;
+      if (classified > 0) {
+        console.log(`    AI classified ${classified} sections`);
+      }
+    }
+
+    // Apply table grouping rules to consolidate product data tables
+    const groupingRules = getTableGroupingRules();
+    if (groupingRules) {
+      let tablesGrouped = 0;
+      for (const section of sections) {
+        // Only group product-level items
+        const productItems = section.items.filter(item => item.level === 'product');
+        if (productItems.length >= groupingRules.min_items) {
+          const grouped = shouldGroupAsTable(productItems, section.title, groupingRules);
+          if (grouped) {
+            // Replace individual items with grouped table
+            const nonProductItems = section.items.filter(item => item.level !== 'product');
+            section.items = [
+              ...nonProductItems,
+              {
+                type: grouped.type,
+                label: grouped.label,
+                value: grouped.value,
+                ref: grouped.ref,
+                topic: grouped.topic,
+                level: grouped.level,
+                lang: undefined,
+              },
+            ];
+            tablesGrouped++;
+          }
+        }
+      }
+      if (tablesGrouped > 0) {
+        console.log(`  Grouped ${tablesGrouped} product data tables`);
+      }
+    }
+
     // Sort sections by start row
     sections.sort((a, b) => {
       const rowA = parseInt(a.rows.split('-')[0], 10) || 0;
@@ -310,8 +588,14 @@ export class QuestionnaireIndexer {
       return rowA - rowB;
     });
 
+    // Recalculate allItems after grouping
+    const finalItems: IndexedItem[] = [];
+    for (const section of sections) {
+      finalItems.push(...section.items);
+    }
+
     // Calculate stats
-    const stats = this.calculateStats(allItems);
+    const stats = this.calculateStats(finalItems);
 
     // Detect primary language
     const primaryLanguage = this.detectPrimaryLanguage(allItems);

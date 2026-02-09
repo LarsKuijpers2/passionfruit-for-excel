@@ -1,4 +1,4 @@
-id: 77126c98
+id: 4eab1cf2
 source: F+S_Supplier_Questionnaire_Cheese_2025_Fude+Serrahn.xlsx
 indexed: 2026-02-08
 language: en
@@ -17,7 +17,7 @@ sections:
         lCell: B8
         vCell: B9
       - type: field
-        label: Aktuell gelieferte(s) Produkt(e) / Product(s) currently supplied (Product 1)
+        label: Gouda 48% Scheiben - Aktuell gelieferte(s) Produkt(e)
         value: 300230 - Gouda 48% Scheiben gefächert 10x10cm à 20g 6x1kg
         topic: product
         level: product
@@ -25,15 +25,15 @@ sections:
         lCell: D8
         vCell: D9
       - type: field
-        label: Herkunft / Identitätskennzeichen / Origin / Identity marker (Product 1)
+        label: Gouda 48% Scheiben - Herkunft / Identitätskennzeichen
         value: The Netherlands
         topic: origin
         level: standard
-        lang: en
+        lang: de
         lCell: E8
         vCell: E9
       - type: yesno
-        label: Die Milch stammt ausschließlich von den Ländern der EU 27 / The milk comes exclusively from EU 27 countries (Product 1)
+        label: Gouda 48% Scheiben - Die Milch stammt ausschließlich von den Ländern der EU 27
         value: ja-yes
         topic: origin
         level: product
@@ -41,15 +41,15 @@ sections:
         lCell: F8
         vCell: F9
       - type: field
-        label: Ursprung / Herkunftsländer der Milch (Länderkürzel) / Origin / Countries of origin of milk (country codes) (Product 1)
+        label: Gouda 48% Scheiben - Ursprung / Herkunftsländer der Milch
         value: NL, DE, AT
         topic: origin
         level: product
-        lang: en
+        lang: de
         lCell: H8
         vCell: H9
       - type: field
-        label: Aktuell gelieferte(s) Produkt(e) / Product(s) currently supplied (Product 2)
+        label: Gouda CL 48% Scheiben - Aktuell gelieferte(s) Produkt(e)
         value: 300232 - Gouda CL 48% Scheiben gefäch. 10x10cm à 20g 6x1kg
         topic: product
         level: product
@@ -57,15 +57,15 @@ sections:
         lCell: D8
         vCell: D10
       - type: field
-        label: Herkunft / Identitätskennzeichen / Origin / Identity marker (Product 2)
+        label: Gouda CL 48% Scheiben - Herkunft / Identitätskennzeichen
         value: The Netherlands
         topic: origin
         level: standard
-        lang: en
+        lang: de
         lCell: E8
         vCell: E10
       - type: yesno
-        label: Die Milch stammt ausschließlich von den Ländern der EU 27 / The milk comes exclusively from EU 27 countries (Product 2)
+        label: Gouda CL 48% Scheiben - Die Milch stammt ausschließlich von den Ländern der EU 27
         value: ja-yes
         topic: origin
         level: product
@@ -73,31 +73,31 @@ sections:
         lCell: F8
         vCell: F10
       - type: field
-        label: Ursprung / Herkunftsländer der Milch (Länderkürzel) / Origin / Countries of origin of milk (country codes) (Product 2)
+        label: Gouda CL 48% Scheiben - Ursprung / Herkunftsländer der Milch
         value: NL, DE
         topic: origin
         level: product
-        lang: en
+        lang: de
         lCell: H8
         vCell: H10
       - type: field
-        label: Aktuell gelieferte(s) Produkt(e) / Product(s) currently supplied (Product 3)
+        label: Cheddar rot 50% Scheiben - Aktuell gelieferte(s) Produkt(e)
         value: 301394 - Cheddar rot 50% Sch. gefächert 9x9cm à 20g 6x1kg
         topic: product
         level: product
-        lang: fr
+        lang: de
         lCell: D8
         vCell: D11
       - type: field
-        label: Herkunft / Identitätskennzeichen / Origin / Identity marker (Product 3)
+        label: Cheddar rot 50% Scheiben - Herkunft / Identitätskennzeichen
         value: The Netherlands
         topic: origin
         level: standard
-        lang: en
+        lang: de
         lCell: E8
         vCell: E11
       - type: yesno
-        label: Die Milch stammt ausschließlich von den Ländern der EU 27 / The milk comes exclusively from EU 27 countries (Product 3)
+        label: Cheddar rot 50% Scheiben - Die Milch stammt ausschließlich von den Ländern der EU 27
         value: ja-yes
         topic: origin
         level: product
@@ -105,31 +105,31 @@ sections:
         lCell: F8
         vCell: F11
       - type: field
-        label: Ursprung / Herkunftsländer der Milch (Länderkürzel) / Origin / Countries of origin of milk (country codes) (Product 3)
+        label: Cheddar rot 50% Scheiben - Ursprung / Herkunftsländer der Milch
         value: IRL
         topic: origin
         level: product
-        lang: en
+        lang: de
         lCell: H8
         vCell: H11
       - type: field
-        label: Aktuell gelieferte(s) Produkt(e) / Product(s) currently supplied (Product 4)
+        label: Cheddar rot 50% Scheiben (302594) - Aktuell gelieferte(s) Produkt(e)
         value: 302594 - Cheddar rot 50% Sch. gefächert 9x9cm à 20g 6x1kg
         topic: product
         level: product
-        lang: fr
+        lang: de
         lCell: D8
         vCell: D12
       - type: field
-        label: Herkunft / Identitätskennzeichen / Origin / Identity marker (Product 4)
+        label: Cheddar rot 50% Scheiben (302594) - Herkunft / Identitätskennzeichen
         value: The Netherlands
         topic: origin
         level: standard
-        lang: en
+        lang: de
         lCell: E8
         vCell: E12
       - type: yesno
-        label: Die Milch stammt ausschließlich von den Ländern der EU 27 / The milk comes exclusively from EU 27 countries (Product 4)
+        label: Cheddar rot 50% Scheiben (302594) - Die Milch stammt ausschließlich von den Ländern der EU 27
         value: ja-yes
         topic: origin
         level: product
@@ -137,31 +137,31 @@ sections:
         lCell: F8
         vCell: F12
       - type: field
-        label: Ursprung / Herkunftsländer der Milch (Länderkürzel) / Origin / Countries of origin of milk (country codes) (Product 4)
+        label: Cheddar rot 50% Scheiben (302594) - Ursprung / Herkunftsländer der Milch
         value: IRL
         topic: origin
         level: product
-        lang: en
+        lang: de
         lCell: H8
         vCell: H12
       - type: field
-        label: Aktuell gelieferte(s) Produkt(e) / Product(s) currently supplied (Product 5)
+        label: Emmentaler 45% Scheiben - Aktuell gelieferte(s) Produkt(e)
         value: 302811 - Emmentaler 45% Sch. gefächert 10x10cm à 20g 6x1kg
         topic: product
         level: product
-        lang: fr
+        lang: de
         lCell: D8
         vCell: D13
       - type: field
-        label: Herkunft / Identitätskennzeichen / Origin / Identity marker (Product 5)
+        label: Emmentaler 45% Scheiben - Herkunft / Identitätskennzeichen
         value: The Netherlands
         topic: origin
         level: standard
-        lang: en
+        lang: de
         lCell: E8
         vCell: E13
       - type: yesno
-        label: Die Milch stammt ausschließlich von den Ländern der EU 27 / The milk comes exclusively from EU 27 countries (Product 5)
+        label: Emmentaler 45% Scheiben - Die Milch stammt ausschließlich von den Ländern der EU 27
         value: ja-yes
         topic: origin
         level: product
@@ -169,31 +169,31 @@ sections:
         lCell: F8
         vCell: F13
       - type: field
-        label: Ursprung / Herkunftsländer der Milch (Länderkürzel) / Origin / Countries of origin of milk (country codes) (Product 5)
+        label: Emmentaler 45% Scheiben - Ursprung / Herkunftsländer der Milch
         value: NL, DE
         topic: origin
         level: product
-        lang: en
+        lang: de
         lCell: H8
         vCell: H13
       - type: field
-        label: Aktuell gelieferte(s) Produkt(e) / Product(s) currently supplied (Product 6)
+        label: Gouda 48% gerieben - Aktuell gelieferte(s) Produkt(e)
         value: 303762 - Gouda 48% F.i.Tr. gerieben (6% Stärke) 2mm 2x5Kg
         topic: product
         level: product
-        lang: fr
+        lang: nl
         lCell: D8
         vCell: D14
       - type: field
-        label: Herkunft / Identitätskennzeichen / Origin / Identity marker (Product 6)
+        label: Gouda 48% gerieben - Herkunft / Identitätskennzeichen
         value: The Netherlands
         topic: origin
         level: standard
-        lang: en
+        lang: de
         lCell: E8
         vCell: E14
       - type: yesno
-        label: Die Milch stammt ausschließlich von den Ländern der EU 27 / The milk comes exclusively from EU 27 countries (Product 6)
+        label: Gouda 48% gerieben - Die Milch stammt ausschließlich von den Ländern der EU 27
         value: ja-yes
         topic: origin
         level: product
@@ -201,15 +201,15 @@ sections:
         lCell: F8
         vCell: F14
       - type: field
-        label: Ursprung / Herkunftsländer der Milch (Länderkürzel) / Origin / Countries of origin of milk (country codes) (Product 6)
+        label: Gouda 48% gerieben - Ursprung / Herkunftsländer der Milch
         value: NL, DE
         topic: origin
         level: product
-        lang: en
+        lang: de
         lCell: H8
         vCell: H14
       - type: field
-        label: Aktuell gelieferte(s) Produkt(e) / Product(s) currently supplied (Product 7)
+        label: Mozarella 40% gerieben - Aktuell gelieferte(s) Produkt(e)
         value: 304010 - Mozarella 40% F.i.Tr. gerieben 4mm 4x2,5kg
         topic: product
         level: product
@@ -217,15 +217,15 @@ sections:
         lCell: D8
         vCell: D15
       - type: field
-        label: Herkunft / Identitätskennzeichen / Origin / Identity marker (Product 7)
+        label: Mozarella 40% gerieben - Herkunft / Identitätskennzeichen
         value: The Netherlands
         topic: origin
         level: standard
-        lang: en
+        lang: de
         lCell: E8
         vCell: E15
       - type: yesno
-        label: Die Milch stammt ausschließlich von den Ländern der EU 27 / The milk comes exclusively from EU 27 countries (Product 7)
+        label: Mozarella 40% gerieben - Die Milch stammt ausschließlich von den Ländern der EU 27
         value: ja-yes
         topic: origin
         level: product
@@ -233,14 +233,14 @@ sections:
         lCell: F8
         vCell: F15
       - type: field
-        label: Ursprung / Herkunftsländer der Milch (Länderkürzel) / Origin / Countries of origin of milk (country codes) (Product 7)
+        label: Mozarella 40% gerieben - Ursprung / Herkunftsländer der Milch
         value: BE, NL, DE, AT
         topic: origin
         level: product
-        lang: en
+        lang: de
         lCell: H8
         vCell: H15
-  - title: General data
+  - title: General Data
     topic: company_information
     rows: 9-39
     sheet: General data
@@ -253,7 +253,7 @@ sections:
         lCell: B9
         vCell: C9
       - type: field
-        label: Company name
+        label: Company Name
         value: Kaas-Pack Holland B.V.
         topic: company
         level: standard
@@ -307,7 +307,7 @@ sections:
         lCell: B16
         vCell: C16
       - type: field
-        label: General e-mail address
+        label: General Email Address
         value: orderdesk@kaaspack.nl
         topic: contacts
         level: standard
@@ -315,7 +315,7 @@ sections:
         lCell: B17
         vCell: C17
       - type: field
-        label: Name contact person
+        label: Contact Person Name
         value: L. Smit
         topic: contacts
         level: standard
@@ -323,7 +323,7 @@ sections:
         lCell: B18
         vCell: C18
       - type: field
-        label: Phone contact person
+        label: Contact Person Phone
         value: +31 (0)6 21 86 57 19
         topic: contacts
         level: standard
@@ -331,7 +331,7 @@ sections:
         lCell: B19
         vCell: C19
       - type: field
-        label: E-mail address contact person
+        label: Contact Person Email
         value: l.smit@kaaspack.nl
         topic: contacts
         level: standard
@@ -340,12 +340,12 @@ sections:
         vCell: C20
       - type: field
         label: VAT ID
-        topic: financial
+        topic: company
         level: standard
         lCell: B21
         vCell: C21
       - type: field
-        label: Tax number
+        label: Tax Number
         value: NL809333120B01
         topic: financial
         level: standard
@@ -353,7 +353,7 @@ sections:
         lCell: B26
         vCell: C26
       - type: field
-        label: Bank details (IBAN)
+        label: Bank Details (IBAN)
         value: NL67 RABO 0329 0821 16
         topic: financial
         level: standard
@@ -361,7 +361,7 @@ sections:
         lCell: B27
         vCell: C27
       - type: field
-        label: Bank details (BIC)
+        label: Bank Details (BIC)
         value: RABONL2U
         topic: financial
         level: standard
@@ -369,7 +369,7 @@ sections:
         lCell: B28
         vCell: C28
       - type: field
-        label: Contact for accounting
+        label: Contact for Accounting
         value: Bookkeeping department
         topic: contacts
         level: standard
@@ -377,7 +377,7 @@ sections:
         lCell: B29
         vCell: C29
       - type: field
-        label: Phone number accounting
+        label: Accounting Phone Number
         value: +31 528 268 246
         topic: contacts
         level: standard
@@ -385,7 +385,7 @@ sections:
         lCell: B30
         vCell: C30
       - type: field
-        label: Email address accounting
+        label: Accounting Email Address
         value: finance@kaaspack.nl
         topic: contacts
         level: standard
@@ -393,7 +393,7 @@ sections:
         lCell: B31
         vCell: C31
       - type: field
-        label: Contact person for sales
+        label: Contact Person for Sales
         value: L. Smit
         topic: contacts
         level: standard
@@ -401,7 +401,7 @@ sections:
         lCell: B32
         vCell: C32
       - type: field
-        label: Phone number sales
+        label: Sales Phone Number
         value: +31 (0)6 21 86 57 19
         topic: contacts
         level: standard
@@ -409,7 +409,7 @@ sections:
         lCell: B33
         vCell: C33
       - type: field
-        label: Email address sales
+        label: Sales Email Address
         value: l.smit@kaaspack.nl
         topic: contacts
         level: standard
@@ -417,7 +417,7 @@ sections:
         lCell: B34
         vCell: C34
       - type: field
-        label: Contact person quality management
+        label: Quality Management Contact Person
         value: Quality department
         topic: contacts
         level: standard
@@ -425,7 +425,7 @@ sections:
         lCell: B35
         vCell: C35
       - type: field
-        label: Email address quality management
+        label: Quality Management Email Address
         value: quality@kaaspack.nl
         topic: contacts
         level: standard
@@ -433,11 +433,11 @@ sections:
         lCell: B36
         vCell: C36
       - type: field
-        label: Phone number quality management
+        label: Quality Management Phone Number
         value: +31 528 268 246
         topic: contacts
         level: standard
-        lang: en
+        lang: fr
         lCell: B37
         vCell: C37
       - type: choice
@@ -462,7 +462,7 @@ sections:
     sheet: Sustainability
     items:
       - type: yesno
-        label: Liegt Ihnen ein Product Carbon Footprint (PCF) vor / Do you have a Product Carbon Footprint available
+        label: Product Carbon Footprint (PCF) available
         value: nein-no
         topic: sustainability
         level: product
@@ -470,125 +470,125 @@ sections:
         lCell: B10
         vCell: C10
       - type: yesno
-        label: Planen Sie die Berechnung eines PCF / Do you plan to calculate a PCF
+        label: Planning PCF calculation
         value: nein-no
         topic: sustainability
         level: product
-        lang: de
+        lang: en
         lCell: B12
         vCell: C12
-  - title: Non-deforestation Supply Chain
-    topic: other
+  - title: Self-commitment to deforestation-free supply chain
+    topic: sustainability
     rows: 10-24
     sheet: Non-deforestation
     items:
       - type: yesno
-        label: EU Deforestation Regulation (EUDR) applicability / Fallen Sie unter EU Deforestation Regulation (EUDR)?
+        label: Do you fall under EU Deforestation Regulation (EUDR)?
         value: nein-no
         topic: sustainability
         level: standard
-        lang: de
+        lang: en
         lCell: B10
         vCell: C10
       - type: yesno
-        label: Articles contain min. 5% critical raw materials / Enthalten die an uns gelieferten Artikeln mind. 5% eines kritischen Rohstoffs?
+        label: Do the articles delivered to us contain at least 5% of a critical raw material?
         value: nein-no
         topic: sustainability
         level: product
-        lang: de
+        lang: en
         lCell: B11
         vCell: C11
       - type: yesno
-        label: Self-commitment for deforestation-free supply chain / Liegt eine Selbstverpflichtung vor, entwaldungsfreie Lieferketten zu schaffen?
+        label: Is there a self-commitment to deforestation-free supply chains?
         value: nein-no
         topic: sustainability
-        level: narrative
-        lang: de
+        level: standard
+        lang: en
         lCell: B12
         vCell: C12
       - type: text
-        label: Risk raw materials covered by commitment / Bitte geben Sie die Risikorohstoffe an, die von Ihrer Verpflichtung abgedeckt sind
+        label: Please specify the risk raw materials covered by your commitment
         topic: sustainability
         level: narrative
-        lang: de
+        lang: en
         lCell: B13
         vCell: C13
       - type: date
-        label: Cut-off date / Geben Sie bitte das Cut-off-Datum an
+        label: Please state the cut-off date
         topic: sustainability
-        level: narrative
-        lang: de
+        level: standard
+        lang: en
         lCell: B14
         vCell: C14
       - type: date
-        label: Target date / Geben Sie bitte das Zieldatum an
+        label: Please state the target date
         topic: sustainability
-        level: narrative
-        lang: de
+        level: standard
+        lang: en
         lCell: B15
         vCell: C15
       - type: yesno
-        label: Procurement policy implemented for deforestation-free supply chain / Haben Sie eine Beschaffungspolitik implementiert, um entwaldungsfreie Lieferketten zu schaffen?
+        label: Have you implemented a procurement policy to eliminate deforestation?
         topic: sustainability
         level: narrative
-        lang: de
+        lang: en
         lCell: B16
         vCell: C16
       - type: yesno
-        label: Mapping system for suppliers with deforestation risk / Verfügen Sie über ein Mapping-System, das Lieferanten mit Entwaldungsrisiko identifiziert?
+        label: Do you have a mapping system that identifies suppliers with deforestation risks?
         topic: sustainability
         level: narrative
-        lang: de
+        lang: en
         lCell: B17
         vCell: C17
       - type: yesno
-        label: Traceability system for raw materials / Verfügen Sie über ein Rückverfolgbarkeitssystem für Ihre Rohstoffe?
+        label: Do you have a traceability system for your raw materials?
         topic: sustainability
         level: narrative
-        lang: de
+        lang: en
         lCell: B18
         vCell: C18
       - type: yesno
-        label: Deforestation risk analysis performed / Wird eine Analyse zur Bewertung des Entwaldungsrisikos durchgeführt?
+        label: Is an analysis conducted to assess deforestation risk?
         topic: sustainability
         level: narrative
         lang: en
         lCell: B19
         vCell: C19
       - type: yesno
-        label: Mitigation measures for increased risk / Werden bei erhöhtem Risiko Minderungsmaßnahmen durchgeführt?
+        label: Are mitigation measures implemented in case of increased risk?
         topic: sustainability
         level: narrative
-        lang: de
+        lang: en
         lCell: B20
         vCell: C20
       - type: yesno
-        label: Reporting on risk analysis and mitigation measures / Wird über die Risikoanalyse und durchgeführten Minderungsmaßnahmen berichtet?
+        label: Is reporting done on risk analysis and mitigation measures implemented?
         topic: sustainability
         level: narrative
-        lang: de
+        lang: en
         lCell: B21
         vCell: C21
       - type: yesno
-        label: Monitoring system for compliance / Verfügen Sie über ein Überwachungssystem, das die Einhaltung der Verpflichtungen überwacht?
+        label: Do you have a monitoring system that ensures compliance?
         topic: sustainability
         level: narrative
-        lang: de
+        lang: en
         lCell: B22
         vCell: C22
       - type: yesno
-        label: Annual performance reports published / Veröffentlichen Sie jährliche Berichte über die Leistung und den Fortschritt?
+        label: Do you publish annual reports on performance?
         topic: sustainability
         level: narrative
-        lang: de
+        lang: en
         lCell: B23
         vCell: C23
       - type: yesno
-        label: Plan to commit to deforestation-free supply chain / Planen Sie, sich zu einer entwaldungsfreien Lieferkette zu verpflichten?
+        label: Do you plan to commit to a deforestation-free supply chain?
         value: nein-no
         topic: sustainability
-        level: narrative
-        lang: de
+        level: standard
+        lang: en
         lCell: B24
         vCell: C24
   - title: Production Plant Information
@@ -683,7 +683,7 @@ sections:
         lCell: B22
         vCell: C22
       - type: field
-        label: EU-approval Number
+        label: EU Approval Number
         value: NL Z0159 EU
         topic: approval
         level: standard
@@ -691,44 +691,44 @@ sections:
         lCell: B23
         vCell: C23
   - title: CO₂-Reduktionsmaßnahmen / CO₂ reduction measures
-    topic: other
+    topic: sustainability
     rows: 15-23
     sheet: Sustainability
     items:
       - type: yesno
-        label: Haben Sie sich CO₂-Reduktionsziele gesetzt / Have you set CO₂ reduction targets
+        label: CO₂ reduction targets set
         value: nein-no
         topic: sustainability
-        level: standard
-        lang: de
+        level: narrative
+        lang: en
         lCell: B15
         vCell: C15
       - type: text
-        label: CO₂-Reduktionsziele Bemerkungen / CO₂ reduction targets comments
+        label: CO₂ reduction targets comment
         value: Es wurde ein Konzeptplan erstellt, der noch vom Managementte
         topic: sustainability
         level: narrative
-        lang: de
+        lang: fr
         lCell: B15
         vCell: D15
-      - type: field
-        label: Wann planen Sie sich Ziele zu setzen / When do you plan to set targets
+      - type: text
+        label: Timeline for setting targets
         value: end of 2025
         topic: sustainability
-        level: standard
-        lang: nl
+        level: narrative
+        lang: en
         lCell: B18
         vCell: C18
       - type: yesno
-        label: Haben Sie sich zu SBTi verpflichtet / Have you committed to SBTi
+        label: SBTi commitment
         value: nein-no
         topic: sustainability
-        level: standard
-        lang: de
+        level: narrative
+        lang: en
         lCell: B19
         vCell: C19
       - type: text
-        label: SBTi Verpflichtung Bemerkungen / SBTi commitment comments
+        label: SBTi commitment comment
         value: Noch nicht, wir stehen mit SBTi in Kontakt, um die von uns g
         topic: sustainability
         level: narrative
@@ -736,15 +736,15 @@ sections:
         lCell: B19
         vCell: D19
       - type: yesno
-        label: Haben Sie SBTi-validierte Ziele / Do you have SBTi-validated targets
+        label: SBTi-validated targets
         value: nein-no
         topic: sustainability
-        level: standard
-        lang: de
+        level: narrative
+        lang: en
         lCell: B22
         vCell: C22
       - type: text
-        label: SBTi-validierte Ziele Bemerkungen / SBTi-validated targets comments
+        label: SBTi-validated targets comment
         value: Noch nicht, wir stehen mit SBTi in Kontakt, um die von uns g
         topic: sustainability
         level: narrative
@@ -752,19 +752,19 @@ sections:
         lCell: B22
         vCell: D22
       - type: yesno
-        label: Planen Sie sich zu SBTi zu verpflichten / Are you planning to commit to SBTi
+        label: Planning SBTi commitment
         value: ja-yes
         topic: sustainability
-        level: standard
-        lang: de
+        level: narrative
+        lang: en
         lCell: B23
         vCell: C23
       - type: text
-        label: SBTi Verpflichtungsplanung Bemerkungen / SBTi commitment planning comments
+        label: SBTi commitment timeline
         value: Ende 2025 / Anfang 2026
         topic: sustainability
         level: narrative
-        lang: de
+        lang: en
         lCell: B23
         vCell: D23
   - title: Product Carbon Footprint (PCF)
@@ -778,30 +778,37 @@ sections:
         level: standard
         lang: de
         lCell: A20
+        vCell: A21
       - type: field
         label: Belieferter Standort / Supplied location
-        topic: logistics
+        topic: company
         level: standard
         lang: en
         lCell: B20
+        vCell: B21
       - type: field
-        label: Gelieferte(s) Produkt(e) im Kalenderjahr 2024 / Product(s) supplied in calendar year 2024
+        label: Gelieferte(s) Produkt(e) im Kalenderjahr 2024 / Product(s)
+        value: z.B. Gouda / e.g. gouda
         topic: product
         level: product
         lang: nl
         lCell: C20
+        vCell: C21
       - type: field
         label: Product Carbon Footprint (Cradle-to-Gate) in g CO₂e / kg
-        topic: environment
+        value: z. B. 1200 / e. g. 1200
+        topic: sustainability
         level: product
         lang: en
         lCell: E20
+        vCell: E21
       - type: field
-        label: Name des Zertifikats für den PCF / Name of the certificate for PCF
-        topic: environment
+        label: Name des Zertifikats für den PCF / Name of the certificate
+        topic: sustainability
         level: product
         lang: en
         lCell: F20
+        vCell: F21
   - title: Certificates
     topic: certifications
     rows: 26-47
@@ -853,7 +860,7 @@ sections:
         lCell: B31
         vCell: C31
       - type: yesno
-        label: "ISO 14001: Environmental Management"
+        label: ISO 14001 Environmental Management
         value: nein-no
         topic: environment
         level: standard
@@ -861,7 +868,7 @@ sections:
         lCell: B32
         vCell: C32
       - type: yesno
-        label: "ISO 45001: Occupational Safety Management"
+        label: ISO 45001 Occupational Safety Management
         value: nein-no
         topic: certifications
         level: standard
@@ -869,7 +876,7 @@ sections:
         lCell: B33
         vCell: C33
       - type: yesno
-        label: "ISO 50001: Energy Management"
+        label: ISO 50001 Energy Management
         value: nein-no
         topic: environment
         level: standard
@@ -893,7 +900,7 @@ sections:
         lCell: B36
         vCell: C36
       - type: field
-        label: Sedex Member Number
+        label: Sedex Membership Number
         value: ZC408415203
         topic: sustainability
         level: standard
@@ -909,11 +916,11 @@ sections:
         lCell: B38
         vCell: C38
       - type: field
-        label: Organic Control Number
+        label: Organic Control Body Number
         value: "024804"
         topic: certifications
         level: standard
-        lang: fr
+        lang: en
         lCell: B39
         vCell: C39
       - type: yesno
@@ -981,73 +988,73 @@ sections:
     sheet: Sustainability
     items:
       - type: yesno
-        label: Vorgaben auf bestimmte Herkunftsländer verzichten / Requirements to avoid certain countries of origin
+        label: Animal welfare restrictions on supplier countries
         value: nein-no
         topic: animal_welfare
-        level: standard
-        lang: de
+        level: narrative
+        lang: en
         lCell: B26
         vCell: C26
       - type: text
-        label: Herkunftsländer Bemerkungen / Countries of origin comments
+        label: Animal welfare restrictions comment
         value: Wir kaufen nur Käse, der aus Milch aus EU-Ländern hergestell
         topic: animal_welfare
         level: narrative
-        lang: de
+        lang: fr
         lCell: B26
         vCell: D26
       - type: yesno
-        label: Verbindliche Vorgaben bei Vorlieferanten (Tierschutz) / Binding requirements for pre-suppliers (animal welfare)
+        label: Binding animal welfare requirements for suppliers
         value: nein-no
         topic: animal_welfare
-        level: standard
-        lang: de
+        level: narrative
+        lang: en
         lCell: B28
         vCell: C28
       - type: yesno
-        label: Nationale und Europäische Gesetze eingehalten / National and European laws complied with
+        label: Compliance with national and European animal welfare laws
         value: ja-yes
         topic: animal_welfare
         level: standard
-        lang: de
+        lang: en
         lCell: B33
         vCell: C33
       - type: text
-        label: Gesetzeseinhaltung Bemerkungen / Legal compliance comments
+        label: Animal welfare compliance comment
         value: Wir kaufen nur Käse, der aus Milch aus EU-Ländern hergestell
         topic: animal_welfare
         level: narrative
-        lang: de
+        lang: fr
         lCell: B33
         vCell: D33
-  - title: Soy and Palm Products in Feed
+  - title: Information on soy and palm products as feed
     topic: identification
     rows: 28-30
     sheet: Non-deforestation
     items:
       - type: yesno
-        label: Data on soy/palm products in feed available / Liegen Ihnen Daten zur Verwendung von Soja oder/und Palmprodukten im Tierfutter vor?
+        label: Do you have data on the use of soy and/or palm products in feed?
         value: nein-no
         topic: sustainability
         level: product
-        lang: de
+        lang: en
         lCell: B28
         vCell: C28
       - type: text
-        label: Origin of affected raw materials / Bitte geben Sie die Herkunft der betroffenen Rohstoffe an
+        label: Please specify the origin of the affected raw materials
         topic: origin
         level: product
-        lang: nl
+        lang: en
         lCell: B29
         vCell: C29
-      - type: field
-        label: Percentage of affected raw materials / Bitte geben Sie den Anteil der betroffenen Rohstoffe an
+      - type: text
+        label: Please specify the proportion of the affected raw materials
         topic: sustainability
         level: product
         lang: en
         lCell: B30
         vCell: C30
-  - title: Soy Deforestation-Free Certificates
+  - title: Soy deforestation-free certificates
     topic: certifications
     rows: 33-46
     sheet: Non-deforestation
@@ -1164,9 +1171,9 @@ sections:
     sheet: Sustainability
     items:
       - type: yesno
-        label: Unterzeichnung und Einhaltung Lieferantenkodex / Signing and compliance with Supplier Code of Conduct
+        label: Supplier Code of Conduct signed and compliance confirmed
         value: ja-yes
-        topic: sustainability
+        topic: approval
         level: standard
         lang: en
         lCell: B36
@@ -1177,44 +1184,44 @@ sections:
     sheet: Sustainability
     items:
       - type: field
-        label: Name Nachhaltigkeitsabteilung / Sustainability department name
+        label: Sustainability contact person name
         value: G. Sok
         topic: contacts
         level: standard
-        lang: de
+        lang: fr
         lCell: B39
         vCell: C39
       - type: field
-        label: Telefon Nachhaltigkeitsabteilung / Sustainability department phone
+        label: Sustainability contact person phone
         value: +31 528 268 246
         topic: contacts
         level: standard
-        lang: en
+        lang: fr
         lCell: B40
         vCell: C40
       - type: field
-        label: Mobil-Telefon Nachhaltigkeitsabteilung / Sustainability department mobile phone
+        label: Sustainability contact person mobile
         value: n/a
         topic: contacts
         level: standard
-        lang: en
+        lang: fr
         lCell: B41
         vCell: C41
       - type: field
-        label: E-Mail Nachhaltigkeitsabteilung / Sustainability department email
+        label: Sustainability contact person email
         value: quality@kaaspack.nl
         topic: contacts
         level: standard
-        lang: en
+        lang: fr
         lCell: B42
         vCell: C42
-  - title: Crisis management
+  - title: Crisis Management
     topic: complaints
     rows: 42-45
     sheet: General data
     items:
       - type: field
-        label: Contact details in crisis (Name) - Contact Person 1
+        label: Crisis Contact Name (Contact Person 1)
         value: Quality department
         topic: crisis
         level: standard
@@ -1222,7 +1229,7 @@ sections:
         lCell: B42
         vCell: C42
       - type: field
-        label: Contact details in crisis (Name) - Contact Person 2
+        label: Crisis Contact Name (Contact Person 2)
         value: L. Smit
         topic: crisis
         level: standard
@@ -1230,7 +1237,7 @@ sections:
         lCell: B42
         vCell: D42
       - type: field
-        label: Phone - Contact Person 1
+        label: Phone (Contact Person 1)
         value: +31 528 268 246
         topic: crisis
         level: standard
@@ -1238,7 +1245,7 @@ sections:
         lCell: B43
         vCell: C43
       - type: field
-        label: Phone - Contact Person 2
+        label: Phone (Contact Person 2)
         value: +31 528 268 246
         topic: crisis
         level: standard
@@ -1246,7 +1253,7 @@ sections:
         lCell: B43
         vCell: D43
       - type: field
-        label: Mobile phone - Contact Person 1
+        label: Mobile Phone (Contact Person 1)
         value: n/a
         topic: crisis
         level: standard
@@ -1254,7 +1261,7 @@ sections:
         lCell: B44
         vCell: C44
       - type: field
-        label: Mobile phone - Contact Person 2
+        label: Mobile Phone (Contact Person 2)
         value: +31 (0)6 21 86 57 19
         topic: crisis
         level: standard
@@ -1262,7 +1269,7 @@ sections:
         lCell: B44
         vCell: D44
       - type: field
-        label: Email address - Contact Person 1
+        label: Email Address (Contact Person 1)
         value: quality@kaaspack.nl
         topic: crisis
         level: standard
@@ -1270,14 +1277,14 @@ sections:
         lCell: B45
         vCell: C45
       - type: field
-        label: Email address - Contact Person 2
+        label: Email Address (Contact Person 2)
         value: l.smit@kaaspack.nl
         topic: crisis
         level: standard
         lang: fr
         lCell: B45
         vCell: D45
-  - title: Palm Product Deforestation-Free Certificates
+  - title: Palm product deforestation-free certificates
     topic: certifications
     rows: 49-54
     sheet: Non-deforestation
@@ -1327,11 +1334,11 @@ sections:
         vCell: C54
   - title: QM System
     topic: quality_systems
-    rows: 51-59
+    rows: 51-58
     sheet: QM-System
     items:
       - type: text
-        label: Type and Heating of Product
+        label: Type and Heating of Product (Temperature and Holding Time)
         value: N/A
         topic: product
         level: product
@@ -1342,65 +1349,57 @@ sections:
         label: Type and Number of CCPs
         value: Metal detection
         topic: food_safety
-        level: narrative
+        level: product
         lang: en
         lCell: B52
         vCell: C52
       - type: text
-        label: Product Protection Measures
+        label: Measures for Product Protection Against Intentional Manipulation
         value: "- Das Firmengelände ist mit einem Zaun abgesichert. - Besuch"
-        topic: food_safety
-        level: narrative
-        lang: de
-        lCell: B53
-        vCell: C53
-      - type: text
-        label: Food Fraud Prevention Measures
-        value: Kaas-Pack verfügt über einen Vulnerability Control Plan, der
         topic: food_fraud
         level: narrative
         lang: en
+        lCell: B53
+        vCell: C53
+      - type: text
+        label: Measures Against Food Fraud
+        value: Kaas-Pack verfügt über einen Vulnerability Control Plan, der
+        topic: food_fraud
+        level: narrative
+        lang: de
         lCell: B54
         vCell: C54
       - type: text
-        label: MOSH/MOAH Reduction Measures
+        label: Measures to Reduce MOSH / MOAH
         value: Die von Kaas-Pack verwendeten Verpackungsmaterialien werden
-        topic: packaging
+        topic: quality
         level: narrative
         lang: de
         lCell: B56
         vCell: C56
       - type: text
-        label: Trichloromethane Reduction Measures
+        label: Measures to Reduce Trichloromethane
         value: N/A
         topic: quality
-        level: narrative
+        level: product
         lang: en
         lCell: B57
         vCell: C57
       - type: text
-        label: QAV Reduction Measures
+        label: Measures to Reduce QAV
         value: N/A
         topic: quality
-        level: narrative
-        lang: fr
+        level: product
+        lang: en
         lCell: B58
         vCell: C58
-      - type: text
-        label: Certificate of Analysis Note
-        value: Entgegen der nebenstehenden Angabe wurde vereinbart, dass Ka
-        topic: documents
-        level: narrative
-        lang: de
-        lCell: B59
-        vCell: F59
-  - title: Financial data
+  - title: Financial Data
     topic: company_information
     rows: 53-56
     sheet: General data
     items:
       - type: yesno
-        label: Is your company listed on stock exchange?
+        label: Is your company publicly listed?
         value: nein-no
         topic: financial
         level: standard
@@ -1424,8 +1423,8 @@ sections:
         lCell: B56
         vCell: C56
 stats:
-  total: 173
-  answered: 153
-  standard: 116
-  narrative: 26
-  product: 31
+  total: 172
+  answered: 154
+  standard: 113
+  narrative: 25
+  product: 34

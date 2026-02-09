@@ -484,14 +484,19 @@ export class QuestionnaireIndexer {
           const lang = this.detectLanguage(item.label + ' ' + (item.value || ''));
           const hasValue = item.value && item.value !== 'EMPTY' && item.value.trim() !== '';
 
-          // Compute AI-suggested destination based on level and value
+          // Use AI-suggested destination from Claude, with fallback logic
           let aiDestination: ItemDestination;
           if (!hasValue) {
             aiDestination = 'exclude'; // Empty items should be excluded
+          } else if (item.destination && ['company', 'answer_library', 'product'].includes(item.destination)) {
+            // Use Claude's destination if provided and valid
+            aiDestination = item.destination as ItemDestination;
           } else if (item.level === 'product') {
+            // Fallback: product level → product destination
             aiDestination = 'product';
           } else {
-            aiDestination = 'answer_library'; // standard and narrative → answer_library
+            // Fallback: standard and narrative → answer_library
+            aiDestination = 'answer_library';
           }
 
           let indexedItem: IndexedItem = {

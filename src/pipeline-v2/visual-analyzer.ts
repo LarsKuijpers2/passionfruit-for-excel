@@ -129,6 +129,11 @@ And a level for reusability:
 - "narrative" = Descriptive company info, needs review (policies, procedures)
 - "product" = Product-specific, changes per product (ingredients, allergens)
 
+And a destination for where the data should be stored:
+- "company" = Company identifying info: names, codes, addresses, registration numbers, contact details (phone, email), bank info
+- "answer_library" = Certifications, compliance answers, yes/no answers, policies - general answers reusable across questionnaires
+- "product" = Product-specific: ingredients, allergens, specs that vary per product
+
 And a topic describing what the item is about (choose the most specific one):
 - "company" = Company name, address, legal info
 - "contacts" = Contact persons, phone, email
@@ -171,6 +176,7 @@ Respond in this JSON format:
       "section": "General Information",
       "topic": "company",
       "level": "standard",
+      "destination": "company",
       "lang": "en",
       "confidence": 0.95
     },
@@ -183,6 +189,7 @@ Respond in this JSON format:
       "section": "Palm Certificates",
       "topic": "certifications",
       "level": "standard",
+      "destination": "answer_library",
       "lang": "de",
       "confidence": 0.95
     },
@@ -193,8 +200,9 @@ Respond in this JSON format:
       "lCell": "B43",
       "vCell": "C43",
       "section": "Crisis Management",
-      "topic": "crisis",
+      "topic": "contacts",
       "level": "standard",
+      "destination": "company",
       "lang": "en",
       "confidence": 0.9
     },
@@ -205,8 +213,9 @@ Respond in this JSON format:
       "lCell": "B43",
       "vCell": "D43",
       "section": "Crisis Management",
-      "topic": "crisis",
+      "topic": "contacts",
       "level": "standard",
+      "destination": "company",
       "lang": "en",
       "confidence": 0.9
     }

@@ -541,6 +541,7 @@ export class WebReviewGenerator {
     .item.reviewed { opacity: 0.6; }
     .item.reviewed.correct { border-left-color: #22c55e; background: #052e16; }
     .item.reviewed.wrong { border-left-color: #ef4444; background: #450a0a; }
+    .item.reviewed.excluded { border-left-color: #6b7280; background: #1f2937; opacity: 0.4; }
 
     /* Wrong note input */
     .wrong-note-container {
@@ -3546,6 +3547,12 @@ export class WebReviewGenerator {
     .command-palette.multi-select .property-row.multi-only {
       display: flex;
     }
+    .property-row.indexed-only {
+      display: none;
+    }
+    .command-palette.indexed-mode .property-row.indexed-only {
+      display: flex;
+    }
     .merge-options {
       display: flex;
       flex-direction: column;
@@ -3752,13 +3759,13 @@ export class WebReviewGenerator {
           </select>
         </div>
         <div class="property-row">
-          <label><span class="indexed-label">Promote to</span><span class="library-label">Data Source</span></label>
+          <label><span class="indexed-label">Destination</span><span class="library-label">Data Source</span></label>
           <select id="bulkDataSource">
             <option value="">— Keep current —</option>
             <option value="answer_library">Answer Library</option>
             <option value="entities">Entities (company-level)</option>
             <option value="products">Products (product-level)</option>
-            <option value="exclude">Exclude (don't save)</option>
+            <option value="exclude">Don't save</option>
           </select>
         </div>
         <div class="property-row entity-role-row" style="display: none;">
@@ -3770,6 +3777,21 @@ export class WebReviewGenerator {
             <option value="manufacturer">Manufacturer</option>
             <option value="other">Other</option>
           </select>
+        </div>
+        <div class="property-row indexed-only">
+          <label>Extraction Quality</label>
+          <select id="bulkExtractionQuality">
+            <option value="">— No change —</option>
+            <option value="correct">Correct extraction</option>
+            <option value="wrong_location">Wrong location/cell</option>
+            <option value="wrong_field">Wrong field extracted</option>
+            <option value="missing_value">Value not captured</option>
+            <option value="duplicate">Duplicate item</option>
+          </select>
+        </div>
+        <div class="property-row extraction-note-row" style="display: none;">
+          <label>Extraction Note</label>
+          <input type="text" id="extractionNote" placeholder="Describe what's wrong with the extraction">
         </div>
         <div class="property-row">
           <label>Review Action</label>
@@ -4020,7 +4042,7 @@ export class WebReviewGenerator {
       document.getElementById('app').classList.remove('visible');
 
       try {
-        const res = await fetch(API_BASE + '/api/questionnaire/' + encodeURIComponent(id));
+        const res = await fetch(API_BASE + '/api/questionnaire/' + encodeURIComponent(id), { cache: 'no-store' });
         if (!res.ok) throw new Error('Failed to load questionnaire');
 
         questionnaireData = await res.json();
@@ -4066,7 +4088,7 @@ export class WebReviewGenerator {
         setTimeout(() => syncExtractionBadges(), 100);
 
         // Update questionnaire list
-        const questRes = await fetch(API_BASE + '/api/questionnaires');
+        const questRes = await fetch(API_BASE + '/api/questionnaires', { cache: 'no-store' });
         const questData = await questRes.json();
         allQuestionnaires = questData.questionnaires || [];
         renderQuestionnaireList(questData.questionnaires);
@@ -5306,6 +5328,7 @@ export class WebReviewGenerator {
         const rejectReason = document.getElementById('rejectReason')?.value || '';
         const mergeValues = document.getElementById('mergeValues')?.checked;
         const mergeSeparator = document.getElementById('mergeSeparator')?.value || '\\n';
+        const extractionQuality = document.getElementById('bulkExtractionQuality')?.value;
 
         const items = Array.from(selectedItems);
         const isLibraryMode = commandPalette.classList.contains('library-mode');
@@ -5354,6 +5377,58 @@ export class WebReviewGenerator {
             changes++;
           }
 
+          // Indexed mode: mark extraction quality
+          if (!isLibraryMode && extractionQuality) {
+            const qualityLabels = {
+              correct: 'Correct extraction',
+              wrong_location: 'Wrong location/cell',
+              wrong_field: 'Wrong field extracted',
+              missing_value: 'Value not captured',
+              duplicate: 'Duplicate item'
+            };
+            const qualityColors = {
+              correct: '#22c55e',
+              wrong_location: '#f59e0b',
+              wrong_field: '#ef4444',
+              missing_value: '#8b5cf6',
+              duplicate: '#6b7280'
+            };
+
+            item.dataset.extractionQuality = extractionQuality;
+            item.classList.add('reviewed');
+
+            if (extractionQuality === 'correct') {
+              item.classList.add('correct');
+            } else {
+              item.classList.add('wrong', 'extraction-issue');
+            }
+
+            // Add or update extraction quality badge
+            const existingQualityBadge = item.querySelector('.quality-badge');
+            if (existingQualityBadge) existingQualityBadge.remove();
+
+            const qualityBadge = document.createElement('span');
+            qualityBadge.className = 'quality-badge';
+            qualityBadge.style.cssText = \`
+              background: \${qualityColors[extractionQuality] || '#6b7280'};
+              color: white;
+              padding: 2px 6px;
+              border-radius: 4px;
+              font-size: 10px;
+              font-weight: 500;
+              margin-left: 8px;
+            \`;
+            qualityBadge.textContent = qualityLabels[extractionQuality] || extractionQuality;
+
+            const labelEl = item.querySelector('.item-label');
+            if (labelEl) {
+              labelEl.appendChild(qualityBadge);
+            }
+
+            await logFeedback(item, extractionQuality === 'correct' ? 'correct' : 'extraction_issue', qualityLabels[extractionQuality]);
+            changes++;
+          }
+
           // Indexed mode: promote to Save as panel
           if (!isLibraryMode && dataSource) {
             const destMap = { answer_library: 'answer_library', entities: 'company', products: 'product', exclude: 'exclude' };
@@ -5361,6 +5436,40 @@ export class WebReviewGenerator {
             const destLabels = { answer_library: 'Answer Library', company: 'Entities', product: 'Products', exclude: 'Excluded' };
             const entityLabels = { supplier: 'Supplier', client: 'Client', manufacturer: 'Manufacturer', other: 'Other' };
             const entityColors = { supplier: '#3b82f6', client: '#22c55e', manufacturer: '#f59e0b', other: '#6b7280' };
+
+            // Handle exclude: mark as excluded but don't add to library panel
+            if (newDest === 'exclude') {
+              item.classList.add('reviewed', 'excluded');
+              item.classList.remove('promoted');
+              item.dataset.destination = 'exclude';
+              item.dataset.promotedTo = 'exclude';
+
+              // Add or update excluded badge
+              const existingDestBadge = item.querySelector('.dest-badge');
+              if (existingDestBadge) existingDestBadge.remove();
+
+              const destBadge = document.createElement('span');
+              destBadge.className = 'dest-badge';
+              destBadge.style.cssText = \`
+                background: #ef4444;
+                color: white;
+                padding: 2px 6px;
+                border-radius: 4px;
+                font-size: 10px;
+                font-weight: 500;
+                margin-left: 8px;
+              \`;
+              destBadge.textContent = 'Excluded';
+
+              const labelEl = item.querySelector('.item-label');
+              if (labelEl) {
+                labelEl.appendChild(destBadge);
+              }
+
+              await logFeedback(item, 'excluded', 'Marked as exclude (don\\'t save)');
+              changes++;
+              continue;  // Skip to next item, don't try to add to library
+            }
 
             // Find the target section in library panel
             const targetSection = document.querySelector(\`#panel-library .section[data-destination="\${newDest}"]\`);
@@ -5979,6 +6088,33 @@ export class WebReviewGenerator {
             item.classList.add('reviewed', 'correct', 'accepted');
           } else if (fb.action === 'rejected') {
             item.classList.add('reviewed', 'wrong', 'rejected');
+          } else if (fb.action === 'excluded') {
+            // Restore excluded state
+            item.classList.add('reviewed', 'excluded');
+            item.dataset.destination = 'exclude';
+            item.dataset.promotedTo = 'exclude';
+
+            // Add excluded badge if not present
+            const existingDestBadge = item.querySelector('.dest-badge');
+            if (!existingDestBadge) {
+              const destBadge = document.createElement('span');
+              destBadge.className = 'dest-badge';
+              destBadge.style.cssText = \`
+                background: #ef4444;
+                color: white;
+                padding: 2px 6px;
+                border-radius: 4px;
+                font-size: 10px;
+                font-weight: 500;
+                margin-left: 8px;
+              \`;
+              destBadge.textContent = 'Excluded';
+
+              const labelEl = item.querySelector('.item-label');
+              if (labelEl) {
+                labelEl.appendChild(destBadge);
+              }
+            }
           } else if (fb.action === 'promoted' && (fb._panel === 'index' || fb._panel === 'indexed' || !fb._panel)) {
             // Restore promoted state with destination badge
             // Note: _panel may be 'index', 'indexed', or undefined for older feedback items

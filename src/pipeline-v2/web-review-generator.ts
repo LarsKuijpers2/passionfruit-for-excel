@@ -5440,9 +5440,33 @@ export class WebReviewGenerator {
             // Handle exclude: mark as excluded but don't add to library panel
             if (newDest === 'exclude') {
               item.classList.add('reviewed', 'excluded');
-              item.classList.remove('promoted');
+              item.classList.remove('promoted', 'correct', 'accepted');
               item.dataset.destination = 'exclude';
               item.dataset.promotedTo = 'exclude';
+
+              // If item was already in Save as panel, remove it from there
+              const itemId = item.dataset.id;
+              const itemCells = item.dataset.cells;
+              const itemLabel = item.dataset.label;
+              let libraryItem = null;
+              if (itemId) {
+                libraryItem = document.querySelector(\`#panel-library .item[data-id="\${itemId}"]\`);
+              }
+              if (!libraryItem && itemCells) {
+                libraryItem = document.querySelector(\`#panel-library .item[data-cells="\${itemCells}"][data-label="\${itemLabel}"]\`);
+              }
+              if (libraryItem) {
+                libraryItem.remove();
+                // Update section counts
+                document.querySelectorAll('#panel-library .section').forEach(section => {
+                  const count = section.querySelectorAll('.item').length;
+                  const metaSpan = section.querySelector('.section-meta span');
+                  if (metaSpan) metaSpan.textContent = \`\${count} items\`;
+                  section.style.display = count > 0 ? '' : 'none';
+                });
+                const totalItems = document.querySelectorAll('#panel-library .item').length;
+                document.getElementById('library-stats').textContent = \`\${totalItems} items (all sheets)\`;
+              }
 
               // Add or update excluded badge
               const existingDestBadge = item.querySelector('.dest-badge');

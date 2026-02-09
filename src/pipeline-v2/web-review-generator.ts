@@ -80,7 +80,8 @@ export class WebReviewGenerator {
   ): string {
     const sheetsHtml = structure.sheets.map(sheet => this.buildSheetTable(sheet)).join('\n');
     const indexedHtml = this.buildIndexedView(indexed);
-    const libraryHtml = library ? this.buildLibraryView(library) : '<p class="empty">Run harvest first to see library items</p>';
+    // Build "Save as" panel from indexed data grouped by destination
+    const saveAsHtml = this.buildSaveAsView(indexed);
 
     return `<!DOCTYPE html>
 <html lang="en">
@@ -1193,18 +1194,18 @@ export class WebReviewGenerator {
       </div>
     </div>
 
-    <!-- Library View -->
+    <!-- Save As View (grouped by destination) -->
     <div class="panel visible" id="panel-library">
       <div class="panel-header">
         <span>Save as</span>
         <div style="display: flex; align-items: center; gap: 12px;">
-          <span class="count">${library ? library.total + ' items' : 'Not harvested'}</span>
-          <button class="group-btn accept-all" id="accept-all-library" title="Accept all library items">✓ Accept All</button>
-          <button class="group-btn reject-all" id="reject-all-library" title="Reject all library items">✗ Reject All</button>
+          <span class="count" id="save-as-count"></span>
+          <button class="group-btn accept-all" id="accept-all-library" title="Accept all items">✓ Accept All</button>
+          <button class="group-btn reject-all" id="reject-all-library" title="Reject all items">✗ Reject All</button>
         </div>
       </div>
       <div class="panel-content">
-        ${libraryHtml}
+        ${saveAsHtml}
       </div>
     </div>
   </div>
@@ -1322,42 +1323,69 @@ export class WebReviewGenerator {
       }
     }
 
-    // Render questionnaire list
+    // Render questionnaire list grouped by customer
     function renderQuestionnaires(questionnaires) {
       if (!questionnaires || questionnaires.length === 0) {
         questionnaireList.innerHTML = '<div class="sidebar-empty">No questionnaires found</div>';
         return;
       }
 
-      questionnaireList.innerHTML = questionnaires.map(q => {
-        const isActive = currentQuestionnaire.includes(q.name.replace(/_/g, '-')) ||
-                        currentQuestionnaire.includes(q.name) ||
-                        q.name.includes(currentQuestionnaire.replace(/[^a-zA-Z0-9]/g, '_'));
-        const badgeClass = q.feedbackCount > 0 ? 'has-feedback' : '';
-        const badgeText = q.feedbackCount > 0 ? q.feedbackCount + ' reviewed' : 'Not started';
+      // Group by customer
+      const grouped = {};
+      questionnaires.forEach(q => {
+        const group = q.customer || 'Uncategorized';
+        if (!grouped[group]) grouped[group] = [];
+        grouped[group].push(q);
+      });
 
-        return \`
-          <a class="sidebar-item\${isActive ? ' active' : ''}"
-             href="\${q.hasReview ? q.reviewUrl : '#'}"
-             title="\${q.displayName}"
-             \${!q.hasReview ? 'style="opacity: 0.5; pointer-events: none;"' : ''}>
-            <span class="sidebar-item-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
-                <polyline points="14 2 14 8 20 8"/>
-                <line x1="16" y1="13" x2="8" y2="13"/>
-                <line x1="16" y1="17" x2="8" y2="17"/>
-                <line x1="10" y1="9" x2="8" y2="9"/>
-              </svg>
-            </span>
-            <span class="sidebar-item-content">
-              <div class="sidebar-item-name">\${q.displayName}</div>
-              \${q.hasReview ? '' : '<div class="sidebar-item-meta">No review generated</div>'}
-            </span>
-            <span class="sidebar-item-badge \${badgeClass}">\${badgeText}</span>
-          </a>
-        \`;
-      }).join('');
+      // Format date for display
+      function formatDate(isoDate) {
+        if (!isoDate) return '';
+        const date = new Date(isoDate);
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      }
+
+      // Render grouped list
+      let html = '';
+      Object.keys(grouped).sort().forEach(customer => {
+        const items = grouped[customer];
+        html += \`<div class="sidebar-section">
+          <div class="sidebar-section-title">\${customer} (\${items.length})</div>\`;
+
+        items.forEach(q => {
+          const isActive = currentQuestionnaire.includes(q.name.replace(/_/g, '-')) ||
+                          currentQuestionnaire.includes(q.name) ||
+                          q.name.includes(currentQuestionnaire.replace(/[^a-zA-Z0-9]/g, '_'));
+          const badgeClass = q.lastExported ? 'has-feedback' : (q.feedbackCount > 0 ? '' : '');
+          const badgeText = q.lastExported ? '✓ ' + formatDate(q.lastExported) : (q.feedbackCount > 0 ? q.feedbackCount + ' reviewed' : 'Not started');
+
+          html += \`
+            <a class="sidebar-item\${isActive ? ' active' : ''}"
+               href="\${q.hasReview ? q.reviewUrl : '#'}"
+               title="\${q.displayName}"
+               \${!q.hasReview ? 'style="opacity: 0.5; pointer-events: none;"' : ''}>
+              <span class="sidebar-item-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="16" y1="13" x2="8" y2="13"/>
+                  <line x1="16" y1="17" x2="8" y2="17"/>
+                  <line x1="10" y1="9" x2="8" y2="9"/>
+                </svg>
+              </span>
+              <span class="sidebar-item-content">
+                <div class="sidebar-item-name" title="\${q.displayName}">\${q.displayName}</div>
+                \${q.hasReview ? '' : '<div class="sidebar-item-meta">No review generated</div>'}
+              </span>
+              <span class="sidebar-item-badge \${badgeClass}">\${badgeText}</span>
+            </a>
+          \`;
+        });
+
+        html += '</div>';
+      });
+
+      questionnaireList.innerHTML = html;
     }
 
     // Sidebar event listeners
@@ -2069,12 +2097,11 @@ export class WebReviewGenerator {
         // Show summary
         const entityCount = exportResult.exported?.entityDb?.length || 0;
         const libraryCount = exportResult.exported?.answerLibrary?.length || 0;
-        const rulesCount = (rulesResult.rules?.indexRules?.exclude?.length || 0) +
-                          (rulesResult.rules?.indexRules?.corrections?.length || 0) +
-                          (rulesResult.rules?.harvestRules?.exclude?.length || 0) +
-                          (rulesResult.rules?.harvestRules?.corrections?.length || 0);
+        const extractionRulesCount = (rulesResult.rules?.extractionRules?.exclude?.length || 0) +
+                                     (rulesResult.rules?.extractionRules?.corrections?.length || 0);
+        const tagRulesCount = rulesResult.rules?.tagRules?.learned_patterns?.length || 0;
 
-        showToast('Saved ' + entityCount + ' entity, ' + libraryCount + ' library, ' + rulesCount + ' rules');
+        showToast('Saved ' + entityCount + ' entity, ' + libraryCount + ' library, ' + extractionRulesCount + ' extraction rules, ' + tagRulesCount + ' tag rules');
         console.log('Review completed:', { exportResult, rulesResult });
       } catch (e) {
         console.error('Failed to complete review:', e);
@@ -2381,10 +2408,28 @@ export class WebReviewGenerator {
       const itemsHtml = section.items.map(item => {
         const idx = itemIndex++;
         const cells = [item.lCell, item.vCell].filter(Boolean).join(',');
+        // Destination badge colors (darker for better contrast)
+        const destColors: Record<string, string> = {
+          company: '#1e40af',      // dark blue
+          answer_library: '#166534', // dark green
+          product: '#9a3412',       // dark orange
+          exclude: '#374151'        // dark gray
+        };
+        const destLabels: Record<string, string> = {
+          company: 'COMPANY',
+          answer_library: 'LIBRARY',
+          product: 'PRODUCT',
+          exclude: 'EXCLUDE'
+        };
+        const dest = (item as any).destination || '';
+        const needsReview = (item as any).needs_review;
+        const destBadge = dest ? `<span class="dest-badge" style="background: ${destColors[dest] || '#374151'}; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 9px; font-weight: 600; letter-spacing: 0.5px; margin-left: 6px;">${destLabels[dest] || dest.toUpperCase()}</span>` : '';
+        const needsReviewBadge = needsReview ? `<span class="needs-review-badge" style="background: #92400e; color: #fef3c7; padding: 2px 8px; border-radius: 4px; font-size: 9px; font-weight: 600; letter-spacing: 0.5px; margin-left: 6px;">REVIEW</span>` : '';
+
         return `
-        <div class="item" data-id="${item.id || ''}" data-index="${idx}" data-cells="${cells}" data-label="${this.escapeHtml(item.label)}" data-section="${this.escapeHtml(section.title)}" data-topic="${section.topic}">
+        <div class="item${needsReview ? ' needs-review' : ''}" data-id="${item.id || ''}" data-index="${idx}" data-cells="${cells}" data-label="${this.escapeHtml(item.label)}" data-section="${this.escapeHtml(section.title)}" data-topic="${section.topic}" data-destination="${dest}">
           <div class="item-header">
-            <span class="item-label">${this.escapeHtml(item.label)}</span>
+            <span class="item-label">${this.escapeHtml(item.label)}${destBadge}${needsReviewBadge}</span>
             <span class="item-meta">${item.lCell || ''}${item.vCell ? ' → ' + item.vCell : ''}</span>
           </div>
           <div class="item-value${item.value ? '' : ' empty'}">${item.value ? this.escapeHtml(item.value) : '(empty)'}</div>
@@ -2426,6 +2471,103 @@ export class WebReviewGenerator {
         </div>
       `;
     }).join('');
+  }
+
+  /**
+   * Build "Save as" view - items grouped by destination
+   */
+  private buildSaveAsView(indexed: IndexedQuestionnaire): string {
+    // Collect all items with destinations
+    const byDestination: Record<string, Array<{ item: any; section: string }>> = {
+      company: [],
+      answer_library: [],
+      product: [],
+      exclude: []
+    };
+
+    for (const section of indexed.sections) {
+      for (const item of section.items) {
+        const dest = (item as any).destination;
+        if (dest && byDestination[dest]) {
+          byDestination[dest].push({ item, section: section.title });
+        }
+      }
+    }
+
+    // Destination labels and colors (darker for better visibility)
+    const destInfo: Record<string, { label: string; color: string; description: string }> = {
+      company: { label: 'Company Database', color: '#1e40af', description: 'Company-level data (contacts, certifications, etc.)' },
+      answer_library: { label: 'Answer Library', color: '#166534', description: 'Reusable Q&A for auto-fill' },
+      product: { label: 'Product Database', color: '#9a3412', description: 'Product-specific data' },
+      exclude: { label: 'Excluded', color: '#374151', description: 'Not saved (signatures, etc.)' }
+    };
+
+    // Build sections for each destination
+    const sectionsHtml = Object.entries(byDestination)
+      .filter(([_, items]) => items.length > 0)
+      .map(([dest, items]) => {
+        const info = destInfo[dest];
+        const itemsHtml = items.map(({ item, section }) => {
+          const cells = [item.lCell, item.vCell].filter(Boolean).join(',');
+          return `
+          <div class="item" data-cells="${cells}" data-label="${this.escapeHtml(item.label)}" data-topic="${item.topic || ''}" data-destination="${dest}">
+            <div class="item-header">
+              <span class="item-label">${this.escapeHtml(item.label)}</span>
+              <span class="item-meta">${item.lCell || ''}${item.vCell ? ' → ' + item.vCell : ''}</span>
+            </div>
+            <div class="item-value${item.value ? '' : ' empty'}">${item.value ? this.escapeHtml(item.value) : '(empty)'}</div>
+            <div class="item-ref">Section: ${this.escapeHtml(section)} | Topic: ${item.topic || 'other'}</div>
+            <div class="item-note-display"></div>
+            <div class="item-actions review-only">
+              <button class="action-btn correct" title="Accept">✓</button>
+              <button class="action-btn wrong" title="Reject">✗</button>
+              <button class="action-btn edit" title="Edit">✎</button>
+            </div>
+            <div class="wrong-note-container">
+              <input type="text" class="wrong-note-input" placeholder="Optional: Why reject this?">
+              <div class="wrong-note-actions">
+                <button class="wrong-note-btn save">Reject</button>
+                <button class="wrong-note-btn cancel">Cancel</button>
+              </div>
+            </div>
+          </div>
+        `}).join('');
+
+        return `
+        <div class="section" data-destination="${dest}" style="border-left: 3px solid ${info.color};">
+          <div class="section-header">
+            <div class="section-header-left">
+              <span class="section-title" style="color: ${info.color};">${info.label}</span>
+              <span class="section-meta">${info.description}</span>
+            </div>
+            <div class="section-header-right">
+              <span class="section-status">${items.length} items</span>
+              <div class="group-actions review-only">
+                <button class="group-btn accept-all" title="Accept all">✓ All</button>
+                <button class="group-btn reject-all" title="Reject all">✗ All</button>
+              </div>
+            </div>
+          </div>
+          <div class="section-items">${itemsHtml}</div>
+        </div>
+      `;
+      }).join('');
+
+    const totalItems = Object.values(byDestination).reduce((sum, items) => sum + items.length, 0);
+
+    if (totalItems === 0) {
+      return '<p class="empty">No items with destinations yet. Run the TAG step first.</p>';
+    }
+
+    return `
+      <div class="legend">
+        <div class="legend-item"><span class="legend-color" style="background: #1e40af;"></span>Company</div>
+        <div class="legend-item"><span class="legend-color" style="background: #166534;"></span>Answer Library</div>
+        <div class="legend-item"><span class="legend-color" style="background: #9a3412;"></span>Product</div>
+        <div class="legend-item"><span class="legend-color" style="background: #374151;"></span>Excluded</div>
+      </div>
+      ${sectionsHtml}
+    `;
   }
 
   /**

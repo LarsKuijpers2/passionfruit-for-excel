@@ -64,12 +64,12 @@ export class RulesManager {
   }
 
   /**
-   * Load index rules
+   * Load extraction rules
    */
   async loadIndexRules(): Promise<IndexRules> {
     if (this.indexRules) return this.indexRules;
 
-    const filepath = `${this.rulesDir}/index-rules.yaml`;
+    const filepath = `${this.rulesDir}/extraction-rules.yaml`;
 
     if (!existsSync(filepath)) {
       this.indexRules = { version: '1.0', exclude: [], corrections: [] };

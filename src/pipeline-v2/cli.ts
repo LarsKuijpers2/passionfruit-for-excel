@@ -788,7 +788,7 @@ program
 ║     → Items without matching rules get needs_review=true       ║
 ║     → Updates: customers/<customer>/indexed/*.yaml             ║
 ║                                                                ║
-║  4. REVIEW                                                     ║
+║  4. SAVE                                                       ║
 ║     npx tsx src/pipeline-v2/cli.ts serve <file> -c <customer>  ║
 ║     → Interactive review with visual preview                   ║
 ║     → Assign destinations for needs_review items               ║

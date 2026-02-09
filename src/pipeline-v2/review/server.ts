@@ -562,13 +562,17 @@ export class ReviewServer {
     }
   }
 
-  private async generateRules(): Promise<{ indexRules: any; harvestRules: any }> {
+  private async generateRules(): Promise<{ extractionRules: any; tagRules: any }> {
+    // Extraction panel feedback → extraction-rules.yaml
     const indexRejected = this.feedback.index.filter(f => f.action === 'rejected');
     const indexEdited = this.feedback.index.filter(f => f.action === 'edited');
-    const libRejected = this.feedback.library.filter(f => f.action === 'rejected');
-    const libEdited = this.feedback.library.filter(f => f.action === 'edited');
 
-    const indexRules = {
+    // Library/tagging panel feedback → tag-rules.yaml (destination tagging rules)
+    const libRejected = this.feedback.library.filter(f => f.action === 'rejected');
+    const libDestinationChanges = this.feedback.library.filter(f => f.action === 'destination_changed');
+
+    // Extraction rules (what to extract, what to exclude)
+    const extractionRules = {
       version: '1.0',
       updatedAt: new Date().toISOString().split('T')[0],
       source: this.questionnaire,
@@ -588,53 +592,68 @@ export class ReviewServer {
       }))
     };
 
-    const harvestRules = {
+    // Tag rules (destination routing patterns learned from review)
+    // Add new pattern overrides based on destination changes and rejections
+    const tagRulePatterns: Array<{ pattern: string; destination: string; source: string }> = [];
+
+    // Learn from destination changes - if user sets a specific destination for a label pattern
+    for (const f of libDestinationChanges) {
+      if (f.destination && f.label) {
+        // Create a pattern from the label (escape special chars, make case-insensitive)
+        const pattern = f.label.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        tagRulePatterns.push({
+          pattern,
+          destination: f.destination,
+          source: `learned from: ${f.label}`
+        });
+      }
+    }
+
+    // Rejections in library panel mean "exclude this item"
+    for (const f of libRejected) {
+      if (f.label) {
+        const pattern = f.label.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        tagRulePatterns.push({
+          pattern,
+          destination: 'exclude',
+          source: `rejected: ${f.reason || f.label}`
+        });
+      }
+    }
+
+    const tagRules = {
       version: '1.0',
       updatedAt: new Date().toISOString().split('T')[0],
-      source: this.questionnaire,
-      exclude: libRejected.map(f => ({
-        label: f.label,
-        topic: f.topic,
-        reason: f.reason || 'Rejected during review',
-        reviewedAt: f.reviewedAt
-      })),
-      corrections: libEdited.map(f => ({
-        match: { label: f.label, topic: f.topic },
-        correct: {
-          label: f.editedLabel || f.label,
-          value: f.editedValue || f.value
-        },
-        reviewedAt: f.reviewedAt
-      }))
+      learned_patterns: tagRulePatterns
     };
 
-    return { indexRules, harvestRules };
+    return { extractionRules, tagRules };
   }
 
-  private async saveRules(rules: { indexRules: any; harvestRules: any }): Promise<void> {
+  private async saveRules(rules: { extractionRules: any; tagRules: any }): Promise<void> {
     const rulesDir = './rules';
     await mkdir(rulesDir, { recursive: true });
 
     // Load existing rules and merge
-    const indexRulesPath = join(rulesDir, 'index-rules.yaml');
-    const harvestRulesPath = join(rulesDir, 'harvest-rules.yaml');
+    const extractionRulesPath = join(rulesDir, 'extraction-rules.yaml');
+    const tagRulesPath = join(rulesDir, 'tag-rules.yaml');
 
-    let existingIndexRules: any = { version: '1.0', exclude: [], corrections: [] };
-    let existingHarvestRules: any = { version: '1.0', exclude: [], corrections: [] };
+    let existingExtractionRules: any = { version: '1.0', exclude: [], corrections: [] };
+    let existingTagRules: any = { version: '1.0', pattern_overrides: [], topic_destinations: {} };
 
     try {
-      if (existsSync(indexRulesPath)) {
-        existingIndexRules = parseYaml(await readFile(indexRulesPath, 'utf-8'));
+      if (existsSync(extractionRulesPath)) {
+        existingExtractionRules = parseYaml(await readFile(extractionRulesPath, 'utf-8'));
       }
     } catch {}
 
     try {
-      if (existsSync(harvestRulesPath)) {
-        existingHarvestRules = parseYaml(await readFile(harvestRulesPath, 'utf-8'));
+      if (existsSync(tagRulesPath)) {
+        existingTagRules = parseYaml(await readFile(tagRulesPath, 'utf-8'));
       }
     } catch {}
 
-    // Merge rules (avoid duplicates by cells/label)
+    // Merge extraction rules (avoid duplicates by cells/label)
     const mergeRules = (existing: any[], newItems: any[], key: string) => {
       const merged = [...existing];
       for (const item of newItems) {
@@ -646,18 +665,35 @@ export class ReviewServer {
       return merged;
     };
 
-    existingIndexRules.exclude = mergeRules(existingIndexRules.exclude || [], rules.indexRules.exclude, 'cells');
-    existingIndexRules.corrections = mergeRules(existingIndexRules.corrections || [], rules.indexRules.corrections, 'cells');
-    existingIndexRules.updatedAt = new Date().toISOString().split('T')[0];
+    existingExtractionRules.exclude = mergeRules(existingExtractionRules.exclude || [], rules.extractionRules.exclude, 'cells');
+    existingExtractionRules.corrections = mergeRules(existingExtractionRules.corrections || [], rules.extractionRules.corrections, 'cells');
+    existingExtractionRules.updatedAt = new Date().toISOString().split('T')[0];
 
-    existingHarvestRules.exclude = mergeRules(existingHarvestRules.exclude || [], rules.harvestRules.exclude, 'label');
-    existingHarvestRules.corrections = mergeRules(existingHarvestRules.corrections || [], rules.harvestRules.corrections, 'label');
-    existingHarvestRules.updatedAt = new Date().toISOString().split('T')[0];
+    // Merge tag rules - add learned patterns to pattern_overrides
+    const existingPatterns = existingTagRules.pattern_overrides || [];
+    const learnedPatterns = rules.tagRules.learned_patterns || [];
 
-    await writeFile(indexRulesPath, stringifyYaml(existingIndexRules), 'utf-8');
-    await writeFile(harvestRulesPath, stringifyYaml(existingHarvestRules), 'utf-8');
+    for (const learned of learnedPatterns) {
+      // Check if pattern already exists
+      const exists = existingPatterns.some((p: any) => p.pattern === learned.pattern);
+      if (!exists) {
+        existingPatterns.push({
+          pattern: learned.pattern,
+          destination: learned.destination,
+          // Add a comment showing this was learned
+          _source: learned.source
+        });
+      }
+    }
 
-    console.log(`Saved rules to ${indexRulesPath} and ${harvestRulesPath}`);
+    existingTagRules.pattern_overrides = existingPatterns;
+    existingTagRules.updatedAt = new Date().toISOString().split('T')[0];
+
+    await writeFile(extractionRulesPath, stringifyYaml(existingExtractionRules), 'utf-8');
+    await writeFile(tagRulesPath, stringifyYaml(existingTagRules), 'utf-8');
+
+    console.log(`Saved extraction rules to ${extractionRulesPath}`);
+    console.log(`Saved tag rules to ${tagRulesPath}`);
   }
 
   /**
@@ -846,7 +882,7 @@ export class ReviewServer {
   }
 
   /**
-   * List all available questionnaires from indexed folder
+   * List all available questionnaires from indexed folder and customer folders
    */
   private async listQuestionnaires(): Promise<Array<{
     name: string;
@@ -855,8 +891,9 @@ export class ReviewServer {
     reviewUrl?: string;
     indexed: boolean;
     feedbackCount?: number;
+    customer?: string;
+    lastExported?: string;
   }>> {
-    const indexedDir = './indexed';
     const questionnaires: Array<{
       name: string;
       displayName: string;
@@ -864,59 +901,110 @@ export class ReviewServer {
       reviewUrl?: string;
       indexed: boolean;
       feedbackCount?: number;
+      customer?: string;
+      lastExported?: string;
     }> = [];
 
+    // Also list review HTML files to match against
+    let reviewFiles: string[] = [];
     try {
+      reviewFiles = await readdir(this.reviewDir);
+    } catch {}
+
+    // Helper to process questionnaire files
+    const processFile = async (file: string, indexedDir: string, customer?: string) => {
+      if (!file.endsWith('.yaml') && !file.endsWith('.yml')) return;
+
+      const name = file.replace(/\.(yaml|yml)$/, '');
+      const safeName = name.replace(/[^a-zA-Z0-9]/g, '_');
+
+      // Find matching review HTML file (may have _xlsx or other suffixes)
+      const reviewFile = reviewFiles.find(f =>
+        f.endsWith('_review.html') &&
+        (f.startsWith(safeName) || f.includes(safeName))
+      );
+      const hasReview = !!reviewFile;
+
+      // Check feedback count
+      let feedbackCount = 0;
+      const feedbackPath = join(this.reviewDir, safeName, 'feedback.json');
+      if (existsSync(feedbackPath)) {
+        try {
+          const feedbackData = JSON.parse(await readFile(feedbackPath, 'utf-8'));
+          feedbackCount = (feedbackData.index?.length || 0) + (feedbackData.library?.length || 0);
+        } catch {}
+      }
+
+      // Check last exported date
+      let lastExported: string | undefined;
+      const exportDir = customer
+        ? join('./approved-exports', customer, safeName)
+        : join('./approved-exports', 'default', safeName);
+      const entityDbPath = join(exportDir, 'entity-db.json');
+      if (existsSync(entityDbPath)) {
+        try {
+          const exportData = JSON.parse(await readFile(entityDbPath, 'utf-8'));
+          lastExported = exportData.meta?.exportedAt;
+        } catch {}
+      }
+
+      // Create display name (shorter, more readable)
+      const displayName = name
+        .replace(/_/g, ' ')
+        .replace(/\d{8}/, (d) => `${d.slice(0,4)}-${d.slice(4,6)}-${d.slice(6,8)}`)
+        .replace(/  +/g, ' ')
+        .trim();
+
+      questionnaires.push({
+        name,
+        displayName,
+        hasReview,
+        reviewUrl: hasReview ? reviewFile : undefined,
+        indexed: true,
+        feedbackCount,
+        customer,
+        lastExported
+      });
+    };
+
+    // 1. Check legacy ./indexed folder
+    try {
+      const indexedDir = './indexed';
       const files = await readdir(indexedDir);
-
-      // Also list review HTML files to match against
-      let reviewFiles: string[] = [];
-      try {
-        reviewFiles = await readdir(this.reviewDir);
-      } catch {}
-
       for (const file of files) {
-        if (!file.endsWith('.yaml') && !file.endsWith('.yml')) continue;
-
-        const name = file.replace(/\.(yaml|yml)$/, '');
-        const safeName = name.replace(/[^a-zA-Z0-9]/g, '_');
-
-        // Find matching review HTML file (may have _xlsx or other suffixes)
-        const reviewFile = reviewFiles.find(f =>
-          f.endsWith('_review.html') &&
-          (f.startsWith(safeName) || f.includes(safeName))
-        );
-        const hasReview = !!reviewFile;
-
-        // Check feedback count
-        let feedbackCount = 0;
-        const feedbackPath = join(this.reviewDir, safeName, 'feedback.json');
-        if (existsSync(feedbackPath)) {
-          try {
-            const feedbackData = JSON.parse(await readFile(feedbackPath, 'utf-8'));
-            feedbackCount = (feedbackData.index?.length || 0) + (feedbackData.library?.length || 0);
-          } catch {}
-        }
-
-        // Create display name (shorter, more readable)
-        const displayName = name
-          .replace(/_/g, ' ')
-          .replace(/\d{8}/, (d) => `${d.slice(0,4)}-${d.slice(4,6)}-${d.slice(6,8)}`)
-          .replace(/  +/g, ' ')
-          .trim();
-
-        questionnaires.push({
-          name,
-          displayName,
-          hasReview,
-          reviewUrl: hasReview ? reviewFile : undefined,
-          indexed: true,
-          feedbackCount
-        });
+        await processFile(file, indexedDir);
       }
     } catch (error) {
-      console.error('Error reading indexed directory:', error);
+      // No legacy indexed folder, that's ok
     }
+
+    // 2. Check customer folders: customers/*/indexed
+    try {
+      const customersDir = './customers';
+      const customers = await readdir(customersDir);
+
+      for (const customer of customers) {
+        const customerIndexedDir = join(customersDir, customer, 'indexed');
+        try {
+          const files = await readdir(customerIndexedDir);
+          for (const file of files) {
+            await processFile(file, customerIndexedDir, customer);
+          }
+        } catch {
+          // Customer folder has no indexed subfolder, skip
+        }
+      }
+    } catch {
+      // No customers folder, that's ok
+    }
+
+    // Sort by customer (with undefined/legacy first), then by name
+    questionnaires.sort((a, b) => {
+      if (a.customer && !b.customer) return 1;
+      if (!a.customer && b.customer) return -1;
+      if (a.customer !== b.customer) return (a.customer || '').localeCompare(b.customer || '');
+      return a.name.localeCompare(b.name);
+    });
 
     return questionnaires;
   }

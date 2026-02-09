@@ -1,0 +1,359 @@
+{
+  "meta": {
+    "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+    "exportedAt": "2026-02-09T14:57:17.498Z",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "label": "Company Production Plant - Product 300230",
+      "value": "Kaas-Pack Holland B.V.",
+      "cells": "B8 → B9",
+      "section": "Production Plant Information & QM System",
+      "topic": "company",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.032Z"
+    },
+    {
+      "label": "Currently Supplied Product - 300230",
+      "value": "300230 - Gouda 48% Scheiben gefächert 10x10cm à 20g 6x1kg",
+      "cells": "D8 → D9",
+      "section": "Production Plant Information & QM System",
+      "topic": "product",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.049Z"
+    },
+    {
+      "label": "Origin/Identity Marker - Product 300230",
+      "value": "The Netherlands",
+      "cells": "E8 → E9",
+      "section": "Production Plant Information & QM System",
+      "topic": "origin",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.065Z"
+    },
+    {
+      "label": "Milk exclusively from EU 27 countries - Product 300230",
+      "value": "ja-yes",
+      "cells": "F8 → F9",
+      "section": "Production Plant Information & QM System",
+      "topic": "origin",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.085Z"
+    },
+    {
+      "label": "Origin Countries of Milk - Product 300230",
+      "value": "NL, DE, AT",
+      "cells": "H8 → H9",
+      "section": "Production Plant Information & QM System",
+      "topic": "origin",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.099Z"
+    },
+    {
+      "label": "Company Production Plant - Product 300232",
+      "value": "Kaas-Pack Holland B.V.",
+      "cells": "B8 → B10",
+      "section": "Production Plant Information & QM System",
+      "topic": "company",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.113Z"
+    },
+    {
+      "label": "Currently Supplied Product - 300232",
+      "value": "300232 - Gouda CL 48% Scheiben gefäch. 10x10cm à 20g 6x1kg",
+      "cells": "D8 → D10",
+      "section": "Production Plant Information & QM System",
+      "topic": "product",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.135Z"
+    },
+    {
+      "label": "Origin/Identity Marker - Product 300232",
+      "value": "The Netherlands",
+      "cells": "E8 → E10",
+      "section": "Production Plant Information & QM System",
+      "topic": "origin",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.150Z"
+    },
+    {
+      "label": "Milk exclusively from EU 27 countries - Product 300232",
+      "value": "ja-yes",
+      "cells": "F8 → F10",
+      "section": "Production Plant Information & QM System",
+      "topic": "origin",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.165Z"
+    },
+    {
+      "label": "Origin Countries of Milk - Product 300232",
+      "value": "NL, DE",
+      "cells": "H8 → H10",
+      "section": "Production Plant Information & QM System",
+      "topic": "origin",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.186Z"
+    },
+    {
+      "label": "Company Production Plant - Product 301394",
+      "value": "Kaas-Pack Holland B.V.",
+      "cells": "B8 → B11",
+      "section": "Production Plant Information & QM System",
+      "topic": "company",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.208Z"
+    },
+    {
+      "label": "Currently Supplied Product - 301394",
+      "value": "301394 - Cheddar rot 50% Sch. gefächert 9x9cm à 20g 6x1kg",
+      "cells": "D8 → D11",
+      "section": "Production Plant Information & QM System",
+      "topic": "product",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.223Z"
+    },
+    {
+      "label": "Origin/Identity Marker - Product 301394",
+      "value": "The Netherlands",
+      "cells": "E8 → E11",
+      "section": "Production Plant Information & QM System",
+      "topic": "origin",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.245Z"
+    },
+    {
+      "label": "Milk exclusively from EU 27 countries - Product 301394",
+      "value": "ja-yes",
+      "cells": "F8 → F11",
+      "section": "Production Plant Information & QM System",
+      "topic": "origin",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.260Z"
+    },
+    {
+      "label": "Origin Countries of Milk - Product 301394",
+      "value": "IRL",
+      "cells": "H8 → H11",
+      "section": "Production Plant Information & QM System",
+      "topic": "origin",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.274Z"
+    },
+    {
+      "label": "Company Production Plant - Product 302594",
+      "value": "Kaas-Pack Holland B.V.",
+      "cells": "B8 → B12",
+      "section": "Production Plant Information & QM System",
+      "topic": "company",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.292Z"
+    },
+    {
+      "label": "Currently Supplied Product - 302594",
+      "value": "302594 - Cheddar rot 50% Sch. gefächert 9x9cm à 20g 6x1kg",
+      "cells": "D8 → D12",
+      "section": "Production Plant Information & QM System",
+      "topic": "product",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.310Z"
+    },
+    {
+      "label": "Origin/Identity Marker - Product 302594",
+      "value": "The Netherlands",
+      "cells": "E8 → E12",
+      "section": "Production Plant Information & QM System",
+      "topic": "origin",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.325Z"
+    },
+    {
+      "label": "Milk exclusively from EU 27 countries - Product 302594",
+      "value": "ja-yes",
+      "cells": "F8 → F12",
+      "section": "Production Plant Information & QM System",
+      "topic": "origin",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.340Z"
+    },
+    {
+      "label": "Origin Countries of Milk - Product 302594",
+      "value": "IRL",
+      "cells": "H8 → H12",
+      "section": "Production Plant Information & QM System",
+      "topic": "origin",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.363Z"
+    },
+    {
+      "label": "Company Production Plant - Product 302811",
+      "value": "Kaas-Pack Holland B.V.",
+      "cells": "B8 → B13",
+      "section": "Production Plant Information & QM System",
+      "topic": "company",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.385Z"
+    },
+    {
+      "label": "Currently Supplied Product - 302811",
+      "value": "302811 - Emmentaler 45% Sch. gefächert 10x10cm à 20g 6x1kg",
+      "cells": "D8 → D13",
+      "section": "Production Plant Information & QM System",
+      "topic": "product",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.401Z"
+    },
+    {
+      "label": "Origin/Identity Marker - Product 302811",
+      "value": "The Netherlands",
+      "cells": "E8 → E13",
+      "section": "Production Plant Information & QM System",
+      "topic": "origin",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.419Z"
+    },
+    {
+      "label": "Milk exclusively from EU 27 countries - Product 302811",
+      "value": "ja-yes",
+      "cells": "F8 → F13",
+      "section": "Production Plant Information & QM System",
+      "topic": "origin",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.438Z"
+    },
+    {
+      "label": "Origin Countries of Milk - Product 302811",
+      "value": "NL, DE",
+      "cells": "H8 → H13",
+      "section": "Production Plant Information & QM System",
+      "topic": "origin",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.453Z"
+    },
+    {
+      "label": "Company Production Plant - Product 303762",
+      "value": "Kaas-Pack Holland B.V.",
+      "cells": "B8 → B14",
+      "section": "Production Plant Information & QM System",
+      "topic": "company",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.472Z"
+    },
+    {
+      "label": "Currently Supplied Product - 303762",
+      "value": "303762 - Gouda 48% F.i.Tr. gerieben (6% Stärke) 2mm 2x5Kg",
+      "cells": "D8 → D14",
+      "section": "Production Plant Information & QM System",
+      "topic": "product",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.490Z"
+    },
+    {
+      "label": "Origin/Identity Marker - Product 303762",
+      "value": "The Netherlands",
+      "cells": "E8 → E14",
+      "section": "Production Plant Information & QM System",
+      "topic": "origin",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.506Z"
+    },
+    {
+      "label": "Milk exclusively from EU 27 countries - Product 303762",
+      "value": "ja-yes",
+      "cells": "F8 → F14",
+      "section": "Production Plant Information & QM System",
+      "topic": "origin",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.523Z"
+    },
+    {
+      "label": "Origin Countries of Milk - Product 303762",
+      "value": "NL, DE",
+      "cells": "H8 → H14",
+      "section": "Production Plant Information & QM System",
+      "topic": "origin",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.542Z"
+    },
+    {
+      "label": "Company Production Plant - Product 304010",
+      "value": "Kaas-Pack Holland B.V.",
+      "cells": "B8 → B15",
+      "section": "Production Plant Information & QM System",
+      "topic": "company",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.564Z"
+    },
+    {
+      "label": "Currently Supplied Product - 304010",
+      "value": "304010 - Mozarella 40% F.i.Tr. gerieben 4mm 4x2,5kg",
+      "cells": "D8 → D15",
+      "section": "Production Plant Information & QM System",
+      "topic": "product",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.583Z"
+    },
+    {
+      "label": "Origin/Identity Marker - Product 304010",
+      "value": "The Netherlands",
+      "cells": "E8 → E15",
+      "section": "Production Plant Information & QM System",
+      "topic": "origin",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.602Z"
+    },
+    {
+      "label": "Milk exclusively from EU 27 countries - Product 304010",
+      "value": "ja-yes",
+      "cells": "F8 → F15",
+      "section": "Production Plant Information & QM System",
+      "topic": "origin",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.617Z"
+    },
+    {
+      "label": "Origin Countries of Milk - Product 304010",
+      "value": "BE, NL, DE, AT",
+      "cells": "H8 → H15",
+      "section": "Production Plant Information & QM System",
+      "topic": "origin",
+      "destination": "product",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:10:48.009Z"
+    }
+  ]
+}

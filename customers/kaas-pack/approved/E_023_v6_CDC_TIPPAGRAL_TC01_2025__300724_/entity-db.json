@@ -1,0 +1,219 @@
+{
+  "meta": {
+    "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+    "exportedAt": "2026-02-09T14:48:32.293Z",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "label": "Document Type",
+      "value": "FICHE TECHNIQUE",
+      "cells": "A1 → A1",
+      "section": "Header Information",
+      "topic": "documents",
+      "destination": "company",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:35:28.873Z"
+    },
+    {
+      "label": "Company Name",
+      "value": "TIPPAGRAL SAS",
+      "cells": "F1 → F1",
+      "section": "Header Information",
+      "topic": "company",
+      "destination": "company",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:35:28.912Z"
+    },
+    {
+      "label": "Company Address",
+      "value": "1, rue Professeur Louis Neel",
+      "cells": "F2 → F2",
+      "section": "Header Information",
+      "topic": "company",
+      "destination": "company",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:35:28.961Z"
+    },
+    {
+      "label": "Company Address 2",
+      "value": "BP 20 - 21601 Longvic France",
+      "cells": "F3 → F3",
+      "section": "Header Information",
+      "topic": "company",
+      "destination": "company",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:35:29.015Z"
+    },
+    {
+      "label": "Company Phone",
+      "value": "+33 (0)3 80 31 66 19",
+      "cells": "F4 → F4",
+      "section": "Header Information",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:35:29.060Z"
+    },
+    {
+      "label": "Document Reference",
+      "value": "Ref: E.023 Version: 6",
+      "cells": "C6 → C6",
+      "section": "Header Information",
+      "topic": "documents",
+      "destination": "company",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:35:29.121Z"
+    },
+    {
+      "label": "Document Creation/Revision Date",
+      "value": "Crée le : 12/09/2017 Révisé le : 30/12/2024",
+      "cells": "F6 → F6",
+      "section": "Header Information",
+      "topic": "documents",
+      "destination": "company",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:35:29.160Z"
+    },
+    {
+      "label": "Supplier Name",
+      "value": "Kaas-Pack Holland B.V.",
+      "cells": "A5 → C5",
+      "section": "Supplier Details",
+      "topic": "company",
+      "destination": "company",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:43:27.619Z"
+    },
+    {
+      "label": "Supplier Address",
+      "value": "Buitenvaart 2109 7905 SW HOOGEVEEN Nederland",
+      "cells": "A7 → C7",
+      "section": "Supplier Details",
+      "topic": "company",
+      "destination": "company",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:43:27.664Z"
+    },
+    {
+      "label": "Supplier Phone",
+      "value": "+31 528 26 82 46",
+      "cells": "A9 → C9",
+      "section": "Supplier Details",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:43:27.694Z"
+    },
+    {
+      "label": "Supplier Email",
+      "value": "info@kaaspack.nl",
+      "cells": "A10 → C10",
+      "section": "Supplier Details",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:43:27.723Z"
+    },
+    {
+      "label": "Health Approval Number / Estampille Sanitaire",
+      "value": "NL Z0159 EU",
+      "cells": "A12 → C12",
+      "section": "Supplier Details",
+      "topic": "approval",
+      "destination": "company",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:43:27.577Z"
+    },
+    {
+      "label": "Crisis Management Procedure Available",
+      "value": "Yes",
+      "cells": "A24 → D24",
+      "section": "Emergency Committee",
+      "topic": "crisis",
+      "destination": "company",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:43:37.548Z"
+    },
+    {
+      "label": "Emergency Contact Name",
+      "value": "Quality department",
+      "cells": "A26 → D26",
+      "section": "Emergency Committee",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:43:37.600Z"
+    },
+    {
+      "label": "Emergency Contact Phone",
+      "value": "+31 528 26 82 46",
+      "cells": "A28 → D28",
+      "section": "Emergency Committee",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:43:37.637Z"
+    },
+    {
+      "label": "Emergency Contact Email",
+      "value": "quality@kaaspack.nl",
+      "cells": "A30 → D30",
+      "section": "Emergency Committee",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:43:37.667Z"
+    },
+    {
+      "label": "24/7 Emergency Phone",
+      "value": "+31 6 21 86 57 19",
+      "cells": "A32 → D32",
+      "section": "Emergency Committee",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:43:37.697Z"
+    },
+    {
+      "label": "Quality Department Email",
+      "value": "quality@kaaspack.nl",
+      "cells": "A41 → B41",
+      "section": "Quality Department",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:35:46.002Z"
+    },
+    {
+      "label": "Quality Department Phone",
+      "value": "+31 528 26 82 46",
+      "cells": "A43 → B43",
+      "section": "Quality Department",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:35:46.048Z"
+    },
+    {
+      "label": "Name",
+      "value": "G. Sok",
+      "cells": "A54 → B54",
+      "section": "Signature",
+      "topic": "signature",
+      "destination": "company",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:35:47.629Z"
+    },
+    {
+      "label": "Date",
+      "value": "2025-10-07",
+      "cells": "I54 → J54",
+      "section": "Signature",
+      "topic": "signature",
+      "destination": "company",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:35:47.659Z"
+    }
+  ]
+}

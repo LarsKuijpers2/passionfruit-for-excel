@@ -1,0 +1,499 @@
+{
+  "meta": {
+    "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+    "exportedAt": "2026-02-09T14:57:17.498Z",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "label": "Company Name",
+      "value": "Kaas-Pack Holland B.V.",
+      "cells": "B10 → C10",
+      "section": "General Data",
+      "topic": "company",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:38.122Z"
+    },
+    {
+      "label": "Street",
+      "value": "Buitenvaart 2109",
+      "cells": "B11 → C11",
+      "section": "General Data",
+      "topic": "company",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:38.142Z"
+    },
+    {
+      "label": "Postal Code",
+      "value": "7905 SW",
+      "cells": "B12 → C12",
+      "section": "General Data",
+      "topic": "company",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:38.159Z"
+    },
+    {
+      "label": "City",
+      "value": "Hoogeveen",
+      "cells": "B13 → C13",
+      "section": "General Data",
+      "topic": "company",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:38.179Z"
+    },
+    {
+      "label": "Country",
+      "value": "The Netherlands",
+      "cells": "B14 → C14",
+      "section": "General Data",
+      "topic": "company",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:38.195Z"
+    },
+    {
+      "label": "Website",
+      "value": "https://kaaspack.nl/",
+      "cells": "B15 → C15",
+      "section": "General Data",
+      "topic": "company",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:38.213Z"
+    },
+    {
+      "label": "Phone",
+      "value": "+31 528 268 246",
+      "cells": "B16 → C16",
+      "section": "General Data",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:38.227Z"
+    },
+    {
+      "label": "General Email Address",
+      "value": "orderdesk@kaaspack.nl",
+      "cells": "B17 → C17",
+      "section": "General Data",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:38.240Z"
+    },
+    {
+      "label": "Contact Person Name",
+      "value": "L. Smit",
+      "cells": "B18 → C18",
+      "section": "General Data",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:38.257Z"
+    },
+    {
+      "label": "Contact Person Phone",
+      "value": "+31 (0)6 21 86 57 19",
+      "cells": "B19 → C19",
+      "section": "General Data",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:38.277Z"
+    },
+    {
+      "label": "Contact Person Email",
+      "value": "l.smit@kaaspack.nl",
+      "cells": "B20 → C20",
+      "section": "General Data",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:38.291Z"
+    },
+    {
+      "label": "Tax Number",
+      "value": "NL809333120B01",
+      "cells": "B26 → C26",
+      "section": "General Data",
+      "topic": "financial",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:38.318Z"
+    },
+    {
+      "label": "Bank Details (IBAN)",
+      "value": "NL67 RABO 0329 0821 16",
+      "cells": "B27 → C27",
+      "section": "General Data",
+      "topic": "financial",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:38.333Z"
+    },
+    {
+      "label": "Bank Details (BIC)",
+      "value": "RABONL2U",
+      "cells": "B28 → C28",
+      "section": "General Data",
+      "topic": "financial",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:38.353Z"
+    },
+    {
+      "label": "Accounting Contact",
+      "value": "Bookkeeping department",
+      "cells": "B29 → C29",
+      "section": "General Data",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:38.369Z"
+    },
+    {
+      "label": "Accounting Phone",
+      "value": "+31 528 268 246",
+      "cells": "B30 → C30",
+      "section": "General Data",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:38.383Z"
+    },
+    {
+      "label": "Accounting Email",
+      "value": "finance@kaaspack.nl",
+      "cells": "B31 → C31",
+      "section": "General Data",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:38.397Z"
+    },
+    {
+      "label": "Sales Contact",
+      "value": "L. Smit",
+      "cells": "B32 → C32",
+      "section": "General Data",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:38.411Z"
+    },
+    {
+      "label": "Sales Phone",
+      "value": "+31 (0)6 21 86 57 19",
+      "cells": "B33 → C33",
+      "section": "General Data",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:38.426Z"
+    },
+    {
+      "label": "Sales Email",
+      "value": "l.smit@kaaspack.nl",
+      "cells": "B34 → C34",
+      "section": "General Data",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:38.441Z"
+    },
+    {
+      "label": "Quality Management Contact",
+      "value": "Quality department",
+      "cells": "B35 → C35",
+      "section": "General Data",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:38.455Z"
+    },
+    {
+      "label": "Quality Management Email",
+      "value": "quality@kaaspack.nl",
+      "cells": "B36 → C36",
+      "section": "General Data",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:38.469Z"
+    },
+    {
+      "label": "Quality Management Phone",
+      "value": "+31 528 268 246",
+      "cells": "B37 → C37",
+      "section": "General Data",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:38.483Z"
+    },
+    {
+      "label": "Manufacturer or Trader",
+      "value": "Hersteller-Producer",
+      "cells": "B38 → C38",
+      "section": "General Data",
+      "topic": "company",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:38.497Z"
+    },
+    {
+      "label": "Agree to F+S Audit",
+      "value": "ja-yes",
+      "cells": "B39 → C39",
+      "section": "General Data",
+      "topic": "audits",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:38.511Z"
+    },
+    {
+      "label": "Name (Nachhaltigkeitsabteilung) / Name (Sustainability Department)",
+      "value": "G. Sok",
+      "cells": "B39 → C39",
+      "section": "Kontaktdaten Ansprechpartner Nachhaltigkeitsabteilung",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:40.265Z"
+    },
+    {
+      "label": "Telefon (Nachhaltigkeitsabteilung) / Phone (Sustainability Department)",
+      "value": "+31 528 268 246",
+      "cells": "B40 → C40",
+      "section": "Kontaktdaten Ansprechpartner Nachhaltigkeitsabteilung",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:40.279Z"
+    },
+    {
+      "label": "Mobil-Telefon (Nachhaltigkeitsabteilung) / Mobile Phone (Sustainability Department)",
+      "value": "n/a",
+      "cells": "B41 → C41",
+      "section": "Kontaktdaten Ansprechpartner Nachhaltigkeitsabteilung",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:40.293Z"
+    },
+    {
+      "label": "E-Mail-Adresse (Nachhaltigkeitsabteilung) / Email Address (Sustainability Department)",
+      "value": "quality@kaaspack.nl",
+      "cells": "B42 → C42",
+      "section": "Kontaktdaten Ansprechpartner Nachhaltigkeitsabteilung",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:40.307Z"
+    },
+    {
+      "label": "Crisis Contact Name (Contact Person 1)",
+      "value": "Quality department",
+      "cells": "B42 → C42",
+      "section": "Crisis Management",
+      "topic": "crisis",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:40.321Z"
+    },
+    {
+      "label": "Crisis Contact Name (Contact Person 2)",
+      "value": "L. Smit",
+      "cells": "B42 → D42",
+      "section": "Crisis Management",
+      "topic": "crisis",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:40.340Z"
+    },
+    {
+      "label": "Crisis Contact Phone (Contact Person 1)",
+      "value": "+31 528 268 246",
+      "cells": "B43 → C43",
+      "section": "Crisis Management",
+      "topic": "crisis",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:40.355Z"
+    },
+    {
+      "label": "Crisis Contact Phone (Contact Person 2)",
+      "value": "+31 528 268 246",
+      "cells": "B43 → D43",
+      "section": "Crisis Management",
+      "topic": "crisis",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:40.376Z"
+    },
+    {
+      "label": "Crisis Contact Mobile (Contact Person 1)",
+      "value": "n/a",
+      "cells": "B44 → C44",
+      "section": "Crisis Management",
+      "topic": "crisis",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:40.391Z"
+    },
+    {
+      "label": "Crisis Contact Mobile (Contact Person 2)",
+      "value": "+31 (0)6 21 86 57 19",
+      "cells": "B44 → D44",
+      "section": "Crisis Management",
+      "topic": "crisis",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:40.405Z"
+    },
+    {
+      "label": "Crisis Contact Email (Contact Person 1)",
+      "value": "quality@kaaspack.nl",
+      "cells": "B45 → C45",
+      "section": "Crisis Management",
+      "topic": "crisis",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:40.419Z"
+    },
+    {
+      "label": "Crisis Contact Email (Contact Person 2)",
+      "value": "l.smit@kaaspack.nl",
+      "cells": "B45 → D45",
+      "section": "Crisis Management",
+      "topic": "crisis",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:40.433Z"
+    },
+    {
+      "label": "Company Production plant",
+      "value": "Kaas-Pack Holland B.V.",
+      "cells": "B11 → C11",
+      "section": "Production Plant Information",
+      "topic": "company",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:44.829Z"
+    },
+    {
+      "label": "Street",
+      "value": "Buitenvaart 2109",
+      "cells": "B13 → C13",
+      "section": "Production Plant Information",
+      "topic": "company",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:44.852Z"
+    },
+    {
+      "label": "Postal Code",
+      "value": "7905 SW",
+      "cells": "B14 → C14",
+      "section": "Production Plant Information",
+      "topic": "company",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:44.873Z"
+    },
+    {
+      "label": "City",
+      "value": "Hoogeveen",
+      "cells": "B15 → C15",
+      "section": "Production Plant Information",
+      "topic": "company",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:44.892Z"
+    },
+    {
+      "label": "Country",
+      "value": "The Netherlands",
+      "cells": "B16 → C16",
+      "section": "Production Plant Information",
+      "topic": "company",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:44.914Z"
+    },
+    {
+      "label": "Website",
+      "value": "https://kaaspack.nl/",
+      "cells": "B17 → C17",
+      "section": "Production Plant Information",
+      "topic": "company",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:44.931Z"
+    },
+    {
+      "label": "Phone",
+      "value": "+31 528 268 246",
+      "cells": "B18 → C18",
+      "section": "Production Plant Information",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:44.940Z"
+    },
+    {
+      "label": "General e-mail address",
+      "value": "orderdesk@kaaspack.nl",
+      "cells": "B19 → C19",
+      "section": "Production Plant Information",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:44.964Z"
+    },
+    {
+      "label": "Name contact person",
+      "value": "L. Smit",
+      "cells": "B20 → C20",
+      "section": "Production Plant Information",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:44.973Z"
+    },
+    {
+      "label": "Phone contact person",
+      "value": "+31 (0)6 21 86 57 19",
+      "cells": "B21 → C21",
+      "section": "Production Plant Information",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:44.989Z"
+    },
+    {
+      "label": "Email address contact person",
+      "value": "l.smit@kaaspack.nl",
+      "cells": "B22 → C22",
+      "section": "Production Plant Information",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:45.006Z"
+    },
+    {
+      "label": "EU-approval number",
+      "value": "NL Z0159 EU",
+      "cells": "B23 → C23",
+      "section": "Production Plant Information",
+      "topic": "approval",
+      "destination": "company",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:45.031Z"
+    }
+  ]
+}

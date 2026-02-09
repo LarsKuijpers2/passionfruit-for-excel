@@ -1,0 +1,419 @@
+{
+  "meta": {
+    "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+    "exportedAt": "2026-02-09T14:48:32.293Z",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "label": "Have you carried out an animal welfare study?",
+      "value": "No",
+      "cells": "A8 → C9",
+      "section": "Animal Welfare",
+      "topic": "animal_welfare",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:40:21.942Z"
+    },
+    {
+      "label": "Do you have animal welfare audits in place?",
+      "value": "No",
+      "cells": "A10 → C11",
+      "section": "Animal Welfare",
+      "topic": "animal_welfare",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:40:21.992Z"
+    },
+    {
+      "label": "Specify at which stage (slaughter, breeding, transport)",
+      "value": "N/A",
+      "cells": "A12 → C13",
+      "section": "Animal Welfare",
+      "topic": "animal_welfare",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:40:22.028Z"
+    },
+    {
+      "label": "Does the raw material have an animal welfare certification?",
+      "value": "No",
+      "cells": "A14 → C15",
+      "section": "Animal Welfare",
+      "topic": "animal_welfare",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:40:22.056Z"
+    },
+    {
+      "label": "Which certification does the raw material have?",
+      "value": "N/A",
+      "cells": "A16 → C17",
+      "section": "Animal Welfare",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:40:22.095Z"
+    },
+    {
+      "label": "What criteria did you integrate for the selection of your raw material?",
+      "value": "N/A",
+      "cells": "A18 → C19",
+      "section": "Animal Welfare",
+      "topic": "animal_welfare",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:40:22.129Z"
+    },
+    {
+      "label": "Halal Certified",
+      "value": "Non/No",
+      "cells": "C9 → D9",
+      "section": "Certifications and Dietary Requirements",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:40:22.160Z"
+    },
+    {
+      "label": "Kasher/Kosher Certified",
+      "value": "Non/No",
+      "cells": "E9 → F9",
+      "section": "Certifications and Dietary Requirements",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:40:22.214Z"
+    },
+    {
+      "label": "Ovo-lacto Vegetarian Suitable",
+      "value": "Oui/Yes",
+      "cells": "C11 → E11",
+      "section": "Certifications and Dietary Requirements",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:40:22.242Z"
+    },
+    {
+      "label": "Lactose-free",
+      "value": "Non/No",
+      "cells": "G11 → H11",
+      "section": "Certifications and Dietary Requirements",
+      "topic": "allergens",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:40:22.268Z"
+    },
+    {
+      "label": "Lactose Level (g/100g)",
+      "value": "<0,2",
+      "cells": "I11 → J11",
+      "section": "Certifications and Dietary Requirements",
+      "topic": "nutrition",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:40:22.294Z"
+    },
+    {
+      "label": "Vegan Suitable",
+      "value": "Non/No",
+      "cells": "C21 → D21",
+      "section": "V Label Requirements",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:40:28.107Z"
+    },
+    {
+      "label": "Vegetarian Suitable",
+      "value": "Oui/Yes",
+      "cells": "E21 → F21",
+      "section": "V Label Requirements",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:40:28.134Z"
+    },
+    {
+      "label": "Is the milk or dairy product FairTrade certified?",
+      "value": "No",
+      "cells": "A21 → C22",
+      "section": "Milk/Dairy",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:40:28.160Z"
+    },
+    {
+      "label": "Is the dairy product certified under another certification?",
+      "value": "No",
+      "cells": "A23 → C24",
+      "section": "Milk/Dairy",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:40:28.189Z"
+    },
+    {
+      "label": "Which certification (dairy product)?",
+      "value": "N/A",
+      "cells": "A25 → C25",
+      "section": "Milk/Dairy",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:40:28.231Z"
+    },
+    {
+      "label": "Have you made a commitment to respect human rights in your milk supply chain?",
+      "value": "No",
+      "cells": "A26 → C27",
+      "section": "Milk/Dairy",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:40:28.270Z"
+    },
+    {
+      "label": "Which human rights commitment?",
+      "value": "N/A",
+      "cells": "A28 → C28",
+      "section": "Milk/Dairy",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:40:28.295Z"
+    },
+    {
+      "label": "Have you made a non-deforestation and non-conversion commitment?",
+      "value": "No",
+      "cells": "A29 → C30",
+      "section": "Milk/Dairy",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:40:28.321Z"
+    },
+    {
+      "label": "Which non-deforestation commitment?",
+      "value": "N/A",
+      "cells": "A31 → C31",
+      "section": "Milk/Dairy",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:40:28.347Z"
+    },
+    {
+      "label": "Is the animal fed with soy?",
+      "value": "Yes",
+      "cells": "A32 → C33",
+      "section": "Milk/Dairy",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:40:28.393Z"
+    },
+    {
+      "label": "Can you specify where this soy comes from?",
+      "value": "No, but the Dutch dairy industry uses since 2015 only certified soy",
+      "cells": "A34 → C35",
+      "section": "Milk/Dairy",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:40:28.419Z"
+    },
+    {
+      "label": "Is the soy from a source that guarantees cultivation without deforestation?",
+      "value": "Yes",
+      "cells": "A36 → C37",
+      "section": "Milk/Dairy",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:40:28.445Z"
+    },
+    {
+      "label": "Have you made a deforestation/non-conversion commitment on soy?",
+      "value": "No",
+      "cells": "A38 → C39",
+      "section": "Milk/Dairy",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:40:28.483Z"
+    },
+    {
+      "label": "Details / Précisions",
+      "value": "See remark about the Dutch dairy industry.",
+      "cells": "A41 → C41",
+      "section": "Milk/Dairy",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:40:28.509Z"
+    },
+    {
+      "label": "Responsible purchasing policies - Environmental issues",
+      "value": "Yes",
+      "cells": "C29 → K29",
+      "section": "Responsible Purchasing",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:41:13.641Z"
+    },
+    {
+      "label": "Responsible purchasing policies - Social practices related to human rights",
+      "value": "Yes",
+      "cells": "C30 → K30",
+      "section": "Responsible Purchasing",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:41:13.687Z"
+    },
+    {
+      "label": "Responsible purchasing policies - Purchasing products from sustainable sources",
+      "value": "Yes",
+      "cells": "C31 → K31",
+      "section": "Responsible Purchasing",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:41:13.723Z"
+    },
+    {
+      "label": "Key performance indicators (KPIs) in responsible purchasing",
+      "value": "Yes",
+      "cells": "A34 → I34",
+      "section": "Responsible Purchasing",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:41:13.792Z"
+    },
+    {
+      "label": "Responsible purchasing KPIs details",
+      "value": "We are working on the definitive list",
+      "cells": "A35 → C36",
+      "section": "Responsible Purchasing",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:41:13.818Z"
+    },
+    {
+      "label": "Environmental policy status",
+      "value": "Not yet",
+      "cells": "A44 → I44",
+      "section": "Environment",
+      "topic": "environment",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:41:54.161Z"
+    },
+    {
+      "label": "Environmental KPIs details",
+      "value": "See previous remark",
+      "cells": "A46 → I46",
+      "section": "Environment",
+      "topic": "environment",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:41:54.209Z"
+    },
+    {
+      "label": "Carbon footprint availability",
+      "value": "No",
+      "cells": "A49 → G53",
+      "section": "Environment",
+      "topic": "environment",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:41:54.244Z"
+    },
+    {
+      "label": "Carbon footprint value",
+      "value": "To be calculated",
+      "cells": "A55 → C55",
+      "section": "Environment",
+      "topic": "environment",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:41:54.271Z"
+    },
+    {
+      "label": "Greenhouse gas reduction target",
+      "value": "Yes",
+      "cells": "A57 → H57",
+      "section": "Environment",
+      "topic": "environment",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:41:54.306Z"
+    },
+    {
+      "label": "Greenhouse gas reduction objective details",
+      "value": "We are woking on it",
+      "cells": "A58 → C59",
+      "section": "Environment",
+      "topic": "environment",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:41:54.340Z"
+    },
+    {
+      "label": "Recyclable materials project",
+      "value": "Yes",
+      "cells": "A61 → H61",
+      "section": "Environment",
+      "topic": "packaging",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:41:54.365Z"
+    },
+    {
+      "label": "Anti-waste law reference",
+      "value": "Which law are you refering to?",
+      "cells": "C62 → K62",
+      "section": "Environment",
+      "topic": "environment",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:41:54.401Z"
+    },
+    {
+      "label": "Industrial testing with recycled packaging",
+      "value": "Yes",
+      "cells": "C63 → K63",
+      "section": "Environment",
+      "topic": "packaging",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:41:54.428Z"
+    },
+    {
+      "label": "Recyclable materials for packaging",
+      "value": "Mono foils",
+      "cells": "C64 → K64",
+      "section": "Environment",
+      "topic": "packaging",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:41:54.465Z"
+    },
+    {
+      "label": "Recyclable packaging objectives",
+      "value": "No, work in progress",
+      "cells": "A65 → C66",
+      "section": "Environment",
+      "topic": "packaging",
+      "destination": "answer_library",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:41:54.497Z"
+    }
+  ]
+}

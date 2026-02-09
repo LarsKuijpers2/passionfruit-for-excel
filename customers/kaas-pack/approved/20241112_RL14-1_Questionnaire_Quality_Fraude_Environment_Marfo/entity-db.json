@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "source": "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo",
+    "exportedAt": "2026-02-09T14:22:34.742Z",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "label": "Bedrijfsnaam",
+      "value": "Kaas-Pack Holland BV",
+      "cells": "A8 → C8",
+      "section": "Algemene informatie",
+      "topic": "company",
+      "destination": "company",
+      "source": "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo",
+      "approvedAt": "2026-02-09T14:20:34.112Z"
+    },
+    {
+      "label": "Adres",
+      "value": "Buitenvaart 2109",
+      "cells": "A9 → C9",
+      "section": "Algemene informatie",
+      "topic": "company",
+      "destination": "company",
+      "source": "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo",
+      "approvedAt": "2026-02-09T14:20:34.120Z"
+    },
+    {
+      "label": "Postcode, plaats, land",
+      "value": "7905 SW Hoogeveen, Nederland",
+      "cells": "A10 → C10",
+      "section": "Algemene informatie",
+      "topic": "company",
+      "destination": "company",
+      "source": "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo",
+      "approvedAt": "2026-02-09T14:20:34.133Z"
+    },
+    {
+      "label": "Contactpersoon",
+      "value": "I. Vegter",
+      "cells": "A11 → C11",
+      "section": "Algemene informatie",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo",
+      "approvedAt": "2026-02-09T14:20:34.138Z"
+    },
+    {
+      "label": "Functie",
+      "value": "QA Manager",
+      "cells": "A12 → C12",
+      "section": "Algemene informatie",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo",
+      "approvedAt": "2026-02-09T14:20:34.143Z"
+    },
+    {
+      "label": "Telefoonnummer",
+      "value": "0528-268246",
+      "cells": "A13 → C13",
+      "section": "Algemene informatie",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo",
+      "approvedAt": "2026-02-09T14:20:34.147Z"
+    },
+    {
+      "label": "Email-adres",
+      "value": "quality@kaaspack.nl",
+      "cells": "A14 → C14",
+      "section": "Algemene informatie",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo",
+      "approvedAt": "2026-02-09T14:20:34.150Z"
+    },
+    {
+      "label": "Bedrijfsactiviteiten",
+      "value": "versnijden en raspen van kaas",
+      "cells": "A15 → C15",
+      "section": "Algemene informatie",
+      "topic": "company",
+      "destination": "company",
+      "source": "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo",
+      "approvedAt": "2026-02-09T14:20:34.153Z"
+    },
+    {
+      "label": "Product range",
+      "value": "Zuivel",
+      "cells": "A16 → C16",
+      "section": "Algemene informatie",
+      "topic": "product",
+      "destination": "company",
+      "source": "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo",
+      "approvedAt": "2026-02-09T14:22:21.638Z"
+    },
+    {
+      "label": "EG-nummer",
+      "value": "NL Z 0159 EG",
+      "cells": "A17 → C17",
+      "section": "Algemene informatie",
+      "topic": "company",
+      "destination": "company",
+      "source": "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo",
+      "approvedAt": "2026-02-09T14:20:34.164Z"
+    }
+  ]
+}

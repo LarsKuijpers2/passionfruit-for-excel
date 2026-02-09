@@ -1,0 +1,1459 @@
+{
+  "meta": {
+    "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+    "exportedAt": "2026-02-09T14:57:17.498Z",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "label": "Liegt Ihnen ein Product Carbon Footprint (PCF) vor? / Do you have a Product Carbon Footprint (PCF)?",
+      "value": "nein-no",
+      "cells": "B10 → C10",
+      "section": "Product Carbon Footprint (PCF)",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:51.790Z"
+    },
+    {
+      "label": "Wenn nein, planen Sie die Berechnung eines PCF? / If not, are you planning to calculate a PCF?",
+      "value": "nein-no",
+      "cells": "B12 → C12",
+      "section": "Product Carbon Footprint (PCF)",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:51.810Z"
+    },
+    {
+      "label": "Do you fall under EU Deforestation Regulation (EUDR)?",
+      "value": "nein-no",
+      "cells": "B10 → C10",
+      "section": "Non-deforestation Supply Chain",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:51.824Z"
+    },
+    {
+      "label": "Do the items delivered to us contain at least 5% of a critical raw material?",
+      "value": "nein-no",
+      "cells": "B11 → C11",
+      "section": "Non-deforestation Supply Chain",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:51.839Z"
+    },
+    {
+      "label": "Is there a self-commitment to deforestation-free supply chains?",
+      "value": "nein-no",
+      "cells": "B12 → C12",
+      "section": "Non-deforestation Supply Chain",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:51.854Z"
+    },
+    {
+      "label": "Do you plan to commit to a deforestation-free supply chain?",
+      "value": "nein-no",
+      "cells": "B24 → C24",
+      "section": "Non-deforestation Supply Chain",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.026Z"
+    },
+    {
+      "label": "Company Production Plant",
+      "value": "Kaas-Pack Holland B.V.",
+      "cells": "B11 → C11",
+      "section": "Production Plant Information",
+      "topic": "company",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.041Z"
+    },
+    {
+      "label": "Street",
+      "value": "Buitenvaart 2109",
+      "cells": "B13 → C13",
+      "section": "Production Plant Information",
+      "topic": "company",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.055Z"
+    },
+    {
+      "label": "Postal Code",
+      "value": "7905 SW",
+      "cells": "B14 → C14",
+      "section": "Production Plant Information",
+      "topic": "company",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.062Z"
+    },
+    {
+      "label": "City",
+      "value": "Hoogeveen",
+      "cells": "B15 → C15",
+      "section": "Production Plant Information",
+      "topic": "company",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.076Z"
+    },
+    {
+      "label": "Country",
+      "value": "The Netherlands",
+      "cells": "B16 → C16",
+      "section": "Production Plant Information",
+      "topic": "company",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.090Z"
+    },
+    {
+      "label": "Website",
+      "value": "https://kaaspack.nl/",
+      "cells": "B17 → C17",
+      "section": "Production Plant Information",
+      "topic": "company",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.105Z"
+    },
+    {
+      "label": "Phone",
+      "value": "+31 528 268 246",
+      "cells": "B18 → C18",
+      "section": "Production Plant Information",
+      "topic": "contacts",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.113Z"
+    },
+    {
+      "label": "General e-mail address",
+      "value": "orderdesk@kaaspack.nl",
+      "cells": "B19 → C19",
+      "section": "Production Plant Information",
+      "topic": "contacts",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.126Z"
+    },
+    {
+      "label": "Name contact person",
+      "value": "L. Smit",
+      "cells": "B20 → C20",
+      "section": "Production Plant Information",
+      "topic": "contacts",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.140Z"
+    },
+    {
+      "label": "Phone contact person",
+      "value": "+31 (0)6 21 86 57 19",
+      "cells": "B21 → C21",
+      "section": "Production Plant Information",
+      "topic": "contacts",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.160Z"
+    },
+    {
+      "label": "Email address contact person",
+      "value": "l.smit@kaaspack.nl",
+      "cells": "B22 → C22",
+      "section": "Production Plant Information",
+      "topic": "contacts",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.175Z"
+    },
+    {
+      "label": "EU-approval number",
+      "value": "NL Z0159 EU",
+      "cells": "B23 → C23",
+      "section": "Production Plant Information",
+      "topic": "approval",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.188Z"
+    },
+    {
+      "label": "Haben Sie sich CO₂-Reduktionsziele gesetzt? / Have you set CO₂ reduction targets?",
+      "value": "nein-no",
+      "cells": "B15 → C15",
+      "section": "CO₂-Reduktionsmaßnahmen",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.195Z"
+    },
+    {
+      "label": "Bemerkung zu CO₂-Reduktionszielen / Comment on CO₂ reduction targets",
+      "value": "Es wurde ein Konzeptplan erstellt, der noch vom Managementteam",
+      "cells": "B15 → D15",
+      "section": "CO₂-Reduktionsmaßnahmen",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.209Z"
+    },
+    {
+      "label": "Wenn nein, für wann planen Sie, sich Ziele zu setzen? / If no, when do you plan to set targets?",
+      "value": "end of 2025",
+      "cells": "B18 → C18",
+      "section": "CO₂-Reduktionsmaßnahmen",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.223Z"
+    },
+    {
+      "label": "Haben Sie sich zu SBTi verpflichtet? / Have you committed to SBTi?",
+      "value": "nein-no",
+      "cells": "B19 → C19",
+      "section": "CO₂-Reduktionsmaßnahmen",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.238Z"
+    },
+    {
+      "label": "Bemerkung zu SBTi Verpflichtung / Comment on SBTi commitment",
+      "value": "Noch nicht, wir stehen mit SBTi in Kontakt, um die von uns g",
+      "cells": "B19 → D19",
+      "section": "CO₂-Reduktionsmaßnahmen",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.252Z"
+    },
+    {
+      "label": "Haben Sie SBTi-validierte Ziele? / Do you have SBTi-validated targets?",
+      "value": "nein-no",
+      "cells": "B22 → C22",
+      "section": "CO₂-Reduktionsmaßnahmen",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.259Z"
+    },
+    {
+      "label": "Bemerkung zu SBTi-validierten Zielen / Comment on SBTi-validated targets",
+      "value": "Noch nicht, wir stehen mit SBTi in Kontakt, um die von uns g",
+      "cells": "B22 → D22",
+      "section": "CO₂-Reduktionsmaßnahmen",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.273Z"
+    },
+    {
+      "label": "Planen Sie, sich zu SBTi zu verpflichten? / Are you planning to commit to SBTi?",
+      "value": "ja-yes",
+      "cells": "B23 → C23",
+      "section": "CO₂-Reduktionsmaßnahmen",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.287Z"
+    },
+    {
+      "label": "Bemerkung zu SBTi Plänen / Comment on SBTi plans",
+      "value": "Ende 2025 / Anfang 2026",
+      "cells": "B23 → D23",
+      "section": "CO₂-Reduktionsmaßnahmen",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.303Z"
+    },
+    {
+      "label": "Supplied Product(s) in Calendar Year 2024",
+      "value": "z.B. Gouda / e.g. gouda",
+      "cells": "C20 → C21",
+      "section": "Product Carbon Footprint (PCF)",
+      "topic": "product",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.348Z"
+    },
+    {
+      "label": "Product Carbon Footprint (Cradle-to-Gate) in g CO₂e / kg",
+      "value": "z. B. 1200 / e. g. 1200",
+      "cells": "E20 → E21",
+      "section": "Product Carbon Footprint (PCF)",
+      "topic": "environment",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.369Z"
+    },
+    {
+      "label": "GFSI anerkannte Zertifizierungen z.B. IFS, BRC, FSSC 22000",
+      "value": "ja-yes",
+      "cells": "B26 → C26",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.410Z"
+    },
+    {
+      "label": "IFS Food",
+      "value": "ja-yes",
+      "cells": "B27 → C27",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.425Z"
+    },
+    {
+      "label": "IFS COID Nummer",
+      "value": "34736",
+      "cells": "B28 → C28",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.460Z"
+    },
+    {
+      "label": "BRC",
+      "value": "nein-no",
+      "cells": "B29 → C29",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.509Z"
+    },
+    {
+      "label": "FSSC 22000",
+      "value": "nein-no",
+      "cells": "B30 → C30",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.524Z"
+    },
+    {
+      "label": "Sonstige QM-Zertifikate z.B. ISO 9001",
+      "value": "nein-no",
+      "cells": "B31 → C31",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.541Z"
+    },
+    {
+      "label": "ISO 14001: Umweltmanagement",
+      "value": "nein-no",
+      "cells": "B32 → C32",
+      "section": "Certificates",
+      "topic": "environment",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.569Z"
+    },
+    {
+      "label": "ISO 45001: Arbeitsschutzmanagement",
+      "value": "nein-no",
+      "cells": "B33 → C33",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.669Z"
+    },
+    {
+      "label": "ISO 50001: Energiemanagement",
+      "value": "nein-no",
+      "cells": "B34 → C34",
+      "section": "Certificates",
+      "topic": "environment",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.732Z"
+    },
+    {
+      "label": "Member of Ecovadis",
+      "value": "ja-yes",
+      "cells": "B35 → C35",
+      "section": "Certificates",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.763Z"
+    },
+    {
+      "label": "Member of Sedex",
+      "value": "ja-yes",
+      "cells": "B36 → C36",
+      "section": "Certificates",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.777Z"
+    },
+    {
+      "label": "Sedex Mitgliedsnummer",
+      "value": "ZC408415203",
+      "cells": "B37 → C37",
+      "section": "Certificates",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.794Z"
+    },
+    {
+      "label": "Bio / Organic",
+      "value": "ja-yes",
+      "cells": "B38 → C38",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.819Z"
+    },
+    {
+      "label": "Öko-Kontrollstellennummer",
+      "value": "024804",
+      "cells": "B39 → C39",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.942Z"
+    },
+    {
+      "label": "GMP",
+      "value": "nein-no",
+      "cells": "B40 → C40",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:52.979Z"
+    },
+    {
+      "label": "QS",
+      "value": "nein-no",
+      "cells": "B41 → C41",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:53.017Z"
+    },
+    {
+      "label": "oGT / Non GMO/ VLOG",
+      "value": "ja-yes",
+      "cells": "B42 → C42",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:53.028Z"
+    },
+    {
+      "label": "Weidemilch / Pasture milk",
+      "value": "ja-yes",
+      "cells": "B43 → C43",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:53.040Z"
+    },
+    {
+      "label": "V-Label Bestätigung für vegetarisches/veganes Produkt",
+      "value": "ja-yes",
+      "cells": "B44 → C44",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:53.057Z"
+    },
+    {
+      "label": "Halal",
+      "value": "nein-no",
+      "cells": "B45 → C45",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:53.063Z"
+    },
+    {
+      "label": "Kosher",
+      "value": "nein-no",
+      "cells": "B46 → C46",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:53.076Z"
+    },
+    {
+      "label": "Weitere Zertifizierungen / Further certificates",
+      "value": "nein-no",
+      "cells": "B47 → C47",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:53.090Z"
+    },
+    {
+      "label": "Gibt es bei Ihren Vorlieferanten Vorgaben, auf bestimmte Herkunftsländer zu verzichten? / Do your suppliers have requirements to avoid certain countries of origin?",
+      "value": "nein-no",
+      "cells": "B26 → C26",
+      "section": "Angaben zum Tierwohl",
+      "topic": "animal_welfare",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:53.103Z"
+    },
+    {
+      "label": "Bemerkung zu Herkunftsländern / Comment on countries of origin",
+      "value": "Wir kaufen nur Käse, der aus Milch aus EU-Ländern hergestell",
+      "cells": "B26 → D26",
+      "section": "Angaben zum Tierwohl",
+      "topic": "animal_welfare",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:53.111Z"
+    },
+    {
+      "label": "Gibt es bei Ihren Vorlieferanten bereits verbindliche Vorgaben bezüglich Tierschutz? / Do your suppliers already have binding requirements regarding animal welfare?",
+      "value": "nein-no",
+      "cells": "B28 → C28",
+      "section": "Angaben zum Tierwohl",
+      "topic": "animal_welfare",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:53.124Z"
+    },
+    {
+      "label": "Die nationalen und Europäischen Gesetze und Verordnungen hinsichtlich Tierwohl werden eingehalten / National and European laws and regulations regarding animal welfare are complied with",
+      "value": "ja-yes",
+      "cells": "B33 → C33",
+      "section": "Angaben zum Tierwohl",
+      "topic": "animal_welfare",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:53.138Z"
+    },
+    {
+      "label": "Bemerkung zu Tierwohl-Gesetzen / Comment on animal welfare laws",
+      "value": "Wir kaufen nur Käse, der aus Milch aus EU-Ländern hergestell",
+      "cells": "B33 → D33",
+      "section": "Angaben zum Tierwohl",
+      "topic": "animal_welfare",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:52:51.770Z"
+    },
+    {
+      "label": "Do you have data on use of soy or/and palm products in feed?",
+      "value": "nein-no",
+      "cells": "B28 → C28",
+      "section": "Soy and Palm Products in Feed",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:14:01.565Z"
+    },
+    {
+      "label": "Donau/Europe Soya - BC",
+      "value": "nein-no",
+      "cells": "B33 → C33",
+      "section": "Soy Deforestation-Free Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:13:58.445Z"
+    },
+    {
+      "label": "Donau/Europe Soya - MB",
+      "value": "nein-no",
+      "cells": "B34 → C34",
+      "section": "Soy Deforestation-Free Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:13:58.464Z"
+    },
+    {
+      "label": "Donau/Europe Soya - SG",
+      "value": "nein-no",
+      "cells": "B35 → C35",
+      "section": "Soy Deforestation-Free Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:13:58.488Z"
+    },
+    {
+      "label": "Donau/Europe Soya - IP",
+      "value": "nein-no",
+      "cells": "B36 → C36",
+      "section": "Soy Deforestation-Free Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:13:58.503Z"
+    },
+    {
+      "label": "ProTerra - MB",
+      "value": "nein-no",
+      "cells": "B37 → C37",
+      "section": "Soy Deforestation-Free Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:13:58.517Z"
+    },
+    {
+      "label": "ProTerra - SG",
+      "value": "nein-no",
+      "cells": "B38 → C38",
+      "section": "Soy Deforestation-Free Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:13:58.531Z"
+    },
+    {
+      "label": "ProTerra - IP",
+      "value": "nein-no",
+      "cells": "B39 → C39",
+      "section": "Soy Deforestation-Free Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:13:58.545Z"
+    },
+    {
+      "label": "RTRS - BC",
+      "value": "nein-no",
+      "cells": "B40 → C40",
+      "section": "Soy Deforestation-Free Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:13:58.560Z"
+    },
+    {
+      "label": "RTRS - MB",
+      "value": "nein-no",
+      "cells": "B41 → C41",
+      "section": "Soy Deforestation-Free Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:13:58.574Z"
+    },
+    {
+      "label": "RTRS - SG",
+      "value": "nein-no",
+      "cells": "B42 → C42",
+      "section": "Soy Deforestation-Free Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:13:58.590Z"
+    },
+    {
+      "label": "ISCC - MB",
+      "value": "nein-no",
+      "cells": "B43 → C43",
+      "section": "Soy Deforestation-Free Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:13:58.604Z"
+    },
+    {
+      "label": "ISCC - SG",
+      "value": "nein-no",
+      "cells": "B44 → C44",
+      "section": "Soy Deforestation-Free Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:13:58.620Z"
+    },
+    {
+      "label": "ISCC - IP",
+      "value": "nein-no",
+      "cells": "B45 → C45",
+      "section": "Soy Deforestation-Free Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:13:58.634Z"
+    },
+    {
+      "label": "QS-Soja+/QM (BC)",
+      "value": "nein-no",
+      "cells": "B46 → C46",
+      "section": "Soy Deforestation-Free Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:13:58.423Z"
+    },
+    {
+      "label": "RSPO - BC",
+      "value": "nein-no",
+      "cells": "B49 → C49",
+      "section": "Palm Deforestation-Free Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:05:36.497Z"
+    },
+    {
+      "label": "RSPO - BC (Smallholder Certification)",
+      "value": "nein-no",
+      "cells": "B50 → C50",
+      "section": "Palm Deforestation-Free Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:05:36.509Z"
+    },
+    {
+      "label": "RSPO - MB",
+      "value": "ja-yes",
+      "cells": "B51 → C51",
+      "section": "Palm Deforestation-Free Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:05:36.522Z"
+    },
+    {
+      "label": "RSPO - SG",
+      "value": "nein-no",
+      "cells": "B52 → C52",
+      "section": "Palm Deforestation-Free Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:05:36.534Z"
+    },
+    {
+      "label": "RSPO - IP",
+      "value": "nein-no",
+      "cells": "B53 → C53",
+      "section": "Palm Deforestation-Free Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:05:36.546Z"
+    },
+    {
+      "label": "ISCC Plus",
+      "value": "nein-no",
+      "cells": "B54 → C54",
+      "section": "Palm Deforestation-Free Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:05:36.558Z"
+    },
+    {
+      "label": "Art und Erhitzung des Produktes",
+      "value": "N/A",
+      "cells": "B51 → C51",
+      "section": "QM System",
+      "topic": "product",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:11:01.676Z"
+    },
+    {
+      "label": "Art- und Anzahl der CCPs",
+      "value": "Metal detection",
+      "cells": "B52 → C52",
+      "section": "QM System",
+      "topic": "food_safety",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:11:01.691Z"
+    },
+    {
+      "label": "Maßnahmen zum Produktschutz",
+      "value": "- Das Firmengelände ist mit einem Zaun abgesichert. - Besuch",
+      "cells": "B53 → C53",
+      "section": "QM System",
+      "topic": "food_safety",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:11:01.714Z"
+    },
+    {
+      "label": "Maßnahmen gegen Lebensmittelbetrug",
+      "value": "Kaas-Pack verfügt über einen Vulnerability Control Plan, der",
+      "cells": "B54 → C54",
+      "section": "QM System",
+      "topic": "food_fraud",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:11:01.730Z"
+    },
+    {
+      "label": "Maßnahmen zur Reduzierung von MOSH / MOAH",
+      "value": "Die von Kaas-Pack verwendeten Verpackungsmaterialien werden",
+      "cells": "B56 → C56",
+      "section": "QM System",
+      "topic": "food_safety",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:11:01.748Z"
+    },
+    {
+      "label": "Maßnahmen zur Reduzierung von Trichlormethan",
+      "value": "N/A",
+      "cells": "B57 → C57",
+      "section": "QM System",
+      "topic": "food_safety",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:11:01.763Z"
+    },
+    {
+      "label": "Maßnahmen zur Reduzierung von QAV",
+      "value": "N/A",
+      "cells": "B58 → C58",
+      "section": "QM System",
+      "topic": "food_safety",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:11:01.777Z"
+    },
+    {
+      "label": "Company Listed on Stock Exchange",
+      "value": "nein-no",
+      "cells": "B53 → C53",
+      "section": "Financial Data",
+      "topic": "financial",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:48.322Z"
+    },
+    {
+      "label": "Company Part of Group",
+      "value": "nein-no",
+      "cells": "B54 → C54",
+      "section": "Financial Data",
+      "topic": "financial",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:48.346Z"
+    },
+    {
+      "label": "Company Has Subsidiaries",
+      "value": "nein-no",
+      "cells": "B56 → C56",
+      "section": "Financial Data",
+      "topic": "financial",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T13:08:48.369Z"
+    },
+    {
+      "label": "Product Carbon Footprint (PCF) available",
+      "value": "nein-no",
+      "cells": "B10 → C10",
+      "section": "Product Carbon Footprint (PCF)",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:05.429Z"
+    },
+    {
+      "label": "Planning to calculate PCF",
+      "value": "nein-no",
+      "cells": "B12 → C12",
+      "section": "Product Carbon Footprint (PCF)",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:05.461Z"
+    },
+    {
+      "label": "Do you fall under EU Deforestation Regulation (EUDR)?",
+      "value": "nein-no",
+      "cells": "B10 → C10",
+      "section": "Self-commitment to deforestation-free supply chain",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:05.468Z"
+    },
+    {
+      "label": "Do the articles delivered to us contain at least 5% of a critical raw material?",
+      "value": "nein-no",
+      "cells": "B11 → C11",
+      "section": "Self-commitment to deforestation-free supply chain",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:05.489Z"
+    },
+    {
+      "label": "Is there a self-commitment to deforestation-free supply chains?",
+      "value": "nein-no",
+      "cells": "B12 → C12",
+      "section": "Self-commitment to deforestation-free supply chain",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:05.503Z"
+    },
+    {
+      "label": "Do you plan to commit to a deforestation-free supply chain?",
+      "value": "nein-no",
+      "cells": "B24 → C24",
+      "section": "Self-commitment to deforestation-free supply chain",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:05.715Z"
+    },
+    {
+      "label": "CO₂ reduction goals set",
+      "value": "nein-no",
+      "cells": "B15 → C15",
+      "section": "CO₂-Reduktionsmaßnahmen / CO₂ reduction measures",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:05.886Z"
+    },
+    {
+      "label": "CO₂ reduction goals (comments)",
+      "value": "Es wurde ein Konzeptplan erstellt, der noch vom Managementte",
+      "cells": "B15 → D15",
+      "section": "CO₂-Reduktionsmaßnahmen / CO₂ reduction measures",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:05.903Z"
+    },
+    {
+      "label": "When planning to set CO₂ goals",
+      "value": "end of 2025",
+      "cells": "B18 → C18",
+      "section": "CO₂-Reduktionsmaßnahmen / CO₂ reduction measures",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:05.918Z"
+    },
+    {
+      "label": "Committed to SBTi",
+      "value": "nein-no",
+      "cells": "B19 → C19",
+      "section": "CO₂-Reduktionsmaßnahmen / CO₂ reduction measures",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:05.942Z"
+    },
+    {
+      "label": "SBTi commitment (comments)",
+      "value": "Noch nicht, wir stehen mit SBTi in Kontakt, um die von uns g",
+      "cells": "B19 → D19",
+      "section": "CO₂-Reduktionsmaßnahmen / CO₂ reduction measures",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:05.958Z"
+    },
+    {
+      "label": "SBTi-validated goals",
+      "value": "nein-no",
+      "cells": "B22 → C22",
+      "section": "CO₂-Reduktionsmaßnahmen / CO₂ reduction measures",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:05.974Z"
+    },
+    {
+      "label": "SBTi-validated goals (comments)",
+      "value": "Noch nicht, wir stehen mit SBTi in Kontakt, um die von uns g",
+      "cells": "B22 → D22",
+      "section": "CO₂-Reduktionsmaßnahmen / CO₂ reduction measures",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:05.990Z"
+    },
+    {
+      "label": "Planning to commit to SBTi",
+      "value": "ja-yes",
+      "cells": "B23 → C23",
+      "section": "CO₂-Reduktionsmaßnahmen / CO₂ reduction measures",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.007Z"
+    },
+    {
+      "label": "SBTi commitment timeline",
+      "value": "Ende 2025 / Anfang 2026",
+      "cells": "B23 → D23",
+      "section": "CO₂-Reduktionsmaßnahmen / CO₂ reduction measures",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.024Z"
+    },
+    {
+      "label": "GFSI recognised certifications (IFS, BRC, FSSC 22000)",
+      "value": "ja-yes",
+      "cells": "B26 → C26",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.169Z"
+    },
+    {
+      "label": "IFS Food",
+      "value": "ja-yes",
+      "cells": "B27 → C27",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.190Z"
+    },
+    {
+      "label": "IFS COID Number",
+      "value": "34736",
+      "cells": "B28 → C28",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.205Z"
+    },
+    {
+      "label": "BRC",
+      "value": "nein-no",
+      "cells": "B29 → C29",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.238Z"
+    },
+    {
+      "label": "FSSC 22000",
+      "value": "nein-no",
+      "cells": "B30 → C30",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.273Z"
+    },
+    {
+      "label": "Other QM certificates (ISO 9001)",
+      "value": "nein-no",
+      "cells": "B31 → C31",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.310Z"
+    },
+    {
+      "label": "ISO 14001: Environmental management",
+      "value": "nein-no",
+      "cells": "B32 → C32",
+      "section": "Certificates",
+      "topic": "environment",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.363Z"
+    },
+    {
+      "label": "ISO 45001: Occupational safety management",
+      "value": "nein-no",
+      "cells": "B33 → C33",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.386Z"
+    },
+    {
+      "label": "ISO 50001: Energy management",
+      "value": "nein-no",
+      "cells": "B34 → C34",
+      "section": "Certificates",
+      "topic": "environment",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.422Z"
+    },
+    {
+      "label": "Member of Ecovadis",
+      "value": "ja-yes",
+      "cells": "B35 → C35",
+      "section": "Certificates",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.486Z"
+    },
+    {
+      "label": "Member of Sedex",
+      "value": "ja-yes",
+      "cells": "B36 → C36",
+      "section": "Certificates",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.529Z"
+    },
+    {
+      "label": "Sedex membership number",
+      "value": "ZC408415203",
+      "cells": "B37 → C37",
+      "section": "Certificates",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.576Z"
+    },
+    {
+      "label": "Bio / Organic",
+      "value": "ja-yes",
+      "cells": "B38 → C38",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.597Z"
+    },
+    {
+      "label": "Organic control body number",
+      "value": "024804",
+      "cells": "B39 → C39",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.620Z"
+    },
+    {
+      "label": "GMP",
+      "value": "nein-no",
+      "cells": "B40 → C40",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.637Z"
+    },
+    {
+      "label": "QS",
+      "value": "nein-no",
+      "cells": "B41 → C41",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.694Z"
+    },
+    {
+      "label": "Non GMO / VLOG",
+      "value": "ja-yes",
+      "cells": "B42 → C42",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.703Z"
+    },
+    {
+      "label": "Pasture milk",
+      "value": "ja-yes",
+      "cells": "B43 → C43",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.720Z"
+    },
+    {
+      "label": "V-Label confirmation",
+      "value": "ja-yes",
+      "cells": "B44 → C44",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.738Z"
+    },
+    {
+      "label": "Halal",
+      "value": "nein-no",
+      "cells": "B45 → C45",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.756Z"
+    },
+    {
+      "label": "Kosher",
+      "value": "nein-no",
+      "cells": "B46 → C46",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.775Z"
+    },
+    {
+      "label": "Further certificates",
+      "value": "nein-no",
+      "cells": "B47 → C47",
+      "section": "Certificates",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.798Z"
+    },
+    {
+      "label": "Animal welfare requirements for suppliers regarding country restrictions",
+      "value": "nein-no",
+      "cells": "B26 → C26",
+      "section": "Angaben zum Tierwohl / Information on animal welfare",
+      "topic": "animal_welfare",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.815Z"
+    },
+    {
+      "label": "Animal welfare country restrictions (comments)",
+      "value": "Wir kaufen nur Käse, der aus Milch aus EU-Ländern hergestell",
+      "cells": "B26 → D26",
+      "section": "Angaben zum Tierwohl / Information on animal welfare",
+      "topic": "animal_welfare",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.831Z"
+    },
+    {
+      "label": "Binding animal welfare requirements for suppliers",
+      "value": "nein-no",
+      "cells": "B28 → C28",
+      "section": "Angaben zum Tierwohl / Information on animal welfare",
+      "topic": "animal_welfare",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.855Z"
+    },
+    {
+      "label": "Compliance with national and European animal welfare laws",
+      "value": "ja-yes",
+      "cells": "B33 → C33",
+      "section": "Angaben zum Tierwohl / Information on animal welfare",
+      "topic": "animal_welfare",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.873Z"
+    },
+    {
+      "label": "Animal welfare compliance (comments)",
+      "value": "Wir kaufen nur Käse, der aus Milch aus EU-Ländern hergestell",
+      "cells": "B33 → D33",
+      "section": "Angaben zum Tierwohl / Information on animal welfare",
+      "topic": "animal_welfare",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.890Z"
+    },
+    {
+      "label": "Do you have data on the use of soy or/and palm products in feed?",
+      "value": "nein-no",
+      "cells": "B28 → C28",
+      "section": "Information on soy and palm products as feed",
+      "topic": "sustainability",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.913Z"
+    },
+    {
+      "label": "Donau/Europe Soya - BC",
+      "value": "nein-no",
+      "cells": "B33 → C33",
+      "section": "Certificates for deforestation-free soy",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.965Z"
+    },
+    {
+      "label": "Donau/Europe Soya - MB",
+      "value": "nein-no",
+      "cells": "B34 → C34",
+      "section": "Certificates for deforestation-free soy",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:06.983Z"
+    },
+    {
+      "label": "Donau/Europe Soya - SG",
+      "value": "nein-no",
+      "cells": "B35 → C35",
+      "section": "Certificates for deforestation-free soy",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:07.000Z"
+    },
+    {
+      "label": "Donau/Europe Soya - IP",
+      "value": "nein-no",
+      "cells": "B36 → C36",
+      "section": "Certificates for deforestation-free soy",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:07.017Z"
+    },
+    {
+      "label": "ProTerra - MB",
+      "value": "nein-no",
+      "cells": "B37 → C37",
+      "section": "Certificates for deforestation-free soy",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:07.042Z"
+    },
+    {
+      "label": "ProTerra - SG",
+      "value": "nein-no",
+      "cells": "B38 → C38",
+      "section": "Certificates for deforestation-free soy",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:07.064Z"
+    },
+    {
+      "label": "ProTerra - IP",
+      "value": "nein-no",
+      "cells": "B39 → C39",
+      "section": "Certificates for deforestation-free soy",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:07.082Z"
+    },
+    {
+      "label": "RTRS - BC",
+      "value": "nein-no",
+      "cells": "B40 → C40",
+      "section": "Certificates for deforestation-free soy",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:07.089Z"
+    },
+    {
+      "label": "RTRS - MB",
+      "value": "nein-no",
+      "cells": "B41 → C41",
+      "section": "Certificates for deforestation-free soy",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:07.105Z"
+    },
+    {
+      "label": "RTRS - SG",
+      "value": "nein-no",
+      "cells": "B42 → C42",
+      "section": "Certificates for deforestation-free soy",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:07.122Z"
+    },
+    {
+      "label": "ISCC - MB",
+      "value": "nein-no",
+      "cells": "B43 → C43",
+      "section": "Certificates for deforestation-free soy",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:07.139Z"
+    },
+    {
+      "label": "ISCC - SG",
+      "value": "nein-no",
+      "cells": "B44 → C44",
+      "section": "Certificates for deforestation-free soy",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:07.157Z"
+    },
+    {
+      "label": "ISCC - IP",
+      "value": "nein-no",
+      "cells": "B45 → C45",
+      "section": "Certificates for deforestation-free soy",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:07.175Z"
+    },
+    {
+      "label": "QS-Soja+/QM (BC)",
+      "value": "nein-no",
+      "cells": "B46 → C46",
+      "section": "Certificates for deforestation-free soy",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:07.193Z"
+    },
+    {
+      "label": "Supplier Code of Conduct signed and compliance confirmed",
+      "value": "ja-yes",
+      "cells": "B36 → C36",
+      "section": "Lieferantenkodex / Supplier Code of Conduct",
+      "topic": "company",
+      "destination": "answer_library",
+      "source": "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn",
+      "approvedAt": "2026-02-09T14:54:07.219Z"
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "meta": {
+    "source": "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo",
+    "exportedAt": "2026-02-09T14:22:34.742Z",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "label": "Welke kwaliteitsstandaarden zijn in werking binnen uw bedrijf?",
+      "value": "VLOG en Weidegang",
+      "cells": "A21 → C21",
+      "section": "Kwaliteitsmanagement",
+      "topic": "certifications",
+      "destination": "answer_library",
+      "source": "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo",
+      "approvedAt": "2026-02-09T14:20:34.167Z"
+    },
+    {
+      "label": "Hoe is contaminatie met vreemde delen (metaal, steentjes, hout, glas etc.) in grondstoffen voorkomen?",
+      "value": "Controle op metaaldeeltjes door metaaldetector verder visuel",
+      "cells": "A22 → C22",
+      "section": "Kwaliteitsmanagement",
+      "topic": "food_safety",
+      "destination": "answer_library",
+      "source": "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo",
+      "approvedAt": "2026-02-09T14:20:34.171Z"
+    },
+    {
+      "label": "Hoe is verontreiniging met niet gedeclareerde allergenen in uw bedrijf voorkomen?",
+      "value": "Alleen melk, als allergeen, wordt binnen ons pand verwerkt.",
+      "cells": "A23 → C23",
+      "section": "Kwaliteitsmanagement",
+      "topic": "allergens",
+      "destination": "answer_library",
+      "source": "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo",
+      "approvedAt": "2026-02-09T14:20:34.179Z"
+    },
+    {
+      "label": "Leg kort uit hoe gevaren die via de grondstoffen uw product kunnen bereiken worden beheerst",
+      "value": "Afstemming binnen het HACCP team betreffende gevaren. Daar w",
+      "cells": "A29 → C29",
+      "section": "Chemische, Fysische en Microbiologische gevaren",
+      "topic": "food_safety",
+      "destination": "answer_library",
+      "source": "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo",
+      "approvedAt": "2026-02-09T14:20:34.186Z"
+    },
+    {
+      "label": "Voert u Chemische en/of microbiologische analyses uit om de veiligheid van uw product te waarborgen?",
+      "value": "Er worden volgen monsterplanning onderzoeken op microbiologi",
+      "cells": "A30 → C30",
+      "section": "Chemische, Fysische en Microbiologische gevaren",
+      "topic": "microbiology",
+      "destination": "answer_library",
+      "source": "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo",
+      "approvedAt": "2026-02-09T14:20:34.197Z"
+    },
+    {
+      "label": "Is er een Food Fraude-analyse uitgevoerd op de grondstoffen en ingrediënten?",
+      "value": "Ja",
+      "cells": "A35 → C35",
+      "section": "Food Fraude management",
+      "topic": "food_fraud",
+      "destination": "answer_library",
+      "source": "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo",
+      "approvedAt": "2026-02-09T14:20:34.201Z"
+    },
+    {
+      "label": "Voert u analyses uit op grondstoffen om fraude eerder in het proces te detecteren?",
+      "value": "Nee. We kopen kaas in van gecertificeerde producenten. Er wo",
+      "cells": "A36 → C36",
+      "section": "Food Fraude management",
+      "topic": "food_fraud",
+      "destination": "answer_library",
+      "source": "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo",
+      "approvedAt": "2026-02-09T14:20:34.208Z"
+    },
+    {
+      "label": "Bevat het milieubeleid van uw organisatie, zelf toegekende en/of externe doelstellingen?",
+      "value": "Er wordt intern gewerkt met een CAP 26000 gebaseerd systeem.",
+      "cells": "A41 → C41",
+      "section": "Milieubeleid",
+      "topic": "environment",
+      "destination": "answer_library",
+      "source": "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo",
+      "approvedAt": "2026-02-09T14:20:34.213Z"
+    }
+  ]
+}

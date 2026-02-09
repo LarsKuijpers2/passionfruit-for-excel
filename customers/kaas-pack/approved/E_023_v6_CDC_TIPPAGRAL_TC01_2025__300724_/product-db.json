@@ -1,0 +1,2689 @@
+{
+  "meta": {
+    "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+    "exportedAt": "2026-02-09T14:48:32.293Z",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "label": "Product",
+      "value": "CHEDDAR RED 50% SLICES shingled 9x9CM à 15G 6x1kg",
+      "cells": "B2 → D2",
+      "section": "Product Information",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:09.541Z"
+    },
+    {
+      "label": "Supplier",
+      "value": "KAAS-PACK HOLLAND B.V.",
+      "cells": "B3 → D3",
+      "section": "Product Information",
+      "topic": "company",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:09.599Z"
+    },
+    {
+      "label": "Reference",
+      "value": "300724 | TC01",
+      "cells": "B4 → D4",
+      "section": "Product Information",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:09.626Z"
+    },
+    {
+      "label": "Product",
+      "value": "CHEDDAR RED 50% SLICES shingled 9x9CM à 15G 6x1kg",
+      "cells": "C3 → E3",
+      "section": "Product Information",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:16.606Z"
+    },
+    {
+      "label": "Supplier",
+      "value": "KAAS-PACK HOLLAND B.V.",
+      "cells": "C4 → E4",
+      "section": "Product Information",
+      "topic": "company",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:16.642Z"
+    },
+    {
+      "label": "Reference",
+      "value": "300724 | TC01",
+      "cells": "C5 → E5",
+      "section": "Product Information",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:16.669Z"
+    },
+    {
+      "label": "Product Name",
+      "value": "CHEDDAR RED 50% SLICES shingled 9x9CM à 15G 6x1kg",
+      "cells": "C3 → E3",
+      "section": "Product Header",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:16.695Z"
+    },
+    {
+      "label": "Supplier",
+      "value": "KAAS-PACK HOLLAND B.V.",
+      "cells": "C4 → E4",
+      "section": "Product Header",
+      "topic": "company",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:16.722Z"
+    },
+    {
+      "label": "Product Reference",
+      "value": "300724 | TC01",
+      "cells": "C5 → E5",
+      "section": "Product Header",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:16.763Z"
+    },
+    {
+      "label": "Product",
+      "value": "CHEDDAR RED 50% SLICES shingled 9x9CM à 15G 6x1kg",
+      "cells": "B3 → D3",
+      "section": "Product Features",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:16.791Z"
+    },
+    {
+      "label": "Supplier",
+      "value": "KAAS-PACK HOLLAND B.V.",
+      "cells": "B4 → D4",
+      "section": "Product Features",
+      "topic": "company",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:16.831Z"
+    },
+    {
+      "label": "Reference",
+      "value": "300724 | TC01",
+      "cells": "B5 → D5",
+      "section": "Product Features",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:16.878Z"
+    },
+    {
+      "label": "Product Name",
+      "value": "CHEDDAR RED 50% SLICES shingled 9x9CM à 15G 6x1kg",
+      "cells": "B3 → D3",
+      "section": "Product Features Header",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:16.906Z"
+    },
+    {
+      "label": "Supplier Name",
+      "value": "KAAS-PACK HOLLAND B.V.",
+      "cells": "B4 → D4",
+      "section": "Product Features Header",
+      "topic": "company",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:16.932Z"
+    },
+    {
+      "label": "Reference Number",
+      "value": "300724 | TC01",
+      "cells": "B5 → D5",
+      "section": "Product Features Header",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:16.959Z"
+    },
+    {
+      "label": "Product Name",
+      "value": "CHEDDAR RED 50% SLICES shingled 9x9CM à 15G 6x1kg",
+      "cells": "B3 → D3",
+      "section": "Product Information",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:16.986Z"
+    },
+    {
+      "label": "Supplier",
+      "value": "KAAS-PACK HOLLAND B.V.",
+      "cells": "B4 → D4",
+      "section": "Product Information",
+      "topic": "company",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:17.014Z"
+    },
+    {
+      "label": "Reference",
+      "value": "300724 | TC01",
+      "cells": "B5 → D5",
+      "section": "Product Information",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:17.056Z"
+    },
+    {
+      "label": "Product",
+      "value": "CHEDDAR RED 50% SLICES shingled 9x9CM à 15G 6x1kg",
+      "cells": "B3 → D3",
+      "section": "Product Information",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:17.088Z"
+    },
+    {
+      "label": "Supplier",
+      "value": "KAAS-PACK HOLLAND B.V.",
+      "cells": "B4 → D4",
+      "section": "Product Information",
+      "topic": "company",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:17.116Z"
+    },
+    {
+      "label": "Reference",
+      "value": "300724 | TC01",
+      "cells": "B5 → D5",
+      "section": "Product Information",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:17.145Z"
+    },
+    {
+      "label": "Product Name",
+      "value": "CHEDDAR RED 50% SLICES shingled 9x9CM à 15G 6x1kg",
+      "cells": "B3 → D3",
+      "section": "Product Characteristics",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:17.174Z"
+    },
+    {
+      "label": "Supplier",
+      "value": "KAAS-PACK HOLLAND B.V.",
+      "cells": "B4 → D4",
+      "section": "Product Characteristics",
+      "topic": "company",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:17.203Z"
+    },
+    {
+      "label": "Reference Code",
+      "value": "300724 | TC01",
+      "cells": "B5 → D5",
+      "section": "Product Characteristics",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:17.231Z"
+    },
+    {
+      "label": "Product Name",
+      "value": "CHEDDAR RED 50% SLICES shingled 9x9CM à 15G 6x1kg",
+      "cells": "B3 → D3",
+      "section": "Product Information",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:17.273Z"
+    },
+    {
+      "label": "Supplier",
+      "value": "KAAS-PACK HOLLAND B.V.",
+      "cells": "B4 → D4",
+      "section": "Product Information",
+      "topic": "company",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:17.368Z"
+    },
+    {
+      "label": "Reference",
+      "value": "300724 | TC01",
+      "cells": "B5 → D5",
+      "section": "Product Information",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:17.397Z"
+    },
+    {
+      "label": "Product",
+      "value": "CHEDDAR RED 50% SLICES shingled 9x9CM à 15G 6x1kg",
+      "cells": "B3 → D3",
+      "section": "Product Information",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:17.454Z"
+    },
+    {
+      "label": "Supplier",
+      "value": "KAAS-PACK HOLLAND B.V.",
+      "cells": "B4 → D4",
+      "section": "Product Information",
+      "topic": "company",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:17.466Z"
+    },
+    {
+      "label": "Reference",
+      "value": "300724 | TC01",
+      "cells": "B5 → D5",
+      "section": "Product Information",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:17.506Z"
+    },
+    {
+      "label": "Product",
+      "value": "CHEDDAR RED 50% SLICES shingled 9x9CM à 15G 6x1kg",
+      "cells": "B3 → D3",
+      "section": "Product Information",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:17.807Z"
+    },
+    {
+      "label": "Supplier",
+      "value": "KAAS-PACK HOLLAND B.V.",
+      "cells": "B4 → D4",
+      "section": "Product Information",
+      "topic": "company",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:17.835Z"
+    },
+    {
+      "label": "Reference",
+      "value": "300724 | TC01",
+      "cells": "B5 → D5",
+      "section": "Product Information",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:17.861Z"
+    },
+    {
+      "label": "Product Name",
+      "value": "CHEDDAR RED 50% SLICES shingled 9x9CM à 15G 6x1kg",
+      "cells": "B4 → C4",
+      "section": "Product Information",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:17.888Z"
+    },
+    {
+      "label": "Supplier Name",
+      "value": "KAAS-PACK HOLLAND B.V.",
+      "cells": "B5 → C5",
+      "section": "Product Information",
+      "topic": "company",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:17.930Z"
+    },
+    {
+      "label": "Product Reference",
+      "value": "300724 | TC01",
+      "cells": "B6 → C6",
+      "section": "Product Information",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:17.959Z"
+    },
+    {
+      "label": "Legal Name (Denomination légale)",
+      "value": "COLORED CHEDDAR",
+      "cells": "A9 → F9",
+      "section": "Legal Name Section",
+      "topic": "food_fraud",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:48:11.498Z"
+    },
+    {
+      "label": "Codex Compliance (Conformité au Codex)",
+      "value": "Yes, Codex STAN 263-1966 v.2018 Cheddar",
+      "cells": "A13 → F13",
+      "section": "Legal Name Section",
+      "topic": "food_fraud",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:48:11.540Z"
+    },
+    {
+      "label": "Technological Aids Declaration (Auxilliaires technologiques déclarés)",
+      "value": "Oui/Yes",
+      "cells": "A15 → F15",
+      "section": "Legal Name Section",
+      "topic": "food_fraud",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:48:11.568Z"
+    },
+    {
+      "label": "FDA Calcium Chloride Declaration",
+      "value": "oui / yes",
+      "cells": "A16 → F16",
+      "section": "Legal Name Section",
+      "topic": "food_fraud",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:48:11.600Z"
+    },
+    {
+      "label": "Type of cheese",
+      "value": "- pâte pressée cuite / Hard pressed cheese",
+      "cells": "A9 → C9",
+      "section": "Cheese/Milk Details",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:45:58.912Z"
+    },
+    {
+      "label": "Milk processing",
+      "value": "pasteurisé / pasteurized",
+      "cells": "A11 → C11",
+      "section": "Cheese/Milk Details",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:45:58.947Z"
+    },
+    {
+      "label": "Time-Temperature",
+      "value": "min 15sec - min 72,5°C",
+      "cells": "E11 → G11",
+      "section": "Cheese/Milk Details",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:45:58.987Z"
+    },
+    {
+      "label": "Best Before Date (BBD)",
+      "value": "120 days",
+      "cells": "A9 → E9",
+      "section": "Shelf Life",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:45:59.022Z"
+    },
+    {
+      "label": "Use By Date (UBD)",
+      "value": "NA",
+      "cells": "A10 → E10",
+      "section": "Shelf Life",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:45:59.049Z"
+    },
+    {
+      "label": "Shelf Life Location",
+      "value": "On the label",
+      "cells": "A12 → E12",
+      "section": "Shelf Life",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:45:59.077Z"
+    },
+    {
+      "label": "Storage Temperature",
+      "value": "1-7 °C",
+      "cells": "A14 → E14",
+      "section": "Shelf Life",
+      "topic": "logistics",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:45:59.128Z"
+    },
+    {
+      "label": "Products for human consumption",
+      "value": "The products manufactured are intended for human consumption",
+      "cells": "A9 → A9",
+      "section": "Export Certificate",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:45:59.167Z"
+    },
+    {
+      "label": "Establishment registration",
+      "value": "The establishment is registered according to the Regulation",
+      "cells": "A11 → A11",
+      "section": "Export Certificate",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:45:59.211Z"
+    },
+    {
+      "label": "Product handling compliance",
+      "value": "The products manufactured have been produced, stored and tra",
+      "cells": "A13 → A13",
+      "section": "Export Certificate",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:45:59.238Z"
+    },
+    {
+      "label": "Milk source compliance",
+      "value": "The products manufactured were made from milk that has been",
+      "cells": "A15 → A15",
+      "section": "Export Certificate",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:45:59.285Z"
+    },
+    {
+      "label": "No prohibited products",
+      "value": "The products manufactured do not contain any products derive",
+      "cells": "A17 → A17",
+      "section": "Export Certificate",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:45:59.325Z"
+    },
+    {
+      "label": "Hygienic processing",
+      "value": "The products manufactured have been processed and handled in",
+      "cells": "A19 → A19",
+      "section": "Export Certificate",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:45:59.353Z"
+    },
+    {
+      "label": "Healthy raw materials",
+      "value": "The cheeses processed are made from raw materials from healt",
+      "cells": "A21 → A21",
+      "section": "Export Certificate",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:45:59.394Z"
+    },
+    {
+      "label": "No residues",
+      "value": "The products manufactured don't contain residues (antibiotic",
+      "cells": "A23 → A23",
+      "section": "Export Certificate",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:45:59.434Z"
+    },
+    {
+      "label": "Radioactivity levels",
+      "value": "The radioactivity level of the products manufactured are not",
+      "cells": "A25 → A25",
+      "section": "Export Certificate",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:45:59.471Z"
+    },
+    {
+      "label": "Clean packaging materials",
+      "value": "Packaging materials are clean and approved for food packagin",
+      "cells": "A27 → A27",
+      "section": "Export Certificate",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:45:59.505Z"
+    },
+    {
+      "label": "EU manufacturing and milk source",
+      "value": "The products were manufactured in UE and from milk produced",
+      "cells": "A29 → A29",
+      "section": "Export Certificate",
+      "topic": "origin",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:45:59.533Z"
+    },
+    {
+      "label": "BSCI (Business Social Compliance Initiative)",
+      "value": "No",
+      "cells": "C9 → G9",
+      "section": "Social Standards",
+      "topic": "certifications",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:45:59.563Z"
+    },
+    {
+      "label": "SA 8000",
+      "value": "No",
+      "cells": "C10 → G10",
+      "section": "Social Standards",
+      "topic": "certifications",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:45:59.619Z"
+    },
+    {
+      "label": "SMETA (Sedex Members Ethical Trade Audit)",
+      "value": "Yes",
+      "cells": "C11 → G11",
+      "section": "Social Standards",
+      "topic": "certifications",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:45:59.650Z"
+    },
+    {
+      "label": "ICS (Initiative for Compliance and Sustainibility)",
+      "value": "No",
+      "cells": "C12 → G12",
+      "section": "Social Standards",
+      "topic": "certifications",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:45:59.694Z"
+    },
+    {
+      "label": "ISO 45001",
+      "value": "No",
+      "cells": "C13 → G13",
+      "section": "Social Standards",
+      "topic": "certifications",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:45:59.727Z"
+    },
+    {
+      "label": "Code of conduct - Employee health/safety",
+      "value": "Yes",
+      "cells": "C17 → K17",
+      "section": "Social Standards",
+      "topic": "sustainability",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:45:59.806Z"
+    },
+    {
+      "label": "Code of conduct - Working conditions",
+      "value": "Yes",
+      "cells": "C18 → K18",
+      "section": "Social Standards",
+      "topic": "sustainability",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:45:59.840Z"
+    },
+    {
+      "label": "Code of conduct - Social dialogue",
+      "value": "Yes",
+      "cells": "C19 → K19",
+      "section": "Social Standards",
+      "topic": "sustainability",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:45:59.871Z"
+    },
+    {
+      "label": "Code of conduct - Career management",
+      "value": "Yes",
+      "cells": "C20 → K20",
+      "section": "Social Standards",
+      "topic": "sustainability",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:45:59.913Z"
+    },
+    {
+      "label": "Code of conduct - Child labor, forced labor",
+      "value": "Yes",
+      "cells": "C21 → K21",
+      "section": "Social Standards",
+      "topic": "sustainability",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:00.013Z"
+    },
+    {
+      "label": "Code of conduct - Diversity, discrimination and harassment",
+      "value": "Yes",
+      "cells": "C22 → K22",
+      "section": "Social Standards",
+      "topic": "sustainability",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:00.110Z"
+    },
+    {
+      "label": "Code of conduct - Fundamental human rights of external stakeholders",
+      "value": "Yes",
+      "cells": "C23 → K23",
+      "section": "Social Standards",
+      "topic": "sustainability",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:00.160Z"
+    },
+    {
+      "label": "Product derived from or uses GMO in production process",
+      "value": "Non/No",
+      "cells": "A10 → C11",
+      "section": "Conventionality Attestation",
+      "topic": "certifications",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:00.226Z"
+    },
+    {
+      "label": "Appearance",
+      "value": "Slices",
+      "cells": "A10 → C10",
+      "section": "Product Characteristics",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:00.271Z"
+    },
+    {
+      "label": "Taste",
+      "value": "Good and specific to the cheese",
+      "cells": "A11 → C11",
+      "section": "Product Characteristics",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:00.311Z"
+    },
+    {
+      "label": "Color",
+      "value": "Orange",
+      "cells": "A12 → C12",
+      "section": "Product Characteristics",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:00.339Z"
+    },
+    {
+      "label": "Smell",
+      "value": "Good and specific to the cheese",
+      "cells": "A13 → C13",
+      "section": "Product Characteristics",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:00.367Z"
+    },
+    {
+      "label": "Texture / Consistency",
+      "value": "Malleable, sufficiently stiff and sliceable",
+      "cells": "A14 → C14",
+      "section": "Product Characteristics",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:00.407Z"
+    },
+    {
+      "label": "pH",
+      "value": "5.2",
+      "cells": "A15 → C15",
+      "section": "Product Characteristics",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:00.438Z"
+    },
+    {
+      "label": "pH of raw milk",
+      "value": "<7",
+      "cells": "A16 → C16",
+      "section": "Product Characteristics",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:00.495Z"
+    },
+    {
+      "label": "Melting properties",
+      "value": "Selon le barême temps/température suivant : 120 sec/ 220°C :",
+      "cells": "A18 → C18",
+      "section": "Product Characteristics",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:00.552Z"
+    },
+    {
+      "label": "Milk and milk products - Source",
+      "value": "cow's milk",
+      "cells": "C11 → D20",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:00.617Z"
+    },
+    {
+      "label": "Sulfur dioxide and sulfites (>10mg/kg) - Recipe presence",
+      "value": "Absence",
+      "cells": "A13 → C13",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:00.654Z"
+    },
+    {
+      "label": "Sulfur dioxide and sulfites (>10mg/kg) - Production line presence",
+      "value": "Absence",
+      "cells": "A13 → E13",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:00.693Z"
+    },
+    {
+      "label": "Peanuts and peanut products - Recipe presence",
+      "value": "Absence",
+      "cells": "A14 → C14",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:00.722Z"
+    },
+    {
+      "label": "Peanuts and peanut products - Production line presence",
+      "value": "Absence",
+      "cells": "A14 → E14",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:00.759Z"
+    },
+    {
+      "label": "Celery and celery products - Recipe presence",
+      "value": "Absence",
+      "cells": "A15 → C15",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:00.794Z"
+    },
+    {
+      "label": "Celery and celery products - Production line presence",
+      "value": "Absence",
+      "cells": "A15 → E15",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:00.821Z"
+    },
+    {
+      "label": "Cereals containing gluten (wheat, spelt, etc.) - Recipe presence",
+      "value": "Absence",
+      "cells": "A16 → C16",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:00.849Z"
+    },
+    {
+      "label": "Cereals containing gluten (wheat, spelt, etc.) - Production line presence",
+      "value": "Absence",
+      "cells": "A16 → E16",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:00.889Z"
+    },
+    {
+      "label": "Crustaceans and crustacean products - Recipe presence",
+      "value": "Absence",
+      "cells": "A17 → C17",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:00.934Z"
+    },
+    {
+      "label": "Crustaceans and crustacean products - Production line presence",
+      "value": "Absence",
+      "cells": "A17 → E17",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:00.962Z"
+    },
+    {
+      "label": "Tree nuts (almonds, hazelnuts, walnuts, etc.) - Recipe presence",
+      "value": "Absence",
+      "cells": "A18 → C18",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:00.991Z"
+    },
+    {
+      "label": "Tree nuts (almonds, hazelnuts, walnuts, etc.) - Production line presence",
+      "value": "Absence",
+      "cells": "A18 → E18",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.020Z"
+    },
+    {
+      "label": "Sesame seeds and sesame products - Recipe presence",
+      "value": "Absence",
+      "cells": "A19 → C19",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.059Z"
+    },
+    {
+      "label": "Sesame seeds and sesame products - Production line presence",
+      "value": "Absence",
+      "cells": "A19 → E19",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.111Z"
+    },
+    {
+      "label": "Milk and milk products (including lactose) - Recipe presence",
+      "value": "Presence",
+      "cells": "A20 → C20",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.141Z"
+    },
+    {
+      "label": "Milk and milk products (including lactose) - Production line presence",
+      "value": "non applicable",
+      "cells": "A20 → E20",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.167Z"
+    },
+    {
+      "label": "Lupin and lupin products - Recipe presence",
+      "value": "Absence",
+      "cells": "A21 → C21",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.204Z"
+    },
+    {
+      "label": "Lupin and lupin products - Production line presence",
+      "value": "Absence",
+      "cells": "A21 → E21",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.237Z"
+    },
+    {
+      "label": "Molluscs and mollusc products - Recipe presence",
+      "value": "Absence",
+      "cells": "A22 → C22",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.264Z"
+    },
+    {
+      "label": "Molluscs and mollusc products - Production line presence",
+      "value": "Absence",
+      "cells": "A22 → E22",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.304Z"
+    },
+    {
+      "label": "Mustard and mustard products - Recipe presence",
+      "value": "Absence",
+      "cells": "A23 → C23",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.333Z"
+    },
+    {
+      "label": "Mustard and mustard products - Production line presence",
+      "value": "Absence",
+      "cells": "A23 → E23",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.376Z"
+    },
+    {
+      "label": "Eggs and egg products - Recipe presence",
+      "value": "Absence",
+      "cells": "A24 → C24",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.404Z"
+    },
+    {
+      "label": "Eggs and egg products - Production line presence",
+      "value": "Absence",
+      "cells": "A24 → E24",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.433Z"
+    },
+    {
+      "label": "Fish and fish products - Recipe presence",
+      "value": "Absence",
+      "cells": "A25 → C25",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.460Z"
+    },
+    {
+      "label": "Fish and fish products - Production line presence",
+      "value": "Absence",
+      "cells": "A25 → E25",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.509Z"
+    },
+    {
+      "label": "Soybeans and soy products - Recipe presence",
+      "value": "Absence",
+      "cells": "A26 → C26",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.545Z"
+    },
+    {
+      "label": "Soybeans and soy products - Production line presence",
+      "value": "Absence",
+      "cells": "A26 → E26",
+      "section": "Allergen Declaration",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.572Z"
+    },
+    {
+      "label": "Primary packaging weight (g)",
+      "value": "25",
+      "cells": "F11 → F13",
+      "section": "Packaging Details",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.598Z"
+    },
+    {
+      "label": "Primary packaging - Product contact",
+      "value": "yes",
+      "cells": "G11 → G13",
+      "section": "Packaging Details",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.625Z"
+    },
+    {
+      "label": "Primary packaging - Recycled material",
+      "value": "yes",
+      "cells": "I11 → I13",
+      "section": "Packaging Details",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.660Z"
+    },
+    {
+      "label": "Primary packaging - Recyclable material",
+      "value": "yes",
+      "cells": "K11 → K13",
+      "section": "Packaging Details",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.711Z"
+    },
+    {
+      "label": "Foil around pallet - Product contact",
+      "value": "no",
+      "cells": "G11 → H14",
+      "section": "Packaging Details",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.739Z"
+    },
+    {
+      "label": "Foil around pallet - Recycled material",
+      "value": "yes",
+      "cells": "I11 → I14",
+      "section": "Packaging Details",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.766Z"
+    },
+    {
+      "label": "Foil around pallet - Recyclable material",
+      "value": "yes",
+      "cells": "K11 → K14",
+      "section": "Packaging Details",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.804Z"
+    },
+    {
+      "label": "Wood pallet weight (g)",
+      "value": "25000",
+      "cells": "F11 → F15",
+      "section": "Packaging Details",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.838Z"
+    },
+    {
+      "label": "Wood pallet - Product contact",
+      "value": "no",
+      "cells": "G11 → H15",
+      "section": "Packaging Details",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.866Z"
+    },
+    {
+      "label": "Wood pallet - Recycled material",
+      "value": "yes",
+      "cells": "I11 → I15",
+      "section": "Packaging Details",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.907Z"
+    },
+    {
+      "label": "Wood pallet - Recyclable percentage",
+      "value": "100",
+      "cells": "L11 → L15",
+      "section": "Packaging Details",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.938Z"
+    },
+    {
+      "label": "Primary packaging material",
+      "value": "PEEVOH/PET and PE/APET",
+      "cells": "A13 → C13",
+      "section": "Packaging Details",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:01.980Z"
+    },
+    {
+      "label": "Wood pallet material",
+      "value": "Wood",
+      "cells": "A15 → C15",
+      "section": "Packaging Details",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:02.036Z"
+    },
+    {
+      "label": "Pasteurized COW'S MILK - Percentage",
+      "value": "0.98",
+      "cells": "A13 → C13",
+      "section": "Ingredients and Geographic Origin",
+      "topic": "ingredients",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:02.064Z"
+    },
+    {
+      "label": "Pasteurized COW'S MILK - Origin Country",
+      "value": "IRL",
+      "cells": "A13 → F13",
+      "section": "Ingredients and Geographic Origin",
+      "topic": "origin",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:02.112Z"
+    },
+    {
+      "label": "Salt - Percentage",
+      "value": "0.02",
+      "cells": "A14 → C14",
+      "section": "Ingredients and Geographic Origin",
+      "topic": "ingredients",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:02.154Z"
+    },
+    {
+      "label": "Salt - Origin Countries",
+      "value": "UK,NL,DE,IRL,DK",
+      "cells": "A14 → F14",
+      "section": "Ingredients and Geographic Origin",
+      "topic": "origin",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:02.195Z"
+    },
+    {
+      "label": "Starter - Percentage",
+      "value": "<0,5%",
+      "cells": "A15 → C15",
+      "section": "Ingredients and Geographic Origin",
+      "topic": "ingredients",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:02.223Z"
+    },
+    {
+      "label": "Starter - Origin Countries",
+      "value": "DK,AUS,USA,FR",
+      "cells": "A15 → F15",
+      "section": "Ingredients and Geographic Origin",
+      "topic": "origin",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:02.258Z"
+    },
+    {
+      "label": "Microbial rennet - Percentage",
+      "value": "<0,5%",
+      "cells": "A16 → C16",
+      "section": "Ingredients and Geographic Origin",
+      "topic": "ingredients",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:02.292Z"
+    },
+    {
+      "label": "Microbial rennet - Origin Countries",
+      "value": "DK,NL,FR",
+      "cells": "A16 → F16",
+      "section": "Ingredients and Geographic Origin",
+      "topic": "origin",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:02.319Z"
+    },
+    {
+      "label": "Beta-carotene - Percentage",
+      "value": "<0,5%",
+      "cells": "A17 → C17",
+      "section": "Ingredients and Geographic Origin",
+      "topic": "ingredients",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:02.346Z"
+    },
+    {
+      "label": "Beta-carotene - E-Number",
+      "value": "E160a",
+      "cells": "A17 → J17",
+      "section": "Ingredients and Geographic Origin",
+      "topic": "ingredients",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:02.386Z"
+    },
+    {
+      "label": "Beta-carotene - Origin Country",
+      "value": "DK",
+      "cells": "A17 → F17",
+      "section": "Ingredients and Geographic Origin",
+      "topic": "origin",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:02.430Z"
+    },
+    {
+      "label": "Calcium Chloride - E-Number",
+      "value": "E.509",
+      "cells": "A25 → J25",
+      "section": "Ingredients and Geographic Origin",
+      "topic": "ingredients",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:02.457Z"
+    },
+    {
+      "label": "Calcium Chloride - GMO Status",
+      "value": "Non/No",
+      "cells": "A25 → K25",
+      "section": "Ingredients and Geographic Origin",
+      "topic": "ingredients",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:02.486Z"
+    },
+    {
+      "label": "Product Name",
+      "value": "CHEDDAR RED 50% SLICES shingled 9x9CM à 15G 6x1kg",
+      "cells": "A14 → D14",
+      "section": "Product Information",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:02.513Z"
+    },
+    {
+      "label": "Supplier/Manufacturer",
+      "value": "KAAS-PACK HOLLAND B.V.",
+      "cells": "A15 → D15",
+      "section": "Product Information",
+      "topic": "company",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:02.549Z"
+    },
+    {
+      "label": "Reference on Delivery Note",
+      "value": "300724",
+      "cells": "A16 → D16",
+      "section": "Product Information",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:02.599Z"
+    },
+    {
+      "label": "Reference on Specifications",
+      "value": "300724 | TC01",
+      "cells": "A17 → D17",
+      "section": "Product Information",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:02.628Z"
+    },
+    {
+      "label": "Contains engineered nanomaterials",
+      "value": "Non/No",
+      "cells": "A15 → C17",
+      "section": "Nanomaterials Attestation",
+      "topic": "certifications",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:03.145Z"
+    },
+    {
+      "label": "Manufacturer Name",
+      "value": "Kaas-Pack Holland B.V.",
+      "cells": "A16 → C16",
+      "section": "Manufacturer Details",
+      "topic": "company",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:03.183Z"
+    },
+    {
+      "label": "Manufacturer Address",
+      "value": "Buitenvaart 2109 7905 SW HOOGEVEEN Nederland",
+      "cells": "A18 → C18",
+      "section": "Manufacturer Details",
+      "topic": "company",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:03.254Z"
+    },
+    {
+      "label": "Manufacturer Health Approval Number",
+      "value": "NL Z0159 EU",
+      "cells": "A20 → C20",
+      "section": "Manufacturer Details",
+      "topic": "approval",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:03.283Z"
+    },
+    {
+      "label": "Escherichia Coli Target",
+      "value": "100 cfu/g",
+      "cells": "A16 → D16",
+      "section": "Microbiological Criteria",
+      "topic": "microbiology",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:03.311Z"
+    },
+    {
+      "label": "Escherichia Coli Tolerance",
+      "value": "1.000 cfu/g",
+      "cells": "A16 → F16",
+      "section": "Microbiological Criteria",
+      "topic": "microbiology",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:03.338Z"
+    },
+    {
+      "label": "Escherichia Coli Analysis Method",
+      "value": "ISO 16649-2",
+      "cells": "A16 → H16",
+      "section": "Microbiological Criteria",
+      "topic": "microbiology",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:03.380Z"
+    },
+    {
+      "label": "Coagulase positive staphylococci Target",
+      "value": "100 cfu/g",
+      "cells": "A17 → D17",
+      "section": "Microbiological Criteria",
+      "topic": "microbiology",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:03.409Z"
+    },
+    {
+      "label": "Coagulase positive staphylococci Tolerance",
+      "value": "1.000 cfu/g",
+      "cells": "A17 → F17",
+      "section": "Microbiological Criteria",
+      "topic": "microbiology",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:03.450Z"
+    },
+    {
+      "label": "Coagulase positive staphylococci Analysis Method",
+      "value": "ISO 6888-2",
+      "cells": "A17 → H17",
+      "section": "Microbiological Criteria",
+      "topic": "microbiology",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:03.480Z"
+    },
+    {
+      "label": "Listeria monocytogenes Target",
+      "value": "absence/25g - neg/25g",
+      "cells": "A18 → D18",
+      "section": "Microbiological Criteria",
+      "topic": "microbiology",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:03.511Z"
+    },
+    {
+      "label": "Listeria monocytogenes Tolerance",
+      "value": "absence/25g - neg/25g",
+      "cells": "A18 → F18",
+      "section": "Microbiological Criteria",
+      "topic": "microbiology",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:03.553Z"
+    },
+    {
+      "label": "Listeria monocytogenes Analysis Method",
+      "value": "ISO 11290-1",
+      "cells": "A18 → H18",
+      "section": "Microbiological Criteria",
+      "topic": "microbiology",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:03.588Z"
+    },
+    {
+      "label": "Salmonella spp Target",
+      "value": "absence/25g - neg/25g",
+      "cells": "A19 → D19",
+      "section": "Microbiological Criteria",
+      "topic": "microbiology",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:03.616Z"
+    },
+    {
+      "label": "Salmonella spp Tolerance",
+      "value": "absence/25g - neg/25g",
+      "cells": "A19 → F19",
+      "section": "Microbiological Criteria",
+      "topic": "microbiology",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:03.658Z"
+    },
+    {
+      "label": "Salmonella spp Analysis Method",
+      "value": "ISO 6579",
+      "cells": "A19 → H19",
+      "section": "Microbiological Criteria",
+      "topic": "microbiology",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:03.690Z"
+    },
+    {
+      "label": "Coliformes totaux Target",
+      "value": "100 cfu/g",
+      "cells": "A20 → D20",
+      "section": "Microbiological Criteria",
+      "topic": "microbiology",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:03.717Z"
+    },
+    {
+      "label": "Coliformes totaux Tolerance",
+      "value": "1.000 cfu/g",
+      "cells": "A20 → F20",
+      "section": "Microbiological Criteria",
+      "topic": "microbiology",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:03.766Z"
+    },
+    {
+      "label": "Coliformes totaux Analysis Method",
+      "value": "ISO 4832",
+      "cells": "A20 → H20",
+      "section": "Microbiological Criteria",
+      "topic": "microbiology",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:03.795Z"
+    },
+    {
+      "label": "Moisissures Target",
+      "value": "1.000 cfu/g",
+      "cells": "A21 → D21",
+      "section": "Microbiological Criteria",
+      "topic": "microbiology",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:03.822Z"
+    },
+    {
+      "label": "Moisissures Tolerance",
+      "value": "10.000 cfu/g",
+      "cells": "A21 → F21",
+      "section": "Microbiological Criteria",
+      "topic": "microbiology",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:03.861Z"
+    },
+    {
+      "label": "Moisissures Analysis Method",
+      "value": "ISO 21527-1 / -2",
+      "cells": "A21 → H21",
+      "section": "Microbiological Criteria",
+      "topic": "microbiology",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:03.892Z"
+    },
+    {
+      "label": "Levures Target",
+      "value": "1.000 cfu/g",
+      "cells": "A22 → D22",
+      "section": "Microbiological Criteria",
+      "topic": "microbiology",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:03.918Z"
+    },
+    {
+      "label": "Levures Tolerance",
+      "value": "50.000 cfu/g",
+      "cells": "A22 → F22",
+      "section": "Microbiological Criteria",
+      "topic": "microbiology",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:03.957Z"
+    },
+    {
+      "label": "Levures Analysis Method",
+      "value": "ISO 21527-1 / -2",
+      "cells": "A22 → H22",
+      "section": "Microbiological Criteria",
+      "topic": "microbiology",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:45:58.861Z"
+    },
+    {
+      "label": "Product Length (mm)",
+      "value": "390",
+      "cells": "C18 → D18",
+      "section": "Primary Packaging",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:55.640Z"
+    },
+    {
+      "label": "Product Width (mm)",
+      "value": "130",
+      "cells": "E18 → F18",
+      "section": "Primary Packaging",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:55.683Z"
+    },
+    {
+      "label": "Product Height (mm)",
+      "value": "47",
+      "cells": "G18 → H18",
+      "section": "Primary Packaging",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:55.724Z"
+    },
+    {
+      "label": "Net Weight (Kg)",
+      "value": "1",
+      "cells": "A20 → E20",
+      "section": "Primary Packaging",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:55.754Z"
+    },
+    {
+      "label": "Empty Packaging Weight (g)",
+      "value": "28",
+      "cells": "A21 → E21",
+      "section": "Primary Packaging",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:55.783Z"
+    },
+    {
+      "label": "Gross Weight (Kg)",
+      "value": "1.028",
+      "cells": "A22 → E22",
+      "section": "Primary Packaging",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:55.812Z"
+    },
+    {
+      "label": "Packaging Atmosphere",
+      "value": "Atmosphère protectrice/protective atmosphere",
+      "cells": "A23 → E23",
+      "section": "Primary Packaging",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:55.854Z"
+    },
+    {
+      "label": "Product Code",
+      "value": "TC01",
+      "cells": "A25 → E25",
+      "section": "Primary Packaging",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:55.886Z"
+    },
+    {
+      "label": "Packaging Colour",
+      "value": "Neutre/Neutral",
+      "cells": "A26 → E26",
+      "section": "Primary Packaging",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:46:55.598Z"
+    },
+    {
+      "label": "Flavoring used in manufacturing",
+      "value": "Non/No",
+      "cells": "A22 → D22",
+      "section": "Additional Information",
+      "topic": "ingredients",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:24.046Z"
+    },
+    {
+      "label": "Colorant used in manufacturing",
+      "value": "Oui/Yes",
+      "cells": "F22 → I22",
+      "section": "Additional Information",
+      "topic": "ingredients",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:24.072Z"
+    },
+    {
+      "label": "Preservative used in manufacturing",
+      "value": "Non/No",
+      "cells": "A23 → D23",
+      "section": "Additional Information",
+      "topic": "ingredients",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:24.098Z"
+    },
+    {
+      "label": "Antioxidant used in manufacturing",
+      "value": "Non/No",
+      "cells": "F23 → I23",
+      "section": "Additional Information",
+      "topic": "ingredients",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:24.142Z"
+    },
+    {
+      "label": "Flavor enhancer used in manufacturing",
+      "value": "Non/No",
+      "cells": "A24 → D24",
+      "section": "Additional Information",
+      "topic": "ingredients",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:24.174Z"
+    },
+    {
+      "label": "Signatory Name",
+      "value": "G. Sok",
+      "cells": "A24 → B24",
+      "section": "Engagement/Agreement",
+      "topic": "signature",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:24.355Z"
+    },
+    {
+      "label": "Signature Date",
+      "value": "2025-10-07",
+      "cells": "E24 → F24",
+      "section": "Engagement/Agreement",
+      "topic": "signature",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:24.382Z"
+    },
+    {
+      "label": "Signatory Position",
+      "value": "QA officer",
+      "cells": "A25 → B25",
+      "section": "Engagement/Agreement",
+      "topic": "contacts",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:24.407Z"
+    },
+    {
+      "label": "Signature Location",
+      "value": "Hoogeveen",
+      "cells": "E25 → F25",
+      "section": "Engagement/Agreement",
+      "topic": "signature",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:24.431Z"
+    },
+    {
+      "label": "Supplier commits to transmit analysis certificate",
+      "value": "Oui/Yes",
+      "cells": "A25 → J25",
+      "section": "Laboratory Questions",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:24.456Z"
+    },
+    {
+      "label": "Is the product conducive to Listeria Monocytogenes development",
+      "value": "Non/No",
+      "cells": "A27 → J27",
+      "section": "Laboratory Questions",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:24.482Z"
+    },
+    {
+      "label": "Have you carried out aging studies",
+      "value": "Oui/Yes",
+      "cells": "A28 → J28",
+      "section": "Laboratory Questions",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:24.509Z"
+    },
+    {
+      "label": "Do you work with external laboratories",
+      "value": "Oui/Yes",
+      "cells": "A29 → E29",
+      "section": "Laboratory Questions",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:24.547Z"
+    },
+    {
+      "label": "Are they accredited",
+      "value": "Oui/Yes",
+      "cells": "F29 → H29",
+      "section": "Laboratory Questions",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:24.575Z"
+    },
+    {
+      "label": "Have you an internal laboratory",
+      "value": "Non/No",
+      "cells": "A30 → E30",
+      "section": "Laboratory Questions",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:24.600Z"
+    },
+    {
+      "label": "Microbiological hazard considered",
+      "value": "Yes",
+      "cells": "A25 → C25",
+      "section": "HACCP",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:24.625Z"
+    },
+    {
+      "label": "Food defense hazard considered",
+      "value": "Yes",
+      "cells": "E25 → G25",
+      "section": "HACCP",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:24.651Z"
+    },
+    {
+      "label": "CCP identified",
+      "value": "CCP1: Metal Detection",
+      "cells": "I25 → I25",
+      "section": "HACCP",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:24.676Z"
+    },
+    {
+      "label": "Physical hazard considered",
+      "value": "Yes",
+      "cells": "A26 → C26",
+      "section": "HACCP",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:24.701Z"
+    },
+    {
+      "label": "Food fraud hazard considered",
+      "value": "Yes",
+      "cells": "E26 → G26",
+      "section": "HACCP",
+      "topic": "food_fraud",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:24.739Z"
+    },
+    {
+      "label": "Chemical hazard considered",
+      "value": "Yes",
+      "cells": "A27 → C27",
+      "section": "HACCP",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:24.770Z"
+    },
+    {
+      "label": "Allergen hazard considered",
+      "value": "Yes",
+      "cells": "A28 → C28",
+      "section": "HACCP",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:24.796Z"
+    },
+    {
+      "label": "Ingredient: Pasteurized Cow's Milk",
+      "value": "pasteurized cow's milk",
+      "cells": "A27 → A27",
+      "section": "Intermediary Section",
+      "topic": "ingredients",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:24.821Z"
+    },
+    {
+      "label": "Ingredient: Salt",
+      "value": "Salt",
+      "cells": "A28 → A28",
+      "section": "Intermediary Section",
+      "topic": "ingredients",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:24.846Z"
+    },
+    {
+      "label": "Ingredient: Cheese Culture",
+      "value": "cheese culture",
+      "cells": "A29 → A29",
+      "section": "Intermediary Section",
+      "topic": "ingredients",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:24.871Z"
+    },
+    {
+      "label": "Ingredient: Microbial Rennet",
+      "value": "Microbial rennet",
+      "cells": "A30 → A30",
+      "section": "Intermediary Section",
+      "topic": "ingredients",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:24.900Z"
+    },
+    {
+      "label": "Final Product for Intermediary Assessment",
+      "value": "CHEDDAR RED 50% SLICES shingled 9x9CM à 15G 6x1kg",
+      "cells": "A34 → A34",
+      "section": "Intermediary Section",
+      "topic": "food_fraud",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:24.964Z"
+    },
+    {
+      "label": "Fat in dry matter (Min)",
+      "value": "0.48",
+      "cells": "A27 → E27",
+      "section": "Nutritional Values",
+      "topic": "nutrition",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:24.994Z"
+    },
+    {
+      "label": "Fat in dry matter (Target)",
+      "value": "0.5",
+      "cells": "A27 → F27",
+      "section": "Nutritional Values",
+      "topic": "nutrition",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:25.020Z"
+    },
+    {
+      "label": "Fat in dry matter (Max)",
+      "value": "0.64",
+      "cells": "A27 → G27",
+      "section": "Nutritional Values",
+      "topic": "nutrition",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:25.046Z"
+    },
+    {
+      "label": "Energy values (Kj)",
+      "value": "1670",
+      "cells": "A28 → F28",
+      "section": "Nutritional Values",
+      "topic": "nutrition",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:25.071Z"
+    },
+    {
+      "label": "Energy values (Kcal)",
+      "value": "399",
+      "cells": "A29 → F29",
+      "section": "Nutritional Values",
+      "topic": "nutrition",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:25.101Z"
+    },
+    {
+      "label": "Fat (g)",
+      "value": "33",
+      "cells": "A30 → F30",
+      "section": "Nutritional Values",
+      "topic": "nutrition",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:25.132Z"
+    },
+    {
+      "label": "Saturated fat acids (g)",
+      "value": "21",
+      "cells": "A31 → F31",
+      "section": "Nutritional Values",
+      "topic": "nutrition",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:25.176Z"
+    },
+    {
+      "label": "Proteins (g)",
+      "value": "25",
+      "cells": "A35 → F35",
+      "section": "Nutritional Values",
+      "topic": "nutrition",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:25.207Z"
+    },
+    {
+      "label": "Carbohydrates (g)",
+      "value": "<0,1",
+      "cells": "A36 → F36",
+      "section": "Nutritional Values",
+      "topic": "nutrition",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:25.232Z"
+    },
+    {
+      "label": "Sugars (g)",
+      "value": "<0,1",
+      "cells": "A37 → F37",
+      "section": "Nutritional Values",
+      "topic": "nutrition",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:25.258Z"
+    },
+    {
+      "label": "Salt (g)",
+      "value": "1.8",
+      "cells": "A39 → F39",
+      "section": "Nutritional Values",
+      "topic": "nutrition",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:25.283Z"
+    },
+    {
+      "label": "Packaging does not intentionally contain Bisphenol A",
+      "value": "yes",
+      "cells": "A27 → H26",
+      "section": "Primary Packaging Conformity",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:25.309Z"
+    },
+    {
+      "label": "Packaging does not intentionally contain Phtalates",
+      "value": "yes",
+      "cells": "A28 → H26",
+      "section": "Primary Packaging Conformity",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:25.334Z"
+    },
+    {
+      "label": "Packaging does not intentionally contain Mineral oils (MOSH, MOAH)",
+      "value": "yes",
+      "cells": "A29 → H26",
+      "section": "Primary Packaging Conformity",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:25.374Z"
+    },
+    {
+      "label": "Packaging does not intentionally contain Nanomaterials",
+      "value": "yes",
+      "cells": "A30 → H26",
+      "section": "Primary Packaging Conformity",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:25.412Z"
+    },
+    {
+      "label": "Packaging does not intentionally contain Allergenic compounds",
+      "value": "yes",
+      "cells": "A31 → H26",
+      "section": "Primary Packaging Conformity",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:25.439Z"
+    },
+    {
+      "label": "Packaging does not contain more than 0,1% (m/m) of Mancozeb",
+      "value": "yes",
+      "cells": "A32 → H26",
+      "section": "Primary Packaging Conformity",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:25.465Z"
+    },
+    {
+      "label": "Packaging does not contain more than 0,1% (m/m) of Resorcinol",
+      "value": "yes",
+      "cells": "A33 → H26",
+      "section": "Primary Packaging Conformity",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:25.490Z"
+    },
+    {
+      "label": "Packaging does not contain more than 0,1% (m/m) of Diisooctyl phthalate (DIOP)",
+      "value": "yes",
+      "cells": "A34 → H26",
+      "section": "Primary Packaging Conformity",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:25.516Z"
+    },
+    {
+      "label": "Packaging does not contain more than 0,1% (m/m) of Cholecalciferol",
+      "value": "yes",
+      "cells": "A35 → H26",
+      "section": "Primary Packaging Conformity",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:25.542Z"
+    },
+    {
+      "label": "Signatory Name",
+      "value": "G. Sok",
+      "cells": "A29 → B29",
+      "section": "Signature Section",
+      "topic": "signature",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:25.747Z"
+    },
+    {
+      "label": "Signature Date",
+      "value": "2025-10-07",
+      "cells": "C29 → D29",
+      "section": "Signature Section",
+      "topic": "signature",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:25.786Z"
+    },
+    {
+      "label": "Signatory Position",
+      "value": "QA officer",
+      "cells": "A30 → B30",
+      "section": "Signature Section",
+      "topic": "signature",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:25.813Z"
+    },
+    {
+      "label": "Signature Location",
+      "value": "Hoogeveen",
+      "cells": "C30 → D30",
+      "section": "Signature Section",
+      "topic": "signature",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:36:25.839Z"
+    },
+    {
+      "label": "Box Length (mm)",
+      "value": "400",
+      "cells": "C30 → D30",
+      "section": "Secondary Packaging",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:52.274Z"
+    },
+    {
+      "label": "Box Width (mm)",
+      "value": "266",
+      "cells": "E30 → F30",
+      "section": "Secondary Packaging",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:52.318Z"
+    },
+    {
+      "label": "Box Height (mm)",
+      "value": "153",
+      "cells": "G30 → H30",
+      "section": "Secondary Packaging",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:52.365Z"
+    },
+    {
+      "label": "Products per Box",
+      "value": "6",
+      "cells": "A32 → E32",
+      "section": "Secondary Packaging",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:52.409Z"
+    },
+    {
+      "label": "Box Net Weight (Kg)",
+      "value": "6",
+      "cells": "A33 → E33",
+      "section": "Secondary Packaging",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:52.442Z"
+    },
+    {
+      "label": "Box Gross Weight (Kg)",
+      "value": "6.47",
+      "cells": "A34 → E34",
+      "section": "Secondary Packaging",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:52.485Z"
+    },
+    {
+      "label": "Metal detector for metals control",
+      "value": "Yes",
+      "cells": "B32 → B33",
+      "section": "Foreign Matter Control",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:52.706Z"
+    },
+    {
+      "label": "Magnet for metals control",
+      "value": "No",
+      "cells": "D32 → D33",
+      "section": "Foreign Matter Control",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:52.743Z"
+    },
+    {
+      "label": "Sieve/Filter for metals control",
+      "value": "No",
+      "cells": "F32 → F33",
+      "section": "Foreign Matter Control",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:52.775Z"
+    },
+    {
+      "label": "Metal detector sensitivity",
+      "value": "Ferro: 3,0mm Non Ferro: 3,0mm RVS: 4,0mm",
+      "cells": "A34 → B34",
+      "section": "Foreign Matter Control",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:52.807Z"
+    },
+    {
+      "label": "Metal detection process step",
+      "value": "After packaging",
+      "cells": "A35 → B35",
+      "section": "Foreign Matter Control",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:52.848Z"
+    },
+    {
+      "label": "Sieve/Filter for glass & hard plastic control",
+      "value": "No",
+      "cells": "B37 → B38",
+      "section": "Foreign Matter Control",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:52.889Z"
+    },
+    {
+      "label": "X Ray for glass & hard plastic control",
+      "value": "No",
+      "cells": "D37 → D38",
+      "section": "Foreign Matter Control",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:52.937Z"
+    },
+    {
+      "label": "Signatory name",
+      "value": "G. Sok",
+      "cells": "A32 → C32",
+      "section": "Agreement/Signature",
+      "topic": "signature",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:52.978Z"
+    },
+    {
+      "label": "Date",
+      "value": "2025-10-07",
+      "cells": "E32 → H32",
+      "section": "Agreement/Signature",
+      "topic": "signature",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:53.018Z"
+    },
+    {
+      "label": "Position",
+      "value": "QA officer",
+      "cells": "A33 → C33",
+      "section": "Agreement/Signature",
+      "topic": "signature",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:53.059Z"
+    },
+    {
+      "label": "Location",
+      "value": "Hoogeveen",
+      "cells": "E33 → H33",
+      "section": "Agreement/Signature",
+      "topic": "signature",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:53.094Z"
+    },
+    {
+      "label": "Document reference",
+      "value": "Ref E.023 Version: 6",
+      "cells": "A36 → A36",
+      "section": "Agreement/Signature",
+      "topic": "documents",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:53.143Z"
+    },
+    {
+      "label": "Page number",
+      "value": "Page 13/16",
+      "cells": "K36 → K36",
+      "section": "Agreement/Signature",
+      "topic": "documents",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:53.196Z"
+    },
+    {
+      "label": "Ingredient List for Labelling",
+      "value": "Pasteurised cow's MILK, salt, cheese cultures, microbial rennet, colour: beta-carotene.",
+      "cells": "A33 → A34",
+      "section": "Labelling",
+      "topic": "ingredients",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:53.266Z"
+    },
+    {
+      "label": "Name",
+      "value": "G. Sok",
+      "cells": "A33 → B33",
+      "section": "Signature",
+      "topic": "signature",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:53.318Z"
+    },
+    {
+      "label": "Date",
+      "value": "2025-10-07",
+      "cells": "I33 → J33",
+      "section": "Signature",
+      "topic": "signature",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:53.420Z"
+    },
+    {
+      "label": "Anti-caking agent E-Number",
+      "value": "E535",
+      "cells": "A41 → D41",
+      "section": "Salt Information",
+      "topic": "ingredients",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:53.566Z"
+    },
+    {
+      "label": "Pallet Product Code",
+      "value": "TC01",
+      "cells": "A39 → E39",
+      "section": "Palletisation",
+      "topic": "product",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:53.598Z"
+    },
+    {
+      "label": "Layers per Pallet",
+      "value": "11",
+      "cells": "A40 → E40",
+      "section": "Palletisation",
+      "topic": "logistics",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:53.635Z"
+    },
+    {
+      "label": "Products per Layer",
+      "value": "54",
+      "cells": "A41 → E41",
+      "section": "Palletisation",
+      "topic": "logistics",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:53.678Z"
+    },
+    {
+      "label": "Products per Pallet",
+      "value": "594",
+      "cells": "A42 → E42",
+      "section": "Palletisation",
+      "topic": "logistics",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:53.710Z"
+    },
+    {
+      "label": "Pallet Net Weight (Kg)",
+      "value": "594",
+      "cells": "A43 → E43",
+      "section": "Palletisation",
+      "topic": "logistics",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:53.741Z"
+    },
+    {
+      "label": "Pallet Gross Weight (Kg)",
+      "value": "664.2",
+      "cells": "A44 → E44",
+      "section": "Palletisation",
+      "topic": "logistics",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:53.801Z"
+    },
+    {
+      "label": "Pallet Size",
+      "value": "Euro 80x120",
+      "cells": "A45 → E45",
+      "section": "Palletisation",
+      "topic": "logistics",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:53.835Z"
+    },
+    {
+      "label": "Pallet Type",
+      "value": "bois/wood",
+      "cells": "A46 → E46",
+      "section": "Palletisation",
+      "topic": "logistics",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:53.866Z"
+    },
+    {
+      "label": "Pallet Height (mm)",
+      "value": "1827",
+      "cells": "A47 → E47",
+      "section": "Palletisation",
+      "topic": "logistics",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:53.897Z"
+    },
+    {
+      "label": "Presence of palm fats/oils in the product",
+      "value": "Non/No",
+      "cells": "A43 → H43",
+      "section": "Palm Oil & Additives",
+      "topic": "ingredients",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:37:27.592Z"
+    },
+    {
+      "label": "Presence of palm fats/oils in packaging",
+      "value": "Non/No",
+      "cells": "A44 → H44",
+      "section": "Palm Oil & Additives",
+      "topic": "ingredients",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:37:27.649Z"
+    },
+    {
+      "label": "Use of propionic acid and benzoic acid as additives",
+      "value": "Non/No",
+      "cells": "A45 → H45",
+      "section": "Palm Oil & Additives",
+      "topic": "ingredients",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:37:27.695Z"
+    },
+    {
+      "label": "Presence of totally hydrogenated fats/oils",
+      "value": "Non/No",
+      "cells": "A46 → H46",
+      "section": "Palm Oil & Additives",
+      "topic": "ingredients",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:37:27.731Z"
+    },
+    {
+      "label": "Presence of partially hydrogenated fats/oils",
+      "value": "Non/No",
+      "cells": "A47 → H47",
+      "section": "Palm Oil & Additives",
+      "topic": "ingredients",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:37:27.765Z"
+    },
+    {
+      "label": "Presence of non-natural trans fatty acids",
+      "value": "Non/No",
+      "cells": "A48 → H48",
+      "section": "Palm Oil & Additives",
+      "topic": "ingredients",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:37:27.829Z"
+    },
+    {
+      "label": "Batch number description",
+      "value": "Increasing meaningless number",
+      "cells": "A46 → F46",
+      "section": "Traceability",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:32.041Z"
+    },
+    {
+      "label": "Batch number location",
+      "value": "On the package / on the carton",
+      "cells": "A47 → F47",
+      "section": "Traceability",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:32.102Z"
+    },
+    {
+      "label": "Traceability system allows recall within 4 hours",
+      "value": "Yes",
+      "cells": "A49 → H49",
+      "section": "Traceability",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:32.129Z"
+    },
+    {
+      "label": "Keep finished product samples",
+      "value": "No",
+      "cells": "A51 → E51",
+      "section": "Traceability",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:38:32.156Z"
+    },
+    {
+      "label": "Declaration by raw material suppliers",
+      "value": "yes",
+      "cells": "A46 → G46",
+      "section": "Compliance Declaration",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:39:34.605Z"
+    },
+    {
+      "label": "Analyses of Global Migration Limits",
+      "value": "yes",
+      "cells": "A47 → G47",
+      "section": "Compliance Declaration",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:39:34.638Z"
+    },
+    {
+      "label": "Analyses of restricted substances, including specific migration",
+      "value": "yes",
+      "cells": "A48 → G48",
+      "section": "Compliance Declaration",
+      "topic": "packaging",
+      "destination": "product",
+      "source": "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+      "approvedAt": "2026-02-09T14:39:34.559Z"
+    }
+  ]
+}

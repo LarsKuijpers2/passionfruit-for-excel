@@ -3978,9 +3978,10 @@ export class WebReviewGenerator {
 
         // Load feedback if exists
         if (questionnaireData.feedback) {
+          // Preserve panel info by adding _panel property
           feedbackLog = [
-            ...(questionnaireData.feedback.index || []),
-            ...(questionnaireData.feedback.library || [])
+            ...(questionnaireData.feedback.index || []).map(fb => ({ ...fb, _panel: 'index' })),
+            ...(questionnaireData.feedback.library || []).map(fb => ({ ...fb, _panel: 'library' }))
           ];
           updateFeedbackCount();
           restoreFeedbackState();
@@ -4048,13 +4049,17 @@ export class WebReviewGenerator {
       // Store sheet names for later use
       window.sheetNames = structure.sheets.map(s => s.name);
 
-      // Render sheet tabs
-      tabsContainer.innerHTML = structure.sheets.map((sheet, idx) => \`
-        <button class="sheet-tab\${idx === 0 ? ' active' : ''}" data-sheet="\${idx}" data-sheet-name="\${escapeHtml(sheet.name)}">
+      // Render sheet tabs with "All" tab first
+      const allTab = \`<button class="sheet-tab active" data-sheet="all" data-sheet-name="">
+          <span class="sheet-tab-name">All</span>
+        </button>\`;
+      const sheetTabs = structure.sheets.map((sheet, idx) => \`
+        <button class="sheet-tab" data-sheet="\${idx}" data-sheet-name="\${escapeHtml(sheet.name)}">
           <span class="sheet-tab-name">\${escapeHtml(sheet.name)}</span>
           <span class="sheet-tab-check" style="display:none;">✓</span>
         </button>
       \`).join('');
+      tabsContainer.innerHTML = allTab + sheetTabs;
 
       // Render sheet contents
       contentContainer.innerHTML = structure.sheets.map((sheet, idx) => \`
@@ -4077,13 +4082,20 @@ export class WebReviewGenerator {
       tabsContainer.querySelectorAll('.sheet-tab').forEach(tab => {
         tab.addEventListener('click', () => {
           tabsContainer.querySelectorAll('.sheet-tab').forEach(t => t.classList.remove('active'));
-          contentContainer.querySelectorAll('.sheet-content').forEach(c => c.classList.remove('active'));
           tab.classList.add('active');
-          contentContainer.querySelector(\`[data-sheet="\${tab.dataset.sheet}"]\`).classList.add('active');
 
-          // Filter Indexed and Library panels by sheet
-          const sheetName = tab.dataset.sheetName;
-          filterPanelsBySheet(sheetName);
+          if (tab.dataset.sheet === 'all') {
+            // Show first sheet content but don't filter Extraction panel
+            contentContainer.querySelectorAll('.sheet-content').forEach(c => c.classList.remove('active'));
+            contentContainer.querySelector('.sheet-content')?.classList.add('active');
+            filterPanelsBySheet(''); // Empty string = no filter, show all
+          } else {
+            contentContainer.querySelectorAll('.sheet-content').forEach(c => c.classList.remove('active'));
+            contentContainer.querySelector(\`[data-sheet="\${tab.dataset.sheet}"]\`)?.classList.add('active');
+            // Filter Indexed panel by sheet
+            const sheetName = tab.dataset.sheetName;
+            filterPanelsBySheet(sheetName);
+          }
         });
       });
 
@@ -5397,17 +5409,25 @@ export class WebReviewGenerator {
           return;
         }
 
-        // Handle accepted/rejected items
-        const items = document.querySelectorAll(\`.item[data-cells="\${fb.cells}"]\`);
+        // Use panel-specific selector to avoid applying feedback to wrong panel
+        const panelSelector = fb._panel === 'library' ? '#panel-library' : '#panel-indexed';
+
+        // Find items by cells AND label to ensure exact match
+        const items = document.querySelectorAll(\`\${panelSelector} .item[data-cells="\${fb.cells}"]\`);
         items.forEach(item => {
+          // Additional check: match by label if provided (for panels with multiple items at same cells)
+          if (fb.label && item.dataset.label && item.dataset.label !== fb.label) {
+            return; // Skip if label doesn't match
+          }
+
           if (fb.action === 'accepted') {
             item.classList.add('reviewed', 'correct', 'accepted');
           } else if (fb.action === 'rejected') {
             item.classList.add('reviewed', 'wrong', 'rejected');
           }
 
-          // Handle destination changes
-          if (fb.destination) {
+          // Handle destination changes (only for library items)
+          if (fb.destination && fb._panel === 'library') {
             item.dataset.destination = fb.destination;
             const targetSection = document.querySelector(\`#panel-library .section[data-destination="\${fb.destination}"]\`);
             if (targetSection) {
@@ -5467,13 +5487,12 @@ export class WebReviewGenerator {
       let foundInSheet = null;
 
       // If sheetName provided, try to find and switch to that sheet first
-      if (sheetName) {
-        const tabs = document.querySelectorAll('.sheet-tab');
-        tabs.forEach((tab, idx) => {
-          if (tab.textContent.trim() === sheetName) {
-            foundInSheet = idx;
-          }
-        });
+      if (sheetName && window.sheetNames) {
+        // Use the stored sheet names array to find the correct index
+        const idx = window.sheetNames.indexOf(sheetName);
+        if (idx !== -1) {
+          foundInSheet = idx;
+        }
       }
 
       // Find cells in all sheets
@@ -5492,11 +5511,16 @@ export class WebReviewGenerator {
       if (foundInSheet !== null) {
         const tabs = document.querySelectorAll('.sheet-tab');
         const contents = document.querySelectorAll('.sheet-content');
-        if (tabs[foundInSheet] && !tabs[foundInSheet].classList.contains('active')) {
+        const needsSwitch = tabs[foundInSheet] && !tabs[foundInSheet].classList.contains('active');
+        if (needsSwitch) {
           tabs.forEach(t => t.classList.remove('active'));
           contents.forEach(c => c.classList.remove('active'));
           tabs[foundInSheet].classList.add('active');
           contents[foundInSheet].classList.add('active');
+
+          // Update Extraction panel filter to match the new sheet
+          const sheetName = window.sheetNames?.[foundInSheet] || '';
+          filterPanelsBySheet(sheetName);
         }
         // Scroll first highlighted cell into view
         const firstHighlighted = contents[foundInSheet]?.querySelector('.highlighted');

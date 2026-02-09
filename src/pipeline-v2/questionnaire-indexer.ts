@@ -17,7 +17,7 @@ import type { QuestionnaireStructure } from './excel-structure.js';
 import { RulesManager } from './rules/rules-manager.js';
 
 // =============================================================================
-// TOPIC DEFINITION (loaded from rules/rules.yaml)
+// TOPIC DEFINITION (loaded from rules/topics.yaml)
 // =============================================================================
 
 interface TopicDefinition {
@@ -52,9 +52,9 @@ let loadedTableGrouping: TableGroupingRules | null = null;
 async function loadTopicsFromRules(rulesDir: string): Promise<TopicDefinition[]> {
   if (loadedTopics) return loadedTopics;
 
-  const rulesPath = join(rulesDir, 'rules.yaml');
+  const rulesPath = join(rulesDir, 'topics.yaml');
   if (!existsSync(rulesPath)) {
-    console.warn('  Warning: rules/rules.yaml not found, using fallback topics');
+    console.warn('  Warning: rules/topics.yaml not found, using fallback topics');
     return [];
   }
 
@@ -65,7 +65,7 @@ async function loadTopicsFromRules(rulesDir: string): Promise<TopicDefinition[]>
     loadedTableGrouping = rules.table_grouping || null;
     return loadedTopics;
   } catch (error) {
-    console.warn(`  Warning: Failed to load topics from rules.yaml: ${error}`);
+    console.warn(`  Warning: Failed to load topics from topics.yaml: ${error}`);
     return [];
   }
 }
@@ -127,7 +127,7 @@ export interface IndexedQuestionnaire {
 // TOPIC NORMALIZATION
 // =============================================================================
 
-// Fallback patterns if rules.yaml is not available
+// Fallback patterns if topics.yaml is not available
 const FALLBACK_TOPIC_PATTERNS: Array<{ pattern: RegExp; topic: string }> = [
   { pattern: /company|firmierung|entreprise|bedrijf|general.*data|allgemeine.*daten|algemene/i, topic: 'company_information' },
   { pattern: /contact|ansprech|kontakt/i, topic: 'contact_persons' },
@@ -424,10 +424,10 @@ export class QuestionnaireIndexer {
     const content = await readFile(filepath, 'utf-8');
     const structure: QuestionnaireStructure = JSON.parse(content);
 
-    // Load topics from rules.yaml
+    // Load topics from topics.yaml
     this.topics = await loadTopicsFromRules(this.rulesDir);
     if (this.topics.length > 0) {
-      console.log(`  Loaded ${this.topics.length} topic definitions from rules.yaml`);
+      console.log(`  Loaded ${this.topics.length} topic definitions from topics.yaml`);
     }
 
     // Load rules

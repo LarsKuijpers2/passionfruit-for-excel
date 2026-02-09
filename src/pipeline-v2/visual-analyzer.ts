@@ -82,6 +82,231 @@ export class VisualAnalyzer {
   }
 
   /**
+   * Analyze a large sheet in two passes: outline first, then sections
+   * This handles documents with more rows than can fit in a single context
+   */
+  async analyzeSheetInPasses(sheet: SheetData, documentType: DocumentType = 'excel'): Promise<SheetAnalysis> {
+    const rowLimit = documentType === 'pdf' ? 180 : 150;
+
+    // If document fits in single pass, use regular analysis
+    if (sheet.rows.length <= rowLimit) {
+      return this.analyzeSheet(sheet, documentType);
+    }
+
+    console.log(`    Large document (${sheet.rows.length} rows), using two-pass analysis...`);
+
+    // Pass 1: Build outline of all sections
+    const outline = await this.buildOutline(sheet, documentType);
+    console.log(`    Found ${outline.length} sections in outline`);
+
+    // Pass 2: Process each section separately
+    const allItems: DetectedItem[] = [];
+    const allSections: SheetAnalysis['sections'] = [];
+
+    for (const section of outline) {
+      console.log(`    Processing section: ${section.title} (rows ${section.startRow}-${section.endRow})...`);
+
+      // Extract rows for this section
+      const sectionRows = sheet.rows.filter(r => r.row >= section.startRow && r.row <= section.endRow);
+
+      if (sectionRows.length === 0) continue;
+
+      // Create a mini-sheet with just this section's rows
+      const sectionSheet: SheetData = {
+        ...sheet,
+        rows: sectionRows,
+      };
+
+      // Analyze this section
+      const sectionAnalysis = await this.analyzeSection(sectionSheet, section, documentType);
+
+      allSections.push({
+        title: section.title,
+        startRow: section.startRow,
+        endRow: section.endRow,
+        topic: section.topic,
+      });
+
+      allItems.push(...sectionAnalysis.items);
+      console.log(`      Found ${sectionAnalysis.items.length} items`);
+    }
+
+    return {
+      sheetName: sheet.name,
+      sections: allSections,
+      items: allItems,
+      layoutType: 'mixed',
+      notes: `Analyzed in ${outline.length} sections (two-pass mode)`,
+    };
+  }
+
+  /**
+   * Pass 1: Build outline of sections from the full document
+   */
+  private async buildOutline(sheet: SheetData, documentType: DocumentType): Promise<Array<{
+    title: string;
+    startRow: number;
+    endRow: number;
+    topic?: string;
+  }>> {
+    // Build compact outline representation (just section headers and row numbers)
+    const lines: string[] = [];
+    lines.push(`Document: ${sheet.name}`);
+    lines.push(`Total rows: ${sheet.rows.length}`);
+    lines.push('');
+    lines.push('## Content summary (first cell of each row):');
+
+    for (const row of sheet.rows) {
+      // Get first non-empty cell
+      const cells = Object.values(row.cells);
+      const firstCell = cells.find(c => c.filled);
+
+      if (firstCell) {
+        const prefix = firstCell.role === 'section' ? '[SECTION]' :
+                       firstCell.role === 'header' ? '[HEADER]' : '';
+        const value = firstCell.value.substring(0, 80).replace(/\n/g, ' ');
+        lines.push(`Row ${row.row}: ${prefix} ${value}`);
+      }
+    }
+
+    const prompt = `Identify all major sections in this questionnaire document.
+
+${lines.join('\n')}
+
+## Task:
+Look at the content and identify distinct sections/topics in the document.
+Sections are typically marked by:
+- Bold headers or section titles
+- Numbered sections (1., 2., 3. or 1.1, 1.2)
+- Topic changes (e.g., from "Company Info" to "Certifications")
+- Clear visual breaks in the content
+
+Return JSON with the sections found:
+{
+  "sections": [
+    {"title": "Section Name", "startRow": 1, "endRow": 25, "topic": "company"},
+    {"title": "Food Safety", "startRow": 26, "endRow": 50, "topic": "food_safety"}
+  ]
+}
+
+Topics: company, contacts, certifications, allergens, food_safety, quality, sustainability, environment, packaging, logistics, origin, food_fraud, nutrition, crisis, financial, animal_welfare, audits, product, ingredients, microbiology, documents, signature, approval, other
+
+Important:
+- Cover ALL rows from 1 to ${sheet.rows.length}
+- No gaps between sections
+- If a section is unclear, use "other" as topic`;
+
+    const response = await this.invokeModel(prompt);
+
+    try {
+      const jsonMatch = response.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const parsed = JSON.parse(jsonMatch[0]);
+        return parsed.sections || [];
+      }
+    } catch (e) {
+      console.error('Failed to parse outline:', e);
+    }
+
+    // Fallback: single section covering entire document
+    return [{
+      title: sheet.name,
+      startRow: 1,
+      endRow: sheet.rows.length,
+      topic: 'other',
+    }];
+  }
+
+  /**
+   * Pass 2: Analyze a specific section in detail
+   */
+  private async analyzeSection(
+    sectionSheet: SheetData,
+    sectionInfo: { title: string; startRow: number; endRow: number; topic?: string },
+    documentType: DocumentType
+  ): Promise<SheetAnalysis> {
+    const sheetText = this.buildSheetRepresentation(sectionSheet, documentType);
+
+    const prompt = `Analyze this section of a questionnaire and extract all data items.
+
+## Section: ${sectionInfo.title}
+## Topic hint: ${sectionInfo.topic || 'unknown'}
+## Row range: ${sectionInfo.startRow} to ${sectionInfo.endRow}
+
+${sheetText}
+
+## Legend:
+- [H] = Header/bold cell
+- [S] = Section header
+- [L] = Label cell
+- [I] = Input field
+- [V] = Value
+
+## Task:
+Extract all data items from this section. Item types:
+- "field" = Simple label/value pair
+- "text" = Longer text response
+- "yesno" = Yes/No choice
+- "choice" = Selection/dropdown
+- "signature" = Signature field
+- "date" = Date field
+
+Levels:
+- "standard" = Factual, can be auto-filled
+- "narrative" = Descriptive, needs review
+- "product" = Product-specific
+
+Return JSON:
+{
+  "items": [
+    {
+      "type": "yesno",
+      "label": "Question text",
+      "value": "Yes",
+      "lCell": "A10",
+      "vCell": "B10",
+      "topic": "${sectionInfo.topic || 'other'}",
+      "level": "standard",
+      "lang": "en",
+      "confidence": 0.9
+    }
+  ]
+}
+
+Important:
+- Extract EVERY question/answer pair
+- For PDF yes/no tables, "x" typically means "Yes"
+- Use the row numbers exactly as shown`;
+
+    const response = await this.invokeModel(prompt);
+
+    try {
+      const jsonMatch = response.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const parsed = JSON.parse(jsonMatch[0]);
+        return {
+          sheetName: sectionSheet.name,
+          sections: [],
+          items: (parsed.items || []).map((item: DetectedItem) => ({
+            ...item,
+            section: sectionInfo.title,
+          })),
+          layoutType: 'mixed',
+        };
+      }
+    } catch (e) {
+      console.error('Failed to parse section analysis:', e);
+    }
+
+    return {
+      sheetName: sectionSheet.name,
+      sections: [],
+      items: [],
+      layoutType: 'mixed',
+    };
+  }
+
+  /**
    * Analyze a sheet's structure using Claude
    */
   async analyzeSheet(sheet: SheetData, documentType: DocumentType = 'excel'): Promise<SheetAnalysis> {
@@ -352,11 +577,15 @@ Important:
    */
   async analyzeQuestionnaire(sheets: SheetData[], documentType: DocumentType = 'excel'): Promise<SheetAnalysis[]> {
     const results: SheetAnalysis[] = [];
+    const rowLimit = documentType === 'pdf' ? 180 : 150;
 
     for (const sheet of sheets) {
       console.log(`  Analyzing sheet: ${sheet.name}...`);
       try {
-        const analysis = await this.analyzeSheet(sheet, documentType);
+        // Use two-pass analysis for large documents
+        const analysis = sheet.rows.length > rowLimit
+          ? await this.analyzeSheetInPasses(sheet, documentType)
+          : await this.analyzeSheet(sheet, documentType);
         results.push(analysis);
         console.log(`    Found ${analysis.items.length} items`);
       } catch (error) {

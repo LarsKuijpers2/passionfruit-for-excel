@@ -7,27 +7,32 @@
 
 import express from 'express';
 import cors from 'cors';
-import { readFile, writeFile, mkdir, readdir } from 'fs/promises';
+import { readFile, writeFile, mkdir, readdir, rename } from 'fs/promises';
 import { join, dirname, basename } from 'path';
-import { existsSync } from 'fs';
+import { existsSync, writeFileSync, renameSync } from 'fs';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
 import { exec } from 'child_process';
 import { BedrockRuntimeClient, InvokeModelCommand } from '@aws-sdk/client-bedrock-runtime';
 
 // Types
+export type EntityRole = 'supplier' | 'client' | 'manufacturer' | 'other';
+
 export interface FeedbackItem {
   id: string;
-  action: 'accepted' | 'rejected' | 'edited' | 'destination_changed';
+  action: 'accepted' | 'rejected' | 'edited' | 'destination_changed' | 'entity_role_changed' | 'promoted';
   label: string;
   value?: string;
   cells?: string;
   section?: string;
   topic?: string;
   destination?: string;
+  promotedTo?: string;
+  entityRole?: EntityRole;
   reason?: string;
   editedLabel?: string;
   editedValue?: string;
   reviewedAt: string;
+  _panel?: 'index' | 'library';  // Which panel this feedback item came from
 }
 
 export interface FeedbackData {
@@ -93,6 +98,8 @@ export class ReviewServer {
   private feedback: FeedbackData;
   private bedrockClient: BedrockRuntimeClient;
   private modelId: string;
+  // Write locks to prevent concurrent file writes causing corruption
+  private writeLocks: Map<string, Promise<void>> = new Map();
 
   constructor(questionnaire: string, options: { port?: number; reviewDir?: string } = {}) {
     this.questionnaire = questionnaire;
@@ -205,45 +212,56 @@ export class ReviewServer {
           item.id = `${panel}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
         }
 
+        // Store the panel in the item so we can identify its source later
+        // This is critical for restoring promoted items from the index panel
+        item._panel = panel;
+
         // Determine which questionnaire's feedback to update
         const targetQuestionnaire = questionnaire || this.questionnaire;
         const safeName = targetQuestionnaire.replace(/[^a-zA-Z0-9-_]/g, '_');
         const feedbackPath = join(this.reviewDir, safeName, 'feedback.json');
 
-        // Load existing feedback for this questionnaire
-        let feedback: FeedbackData;
-        if (existsSync(feedbackPath)) {
-          feedback = JSON.parse(await readFile(feedbackPath, 'utf-8'));
-        } else {
-          feedback = {
-            meta: {
-              source: targetQuestionnaire,
-              questionnaire: targetQuestionnaire,
-              startedAt: new Date().toISOString(),
-              lastUpdatedAt: new Date().toISOString()
-            },
-            index: [],
-            library: []
-          };
-        }
+        // Use write lock to prevent concurrent file corruption
+        await this.withWriteLock(feedbackPath, async () => {
+          // Load existing feedback for this questionnaire
+          let feedback: FeedbackData;
+          if (existsSync(feedbackPath)) {
+            feedback = JSON.parse(await readFile(feedbackPath, 'utf-8'));
+          } else {
+            feedback = {
+              meta: {
+                source: targetQuestionnaire,
+                questionnaire: targetQuestionnaire,
+                startedAt: new Date().toISOString(),
+                lastUpdatedAt: new Date().toISOString()
+              },
+              index: [],
+              library: []
+            };
+          }
 
-        // Add to appropriate list (replace if same cells exist)
-        const list = panel === 'library' ? feedback.library : feedback.index;
-        const existingIndex = list.findIndex(f => f.cells === item.cells && f.label === item.label);
+          // Add to appropriate list (replace if same ID or cells+label exist)
+          const list = panel === 'library' ? feedback.library : feedback.index;
+          // Prefer ID matching if available, fall back to cells+label
+          const existingIndex = list.findIndex(f =>
+            (item.id && (f as any).id === item.id) ||
+            (!item.id && f.cells === item.cells && f.label === item.label)
+          );
 
-        if (existingIndex >= 0) {
-          list[existingIndex] = item;
-        } else {
-          list.push(item);
-        }
+          if (existingIndex >= 0) {
+            list[existingIndex] = item;
+          } else {
+            list.push(item);
+          }
 
-        // Update timestamp
-        feedback.meta.lastUpdatedAt = new Date().toISOString();
+          // Update timestamp
+          feedback.meta.lastUpdatedAt = new Date().toISOString();
 
-        // Save to questionnaire-specific path
-        await mkdir(dirname(feedbackPath), { recursive: true });
-        await writeFile(feedbackPath, JSON.stringify(feedback, null, 2), 'utf-8');
-        console.log(`Saved feedback to ${feedbackPath}`);
+          // Save to questionnaire-specific path using atomic write
+          await mkdir(dirname(feedbackPath), { recursive: true });
+          this.atomicWriteFileSync(feedbackPath, JSON.stringify(feedback, null, 2));
+          console.log(`Saved feedback to ${feedbackPath}`);
+        });
 
         res.json({ success: true, id: item.id });
       } catch (error) {
@@ -327,7 +345,24 @@ export class ReviewServer {
     // Export approved items to database files
     this.app.post('/api/export-approved', async (req, res) => {
       try {
+        const { questionnaire } = req.body || {};
+        const targetQuestionnaire = questionnaire || this.questionnaire;
+
+        // Load feedback for the target questionnaire
+        const safeName = targetQuestionnaire.replace(/[^a-zA-Z0-9-_]/g, '_');
+        const feedbackPath = join(this.reviewDir, safeName, 'feedback.json');
+
+        if (existsSync(feedbackPath)) {
+          this.feedback = JSON.parse(await readFile(feedbackPath, 'utf-8'));
+          this.questionnaire = targetQuestionnaire;
+          this.feedbackPath = feedbackPath;
+        }
+
+        console.log(`Exporting ${targetQuestionnaire} with ${this.feedback.index.length} index + ${this.feedback.library.length} library items`);
+
         const exported = await this.exportApproved();
+        console.log(`Exported: ${exported.entityDb.length} entity, ${exported.productDb.length} product, ${exported.answerLibrary.length} library items`);
+
         res.json({ success: true, exported });
       } catch (error) {
         console.error('Error exporting approved:', error);
@@ -472,8 +507,46 @@ export class ReviewServer {
   private async saveFeedback(): Promise<void> {
     const dir = dirname(this.feedbackPath);
     await mkdir(dir, { recursive: true });
-    await writeFile(this.feedbackPath, JSON.stringify(this.feedback, null, 2), 'utf-8');
+    this.atomicWriteFileSync(this.feedbackPath, JSON.stringify(this.feedback, null, 2));
     console.log(`Saved feedback to ${this.feedbackPath}`);
+  }
+
+  /**
+   * Acquire a write lock for a specific file to prevent concurrent writes
+   * Uses a proper queue to ensure serialized access
+   */
+  private async withWriteLock<T>(filePath: string, fn: () => Promise<T>): Promise<T> {
+    // Get or create a queue for this file
+    let queue = this.writeLocks.get(filePath);
+
+    // Chain this operation after any pending operations
+    const execute = async (): Promise<T> => {
+      try {
+        return await fn();
+      } finally {
+        // Clean up if this was the last operation
+        const currentQueue = this.writeLocks.get(filePath);
+        if (currentQueue === newQueue) {
+          this.writeLocks.delete(filePath);
+        }
+      }
+    };
+
+    // Create new promise that waits for previous operations
+    const newQueue = queue ? queue.then(execute, execute) : execute();
+    this.writeLocks.set(filePath, newQueue as Promise<void>);
+
+    return newQueue;
+  }
+
+  /**
+   * Atomically write a file (write to temp, then rename)
+   * This prevents partial writes from corrupting the file
+   */
+  private atomicWriteFileSync(filePath: string, content: string): void {
+    const tempPath = filePath + '.tmp.' + Date.now();
+    writeFileSync(tempPath, content, 'utf-8');
+    renameSync(tempPath, filePath);
   }
 
   private async loadFeedback(): Promise<void> {
@@ -591,24 +664,15 @@ export class ReviewServer {
    * Generate preview of what will be exported
    */
   private generateExportPreview(): { entityDb: any[]; answerLibrary: any[]; productDb: any[] } {
-    const indexAccepted = this.feedback.index.filter(f => f.action === 'accepted');
-    const indexEdited = this.feedback.index.filter(f => f.action === 'edited');
-    const libAccepted = this.feedback.library.filter(f => f.action === 'accepted');
-    const libEdited = this.feedback.library.filter(f => f.action === 'edited');
-
-    // Also include destination_changed items (they were moved but may not have accept/reject)
-    const destChanged = this.feedback.library.filter(f => f.action === 'destination_changed');
-
     // Entity DB topics (company-level data) - used as fallback when no destination specified
     const entityTopics = ['company', 'contacts', 'certifications', 'financial', 'approval', 'signature'];
 
-    // Separate entity-level from answer-library items
-    const entityDb: any[] = [];
-    const productDb: any[] = [];
-    const answerLibrary: any[] = [];
-
     // Helper to determine destination
     const getDestination = (item: any) => {
+      // If promotedTo is set (from promoted items), use it
+      if (item.promotedTo) {
+        return item.promotedTo;
+      }
       // If destination explicitly set by user, use it
       if (item.destination) {
         return item.destination;
@@ -621,11 +685,48 @@ export class ReviewServer {
       return 'answer_library';
     };
 
-    // Process index items
-    for (const item of [...indexAccepted, ...indexEdited]) {
+    // Merge all feedback and deduplicate by ID (preferred) or cells+label, keeping LATEST action
+    // This ensures that if an item was accepted then rejected, we use the final state
+    const allItems = [...this.feedback.index, ...this.feedback.library];
+    const deduped = new Map<string, FeedbackItem>();
+
+    for (const item of allItems) {
+      // Create unique key from ID (preferred) or cells + label (fallback)
+      const key = (item as any).id || `${item.cells}|${item.label}`;
+      const existing = deduped.get(key);
+
+      // Keep the item with the latest reviewedAt timestamp
+      if (!existing || new Date(item.reviewedAt) > new Date(existing.reviewedAt)) {
+        deduped.set(key, item);
+      }
+    }
+
+    // Filter to only exportable actions (exclude rejected)
+    const exportableActions = ['accepted', 'edited', 'destination_changed', 'promoted'];
+    const exportable = Array.from(deduped.values()).filter(item => exportableActions.includes(item.action));
+
+    // Separate entity-level from answer-library items
+    const entityDb: any[] = [];
+    const productDb: any[] = [];
+    const answerLibrary: any[] = [];
+
+    // Process deduplicated items
+    for (const item of exportable) {
       const topic = item.topic || 'other';
       const destination = getDestination(item);
-      const entry = {
+
+      // Skip excluded items - they should not be exported
+      if (destination === 'exclude') {
+        continue;
+      }
+
+      // Skip items with empty values - nothing to export
+      const value = item.editedValue || item.value || '';
+      if (!value || value.trim() === '' || value.trim() === '(empty)') {
+        continue;
+      }
+
+      const entry: any = {
         label: item.editedLabel || item.label,
         value: item.editedValue || item.value,
         cells: item.cells,
@@ -636,27 +737,10 @@ export class ReviewServer {
         approvedAt: item.reviewedAt
       };
 
-      if (destination === 'company') {
-        entityDb.push(entry);
-      } else if (destination === 'product') {
-        productDb.push(entry);
-      } else {
-        answerLibrary.push(entry);
+      // Include entityRole for company items
+      if (destination === 'company' && item.entityRole) {
+        entry.entityRole = item.entityRole;
       }
-    }
-
-    // Process library items - respect user-defined destination
-    for (const item of [...libAccepted, ...libEdited, ...destChanged]) {
-      const destination = getDestination(item);
-      const entry = {
-        label: item.editedLabel || item.label,
-        value: item.editedValue || item.value,
-        cells: item.cells,
-        topic: item.topic || 'other',
-        destination,
-        source: this.questionnaire,
-        approvedAt: item.reviewedAt
-      };
 
       if (destination === 'company') {
         entityDb.push(entry);
@@ -672,6 +756,7 @@ export class ReviewServer {
 
   /**
    * Export approved items to database files
+   * Structure: approved-exports/<customer>/<questionnaire>/
    */
   private async exportApproved(): Promise<{
     entityDb: any[];
@@ -681,10 +766,29 @@ export class ReviewServer {
   }> {
     const { entityDb, productDb, answerLibrary } = this.generateExportPreview();
 
-    // Create export directory
-    const exportDir = './approved-exports';
+    // Try to get customer folder from questionnaire structure
+    let customerFolder = 'default';
     const safeName = this.questionnaire.replace(/[^a-zA-Z0-9-_]/g, '_');
-    const questionnaireDir = join(exportDir, safeName);
+
+    try {
+      const structurePath = join('./questionnaires', `${safeName}.json`);
+      if (existsSync(structurePath)) {
+        const structure = JSON.parse(await readFile(structurePath, 'utf-8'));
+        const filepath = structure?.source?.filepath || '';
+
+        // Extract customer folder from path: incoming/<customer>/file.xlsx
+        const incomingMatch = filepath.match(/incoming[\/\\]([^\/\\]+)[\/\\][^\/\\]+$/);
+        if (incomingMatch && incomingMatch[1]) {
+          customerFolder = incomingMatch[1].replace(/[^a-zA-Z0-9-_]/g, '_');
+        }
+      }
+    } catch (e) {
+      console.log('Could not determine customer folder, using default');
+    }
+
+    // Create export directory: approved-exports/<customer>/<questionnaire>/
+    const exportDir = './approved-exports';
+    const questionnaireDir = join(exportDir, customerFolder, safeName);
     await mkdir(questionnaireDir, { recursive: true });
 
     const timestamp = new Date().toISOString();

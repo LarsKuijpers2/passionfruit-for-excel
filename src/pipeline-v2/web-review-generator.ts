@@ -2376,7 +2376,7 @@ export class WebReviewGenerator {
         const idx = itemIndex++;
         const cells = [item.lCell, item.vCell].filter(Boolean).join(',');
         return `
-        <div class="item" data-index="${idx}" data-cells="${cells}" data-label="${this.escapeHtml(item.label)}" data-section="${this.escapeHtml(section.title)}" data-topic="${section.topic}">
+        <div class="item" data-id="${item.id || ''}" data-index="${idx}" data-cells="${cells}" data-label="${this.escapeHtml(item.label)}" data-section="${this.escapeHtml(section.title)}" data-topic="${section.topic}">
           <div class="item-header">
             <span class="item-label">${this.escapeHtml(item.label)}</span>
             <span class="item-meta">${item.lCell || ''}${item.vCell ? ' → ' + item.vCell : ''}</span>
@@ -3090,6 +3090,41 @@ export class WebReviewGenerator {
       color: var(--muted-foreground);
       vertical-align: middle;
     }
+    .entity-badge {
+      display: inline-block;
+      font-size: 9px;
+      padding: 1px 6px;
+      border-radius: 3px;
+      margin-left: 6px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      color: #fff;
+      vertical-align: middle;
+    }
+    .entity-subsection {
+      margin-bottom: 8px;
+    }
+    .entity-subsection-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 12px;
+      background: var(--background);
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+    .entity-subsection-title {
+      font-weight: 500;
+      color: var(--foreground);
+    }
+    .entity-subsection-count {
+      font-size: 11px;
+      color: var(--muted-foreground);
+    }
+    .entity-subsection-items {
+      padding-left: 0;
+    }
 
     /* Cell selection for label/value pairing */
     .excel-table td.label-selected {
@@ -3159,10 +3194,28 @@ export class WebReviewGenerator {
     .item.selected:hover {
       background: rgba(255, 255, 255, 0.08);
     }
+    .item.sync-highlight {
+      outline: 2px solid #f59e0b;
+      outline-offset: -2px;
+      background: rgba(245, 158, 11, 0.15) !important;
+      animation: pulse-highlight 1s ease-out;
+    }
+    @keyframes pulse-highlight {
+      0% { outline-width: 4px; background: rgba(245, 158, 11, 0.3); }
+      100% { outline-width: 2px; background: rgba(245, 158, 11, 0.15); }
+    }
     .item.reviewed.correct, .item.reviewed.accepted {
       border-left: 3px solid #22c55e;
       padding-left: 9px;
       background: rgba(34, 197, 94, 0.05);
+    }
+    .item.reviewed.promoted {
+      border-left: 3px solid #a855f7;
+      padding-left: 9px;
+      background: rgba(168, 85, 247, 0.05);
+    }
+    .item .dest-badge {
+      flex-shrink: 0;
     }
     .item.reviewed.wrong, .item.reviewed.rejected {
       border-left: 3px solid #ef4444;
@@ -3483,6 +3536,10 @@ export class WebReviewGenerator {
     .command-palette.library-mode .property-row.library-only {
       display: flex;
     }
+    /* Show correct label based on mode */
+    .indexed-label, .library-label { display: none; }
+    .command-palette.indexed-mode .indexed-label { display: inline; }
+    .command-palette.library-mode .library-label { display: inline; }
     .property-row.multi-only {
       display: none;
     }
@@ -3694,13 +3751,24 @@ export class WebReviewGenerator {
             <option value="">— Keep current —</option>
           </select>
         </div>
-        <div class="property-row library-only">
-          <label>Data Source</label>
+        <div class="property-row">
+          <label><span class="indexed-label">Promote to</span><span class="library-label">Data Source</span></label>
           <select id="bulkDataSource">
             <option value="">— Keep current —</option>
             <option value="answer_library">Answer Library</option>
             <option value="entities">Entities (company-level)</option>
             <option value="products">Products (product-level)</option>
+            <option value="exclude">Exclude (don't save)</option>
+          </select>
+        </div>
+        <div class="property-row entity-role-row" style="display: none;">
+          <label>Entity Role</label>
+          <select id="bulkEntityRole">
+            <option value="">— Keep current —</option>
+            <option value="supplier">Supplier (your customer)</option>
+            <option value="client">Client (their customer)</option>
+            <option value="manufacturer">Manufacturer</option>
+            <option value="other">Other</option>
           </select>
         </div>
         <div class="property-row">
@@ -3970,22 +4038,32 @@ export class WebReviewGenerator {
         renderTopTabs();
         renderSidebar();
 
-        // Render the app
-        renderApp();
-
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('app').classList.add('visible');
-
-        // Load feedback if exists
+        // Load feedback FIRST if exists (before rendering)
         if (questionnaireData.feedback) {
           // Preserve panel info by adding _panel property
           feedbackLog = [
             ...(questionnaireData.feedback.index || []).map(fb => ({ ...fb, _panel: 'index' })),
             ...(questionnaireData.feedback.library || []).map(fb => ({ ...fb, _panel: 'library' }))
           ];
+        }
+
+        // Render the app (now autoAssignDestinations will see existing feedback)
+        renderApp();
+
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('app').classList.add('visible');
+
+        // Restore feedback state after rendering
+        if (feedbackLog.length > 0) {
           updateFeedbackCount();
           restoreFeedbackState();
+          syncExtractionBadges();
+          // Render Save as panel from promoted items
+          renderSaveAsPanel();
         }
+
+        // Initial sync even without feedback (to show items that exist in Save as)
+        setTimeout(() => syncExtractionBadges(), 100);
 
         // Update questionnaire list
         const questRes = await fetch(API_BASE + '/api/questionnaires');
@@ -4027,19 +4105,18 @@ export class WebReviewGenerator {
           '<div class="empty">Indexed data not found. Run the index command first.</div>';
       }
 
-      if (library) {
-        const currentSource = structure?.source?.filename || indexed?.source;
-        renderLibraryPanel(library, currentSource);
-      } else {
-        document.getElementById('library-content').innerHTML =
-          '<div class="empty">Library data not found. Run the harvest command first.</div>';
-      }
+      // Render Save as panel from promoted items in feedbackLog
+      // This will be empty initially until items are promoted from Extraction
+      renderSaveAsPanel();
 
       // Update stats
       updateStats();
 
       // Setup event handlers
       setupEventHandlers();
+
+      // Auto-assign destinations if no feedback exists
+      autoAssignDestinations();
     }
 
     function renderOriginalPanel(structure) {
@@ -4300,7 +4377,7 @@ export class WebReviewGenerator {
           const topicBadge = \`<span class="topic-badge">\${escapeHtml(topic)}</span>\`;
 
           return \`
-            <div class="item\${isEmpty ? ' no-value' : ''}" data-index="\${idx}" data-cells="\${cells}" data-sheet="\${escapeHtml(sheetName)}" data-label="\${escapeHtml(item.label)}" data-section="\${escapeHtml(section.name || section.title)}" data-topic="\${item.topic || section.topic || ''}">
+            <div class="item\${isEmpty ? ' no-value' : ''}" data-id="\${item.id || ''}" data-index="\${idx}" data-cells="\${cells}" data-sheet="\${escapeHtml(sheetName)}" data-label="\${escapeHtml(item.label)}" data-section="\${escapeHtml(section.name || section.title)}" data-topic="\${item.topic || section.topic || ''}" data-level="\${item.level || 'standard'}" data-ai-destination="\${item.destination || 'answer_library'}">
               <div class="item-label">\${escapeHtml(item.label)}\${topicBadge}</div>
               <div class="item-value\${isEmpty ? ' empty' : ''}">\${isEmpty ? '(empty)' : escapeHtml(value)}</div>
               <div class="item-ref">\${sheetName ? sheetName + ': ' : ''}\${cells}</div>
@@ -4338,57 +4415,45 @@ export class WebReviewGenerator {
         \`\${indexed.sections.length} sections, \${totalItems} items\`;
     }
 
-    function renderLibraryPanel(library, currentSourceFile = null) {
+    // Save as panel - shows items from Extraction that have destinations assigned
+    // This is built dynamically from feedbackLog, not from answer-library
+    function renderSaveAsPanel() {
       const container = document.getElementById('library-content');
 
-      // Library data can be in two formats:
-      // 1. library.items (array) - old format
-      // 2. library.byTopic (object with topic keys) - new format
-      // Group by destination: Company, Product, Answer Library
+      // Group promoted items by destination (exclude 'exclude' - those shouldn't show)
       const byDestination = {
         company: [],
         product: [],
         answer_library: []
       };
 
-      // Helper to check if item belongs to current questionnaire
-      const matchesSource = (item) => {
-        if (!currentSourceFile) return true; // Show all if no filter
-        const source = item.source || item.sources?.[0];
-        return source?.file === currentSourceFile;
-      };
+      // Get items with destinations from feedbackLog (excluding 'exclude')
+      // Use destination field (or fall back to promotedTo for backwards compatibility)
+      const itemsWithDest = feedbackLog.filter(fb => {
+        const dest = fb.destination || fb.promotedTo;
+        return fb.action === 'promoted' && dest && dest !== 'exclude';
+      });
 
-      // Destination mapping based on topic
-      const entityTopics = ['company', 'company_information', 'contact_persons', 'contacts', 'certifications', 'documents', 'signature', 'approval', 'crisis', 'financial'];
-      const productTopics = ['product', 'identification', 'physical_properties', 'sensory', 'analytical', 'formula_composition', 'allergens', 'nutritional', 'regulatory_ids', 'microbiological', 'microbiology', 'contaminants', 'gmo', 'claims', 'rspo_palm', 'packaging', 'storage_transport', 'coding', 'origin_provenance'];
+      // Deduplicate by ID (preferred) or cells+label, keeping the latest
+      const deduped = new Map();
+      for (const fb of itemsWithDest) {
+        const key = fb.id || \`\${fb.cells}|\${fb.label}\`;
+        const existing = deduped.get(key);
+        if (!existing || new Date(fb.reviewedAt) > new Date(existing.reviewedAt)) {
+          deduped.set(key, fb);
+        }
+      }
 
-      const getDestination = (item, topic) => {
-        if (productTopics.includes(topic) || item.level === 'product') return 'product';
-        if (entityTopics.includes(topic)) return 'company';
-        return 'answer_library';
-      };
-
+      // Group by destination
       let idx = 0;
-      if (library.byTopic && Object.keys(library.byTopic).length > 0) {
-        Object.entries(library.byTopic).forEach(([topic, items]) => {
-          items.filter(matchesSource).forEach(item => {
-            const dest = getDestination(item, topic);
-            byDestination[dest].push({ ...item, topic, idx: idx++ });
-          });
-        });
-      } else if (library.items && library.items.length > 0) {
-        library.items.filter(matchesSource).forEach(item => {
-          const topic = item.topic || 'general';
-          const dest = getDestination(item, topic);
-          byDestination[dest].push({ ...item, topic, idx: idx++ });
-        });
+      for (const fb of deduped.values()) {
+        const dest = fb.destination || fb.promotedTo || 'answer_library';
+        if (byDestination[dest]) {
+          byDestination[dest].push({ ...fb, idx: idx++ });
+        }
       }
 
       const totalItems = byDestination.company.length + byDestination.product.length + byDestination.answer_library.length;
-      if (totalItems === 0) {
-        container.innerHTML = '<div class="empty">No items for this questionnaire</div>';
-        return;
-      }
 
       const destinationLabels = {
         company: 'Company (Entity)',
@@ -4396,58 +4461,109 @@ export class WebReviewGenerator {
         answer_library: 'Answer Library'
       };
 
-      const destinationsHtml = Object.entries(byDestination)
-        .filter(([_, items]) => items.length > 0)
-        .map(([dest, items]) => {
-          const itemsHtml = items.map(item => {
-            const source = item.source || item.sources?.[0];
-            const sheetName = source?.sheet || '';
-            const cells = source?.lCell && source?.vCell
-              ? \`\${source.lCell} → \${source.vCell}\`
-              : (source?.labelCell && source?.valueCell ? \`\${source.labelCell} → \${source.valueCell}\` : '');
-            const isEmpty = !item.value || item.value.trim() === '';
+      // Render a single item
+      const renderItem = (item, dest) => {
+        const sheetName = item.sheet || '';
+        const cells = item.cells || '';
+        const isEmpty = !item.value || item.value.trim() === '';
+        const topic = item.topic || 'other';
+        const topicBadge = \`<span class="topic-badge">\${topic}</span>\`;
 
-            const topicBadge = \`<span class="topic-badge">\${item.topic}</span>\`;
+        return \`
+          <div class="item\${isEmpty ? ' no-value' : ''}" data-id="\${item.id || ''}" data-index="\${item.idx}" data-cells="\${cells}" data-sheet="\${escapeHtml(sheetName)}" data-label="\${escapeHtml(item.label || '')}" data-topic="\${topic}" data-destination="\${dest}">
+            <div class="item-label">\${escapeHtml(item.label || '')}\${topicBadge}</div>
+            <div class="item-value\${isEmpty ? ' empty' : ''}">\${isEmpty ? '(empty)' : escapeHtml(item.value || '')}</div>
+            <div class="item-ref">\${sheetName ? sheetName + ': ' : ''}\${cells}</div>
+          </div>
+        \`;
+      };
 
-            return \`
-              <div class="item\${isEmpty ? ' no-value' : ''}" data-index="\${item.idx}" data-cells="\${cells}" data-sheet="\${escapeHtml(sheetName)}" data-label="\${escapeHtml(item.label)}" data-topic="\${item.topic}" data-destination="\${dest}">
-                <div class="item-label">\${escapeHtml(item.label)}\${topicBadge}</div>
-                <div class="item-value\${isEmpty ? ' empty' : ''}">\${isEmpty ? '(empty)' : escapeHtml(item.value)}</div>
-                <div class="item-ref">\${sheetName ? sheetName + ': ' : ''}\${cells}</div>
-                <div class="item-actions review-only">
-                  <button class="action-btn correct" title="Accept (C)">✓</button>
-                  <button class="action-btn wrong" title="Reject (W)">✗</button>
-                </div>
-                <div class="wrong-note-container">
-                  <input type="text" class="wrong-note-input" placeholder="Reason for rejection (optional)">
-                  <div class="wrong-note-btns">
-                    <button class="wrong-note-btn save">Save</button>
-                    <button class="wrong-note-btn cancel">Cancel</button>
-                  </div>
-                </div>
+      // Render a section
+      const renderSection = (dest, items) => {
+        const itemsHtml = items.map(item => renderItem(item, dest)).join('');
+        const isEmpty = items.length === 0;
+        return \`
+          <div class="section" data-destination="\${dest}" style="\${isEmpty ? 'display:none;' : ''}">
+            <div class="section-header">
+              <div class="section-title">\${destinationLabels[dest]}</div>
+              <div class="section-meta">
+                <span>\${items.length} items</span>
               </div>
-            \`;
-          }).join('');
-
-          return \`
-            <div class="section" data-destination="\${dest}">
-              <div class="section-header">
-                <div class="section-title">\${destinationLabels[dest]}</div>
-                <div class="section-meta">
-                  <span>\${items.length} items</span>
-                  <div class="group-btns review-only">
-                    <button class="group-btn accept-all" data-destination="\${dest}">✓ All</button>
-                    <button class="group-btn reject-all" data-destination="\${dest}">✗ All</button>
-                  </div>
-                </div>
-              </div>
-              <div class="section-items">\${itemsHtml}</div>
             </div>
-          \`;
-        }).join('');
+            <div class="section-items">\${itemsHtml}</div>
+          </div>
+        \`;
+      };
 
-      container.innerHTML = destinationsHtml;
-      document.getElementById('library-stats').textContent = \`\${totalItems} items\`;
+      // Always render sections (even when empty) so promotion can add items to them
+      const sectionsHtml = [
+        renderSection('company', byDestination.company),
+        renderSection('product', byDestination.product),
+        renderSection('answer_library', byDestination.answer_library)
+      ].join('');
+
+      if (totalItems === 0) {
+        container.innerHTML = '<div class="empty">No items with destinations yet. Assign destinations in Extraction panel.</div>' + sectionsHtml;
+        document.getElementById('library-stats').textContent = '0 items';
+      } else {
+        container.innerHTML = sectionsHtml;
+        document.getElementById('library-stats').textContent = \`\${totalItems} items\`;
+      }
+    }
+
+    // Auto-assign destinations based on item level (only if no feedback exists)
+    async function autoAssignDestinations() {
+      // Skip if feedback already exists
+      if (feedbackLog.length > 0) {
+        console.log('Skipping auto-assign: feedback already exists');
+        return;
+      }
+
+      const items = document.querySelectorAll('#panel-indexed .item');
+      const destLabels = { answer_library: 'Answer Library', company: 'Company', product: 'Product', exclude: 'Excluded' };
+      const destBadgeColors = { answer_library: '#f59e0b', company: '#3b82f6', product: '#22c55e', exclude: '#ef4444' };
+
+      let count = 0;
+      let excludedCount = 0;
+      for (const item of items) {
+        // Use the AI-computed destination from indexing (stored in data-ai-destination)
+        const aiDest = item.dataset.aiDestination || 'answer_library';
+        if (aiDest === 'exclude') excludedCount++;
+
+        // Mark item as promoted with AI destination
+        item.classList.add('reviewed', 'correct', 'promoted');
+        item.dataset.destination = aiDest;        // Current destination
+        item.dataset.aiDestination = aiDest;      // Original AI destination (for revert)
+        item.dataset.promotedTo = aiDest;         // Legacy compatibility
+
+        // Add destination badge
+        const destBadge = document.createElement('span');
+        destBadge.className = 'dest-badge';
+        destBadge.style.cssText = \`
+          background: \${destBadgeColors[aiDest] || '#6b7280'};
+          color: white;
+          padding: 2px 6px;
+          border-radius: 4px;
+          font-size: 10px;
+          font-weight: 500;
+          margin-left: 8px;
+        \`;
+        destBadge.textContent = destLabels[aiDest] || aiDest;
+
+        const labelEl = item.querySelector('.item-label');
+        if (labelEl && !labelEl.querySelector('.dest-badge')) {
+          labelEl.appendChild(destBadge);
+        }
+
+        // Log feedback with original AI destination
+        const reason = aiDest === 'exclude' ? 'AI: Excluded (empty)' : \`AI: \${destLabels[aiDest]}\`;
+        await logFeedback(item, 'promoted', reason);
+        count++;
+      }
+
+      // Refresh Save as panel
+      renderSaveAsPanel();
+      console.log(\`Auto-assigned \${count} items from AI (\${excludedCount} excluded)\`);
     }
 
     function setupEventHandlers() {
@@ -4632,6 +4748,18 @@ export class WebReviewGenerator {
             // Normal click: select single
             selectItem(item);
             highlightCells(item.dataset.cells, item.dataset.sheet);
+
+            // Cross-panel navigation
+            const isIndexedItem = item.closest('#panel-indexed') !== null;
+            const isLibraryItem = item.closest('#panel-library') !== null;
+
+            if (isIndexedItem) {
+              // Extraction item clicked → scroll to matching Save as item
+              scrollToSaveAsItem(item.dataset.cells);
+            } else if (isLibraryItem) {
+              // Save as item clicked → scroll to matching Extraction item
+              scrollToExtractionItem(item.dataset.cells, item.dataset.sheet);
+            }
           }
         });
       });
@@ -4875,18 +5003,23 @@ export class WebReviewGenerator {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
           const item = btn.closest('.item');
+          const isLibraryItem = item.closest('#panel-library') !== null;
 
           if (btn.classList.contains('correct')) {
             item.classList.remove('wrong', 'rejected', 'show-note');
             item.classList.add('reviewed', 'correct', 'accepted');
             showToast('Accepted');
             logFeedback(item, 'correct');
+            // Sync badges when library item is accepted
+            if (isLibraryItem) syncExtractionBadges();
           } else if (btn.classList.contains('wrong')) {
             // Immediately reject and save (note is optional)
             item.classList.remove('correct', 'accepted', 'show-note');
             item.classList.add('reviewed', 'wrong', 'rejected');
             showToast('Rejected');
             logFeedback(item, 'wrong');
+            // Sync badges when library item is rejected
+            if (isLibraryItem) syncExtractionBadges();
           }
         });
       });
@@ -4952,6 +5085,7 @@ export class WebReviewGenerator {
           logFeedback(item, 'correct');
         });
         showToast(items.length + ' items accepted');
+        syncExtractionBadges();
       });
 
       document.getElementById('reject-all-library')?.addEventListener('click', () => {
@@ -5165,6 +5299,7 @@ export class WebReviewGenerator {
       async function applyCommandPaletteChanges() {
         const topic = document.getElementById('bulkTopic')?.value;
         const dataSource = document.getElementById('bulkDataSource')?.value;
+        const entityRole = document.getElementById('bulkEntityRole')?.value;
         const action = document.getElementById('bulkAction').value;
         const newLabel = document.getElementById('bulkLabel').value;
         const newValue = document.getElementById('bulkValue').value;
@@ -5219,19 +5354,234 @@ export class WebReviewGenerator {
             changes++;
           }
 
+          // Indexed mode: promote to Save as panel
+          if (!isLibraryMode && dataSource) {
+            const destMap = { answer_library: 'answer_library', entities: 'company', products: 'product', exclude: 'exclude' };
+            const newDest = destMap[dataSource] || dataSource;
+            const destLabels = { answer_library: 'Answer Library', company: 'Entities', product: 'Products', exclude: 'Excluded' };
+            const entityLabels = { supplier: 'Supplier', client: 'Client', manufacturer: 'Manufacturer', other: 'Other' };
+            const entityColors = { supplier: '#3b82f6', client: '#22c55e', manufacturer: '#f59e0b', other: '#6b7280' };
+
+            // Find the target section in library panel
+            const targetSection = document.querySelector(\`#panel-library .section[data-destination="\${newDest}"]\`);
+            if (targetSection) {
+              // Create a new item for the library panel
+              const label = item.dataset.label || item.querySelector('.item-label')?.textContent || '';
+              const value = item.querySelector('.item-value')?.textContent || '';
+              const cells = item.dataset.cells || '';
+              const sheetName = item.dataset.sheet || '';
+              const itemTopic = topic || item.dataset.topic || 'other';
+              const role = entityRole || 'other';
+
+              // Build topic badge
+              const topicBadge = \`<span class="topic-badge">\${itemTopic}</span>\`;
+              // Build entity badge for company destination
+              const entityBadge = newDest === 'company'
+                ? \`<span class="entity-badge" style="background:\${entityColors[role]}">\${entityLabels[role]}</span>\`
+                : '';
+
+              const newItem = document.createElement('div');
+              newItem.className = 'item';
+              if (item.dataset.id) newItem.dataset.id = item.dataset.id;  // Preserve unique ID
+              newItem.dataset.cells = cells;
+              newItem.dataset.sheet = sheetName;
+              newItem.dataset.label = label;
+              newItem.dataset.topic = itemTopic;
+              newItem.dataset.destination = newDest;
+              if (newDest === 'company') {
+                newItem.dataset.entityRole = role;
+              }
+              newItem.innerHTML = \`
+                <div class="item-label">\${escapeHtml(label)}\${entityBadge}\${topicBadge}</div>
+                <div class="item-value">\${escapeHtml(value)}</div>
+                <div class="item-ref">\${sheetName ? sheetName + ': ' : ''}\${cells}</div>
+                <div class="item-actions">
+                  <button class="btn-icon correct" title="Accept (A)">✓</button>
+                  <button class="btn-icon wrong" title="Reject (X)">✕</button>
+                </div>
+              \`;
+
+              // Attach event handlers
+              newItem.addEventListener('click', (e) => {
+                if (e.target.closest('.btn-icon')) return;
+                toggleItemSelection(newItem);
+              });
+              newItem.querySelector('.btn-icon.correct')?.addEventListener('click', (e) => {
+                e.stopPropagation();
+                markItem(newItem, 'correct');
+              });
+              newItem.querySelector('.btn-icon.wrong')?.addEventListener('click', (e) => {
+                e.stopPropagation();
+                markItem(newItem, 'wrong');
+              });
+
+              // Add to correct container
+              if (newDest === 'company' && entityRole) {
+                const entitySubsection = targetSection.querySelector(\`.entity-subsection[data-entity-role="\${entityRole}"] .entity-subsection-items\`);
+                if (entitySubsection) {
+                  entitySubsection.appendChild(newItem);
+                }
+              } else if (newDest === 'company') {
+                // Default to 'other' subsection
+                const entitySubsection = targetSection.querySelector('.entity-subsection[data-entity-role="other"] .entity-subsection-items');
+                if (entitySubsection) {
+                  entitySubsection.appendChild(newItem);
+                }
+              } else {
+                const itemsContainer = targetSection.querySelector('.section-items');
+                if (itemsContainer) {
+                  itemsContainer.appendChild(newItem);
+                }
+              }
+
+              // Mark original item as promoted and add destination badge
+              item.classList.add('reviewed', 'correct', 'promoted');
+              item.dataset.destination = newDest;  // Use destination as primary field
+              item.dataset.promotedTo = newDest;   // Keep for backwards compatibility
+
+              // Add destination badge to show where it was promoted
+              const destBadgeLabels = { answer_library: 'Answer Library', company: 'Company', product: 'Product', exclude: 'Excluded' };
+              const destBadgeColors = { answer_library: '#f59e0b', company: '#3b82f6', product: '#22c55e', exclude: '#ef4444' };
+              const existingDestBadge = item.querySelector('.dest-badge');
+              if (existingDestBadge) existingDestBadge.remove();
+
+              const destBadge = document.createElement('span');
+              destBadge.className = 'dest-badge';
+              destBadge.style.cssText = \`
+                background: \${destBadgeColors[newDest] || '#6b7280'};
+                color: white;
+                padding: 2px 6px;
+                border-radius: 4px;
+                font-size: 10px;
+                font-weight: 500;
+                margin-left: 8px;
+              \`;
+              destBadge.textContent = destBadgeLabels[newDest] || newDest;
+
+              // Add entity role to badge if applicable
+              if (newDest === 'company' && entityRole) {
+                destBadge.textContent += ' (' + entityLabels[entityRole] + ')';
+              }
+
+              const labelEl = item.querySelector('.item-label');
+              if (labelEl) {
+                labelEl.appendChild(destBadge);
+              }
+
+              // Update section counts
+              document.querySelectorAll('#panel-library .section').forEach(section => {
+                const count = section.querySelectorAll('.item').length;
+                const metaSpan = section.querySelector('.section-meta span');
+                if (metaSpan) metaSpan.textContent = \`\${count} items\`;
+                section.style.display = count > 0 ? '' : 'none';
+
+                // Update entity subsection counts
+                section.querySelectorAll('.entity-subsection').forEach(subsection => {
+                  const subCount = subsection.querySelectorAll('.item').length;
+                  const countEl = subsection.querySelector('.entity-subsection-count');
+                  if (countEl) countEl.textContent = \`\${subCount} items\`;
+                  subsection.style.display = subCount > 0 ? '' : 'none';
+                });
+              });
+
+              // Log feedback for the promotion
+              await logFeedback(item, 'promoted', \`Promoted to \${destLabels[newDest]}\${entityRole ? ' (' + entityLabels[entityRole] + ')' : ''}\`);
+              changes++;
+            }
+          }
+
           // Library mode: update data source and move to correct section
           if (isLibraryMode && dataSource) {
             // Map dropdown values to destination keys
-            const destMap = { answer_library: 'answer_library', entities: 'company', products: 'product' };
+            const destMap = { answer_library: 'answer_library', entities: 'company', products: 'product', exclude: 'exclude' };
             const newDest = destMap[dataSource] || dataSource;
             item.dataset.destination = newDest;
+
+            // Handle exclude: remove from Save as panel
+            if (newDest === 'exclude') {
+              // Remove from DOM
+              item.remove();
+
+              // Also update the original item in Extraction panel - remove promoted badge
+              const itemId = item.dataset.id;
+              const itemCells = item.dataset.cells;
+              const itemLabel = item.dataset.label;
+              let originalItem = null;
+              if (itemId) {
+                originalItem = document.querySelector(\`#panel-indexed .item[data-id="\${itemId}"]\`);
+              }
+              if (!originalItem && itemCells) {
+                originalItem = document.querySelector(\`#panel-indexed .item[data-cells="\${itemCells}"][data-label="\${itemLabel}"]\`);
+              }
+              if (originalItem) {
+                originalItem.classList.remove('promoted');
+                originalItem.dataset.promotedTo = 'exclude';
+                originalItem.dataset.destination = 'exclude';
+                // Update badge to show excluded
+                const existingBadge = originalItem.querySelector('.dest-badge');
+                if (existingBadge) {
+                  existingBadge.style.background = '#ef4444';
+                  existingBadge.textContent = 'Excluded';
+                }
+              }
+
+              await logFeedback(item, 'promoted', 'Excluded from export');
+
+              // Update section counts
+              document.querySelectorAll('#panel-library .section').forEach(section => {
+                const count = section.querySelectorAll('.item').length;
+                const metaSpan = section.querySelector('.section-meta span');
+                if (metaSpan) metaSpan.textContent = \`\${count} items\`;
+                section.style.display = count > 0 ? '' : 'none';
+              });
+
+              // Update total count in header
+              const totalItems = document.querySelectorAll('#panel-library .item').length;
+              document.getElementById('library-stats').textContent = \`\${totalItems} items (all sheets)\`;
+
+              changes++;
+              continue; // Skip rest of library mode handling
+            }
 
             // Find the target section and move the item
             const targetSection = document.querySelector(\`#panel-library .section[data-destination="\${newDest}"]\`);
             if (targetSection) {
-              const itemsContainer = targetSection.querySelector('.section-items');
-              if (itemsContainer && item.parentElement !== itemsContainer) {
-                itemsContainer.appendChild(item);
+              // For company destination, move to entity subsection if entity role is set
+              if (newDest === 'company' && entityRole) {
+                item.dataset.entityRole = entityRole;
+                // Update entity badge
+                const entityBadge = item.querySelector('.entity-badge');
+                const entityLabels = { supplier: 'Supplier', client: 'Client', manufacturer: 'Manufacturer', other: 'Other' };
+                const entityColors = { supplier: '#3b82f6', client: '#22c55e', manufacturer: '#f59e0b', other: '#6b7280' };
+                if (entityBadge) {
+                  entityBadge.textContent = entityLabels[entityRole];
+                  entityBadge.style.background = entityColors[entityRole];
+                } else {
+                  // Add entity badge if not present
+                  const labelEl = item.querySelector('.item-label');
+                  if (labelEl) {
+                    const badge = document.createElement('span');
+                    badge.className = 'entity-badge';
+                    badge.style.background = entityColors[entityRole];
+                    badge.textContent = entityLabels[entityRole];
+                    const topicBadge = labelEl.querySelector('.topic-badge');
+                    if (topicBadge) {
+                      labelEl.insertBefore(badge, topicBadge);
+                    } else {
+                      labelEl.appendChild(badge);
+                    }
+                  }
+                }
+                // Move to correct entity subsection
+                const entitySubsection = targetSection.querySelector(\`.entity-subsection[data-entity-role="\${entityRole}"] .entity-subsection-items\`);
+                if (entitySubsection && item.parentElement !== entitySubsection) {
+                  entitySubsection.appendChild(item);
+                }
+              } else {
+                const itemsContainer = targetSection.querySelector('.section-items');
+                if (itemsContainer && item.parentElement !== itemsContainer) {
+                  itemsContainer.appendChild(item);
+                }
               }
             }
 
@@ -5244,8 +5594,44 @@ export class WebReviewGenerator {
               section.style.display = count > 0 ? '' : 'none';
             });
 
-            // Save destination change
-            await logFeedback(item, 'destination_changed', \`Moved to \${newDest}\`);
+            // Update entity subsection counts
+            document.querySelectorAll('#panel-library .entity-subsection').forEach(subsection => {
+              const count = subsection.querySelectorAll('.item').length;
+              const countEl = subsection.querySelector('.entity-subsection-count');
+              if (countEl) countEl.textContent = \`\${count} items\`;
+            });
+
+            // Save destination change (include entity role)
+            await logFeedback(item, 'destination_changed', \`Moved to \${newDest}\${entityRole ? ' (' + entityRole + ')' : ''}\`);
+            changes++;
+          }
+
+          // Library mode: update entity role only (if data source not changed)
+          if (isLibraryMode && entityRole && !dataSource && item.dataset.destination === 'company') {
+            item.dataset.entityRole = entityRole;
+            // Update entity badge
+            const entityBadge = item.querySelector('.entity-badge');
+            const entityLabels = { supplier: 'Supplier', client: 'Client', manufacturer: 'Manufacturer', other: 'Other' };
+            const entityColors = { supplier: '#3b82f6', client: '#22c55e', manufacturer: '#f59e0b', other: '#6b7280' };
+            if (entityBadge) {
+              entityBadge.textContent = entityLabels[entityRole];
+              entityBadge.style.background = entityColors[entityRole];
+            }
+            // Move to correct entity subsection
+            const companySection = document.querySelector('#panel-library .section[data-destination="company"]');
+            if (companySection) {
+              const entitySubsection = companySection.querySelector(\`.entity-subsection[data-entity-role="\${entityRole}"] .entity-subsection-items\`);
+              if (entitySubsection && item.parentElement !== entitySubsection) {
+                entitySubsection.appendChild(item);
+              }
+              // Update entity subsection counts
+              companySection.querySelectorAll('.entity-subsection').forEach(subsection => {
+                const count = subsection.querySelectorAll('.item').length;
+                const countEl = subsection.querySelector('.entity-subsection-count');
+                if (countEl) countEl.textContent = \`\${count} items\`;
+              });
+            }
+            await logFeedback(item, 'entity_role_changed', \`Changed to \${entityRole}\`);
             changes++;
           }
 
@@ -5306,6 +5692,14 @@ export class WebReviewGenerator {
         }
       });
 
+      // Show/hide entity role based on data source
+      document.getElementById('bulkDataSource')?.addEventListener('change', (e) => {
+        const entityRoleRow = document.querySelector('.entity-role-row');
+        if (entityRoleRow) {
+          entityRoleRow.style.display = e.target.value === 'entities' ? '' : 'none';
+        }
+      });
+
       // Keyboard shortcuts for selection and command palette
       document.addEventListener('keydown', (e) => {
         if (commandPalette?.classList.contains('visible')) {
@@ -5344,19 +5738,23 @@ export class WebReviewGenerator {
       const panel = item.closest('.panel')?.id?.replace('panel-', '') || 'indexed';
       const feedbackItem = {
         action: action === 'correct' ? 'accepted' : action === 'wrong' ? 'rejected' : action,
+        id: item.dataset.id || undefined,  // Unique item ID for reliable matching
         label: item.dataset.label || item.querySelector('.item-label')?.textContent,
         value: item.querySelector('.item-value')?.textContent,
         cells: item.dataset.cells,
+        sheet: item.dataset.sheet,  // Include sheet name
         section: item.dataset.section,
         topic: item.dataset.topic,
-        destination: item.dataset.destination,
+        aiDestination: item.dataset.aiDestination,  // Original AI-suggested destination
+        destination: item.dataset.destination,       // Current destination (may be overridden)
+        promotedTo: item.dataset.promotedTo || undefined,
         reason: note,
         reviewedAt: new Date().toISOString()
       };
 
-      // Update local log
+      // Update local log - prefer ID matching, fall back to cells+label
       const existingIdx = feedbackLog.findIndex(f =>
-        f.cells === feedbackItem.cells && f.label === feedbackItem.label
+        feedbackItem.id ? f.id === feedbackItem.id : (f.cells === feedbackItem.cells && f.label === feedbackItem.label)
       );
       if (existingIdx >= 0) {
         feedbackLog[existingIdx] = feedbackItem;
@@ -5365,6 +5763,11 @@ export class WebReviewGenerator {
       }
       updateFeedbackCount();
       updateSheetTabCheckmarks();
+
+      // Re-render Save as panel when items are promoted
+      if (feedbackItem.action === 'promoted') {
+        renderSaveAsPanel();
+      }
 
       // Save to server
       if (serverConnected) {
@@ -5380,8 +5783,77 @@ export class WebReviewGenerator {
       }
     }
 
+    function markItem(item, action) {
+      const isLibraryItem = item.closest('#panel-library') !== null;
+      if (action === 'correct') {
+        item.classList.remove('wrong', 'rejected', 'show-note');
+        item.classList.add('reviewed', 'correct', 'accepted');
+        logFeedback(item, 'correct');
+        if (isLibraryItem) syncExtractionBadges();
+      } else if (action === 'wrong') {
+        item.classList.remove('correct', 'accepted', 'show-note');
+        item.classList.add('reviewed', 'wrong', 'rejected');
+        logFeedback(item, 'wrong');
+
+        // If rejecting from Save as panel, remove from panel and update Extraction
+        if (isLibraryItem) {
+          // Find and update source item in Extraction panel
+          const itemId = item.dataset.id;
+          const itemCells = item.dataset.cells;
+          const itemLabel = item.dataset.label;
+          let sourceItem = null;
+          if (itemId) {
+            sourceItem = document.querySelector(\`#panel-indexed .item[data-id="\${itemId}"]\`);
+          }
+          if (!sourceItem && itemCells) {
+            sourceItem = document.querySelector(\`#panel-indexed .item[data-cells="\${itemCells}"][data-label="\${itemLabel}"]\`);
+          }
+          if (sourceItem) {
+            // Update source item to show rejected
+            sourceItem.classList.remove('promoted', 'correct', 'accepted');
+            sourceItem.classList.add('reviewed', 'wrong', 'rejected');
+            sourceItem.dataset.destination = '';
+            sourceItem.dataset.promotedTo = '';
+            // Update badge to show rejected
+            const badge = sourceItem.querySelector('.dest-badge');
+            if (badge) {
+              badge.style.background = '#ef4444';
+              badge.textContent = 'Rejected';
+            }
+          }
+
+          // Remove from Save as panel
+          item.remove();
+
+          // Update counts
+          document.querySelectorAll('#panel-library .section').forEach(section => {
+            const count = section.querySelectorAll('.item').length;
+            const metaSpan = section.querySelector('.section-meta span');
+            if (metaSpan) metaSpan.textContent = \`\${count} items\`;
+            section.style.display = count > 0 ? '' : 'none';
+          });
+          const totalItems = document.querySelectorAll('#panel-library .item').length;
+          document.getElementById('library-stats').textContent = \`\${totalItems} items (all sheets)\`;
+
+          syncExtractionBadges();
+        }
+      }
+    }
+
     function updateFeedbackCount() {
-      document.getElementById('feedback-count').textContent = feedbackLog.length;
+      // Count only accepted items (these will be exported)
+      const acceptedCount = feedbackLog.filter(f =>
+        f.action === 'accepted' || f.action === 'edited' || f.action === 'destination_changed' || f.action === 'promoted'
+      ).length;
+      const totalCount = feedbackLog.length;
+
+      // Show "X accepted / Y total"
+      const countEl = document.getElementById('feedback-count');
+      if (acceptedCount === totalCount) {
+        countEl.textContent = acceptedCount;
+      } else {
+        countEl.textContent = \`\${acceptedCount}/\${totalCount}\`;
+      }
     }
 
     function restoreFeedbackState() {
@@ -5398,21 +5870,167 @@ export class WebReviewGenerator {
           return;
         }
 
+        // Handle promoted items from indexed panel FIRST - create in library if needed
+        // Note: _panel may be undefined for older feedback items, so we check for 'indexed' OR undefined
+        // Promoted items always originate from the indexed panel
+        if (fb.action === 'promoted' && (fb._panel === 'index' || fb._panel === 'indexed' || !fb._panel)) {
+          // Get destination
+          let promotedTo = fb.promotedTo;
+          if (!promotedTo && fb.reason) {
+            if (fb.reason.includes('Entities')) promotedTo = 'company';
+            else if (fb.reason.includes('Products')) promotedTo = 'product';
+            else if (fb.reason.includes('Answer Library')) promotedTo = 'answer_library';
+            else if (fb.reason.includes('Excluded')) promotedTo = 'exclude';
+          }
+          promotedTo = promotedTo || 'answer_library';
+
+          const entityMatch = fb.reason?.match(/\\((\\w+)\\)/);
+          const entityRole = entityMatch?.[1] || fb.entityRole || 'other';
+
+          // Create the item in the library panel if it doesn't exist
+          // Prefer ID matching if available
+          const escapedLabel = (fb.label || '').replace(/"/g, '\\\\"');
+          const existingLibItem = fb.id
+            ? document.querySelector(\`#panel-library .item[data-id="\${fb.id}"]\`)
+            : document.querySelector(\`#panel-library .item[data-cells="\${fb.cells}"][data-label="\${escapedLabel}"]\`);
+
+          if (!existingLibItem) {
+            const targetSection = document.querySelector(\`#panel-library .section[data-destination="\${promotedTo}"]\`);
+            if (targetSection) {
+              const destBadgeLabels = { answer_library: 'Answer Library', company: 'Company', product: 'Product', exclude: 'Excluded' };
+              const destBadgeColors = { answer_library: '#f59e0b', company: '#3b82f6', product: '#22c55e', exclude: '#ef4444' };
+              const entityLabels = { supplier: 'Supplier', client: 'Client', manufacturer: 'Manufacturer', other: 'Other' };
+              const entityColors = { supplier: '#3b82f6', client: '#22c55e', manufacturer: '#f59e0b', other: '#6b7280' };
+
+              const label = fb.label || '';
+              const value = fb.value || '';
+              const cells = fb.cells || '';
+              const sheetName = fb.sheet || '';
+              const itemTopic = fb.topic || 'other';
+
+              // Build badges
+              const topicBadge = \`<span class="topic-badge">\${itemTopic}</span>\`;
+              const entityBadge = promotedTo === 'company'
+                ? \`<span class="entity-badge" style="background:\${entityColors[entityRole]}">\${entityLabels[entityRole]}</span>\`
+                : '';
+
+              const newItem = document.createElement('div');
+              newItem.className = 'item reviewed correct accepted';
+              if (fb.id) newItem.dataset.id = fb.id;  // Preserve unique ID
+              newItem.dataset.cells = cells;
+              newItem.dataset.sheet = sheetName;
+              newItem.dataset.label = label;
+              newItem.dataset.topic = itemTopic;
+              newItem.dataset.destination = promotedTo;
+              if (promotedTo === 'company') {
+                newItem.dataset.entityRole = entityRole;
+              }
+              newItem.innerHTML = \`
+                <div class="item-label">\${label}\${entityBadge}\${topicBadge}</div>
+                <div class="item-value">\${value}</div>
+                <div class="item-ref">\${sheetName ? sheetName + ': ' : ''}\${cells}</div>
+                <div class="item-actions review-only">
+                  <button class="action-btn correct" title="Accept (C)">✓</button>
+                  <button class="action-btn wrong" title="Reject (W)">✗</button>
+                </div>
+              \`;
+
+              // Add to correct container
+              if (promotedTo === 'company') {
+                const entitySubsection = targetSection.querySelector(\`.entity-subsection[data-entity-role="\${entityRole}"] .entity-subsection-items\`);
+                if (entitySubsection) {
+                  entitySubsection.appendChild(newItem);
+                  entitySubsection.closest('.entity-subsection').style.display = '';
+                } else {
+                  targetSection.querySelector('.section-items')?.appendChild(newItem);
+                }
+              } else {
+                targetSection.querySelector('.section-items')?.appendChild(newItem);
+              }
+
+              // Show section if hidden
+              targetSection.style.display = '';
+            }
+          }
+        }
+
         // Use panel-specific selector to avoid applying feedback to wrong panel
         const panelSelector = fb._panel === 'library' ? '#panel-library' : '#panel-indexed';
 
-        // Find items by cells AND label to ensure exact match
-        const items = document.querySelectorAll(\`\${panelSelector} .item[data-cells="\${fb.cells}"]\`);
-        items.forEach(item => {
-          // Additional check: match by label if provided (for panels with multiple items at same cells)
-          if (fb.label && item.dataset.label && item.dataset.label !== fb.label) {
-            return; // Skip if label doesn't match
+        // Find items - prefer ID matching, fall back to cells+label for legacy feedback
+        const allItems = document.querySelectorAll(\`\${panelSelector} .item\`);
+        const items = Array.from(allItems).filter(item => {
+          // Prefer ID-based matching if feedback has an ID
+          if (fb.id && item.dataset.id) {
+            return fb.id === item.dataset.id;
           }
+          // Fall back to cells+label matching for legacy feedback
+          const itemCells = item.dataset.cells || '';
+          const fbCells = fb.cells || '';
+          // Match if exact match OR if item cells end with feedback cells (handles sheet prefix)
+          const cellsMatch = itemCells === fbCells || itemCells.endsWith(': ' + fbCells) || itemCells.endsWith(fbCells);
+          // Also match by label for additional accuracy
+          const labelMatch = !fb.label || !item.dataset.label || item.dataset.label === fb.label;
+          return cellsMatch && labelMatch;
+        });
+        items.forEach(item => {
 
           if (fb.action === 'accepted') {
             item.classList.add('reviewed', 'correct', 'accepted');
           } else if (fb.action === 'rejected') {
             item.classList.add('reviewed', 'wrong', 'rejected');
+          } else if (fb.action === 'promoted' && (fb._panel === 'index' || fb._panel === 'indexed' || !fb._panel)) {
+            // Restore promoted state with destination badge
+            // Note: _panel may be 'index', 'indexed', or undefined for older feedback items
+            item.classList.add('reviewed', 'correct', 'promoted');
+
+            // Get destination from promotedTo field, or parse from reason as fallback
+            let promotedTo = fb.promotedTo;
+            if (!promotedTo && fb.reason) {
+              if (fb.reason.includes('Entities')) promotedTo = 'company';
+              else if (fb.reason.includes('Products')) promotedTo = 'product';
+              else if (fb.reason.includes('Answer Library')) promotedTo = 'answer_library';
+              else if (fb.reason.includes('Excluded')) promotedTo = 'exclude';
+            }
+            promotedTo = promotedTo || 'answer_library';
+
+            const entityMatch = fb.reason?.match(/\\((\\w+)\\)/);
+            const entityRole = entityMatch?.[1] || fb.entityRole || 'other';
+            item.dataset.promotedTo = promotedTo;
+
+            // Add destination badge to indexed item
+            const destBadgeLabels = { answer_library: 'Answer Library', company: 'Company', product: 'Product', exclude: 'Excluded' };
+            const destBadgeColors = { answer_library: '#f59e0b', company: '#3b82f6', product: '#22c55e', exclude: '#ef4444' };
+            const entityLabels = { supplier: 'Supplier', client: 'Client', manufacturer: 'Manufacturer', other: 'Other' };
+            const entityColors = { supplier: '#3b82f6', client: '#22c55e', manufacturer: '#f59e0b', other: '#6b7280' };
+
+            const existingDestBadge = item.querySelector('.dest-badge');
+            if (!existingDestBadge) {
+              const destBadge = document.createElement('span');
+              destBadge.className = 'dest-badge';
+              destBadge.style.cssText = \`
+                background: \${destBadgeColors[promotedTo] || '#6b7280'};
+                color: white;
+                padding: 2px 6px;
+                border-radius: 4px;
+                font-size: 10px;
+                font-weight: 500;
+                margin-left: 8px;
+              \`;
+              destBadge.textContent = destBadgeLabels[promotedTo] || promotedTo;
+
+              // Add entity role to badge if present in reason
+              if (entityMatch && entityMatch[1]) {
+                destBadge.textContent += ' (' + entityMatch[1] + ')';
+              }
+
+              const labelEl = item.querySelector('.item-label');
+              if (labelEl) {
+                labelEl.appendChild(destBadge);
+              }
+            }
+            // Note: Item is already created in the library panel by the pre-check block above
+            // (before the items.forEach loop), so we don't need to create it again here
           }
 
           // Handle destination changes (only for library items)
@@ -5420,9 +6038,63 @@ export class WebReviewGenerator {
             item.dataset.destination = fb.destination;
             const targetSection = document.querySelector(\`#panel-library .section[data-destination="\${fb.destination}"]\`);
             if (targetSection) {
-              const itemsContainer = targetSection.querySelector('.section-items');
-              if (itemsContainer && item.parentElement !== itemsContainer) {
-                itemsContainer.appendChild(item);
+              // For company destination with entity role, move to correct subsection
+              if (fb.destination === 'company' && fb.entityRole) {
+                item.dataset.entityRole = fb.entityRole;
+                // Update entity badge
+                const entityBadge = item.querySelector('.entity-badge');
+                const entityLabels = { supplier: 'Supplier', client: 'Client', manufacturer: 'Manufacturer', other: 'Other' };
+                const entityColors = { supplier: '#3b82f6', client: '#22c55e', manufacturer: '#f59e0b', other: '#6b7280' };
+                if (entityBadge) {
+                  entityBadge.textContent = entityLabels[fb.entityRole];
+                  entityBadge.style.background = entityColors[fb.entityRole];
+                } else {
+                  // Add entity badge if not present
+                  const labelEl = item.querySelector('.item-label');
+                  if (labelEl) {
+                    const badge = document.createElement('span');
+                    badge.className = 'entity-badge';
+                    badge.style.background = entityColors[fb.entityRole];
+                    badge.textContent = entityLabels[fb.entityRole];
+                    const topicBadge = labelEl.querySelector('.topic-badge');
+                    if (topicBadge) {
+                      labelEl.insertBefore(badge, topicBadge);
+                    } else {
+                      labelEl.appendChild(badge);
+                    }
+                  }
+                }
+                // Move to correct entity subsection
+                const entitySubsection = targetSection.querySelector(\`.entity-subsection[data-entity-role="\${fb.entityRole}"] .entity-subsection-items\`);
+                if (entitySubsection && item.parentElement !== entitySubsection) {
+                  entitySubsection.appendChild(item);
+                }
+              } else {
+                const itemsContainer = targetSection.querySelector('.section-items');
+                if (itemsContainer && item.parentElement !== itemsContainer) {
+                  itemsContainer.appendChild(item);
+                }
+              }
+            }
+          }
+
+          // Handle entity role changes without destination change
+          if (fb.entityRole && fb._panel === 'library' && item.dataset.destination === 'company') {
+            item.dataset.entityRole = fb.entityRole;
+            // Update entity badge
+            const entityBadge = item.querySelector('.entity-badge');
+            const entityLabels = { supplier: 'Supplier', client: 'Client', manufacturer: 'Manufacturer', other: 'Other' };
+            const entityColors = { supplier: '#3b82f6', client: '#22c55e', manufacturer: '#f59e0b', other: '#6b7280' };
+            if (entityBadge) {
+              entityBadge.textContent = entityLabels[fb.entityRole];
+              entityBadge.style.background = entityColors[fb.entityRole];
+            }
+            // Move to correct entity subsection
+            const companySection = document.querySelector('#panel-library .section[data-destination="company"]');
+            if (companySection) {
+              const entitySubsection = companySection.querySelector(\`.entity-subsection[data-entity-role="\${fb.entityRole}"] .entity-subsection-items\`);
+              if (entitySubsection && item.parentElement !== entitySubsection) {
+                entitySubsection.appendChild(item);
               }
             }
           }
@@ -5435,6 +6107,95 @@ export class WebReviewGenerator {
         const metaSpan = section.querySelector('.section-meta span');
         if (metaSpan) metaSpan.textContent = \`\${count} items\`;
         section.style.display = count > 0 ? '' : 'none';
+
+        // Update entity subsection counts for company section
+        section.querySelectorAll('.entity-subsection').forEach(subsection => {
+          const subCount = subsection.querySelectorAll('.item').length;
+          const countEl = subsection.querySelector('.entity-subsection-count');
+          if (countEl) countEl.textContent = \`\${subCount} items\`;
+          subsection.style.display = subCount > 0 ? '' : 'none';
+        });
+      });
+    }
+
+    /**
+     * Sync destination badges from Save as panel to Extraction panel
+     * Shows which Extraction items are included in the final export
+     */
+    function syncExtractionBadges() {
+      const destBadgeLabels = { answer_library: 'Answer Library', company: 'Company', product: 'Product', exclude: 'Excluded' };
+      const destBadgeColors = { answer_library: '#f59e0b', company: '#3b82f6', product: '#22c55e', exclude: '#ef4444' };
+      const entityLabels = { supplier: 'Supplier', client: 'Client', manufacturer: 'Manufacturer', other: 'Other' };
+
+      // Build a map of cells -> destination from Save as panel (accepted items only)
+      const saveAsMap = new Map();
+      document.querySelectorAll('#panel-library .item').forEach(item => {
+        // Only include reviewed/accepted items, or all items if we want to show everything
+        const cells = item.dataset.cells;
+        const dest = item.dataset.destination;
+        const entityRole = item.dataset.entityRole;
+        const isAccepted = item.classList.contains('accepted') || item.classList.contains('correct');
+
+        if (cells && dest) {
+          // Store the destination info (prefer accepted items, but show all for visibility)
+          if (!saveAsMap.has(cells) || isAccepted) {
+            saveAsMap.set(cells, { dest, entityRole, accepted: isAccepted });
+          }
+        }
+      });
+
+      // Update Extraction panel items with destination badges
+      document.querySelectorAll('#panel-indexed .item').forEach(item => {
+        const cells = item.dataset.cells;
+        const existingBadge = item.querySelector('.dest-badge');
+
+        // Skip if already promoted (has its own badge)
+        if (item.classList.contains('promoted')) return;
+
+        const saveAsInfo = saveAsMap.get(cells);
+        if (saveAsInfo) {
+          const { dest, entityRole, accepted } = saveAsInfo;
+
+          // Create or update badge
+          if (!existingBadge) {
+            const badge = document.createElement('span');
+            badge.className = 'dest-badge';
+            badge.style.cssText = \`
+              background: \${destBadgeColors[dest] || '#6b7280'};
+              color: white;
+              padding: 2px 6px;
+              border-radius: 4px;
+              font-size: 10px;
+              font-weight: 500;
+              margin-left: 8px;
+              opacity: \${accepted ? 1 : 0.6};
+            \`;
+            let badgeText = destBadgeLabels[dest] || dest;
+            if (dest === 'company' && entityRole && entityRole !== 'other') {
+              badgeText += ' (' + entityLabels[entityRole] + ')';
+            }
+            badge.textContent = badgeText;
+            badge.title = accepted ? 'Accepted in Save as' : 'In Save as (pending review)';
+
+            const labelEl = item.querySelector('.item-label');
+            if (labelEl) {
+              labelEl.appendChild(badge);
+            }
+          } else {
+            // Update existing badge
+            existingBadge.style.background = destBadgeColors[dest] || '#6b7280';
+            existingBadge.style.opacity = accepted ? '1' : '0.6';
+            let badgeText = destBadgeLabels[dest] || dest;
+            if (dest === 'company' && entityRole && entityRole !== 'other') {
+              badgeText += ' (' + entityLabels[entityRole] + ')';
+            }
+            existingBadge.textContent = badgeText;
+            existingBadge.title = accepted ? 'Accepted in Save as' : 'In Save as (pending review)';
+          }
+        } else if (existingBadge && !item.classList.contains('promoted')) {
+          // Remove badge if no longer in Save as
+          existingBadge.remove();
+        }
       });
     }
 
@@ -5450,8 +6211,14 @@ export class WebReviewGenerator {
       }
 
       try {
-        const exportRes = await fetch(API_BASE + '/api/export-approved', { method: 'POST' });
+        const exportRes = await fetch(API_BASE + '/api/export-approved', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ questionnaire: currentQuestionnaire })
+        });
         if (!exportRes.ok) throw new Error('Export failed');
+        const exportData = await exportRes.json();
+        console.log('Export result:', exportData);
 
         const rulesRes = await fetch(API_BASE + '/api/apply-rules', { method: 'POST' });
         if (!rulesRes.ok) throw new Error('Rules failed');
@@ -5515,6 +6282,92 @@ export class WebReviewGenerator {
         const firstHighlighted = contents[foundInSheet]?.querySelector('.highlighted');
         if (firstHighlighted) {
           firstHighlighted.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+    }
+
+    /**
+     * Scroll to matching item in the Save as panel based on cells
+     */
+    function scrollToSaveAsItem(cellsStr) {
+      if (!cellsStr) return;
+
+      // Clear previous highlights in Save as
+      document.querySelectorAll('#panel-library .item.sync-highlight').forEach(item => {
+        item.classList.remove('sync-highlight');
+      });
+
+      // Find matching items in Save as panel
+      const saveAsItems = document.querySelectorAll('#panel-library .item');
+      let foundItem = null;
+
+      saveAsItems.forEach(item => {
+        if (item.dataset.cells === cellsStr) {
+          foundItem = item;
+        }
+      });
+
+      if (foundItem) {
+        // Highlight and scroll to the item
+        foundItem.classList.add('sync-highlight');
+        foundItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        // Expand section if collapsed
+        const section = foundItem.closest('.section');
+        if (section?.classList.contains('collapsed')) {
+          section.classList.remove('collapsed');
+        }
+
+        // Expand entity subsection if collapsed
+        const subsection = foundItem.closest('.entity-subsection');
+        if (subsection?.style.display === 'none') {
+          subsection.style.display = '';
+        }
+      }
+    }
+
+    /**
+     * Scroll to matching item in the Extraction panel based on cells
+     */
+    function scrollToExtractionItem(cellsStr, sheetName) {
+      if (!cellsStr) return;
+
+      // Clear previous highlights in Extraction
+      document.querySelectorAll('#panel-indexed .item.sync-highlight').forEach(item => {
+        item.classList.remove('sync-highlight');
+      });
+
+      // If different sheet, switch to it first
+      if (sheetName && window.sheetNames) {
+        const idx = window.sheetNames.indexOf(sheetName);
+        if (idx !== -1) {
+          const tabs = document.querySelectorAll('.sheet-tab');
+          if (tabs[idx] && !tabs[idx].classList.contains('active')) {
+            // Trigger sheet switch
+            tabs[idx].click();
+          }
+        }
+      }
+
+      // Find matching items in Extraction panel
+      const extractionItems = document.querySelectorAll('#panel-indexed .item');
+      let foundItem = null;
+
+      extractionItems.forEach(item => {
+        if (item.dataset.cells === cellsStr) {
+          foundItem = item;
+        }
+      });
+
+      if (foundItem) {
+        // Highlight and scroll to the item
+        foundItem.classList.add('sync-highlight');
+        foundItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        // Expand section if collapsed
+        const section = foundItem.closest('.section');
+        if (section?.classList.contains('collapsed')) {
+          section.classList.remove('collapsed');
         }
       }
     }

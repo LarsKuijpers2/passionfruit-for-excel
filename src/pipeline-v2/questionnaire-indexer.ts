@@ -80,8 +80,12 @@ function getTableGroupingRules(): TableGroupingRules | null {
 
 export type Language = 'en' | 'de' | 'fr' | 'nl';
 
+/** Destination for where the item should be stored */
+export type ItemDestination = 'answer_library' | 'product' | 'company' | 'exclude';
+
 /** An indexed item from a questionnaire */
 export interface IndexedItem {
+  id: string;  // Unique identifier for this item
   type: ItemType;
   label: string;
   value?: string;
@@ -91,6 +95,7 @@ export interface IndexedItem {
   topic: string;
   level: ItemLevel;
   lang: Language | undefined;
+  destination: ItemDestination;  // AI-suggested destination based on level and value
 }
 
 /** A section in the questionnaire */
@@ -477,14 +482,27 @@ export class QuestionnaireIndexer {
           }
 
           const lang = this.detectLanguage(item.label + ' ' + (item.value || ''));
+          const hasValue = item.value && item.value !== 'EMPTY' && item.value.trim() !== '';
+
+          // Compute AI-suggested destination based on level and value
+          let aiDestination: ItemDestination;
+          if (!hasValue) {
+            aiDestination = 'exclude'; // Empty items should be excluded
+          } else if (item.level === 'product') {
+            aiDestination = 'product';
+          } else {
+            aiDestination = 'answer_library'; // standard and narrative → answer_library
+          }
 
           let indexedItem: IndexedItem = {
+            id: randomUUID().split('-')[0], // Short unique ID
             type: item.type,
             label: item.label,
-            value: item.value && item.value !== 'EMPTY' ? item.value : undefined,
+            value: hasValue ? item.value : undefined,
             topic: item.topic || topic, // Use item's topic if available, otherwise section topic
             level: item.level,
             lang: lang !== 'unknown' ? lang : undefined,
+            destination: aiDestination, // AI-suggested destination
           };
 
           // Add cell references based on type
@@ -563,6 +581,7 @@ export class QuestionnaireIndexer {
             section.items = [
               ...nonProductItems,
               {
+                id: randomUUID().split('-')[0], // Short unique ID for grouped table
                 type: grouped.type,
                 label: grouped.label,
                 value: grouped.value,
@@ -570,6 +589,7 @@ export class QuestionnaireIndexer {
                 topic: grouped.topic,
                 level: grouped.level,
                 lang: undefined,
+                destination: 'product' as ItemDestination, // Grouped tables are product-level
               },
             ];
             tablesGrouped++;

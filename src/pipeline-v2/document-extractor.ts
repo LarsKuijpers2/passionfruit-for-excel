@@ -13,7 +13,7 @@ import type { QuestionnaireStructure } from './excel-structure.js';
 // =============================================================================
 
 /** Supported document types */
-export type DocumentType = 'excel' | 'word' | 'pdf';
+export type DocumentType = 'excel' | 'word' | 'pdf' | 'html';
 
 /** Document extractor interface - all extractors must implement this */
 export interface DocumentExtractor {
@@ -51,8 +51,14 @@ export async function getExtractor(filepath: string): Promise<DocumentExtractor>
       return new PdfStructureExtractor();
     }
 
+    case '.html':
+    case '.htm': {
+      const { HtmlStructureExtractor } = await import('./html-structure.js');
+      return new HtmlStructureExtractor();
+    }
+
     default:
-      throw new Error(`Unsupported file type: ${ext}. Supported types: .xlsx, .xls, .docx, .pdf`);
+      throw new Error(`Unsupported file type: ${ext}. Supported types: .xlsx, .xls, .docx, .pdf, .html`);
   }
 }
 
@@ -70,6 +76,9 @@ export function getDocumentType(filepath: string): DocumentType {
       return 'word';
     case '.pdf':
       return 'pdf';
+    case '.html':
+    case '.htm':
+      return 'html';
     default:
       throw new Error(`Unknown file type: ${ext}`);
   }
@@ -80,5 +89,5 @@ export function getDocumentType(filepath: string): DocumentType {
  */
 export function isSupportedFileType(filepath: string): boolean {
   const ext = extname(filepath).toLowerCase();
-  return ['.xlsx', '.xls', '.docx', '.pdf'].includes(ext);
+  return ['.xlsx', '.xls', '.docx', '.pdf', '.html', '.htm'].includes(ext);
 }

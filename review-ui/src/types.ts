@@ -46,6 +46,7 @@ export interface LibraryItem {
   topic?: string;
   level?: string;
   lang?: string;
+  destination?: Destination;
   source?: {
     file: string;
     sheet: string;

@@ -47,6 +47,7 @@ export interface LibraryItem {
   level?: string;
   lang?: string;
   destination?: Destination;
+  lCell?: string;
   source?: {
     file: string;
     sheet: string;
@@ -55,23 +56,32 @@ export interface LibraryItem {
 
 // Excel cell data (from structure)
 export interface ExcelCell {
+  ref: string;
   value: string;
+  type?: string;
+  filled?: boolean;
   role?: 'header' | 'section' | 'label' | 'input' | 'value' | 'empty';
-  bold?: boolean;
-  format?: string;
-  merged?: boolean;
+  format?: {
+    bold?: boolean;
+    italic?: boolean;
+    fontSize?: number;
+    fontColor?: string;
+  };
 }
 
-// Excel row
-export interface ExcelRow {
-  [colIndex: string]: ExcelCell | string;
+// Excel row from API
+export interface ExcelSheetRow {
+  row: number;
+  cells: Record<string, ExcelCell>;
+  isEmpty?: boolean;
+  rowType?: string;
 }
 
 // Excel sheet data (from structure)
 export interface ExcelSheet {
   name: string;
   index: number;
-  rows: Record<string, Record<string, ExcelCell | string>>;
+  rows: ExcelSheetRow[];
   headers?: string[];
   rowCount: number;
   columnCount: number;

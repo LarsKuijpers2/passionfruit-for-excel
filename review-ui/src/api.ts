@@ -84,3 +84,15 @@ export async function bulkUpdateItems(
   );
   if (!res.ok) throw new Error('Failed to bulk update items');
 }
+
+// Export items grouped by destination
+export async function exportGrouped(
+  questionnaireId: string
+): Promise<{ success: boolean; path: string; stats: { company: number; library: number; product: number; exclude: number; total: number } }> {
+  const res = await fetch(
+    `${API_BASE}/api/export-grouped/${encodeURIComponent(questionnaireId)}`,
+    { method: 'POST' }
+  );
+  if (!res.ok) throw new Error('Failed to export grouped data');
+  return res.json();
+}

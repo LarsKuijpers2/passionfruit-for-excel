@@ -101,8 +101,8 @@ export class ReviewServer {
   // Write locks to prevent concurrent file writes causing corruption
   private writeLocks: Map<string, Promise<void>> = new Map();
 
-  constructor(questionnaire: string, options: { port?: number; reviewDir?: string } = {}) {
-    this.questionnaire = questionnaire;
+  constructor(questionnaire?: string, options: { port?: number; reviewDir?: string } = {}) {
+    this.questionnaire = questionnaire || '';
     this.port = options.port || 3456;
     this.reviewDir = options.reviewDir || './review';
 
@@ -110,10 +110,14 @@ export class ReviewServer {
     this.bedrockClient = new BedrockRuntimeClient({ region: process.env.AWS_REGION || 'eu-central-1' });
     this.modelId = 'eu.anthropic.claude-sonnet-4-20250514-v1:0';
 
-    // Create safe folder name from questionnaire
-    const safeName = questionnaire.replace(/[^a-zA-Z0-9-_]/g, '_');
-    const feedbackDir = join(this.reviewDir, safeName);
-    this.feedbackPath = join(feedbackDir, 'feedback.json');
+    // Create safe folder name from questionnaire (only if provided)
+    if (questionnaire) {
+      const safeName = questionnaire.replace(/[^a-zA-Z0-9-_]/g, '_');
+      const feedbackDir = join(this.reviewDir, safeName);
+      this.feedbackPath = join(feedbackDir, 'feedback.json');
+    } else {
+      this.feedbackPath = '';
+    }
 
     this.app = express();
     this.feedback = this.createEmptyFeedback();
@@ -139,7 +143,13 @@ export class ReviewServer {
     this.app.use(cors());
     this.app.use(express.json());
 
-    // Serve static review HTML files
+    // Serve React app from review-ui/dist
+    const reactAppPath = join(process.cwd(), 'review-ui', 'dist');
+    if (existsSync(reactAppPath)) {
+      this.app.use(express.static(reactAppPath));
+    }
+
+    // Serve static review HTML files (legacy)
     this.app.use('/review', express.static(this.reviewDir));
   }
 
@@ -381,6 +391,124 @@ export class ReviewServer {
       }
     });
 
+    // Export indexed items grouped by destination (Company, Library, Product, Exclude)
+    this.app.post('/api/export-grouped/:questionnaireId', async (req, res) => {
+      try {
+        const { questionnaireId } = req.params;
+        const safeName = questionnaireId.replace(/[^a-zA-Z0-9-_]/g, '_');
+
+        // Helper to find file in root or customer directories
+        const findFile = async (rootDir: string, filename: string): Promise<{ path: string; customer?: string } | null> => {
+          // First check root directory
+          const rootPath = join(rootDir, filename);
+          if (existsSync(rootPath)) {
+            return { path: rootPath };
+          }
+
+          // Then check all customer directories
+          try {
+            const customers = await readdir('./customers');
+            for (const customer of customers) {
+              const customerPath = join('./customers', customer, rootDir, filename);
+              if (existsSync(customerPath)) {
+                return { path: customerPath, customer };
+              }
+            }
+          } catch {}
+
+          return null;
+        };
+
+        // Load indexed data
+        const indexedResult = await findFile('indexed', `${safeName}.json`);
+        if (!indexedResult) {
+          return res.status(404).json({ error: 'Indexed file not found' });
+        }
+
+        const indexed = JSON.parse(await readFile(indexedResult.path, 'utf-8'));
+
+        // Group items by destination
+        const grouped: Record<string, any[]> = {
+          company: [],
+          answer_library: [],
+          product: [],
+          exclude: []
+        };
+
+        for (const section of indexed.sections || []) {
+          for (const item of section.items || []) {
+            const destination = item.destination || 'answer_library';
+            if (grouped[destination]) {
+              grouped[destination].push({
+                id: item.id,
+                label: item.label,
+                value: item.value,
+                topic: item.topic,
+                lCell: item.lCell,
+                vCell: item.vCell,
+                section: section.title
+              });
+            }
+          }
+        }
+
+        // Get customer from indexed file location or questionnaire structure
+        let customer = indexedResult.customer || 'default';
+        if (customer === 'default') {
+          const structureResult = await findFile('questionnaires', `${safeName}.json`);
+          if (structureResult) {
+            try {
+              const structure = JSON.parse(await readFile(structureResult.path, 'utf-8'));
+              const filepath = structure?.source?.filepath || '';
+              const incomingMatch = filepath.match(/incoming[\/\\]([^\/\\]+)[\/\\][^\/\\]+$/);
+              if (incomingMatch && incomingMatch[1]) {
+                customer = incomingMatch[1].replace(/[^a-zA-Z0-9-_]/g, '-');
+              } else if (structureResult.customer) {
+                customer = structureResult.customer;
+              }
+            } catch {}
+          }
+        }
+
+        // Create export directory and save
+        const exportDir = join('./customers', customer, 'api-ready');
+        await mkdir(exportDir, { recursive: true });
+
+        const exportPath = join(exportDir, `${safeName}.json`);
+        const exportData = {
+          meta: {
+            questionnaire: questionnaireId,
+            source: indexed.source,
+            customer,
+            exportedAt: new Date().toISOString()
+          },
+          company: grouped.company,
+          library: grouped.answer_library,
+          product: grouped.product,
+          exclude: grouped.exclude,
+          stats: {
+            company: grouped.company.length,
+            library: grouped.answer_library.length,
+            product: grouped.product.length,
+            exclude: grouped.exclude.length,
+            total: grouped.company.length + grouped.answer_library.length + grouped.product.length + grouped.exclude.length
+          }
+        };
+
+        await writeFile(exportPath, JSON.stringify(exportData, null, 2), 'utf-8');
+        console.log(`Exported grouped data to ${exportPath}`);
+
+        res.json({
+          success: true,
+          path: exportPath,
+          stats: exportData.stats
+        });
+      } catch (error) {
+        console.error('Error exporting grouped data:', error);
+        res.status(500).json({ error: 'Failed to export grouped data' });
+      }
+    });
+
     // Open source file
     this.app.post('/api/open-file/:id', async (req, res) => {
       try {
@@ -389,16 +517,12 @@ export class ReviewServer {
         const { promisify } = await import('util');
         const execAsync = promisify(exec);
 
-        // Find the source file
-        // Try JSON first, then YAML for backwards compatibility
-        let indexedPath = join(this.indexedDir, id + '.json');
-        let indexed;
-        if (existsSync(indexedPath)) {
-          indexed = JSON.parse(await readFile(indexedPath, 'utf-8'));
-        } else {
-          indexedPath = join(this.indexedDir, id + '.yaml');
-          indexed = parseYaml(await readFile(indexedPath, 'utf-8'));
+        // Find the source file (JSON only)
+        const indexedPath = join('./indexed', id + '.json');
+        if (!existsSync(indexedPath)) {
+          return res.status(404).json({ error: 'Indexed file not found' });
         }
+        const indexed = JSON.parse(await readFile(indexedPath, 'utf-8'));
         const sourcePath = indexed?.source_file || join('./incoming', indexed?.source || id);
 
         // Open with default application (works on macOS)
@@ -462,7 +586,7 @@ export class ReviewServer {
       }
     });
 
-    // Update item destination in indexed YAML (persists changes)
+    // Update item destination in indexed JSON (persists changes)
     this.app.post('/api/update-destination', async (req, res) => {
       try {
         const { questionnaireId, itemId, destination } = req.body;
@@ -472,23 +596,15 @@ export class ReviewServer {
           return res.status(400).json({ error: 'Missing questionnaireId, itemId, or destination' });
         }
 
-        // Load the indexed file (JSON or YAML)
+        // Load the indexed file (JSON only)
         const safeName = questionnaireId.replace(/[^a-zA-Z0-9-_]/g, '_');
-        let indexedPath = join('./indexed', `${safeName}.json`);
-        let isJson = true;
-
-        if (!existsSync(indexedPath)) {
-          indexedPath = join('./indexed', `${safeName}.yaml`);
-          isJson = false;
-        }
+        const indexedPath = join('./indexed', `${safeName}.json`);
 
         if (!existsSync(indexedPath)) {
           return res.status(404).json({ error: 'Indexed file not found' });
         }
 
-        const indexed = isJson
-          ? JSON.parse(await readFile(indexedPath, 'utf-8'))
-          : parseYaml(await readFile(indexedPath, 'utf-8'));
+        const indexed = JSON.parse(await readFile(indexedPath, 'utf-8'));
 
         // Find and update the item
         let found = false;
@@ -509,8 +625,8 @@ export class ReviewServer {
           return res.status(404).json({ error: 'Item not found' });
         }
 
-        // Save back to file
-        await writeFile(indexedPath, isJson ? JSON.stringify(indexed, null, 2) : stringifyYaml(indexed), 'utf-8');
+        // Save back to file (JSON only)
+        await writeFile(indexedPath, JSON.stringify(indexed, null, 2), 'utf-8');
         console.log(`Updated destination for ${itemId} to ${destination} in ${indexedPath}`);
 
         // Regenerate the HTML review file
@@ -530,6 +646,77 @@ export class ReviewServer {
       } catch (error) {
         console.error('Error updating destination:', error);
         res.status(500).json({ error: 'Failed to update destination' });
+      }
+    });
+
+    // Bulk update items in indexed JSON (persists changes)
+    this.app.patch('/api/questionnaire/:questionnaireId/:panel/bulk', async (req, res) => {
+      try {
+        const { questionnaireId, panel } = req.params;
+        const { itemIds, updates } = req.body;
+        console.log(`Bulk update: ${questionnaireId} / ${panel} - ${itemIds.length} items`);
+
+        if (!questionnaireId || !itemIds || !Array.isArray(itemIds) || !updates) {
+          return res.status(400).json({ error: 'Missing questionnaireId, itemIds, or updates' });
+        }
+
+        if (panel !== 'indexed' && panel !== 'library') {
+          return res.status(400).json({ error: 'Invalid panel type' });
+        }
+
+        // For now, only support indexed panel updates
+        if (panel === 'library') {
+          return res.status(501).json({ error: 'Library updates not yet implemented' });
+        }
+
+        // Load the indexed file (JSON only)
+        const safeName = questionnaireId.replace(/[^a-zA-Z0-9-_]/g, '_');
+        const indexedPath = join('./indexed', `${safeName}.json`);
+
+        if (!existsSync(indexedPath)) {
+          return res.status(404).json({ error: 'Indexed file not found' });
+        }
+
+        const indexed = JSON.parse(await readFile(indexedPath, 'utf-8'));
+
+        // Create a set of itemIds for fast lookup
+        const itemIdSet = new Set(itemIds);
+        let updatedCount = 0;
+
+        // Find and update the items
+        for (const section of indexed.sections || []) {
+          for (const item of section.items || []) {
+            if (itemIdSet.has(item.id)) {
+              // Apply updates to the item
+              for (const [key, value] of Object.entries(updates)) {
+                item[key] = value;
+              }
+              updatedCount++;
+            }
+          }
+        }
+
+        // Save back to file (JSON only)
+        await writeFile(indexedPath, JSON.stringify(indexed, null, 2), 'utf-8');
+        console.log(`Bulk updated ${updatedCount} items in ${indexedPath}`);
+
+        // Regenerate the HTML review file
+        try {
+          const { WebReviewGenerator } = await import('../web-review-generator.js');
+          const generator = new WebReviewGenerator(this.reviewDir);
+          const structurePath = join('./questionnaires', `${safeName}.json`);
+          const libraryPath = './answer-library.yaml';
+          await generator.generate(structurePath, indexedPath, libraryPath);
+          console.log(`Regenerated HTML for ${questionnaireId}`);
+        } catch (e) {
+          console.error('Failed to regenerate HTML:', e);
+          // Don't fail the request, YAML was still updated
+        }
+
+        res.json({ success: true, updatedCount });
+      } catch (error) {
+        console.error('Error bulk updating items:', error);
+        res.status(500).json({ error: 'Failed to bulk update items' });
       }
     });
 
@@ -572,12 +759,21 @@ export class ReviewServer {
     });
 
     // Serve the single-page app at root
+    // Serve React SPA index.html for root path
     this.app.get('/', (req, res) => {
-      const indexPath = join(this.reviewDir, 'index.html');
-      if (existsSync(indexPath)) {
-        res.sendFile(indexPath, { root: process.cwd() });
+      // Try React app first
+      const reactIndexPath = join(process.cwd(), 'review-ui', 'dist', 'index.html');
+      if (existsSync(reactIndexPath)) {
+        res.sendFile(reactIndexPath);
+        return;
+      }
+
+      // Fall back to static HTML
+      const staticIndexPath = join(this.reviewDir, 'index.html');
+      if (existsSync(staticIndexPath)) {
+        res.sendFile(staticIndexPath, { root: process.cwd() });
       } else {
-        res.status(404).send('Review app not found. Run the review command first.');
+        res.status(404).send('Review app not found. Build the React app with: cd review-ui && npm run build');
       }
     });
   }
@@ -999,12 +1195,35 @@ export class ReviewServer {
       reviewFiles = await readdir(this.reviewDir);
     } catch {}
 
-    // Helper to process questionnaire files
+    // Helper to process questionnaire files (JSON only)
     const processFile = async (file: string, indexedDir: string, customer?: string) => {
-      if (!file.endsWith('.yaml') && !file.endsWith('.yml') && !file.endsWith('.json')) return;
+      if (!file.endsWith('.json')) return;
 
-      const name = file.replace(/\.(yaml|yml|json)$/, '');
+      const name = file.replace(/\.json$/, '');
       const safeName = name.replace(/[^a-zA-Z0-9]/g, '_');
+
+      // If no customer provided, try to get it from questionnaire structure filepath
+      if (!customer) {
+        // Try both the original name and safeName for looking up structure
+        const structurePaths = [
+          join('./questionnaires', `${name}.json`),
+          join('./questionnaires', `${safeName}.json`)
+        ];
+        for (const structurePath of structurePaths) {
+          if (existsSync(structurePath)) {
+            try {
+              const structure = JSON.parse(await readFile(structurePath, 'utf-8'));
+              const filepath = structure?.source?.filepath || '';
+              // Extract customer folder from path: incoming/<customer>/file.xlsx
+              const incomingMatch = filepath.match(/incoming[\/\\]([^\/\\]+)[\/\\][^\/\\]+$/);
+              if (incomingMatch && incomingMatch[1]) {
+                customer = incomingMatch[1].replace(/[^a-zA-Z0-9-_]/g, '-');
+                break;
+              }
+            } catch {}
+          }
+        }
+      }
 
       // Find matching review HTML file (may have _xlsx or other suffixes)
       const reviewFile = reviewFiles.find(f =>
@@ -1099,6 +1318,7 @@ export class ReviewServer {
 
   /**
    * Load all data for a specific questionnaire (structure + indexed + library)
+   * Searches in both root directories and customer-specific directories
    */
   private async loadQuestionnaireData(questionnaireId: string): Promise<{
     id: string;
@@ -1109,23 +1329,40 @@ export class ReviewServer {
   }> {
     const safeName = questionnaireId.replace(/[^a-zA-Z0-9-_]/g, '_');
 
+    // Helper to find file in root or customer directories
+    const findFile = async (rootDir: string, filename: string): Promise<string | null> => {
+      // First check root directory
+      const rootPath = join(rootDir, filename);
+      if (existsSync(rootPath)) {
+        return rootPath;
+      }
+
+      // Then check all customer directories
+      try {
+        const customers = await readdir('./customers');
+        for (const customer of customers) {
+          const customerPath = join('./customers', customer, rootDir, filename);
+          if (existsSync(customerPath)) {
+            return customerPath;
+          }
+        }
+      } catch {}
+
+      return null;
+    };
+
     // Load structure (questionnaires/*.json)
-    const structurePath = join('./questionnaires', `${safeName}.json`);
     let structure = null;
-    if (existsSync(structurePath)) {
+    const structurePath = await findFile('questionnaires', `${safeName}.json`);
+    if (structurePath) {
       structure = JSON.parse(await readFile(structurePath, 'utf-8'));
     }
 
-    // Load indexed (indexed/*.json or *.yaml for backwards compatibility)
-    let indexedPath = join('./indexed', `${safeName}.json`);
+    // Load indexed (indexed/*.json only)
     let indexed = null;
-    if (existsSync(indexedPath)) {
+    const indexedPath = await findFile('indexed', `${safeName}.json`);
+    if (indexedPath) {
       indexed = JSON.parse(await readFile(indexedPath, 'utf-8'));
-    } else {
-      indexedPath = join('./indexed', `${safeName}.yaml`);
-      if (existsSync(indexedPath)) {
-        indexed = parseYaml(await readFile(indexedPath, 'utf-8'));
-      }
     }
 
     // Load library (answer-library.yaml)
@@ -1329,4 +1566,11 @@ Only respond with the JSON, no other text.`;
       }
     });
   }
+}
+
+// Run if this file is executed directly
+if (import.meta.url.endsWith(process.argv[1]?.replace(/^file:\/\//, '') || '') ||
+    process.argv[1]?.endsWith('server.ts')) {
+  const server = new ReviewServer();
+  server.start().catch(console.error);
 }

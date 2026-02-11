@@ -1,147 +1,162 @@
-import { useState } from 'react';
-import { X, Tag, Question, ChatText, Prohibit, CheckCircle } from '@phosphor-icons/react';
-import type { ExcelSheet, CellSelection, CellFeedbackType } from '../types';
+import { useState, useMemo, forwardRef, useImperativeHandle, useRef } from 'react';
+import type { ExcelSheet, ExcelCell } from '../types';
 
 interface OriginalPanelProps {
   visible: boolean;
   sheet?: ExcelSheet;
-  reviewMode?: boolean;
-  onCellFeedback?: (cellRef: string, feedbackType: CellFeedbackType, topic?: string, reason?: string) => void;
+  activeCell?: string | null;
+  onCellClick?: (cellRef: string, row: number, col: string) => void;
 }
 
-export function OriginalPanel({ visible, sheet, reviewMode, onCellFeedback }: OriginalPanelProps) {
-  const [selectedCell, setSelectedCell] = useState<CellSelection | null>(null);
-  const [feedbackTopic, setFeedbackTopic] = useState('');
+export interface OriginalPanelHandle {
+  scrollToCell: (cellRef: string) => void;
+}
+
+export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>(function OriginalPanel(
+  { visible, sheet, activeCell, onCellClick },
+  ref
+) {
+  const [hoveredCell, setHoveredCell] = useState<string | null>(null);
+  const cellRefs = useRef<Map<string, HTMLTableCellElement>>(new Map());
+
+  useImperativeHandle(ref, () => ({
+    scrollToCell: (cellRef: string) => {
+      const element = cellRefs.current.get(cellRef);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
+      }
+    },
+  }));
+
+  // Get column headers and rows
+  const { columns, rows } = useMemo(() => {
+    if (!sheet?.rows?.length) return { columns: [], rows: [] };
+
+    // Collect all unique column letters
+    const colSet = new Set<string>();
+    sheet.rows.forEach((row) => {
+      if (row.cells) {
+        Object.keys(row.cells).forEach((col) => colSet.add(col));
+      }
+    });
+
+    // Sort columns alphabetically (A, B, C... AA, AB...)
+    const sortedCols = Array.from(colSet).sort((a, b) => {
+      if (a.length !== b.length) return a.length - b.length;
+      return a.localeCompare(b);
+    });
+
+    return { columns: sortedCols, rows: sheet.rows };
+  }, [sheet]);
 
   if (!visible) return null;
 
-  const handleCellClick = (cell: { value: string; row: number; col: number }, sheetName: string) => {
-    if (!reviewMode) return;
+  const getCellStyle = (cell: ExcelCell | undefined, isActive: boolean): string => {
+    if (isActive) {
+      return 'bg-blue-500/20 text-blue-200 ring-1 ring-blue-500 ring-inset';
+    }
 
-    const cellRef = `${getColumnLetter(cell.col)}${cell.row + 1}`;
-    setSelectedCell({
-      sheet: sheetName,
-      row: cell.row,
-      col: cell.col,
-      cellRef,
-      value: cell.value,
-    });
-    setFeedbackTopic('');
+    if (!cell) return 'bg-neutral-900';
+
+    const classes: string[] = ['text-neutral-200'];
+
+    if (cell.format?.bold) classes.push('font-medium');
+
+    // Role-based styling - subtle colors
+    switch (cell.role) {
+      case 'header':
+        classes.push('bg-blue-500/10 text-blue-300 font-medium');
+        break;
+      case 'section':
+        classes.push('bg-purple-500/10 text-purple-300 font-medium');
+        break;
+      case 'label':
+        classes.push('bg-neutral-800/50 text-neutral-400');
+        break;
+      case 'value':
+        classes.push('bg-emerald-500/5 text-neutral-200');
+        break;
+      case 'input':
+        classes.push('bg-amber-500/5 text-neutral-200');
+        break;
+      case 'empty':
+        classes.push('bg-neutral-900');
+        break;
+      default:
+        if (cell.value) {
+          classes.push('bg-neutral-900');
+        } else {
+          classes.push('bg-neutral-900/50');
+        }
+    }
+
+    return classes.join(' ');
   };
 
-  const handleFeedback = (type: CellFeedbackType) => {
-    if (!selectedCell || !onCellFeedback) return;
-    onCellFeedback(selectedCell.cellRef, type, feedbackTopic || undefined);
-    setSelectedCell(null);
-    setFeedbackTopic('');
+  const handleCellClick = (cellRef: string, row: number, col: string) => {
+    if (onCellClick) {
+      onCellClick(cellRef, row, col);
+    }
   };
 
   return (
-    <div className="flex-1 flex flex-col border-r border-border overflow-hidden min-w-0">
-      {/* Cell feedback panel */}
-      {selectedCell && reviewMode && (
-        <div className="bg-muted border-b border-border p-3">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-foreground">
-              Feedback for {selectedCell.cellRef}
+    <div className="flex-1 flex flex-col border-r border-neutral-800 overflow-hidden min-w-0 bg-neutral-950">
+      {/* Header */}
+      <div className="h-10 px-4 flex items-center justify-between border-b border-neutral-800 bg-neutral-900/50">
+        <span className="text-[13px] font-medium text-neutral-200">Original</span>
+        <div className="flex items-center gap-3">
+          {activeCell && (
+            <span className="text-[11px] text-blue-400 font-mono">
+              {activeCell}
             </span>
-            <button
-              onClick={() => setSelectedCell(null)}
-              className="p-1 rounded hover:bg-hover-bg text-muted-foreground"
-            >
-              <X size={16} />
-            </button>
-          </div>
-          <div className="text-xs text-muted-foreground mb-2 truncate">
-            "{selectedCell.value}"
-          </div>
-          <div className="flex flex-wrap gap-1 mb-2">
-            <button
-              onClick={() => handleFeedback('mark_as_question')}
-              className="flex items-center gap-1 px-2 py-1 text-xs rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30"
-            >
-              <Question size={12} /> Question
-            </button>
-            <button
-              onClick={() => handleFeedback('mark_as_answer')}
-              className="flex items-center gap-1 px-2 py-1 text-xs rounded bg-green-500/20 text-green-400 hover:bg-green-500/30"
-            >
-              <ChatText size={12} /> Answer
-            </button>
-            <button
-              onClick={() => handleFeedback('mark_as_section')}
-              className="flex items-center gap-1 px-2 py-1 text-xs rounded bg-purple-500/20 text-purple-400 hover:bg-purple-500/30"
-            >
-              <Tag size={12} /> Section
-            </button>
-            <button
-              onClick={() => handleFeedback('exclude')}
-              className="flex items-center gap-1 px-2 py-1 text-xs rounded bg-red-500/20 text-red-400 hover:bg-red-500/30"
-            >
-              <Prohibit size={12} /> Exclude
-            </button>
-          </div>
-          <div className="flex gap-2">
-            <input
-              type="text"
-              placeholder="Correct topic..."
-              value={feedbackTopic}
-              onChange={(e) => setFeedbackTopic(e.target.value)}
-              className="flex-1 px-2 py-1 text-xs bg-background border border-border rounded text-foreground"
-            />
-            <button
-              onClick={() => handleFeedback('correct_topic')}
-              disabled={!feedbackTopic}
-              className="flex items-center gap-1 px-2 py-1 text-xs rounded bg-foreground text-background disabled:opacity-50"
-            >
-              <CheckCircle size={12} /> Set Topic
-            </button>
-          </div>
+          )}
+          <span className="text-[11px] text-neutral-500">
+            {sheet ? `${rows.length} rows` : 'No sheet'}
+          </span>
         </div>
-      )}
+      </div>
 
-      <div className="flex-1 overflow-y-auto p-4">
-        {sheet ? (
-          <table className="excel-table">
+      <div className="flex-1 overflow-auto p-2">
+        {sheet && rows.length > 0 ? (
+          <table className="border-collapse text-[11px] w-full">
             <thead>
               <tr>
-                <th className="row-header">#</th>
-                {sheet.rows[0]?.map((_, colIndex) => (
-                  <th key={colIndex}>{getColumnLetter(colIndex)}</th>
+                <th className="border border-neutral-800 p-1.5 bg-neutral-900 text-neutral-600 font-medium sticky top-0 left-0 z-20 w-10 text-center text-[10px]">
+                  #
+                </th>
+                {columns.map((col) => (
+                  <th
+                    key={col}
+                    className="border border-neutral-800 p-1.5 bg-neutral-900 text-neutral-500 font-medium sticky top-0 z-10 min-w-[60px]"
+                  >
+                    {col}
+                  </th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {sheet.rows.map((row, rowIndex) => (
-                <tr key={rowIndex}>
-                  <td className="row-header">{rowIndex + 1}</td>
-                  {row.map((cell, colIndex) => {
-                    if (cell.mergedHidden) return null;
-
-                    const isSelected =
-                      selectedCell?.row === rowIndex &&
-                      selectedCell?.col === colIndex &&
-                      selectedCell?.sheet === sheet.name;
-
-                    const classNames = [
-                      cell.bold ? 'cell-bold' : '',
-                      cell.italic ? 'cell-italic' : '',
-                      cell.type === 'header' ? 'cell-header' : '',
-                      cell.type === 'label' ? 'cell-label' : '',
-                      cell.type === 'section' ? 'cell-section' : '',
-                      reviewMode ? 'cursor-pointer hover:bg-hover-bg' : '',
-                      isSelected ? 'ring-2 ring-foreground ring-inset bg-muted' : '',
-                    ]
-                      .filter(Boolean)
-                      .join(' ');
+              {rows.map((row) => (
+                <tr key={row.row}>
+                  <td className="border border-neutral-800 p-1.5 bg-neutral-900 text-neutral-600 text-center sticky left-0 z-10 text-[10px]">
+                    {row.row}
+                  </td>
+                  {columns.map((col) => {
+                    const cell = row.cells?.[col];
+                    const cellKey = `${col}${row.row}`;
+                    const isHovered = hoveredCell === cellKey;
+                    const isActive = activeCell === cellKey;
 
                     return (
                       <td
-                        key={colIndex}
-                        className={classNames || undefined}
-                        onClick={() => handleCellClick({ ...cell, row: rowIndex, col: colIndex }, sheet.name)}
+                        key={col}
+                        ref={(el) => { if (el) cellRefs.current.set(cellKey, el); }}
+                        className={`border border-neutral-800/50 p-2 max-w-[250px] overflow-hidden text-ellipsis whitespace-nowrap transition-colors cursor-pointer ${getCellStyle(cell, isActive)} ${isHovered && !isActive ? 'bg-blue-500/10' : ''}`}
+                        onMouseEnter={() => setHoveredCell(cellKey)}
+                        onMouseLeave={() => setHoveredCell(null)}
+                        onClick={() => handleCellClick(cellKey, row.row, col)}
+                        title={cell?.value || ''}
                       >
-                        {cell.value}
+                        {cell?.value || ''}
                       </td>
                     );
                   })}
@@ -150,21 +165,11 @@ export function OriginalPanel({ visible, sheet, reviewMode, onCellFeedback }: Or
             </tbody>
           </table>
         ) : (
-          <div className="text-muted-foreground text-center p-10 italic">
-            No sheet selected
+          <div className="text-neutral-600 text-center py-12 text-[13px]">
+            {sheet ? 'No data in sheet' : 'No sheet selected'}
           </div>
         )}
       </div>
     </div>
   );
-}
-
-function getColumnLetter(index: number): string {
-  let result = '';
-  let i = index;
-  while (i >= 0) {
-    result = String.fromCharCode((i % 26) + 65) + result;
-    i = Math.floor(i / 26) - 1;
-  }
-  return result;
-}
+});

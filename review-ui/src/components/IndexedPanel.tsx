@@ -1,64 +1,106 @@
-import { useState, useMemo } from 'react';
-import type { IndexedSection, Destination } from '../types';
+import { useState, useMemo, forwardRef, useImperativeHandle, useRef } from "react";
+import type { IndexedSection } from "../types";
 
 interface IndexedPanelProps {
   visible: boolean;
   sections: IndexedSection[];
   selectedItems: Set<string>;
+  lastSelectedId: string | null;
   reviewMode: boolean;
-  getReviewStatus: (itemId: string) => 'accepted' | 'rejected' | undefined;
-  onItemSelect: (itemId: string, multiSelect: boolean) => void;
+  getReviewStatus: (itemId: string) => "accepted" | "rejected" | undefined;
+  onItemSelect: (itemId: string, multiSelect: boolean, shiftSelect: boolean) => void;
+  onSelectGroup: (itemIds: string[]) => void;
+  onRangeSelect: (fromId: string, toId: string, allIds: string[]) => void;
   onAccept: (itemId: string) => void;
   onReject: (itemId: string, reason?: string) => void;
-  onDestinationChange?: (itemId: string, destination: Destination) => void;
+  onCellRefClick?: (cellRef: string) => void;
 }
 
-// Destination badge colors
-const destinationColors: Record<string, string> = {
-  company: 'bg-blue-900/50 text-blue-300 border-blue-700',
-  answer_library: 'bg-green-900/50 text-green-300 border-green-700',
-  product: 'bg-purple-900/50 text-purple-300 border-purple-700',
-  exclude: 'bg-gray-900/50 text-gray-400 border-gray-600',
+export interface IndexedPanelHandle {
+  scrollToItem: (itemId: string) => void;
+  getAllItemIds: () => string[];
+}
+
+// Linear-style destination colors (subtle)
+const destinationConfig: Record<string, { label: string; color: string }> = {
+  company: { label: "Company", color: "text-blue-400" },
+  answer_library: { label: "Library", color: "text-emerald-400" },
+  product: { label: "Product", color: "text-orange-400" },
+  exclude: { label: "Exclude", color: "text-neutral-500" },
 };
 
-export function IndexedPanel({
-  visible,
-  sections,
-  selectedItems,
-  reviewMode,
-  getReviewStatus,
-  onItemSelect,
-  onAccept,
-  onReject,
-  onDestinationChange,
-}: IndexedPanelProps) {
-  const [searchQuery, setSearchQuery] = useState('');
+export const IndexedPanel = forwardRef<IndexedPanelHandle, IndexedPanelProps>(function IndexedPanel(
+  {
+    visible,
+    sections,
+    selectedItems,
+    lastSelectedId,
+    reviewMode,
+    getReviewStatus,
+    onItemSelect,
+    onSelectGroup,
+    onRangeSelect,
+    onAccept: _onAccept,
+    onReject: _onReject,
+    onCellRefClick,
+  },
+  ref
+) {
+  void _onAccept;
+  void _onReject;
+  const [searchQuery, setSearchQuery] = useState("");
   const [collapsedSections, setCollapsedSections] = useState<Set<number>>(new Set());
   const [filterNeedsReview, setFilterNeedsReview] = useState(false);
+  const itemRefs = useRef<Map<string, HTMLDivElement>>(new Map());
 
-  // Filter sections and items based on search query and needs_review filter
+  const allItemIds = useMemo(() => {
+    const ids: string[] = [];
+    sections.forEach((section, sectionIndex) => {
+      section.items.forEach((item, itemIndex) => {
+        const itemId = item.id || `${section.title}-${sectionIndex}-${itemIndex}-${item.lCell || item.label}`;
+        ids.push(itemId);
+      });
+    });
+    return ids;
+  }, [sections]);
+
+  useImperativeHandle(ref, () => ({
+    scrollToItem: (itemId: string) => {
+      const element = itemRefs.current.get(itemId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "center" });
+        element.classList.add("bg-blue-500/10");
+        setTimeout(() => element.classList.remove("bg-blue-500/10"), 2000);
+      }
+    },
+    getAllItemIds: () => allItemIds,
+  }));
+
   const filteredSections = useMemo(() => {
     const query = searchQuery.toLowerCase();
     return sections
-      .map((section) => ({
+      .map((section, sectionIndex) => ({
         ...section,
-        items: section.items.filter((item) => {
-          // Apply needs_review filter
-          if (filterNeedsReview && !item.needs_review) return false;
-          // Apply search filter
-          if (query) {
-            return (
-              item.label.toLowerCase().includes(query) ||
-              (item.value && item.value.toLowerCase().includes(query))
-            );
-          }
-          return true;
-        }),
+        sectionIndex,
+        items: section.items
+          .map((item, itemIndex) => ({
+            ...item,
+            itemId: item.id || `${section.title}-${sectionIndex}-${itemIndex}-${item.lCell || item.label}`,
+          }))
+          .filter((item) => {
+            if (filterNeedsReview && !item.needs_review) return false;
+            if (query) {
+              return (
+                item.label.toLowerCase().includes(query) ||
+                (item.value && item.value.toLowerCase().includes(query))
+              );
+            }
+            return true;
+          }),
       }))
       .filter((section) => section.items.length > 0);
   }, [sections, searchQuery, filterNeedsReview]);
 
-  // Count items needing review
   const needsReviewCount = useMemo(() => {
     return sections.reduce(
       (acc, s) => acc + s.items.filter((i) => i.needs_review).length,
@@ -78,204 +120,216 @@ export function IndexedPanel({
     });
   };
 
-  // Count total items
+  const handleItemClick = (e: React.MouseEvent, itemId: string) => {
+    e.stopPropagation();
+    if (e.shiftKey && lastSelectedId) {
+      onRangeSelect(lastSelectedId, itemId, allItemIds);
+    } else {
+      onItemSelect(itemId, e.metaKey || e.ctrlKey, e.shiftKey);
+    }
+  };
+
+  const handleGroupCheckboxClick = (e: React.MouseEvent, itemIds: string[]) => {
+    e.stopPropagation();
+    onSelectGroup(itemIds);
+  };
+
+  const isGroupFullySelected = (itemIds: string[]) => {
+    return itemIds.length > 0 && itemIds.every(id => selectedItems.has(id));
+  };
+
+  const isGroupPartiallySelected = (itemIds: string[]) => {
+    const selected = itemIds.filter(id => selectedItems.has(id));
+    return selected.length > 0 && selected.length < itemIds.length;
+  };
+
   const totalItems = sections.reduce((acc, s) => acc + s.items.length, 0);
 
   if (!visible) return null;
 
   return (
-    <div className="flex-1 flex flex-col border-r border-border overflow-hidden min-w-0">
-      {/* Panel header */}
-      <div className="bg-card px-4 py-3 border-b border-border flex justify-between items-center">
-        <span className="text-[13px] font-semibold">Extraction</span>
+    <div className="flex-1 flex flex-col border-r border-neutral-800 overflow-hidden min-w-0 bg-neutral-950">
+      {/* Header */}
+      <div className="h-10 px-4 flex items-center justify-between border-b border-neutral-800 bg-neutral-900/50">
+        <span className="text-[13px] font-medium text-neutral-200">Extraction</span>
         <div className="flex items-center gap-3">
           {needsReviewCount > 0 && (
             <button
               onClick={() => setFilterNeedsReview(!filterNeedsReview)}
-              className={`text-[10px] px-2 py-1 rounded border transition-colors ${
+              className={`text-[11px] px-2 py-0.5 rounded transition-colors ${
                 filterNeedsReview
-                  ? 'bg-amber-900/50 text-amber-300 border-amber-700'
-                  : 'bg-transparent text-amber-400 border-amber-700/50 hover:bg-amber-900/30'
+                  ? "bg-amber-500/20 text-amber-400"
+                  : "text-amber-500 hover:bg-amber-500/10"
               }`}
             >
               {needsReviewCount} needs review
             </button>
           )}
-          <span className="text-xs text-muted-foreground">
-            {sections.length} sections, {totalItems} items
+          <span className="text-[11px] text-neutral-500">
+            {totalItems}
           </span>
         </div>
       </div>
 
       {/* Search */}
-      <div className="py-2 px-4">
+      <div className="px-3 py-2 border-b border-neutral-800">
         <input
           type="text"
-          className="w-full py-1.5 px-0 bg-transparent border-0 border-b border-white/15 rounded-none text-foreground text-xs focus:outline-none focus:border-white/30 placeholder:text-white/40"
-          placeholder="Search label or value..."
+          className="w-full h-7 px-2.5 bg-neutral-900 border border-neutral-800 rounded text-[13px] text-neutral-200 focus:outline-none focus:border-neutral-700 placeholder:text-neutral-600"
+          placeholder="Search..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </div>
 
-      {/* Sections */}
-      <div className="flex-1 overflow-y-auto p-4">
+      {/* List */}
+      <div className="flex-1 overflow-y-auto">
         {filteredSections.length === 0 ? (
-          <div className="text-muted-foreground text-center p-10 italic">
+          <div className="text-neutral-600 text-center py-12 text-[13px]">
             No items found
           </div>
         ) : (
-          filteredSections.map((section, sectionIndex) => {
-            const isCollapsed = collapsedSections.has(sectionIndex);
+          <div>
+            {filteredSections.map((section) => {
+              const isCollapsed = collapsedSections.has(section.sectionIndex);
+              const sectionItemIds = section.items.map(i => i.itemId);
+              const allSelected = isGroupFullySelected(sectionItemIds);
+              const partiallySelected = isGroupPartiallySelected(sectionItemIds);
 
-            return (
-              <div
-                key={`${section.title}-${section.sheet}-${section.rows}-${sectionIndex}`}
-                className="bg-card border border-border rounded-md mb-3 overflow-hidden"
-              >
-                {/* Section header */}
-                <div
-                  className="bg-card px-4 py-3 flex justify-between items-center cursor-pointer hover:bg-muted transition-colors"
-                  onClick={() => toggleSection(sectionIndex)}
-                >
-                  <div className="flex flex-col gap-0.5">
-                    <span className="font-medium text-[13px]">{section.title}</span>
-                    <span className="text-[11px] text-muted-foreground flex items-center gap-2">
-                      Rows {section.rows}
-                      <span className="bg-muted text-foreground px-2 py-0.5 rounded-full text-[10px] font-medium">
-                        {section.topic}
-                      </span>
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-[11px] text-muted-foreground font-mono">
-                      {section.items.length} items
-                    </span>
-                    <button
-                      className={`text-muted-foreground transition-transform duration-150 ${
-                        isCollapsed ? '-rotate-90' : ''
+              return (
+                <div key={`${section.title}-${section.sheet}-${section.rows}-${section.sectionIndex}`}>
+                  {/* Section header */}
+                  <div className="h-8 px-3 flex items-center gap-2 bg-neutral-900/70 backdrop-blur-md border-b border-neutral-800/50 sticky top-0 z-10">
+                    {/* Checkbox */}
+                    <div
+                      onClick={(e) => handleGroupCheckboxClick(e, sectionItemIds)}
+                      className={`w-3.5 h-3.5 rounded-sm border flex items-center justify-center cursor-pointer transition-colors ${
+                        allSelected
+                          ? "bg-blue-500 border-blue-500"
+                          : partiallySelected
+                            ? "bg-blue-500/30 border-blue-500/50"
+                            : "border-neutral-600 hover:border-neutral-500"
                       }`}
                     >
-                      ▼
-                    </button>
+                      {allSelected && (
+                        <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        </svg>
+                      )}
+                      {partiallySelected && !allSelected && (
+                        <div className="w-1.5 h-0.5 bg-blue-400 rounded-full" />
+                      )}
+                    </div>
+
+                    <div
+                      className="flex-1 flex items-center gap-2 cursor-pointer min-w-0"
+                      onClick={() => toggleSection(section.sectionIndex)}
+                    >
+                      <span className={`text-neutral-500 text-[10px] transition-transform ${isCollapsed ? "-rotate-90" : ""}`}>
+                        ▼
+                      </span>
+                      <span className="text-[12px] font-medium text-neutral-300 truncate">
+                        {section.title}
+                      </span>
+                      <span className="text-[10px] text-neutral-600 uppercase tracking-wide">
+                        {section.topic}
+                      </span>
+                      <span className="text-[11px] text-neutral-600 ml-auto">
+                        {section.items.length}
+                      </span>
+                    </div>
                   </div>
-                </div>
 
-                {/* Section items */}
-                {!isCollapsed && (
-                  <div className="border-t border-border p-2">
-                    {section.items.map((item, itemIndex) => {
-                      // Generate a stable ID
-                      const itemId =
-                        item.id ||
-                        `${section.title}-${sectionIndex}-${itemIndex}-${item.lCell || item.label}`;
+                  {/* Items */}
+                  {!isCollapsed && (
+                    <div>
+                      {section.items.map((item) => {
+                        const isSelected = selectedItems.has(item.itemId);
+                        const reviewStatus = getReviewStatus(item.itemId);
+                        const destination = item.destination || "answer_library";
+                        const destConfig = destinationConfig[destination] || destinationConfig.answer_library;
 
-                      return (
-                        <div
-                          key={itemId}
-                          className={`bg-background border rounded-md p-3 mb-2 last:mb-0 ${
-                            item.needs_review
-                              ? 'border-amber-700/50'
-                              : 'border-border'
-                          }`}
-                        >
-                          {/* Item header with destination badge */}
-                          <div className="flex justify-between items-start gap-2 mb-2">
-                            <div className="flex-1 flex items-start gap-2">
-                              <span className="text-xs text-muted-foreground flex-1">
-                                {item.label}
-                              </span>
-                              {/* Destination badge */}
-                              {item.destination && (
-                                <span
-                                  className={`text-[9px] px-1.5 py-0.5 rounded border whitespace-nowrap ${
-                                    destinationColors[item.destination] || 'bg-muted text-foreground border-border'
-                                  }`}
-                                  title={item.tag_source}
-                                >
-                                  {item.destination === 'answer_library' ? 'library' : item.destination}
-                                </span>
-                              )}
-                              {/* Needs review indicator */}
-                              {item.needs_review && (
-                                <span className="text-[9px] px-1.5 py-0.5 rounded border bg-amber-900/50 text-amber-300 border-amber-700 whitespace-nowrap">
-                                  needs review
-                                </span>
-                              )}
-                            </div>
-                            <span className="text-[10px] text-muted-foreground font-mono whitespace-nowrap">
-                              {item.lCell && item.vCell
-                                ? `${item.lCell} → ${item.vCell}`
-                                : item.lCell || item.ref || ''}
-                            </span>
-                          </div>
-
-                          {/* Item value */}
+                        return (
                           <div
-                            className={`text-[13px] bg-muted px-3 py-2 rounded ${
-                              !item.value
-                                ? 'text-muted-foreground italic'
-                                : 'text-foreground'
-                            }`}
+                            key={item.itemId}
+                            ref={(el) => { if (el) itemRefs.current.set(item.itemId, el); }}
+                            onClick={(e) => handleItemClick(e, item.itemId)}
+                            className={`group flex items-start gap-2 py-1.5 px-3 border-b border-neutral-800/30 cursor-pointer transition-colors ${
+                              isSelected
+                                ? "bg-blue-500/10"
+                                : "hover:bg-neutral-800/50"
+                            } ${item.needs_review ? "border-l-2 border-l-amber-500/60" : ""}`}
                           >
-                            {item.value || '(empty)'}
-                          </div>
+                            {/* Checkbox */}
+                            <div className="pt-0.5">
+                              <div className={`w-3.5 h-3.5 rounded-sm border flex items-center justify-center transition-colors ${
+                                isSelected
+                                  ? "bg-blue-500 border-blue-500"
+                                  : "border-neutral-700 group-hover:border-neutral-600"
+                              }`}>
+                                {isSelected && (
+                                  <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                  </svg>
+                                )}
+                              </div>
+                            </div>
 
-                          {/* Destination selector for items needing review */}
-                          {item.needs_review && onDestinationChange && (
-                            <div className="flex gap-1 mt-2">
-                              <span className="text-[10px] text-muted-foreground mr-1 self-center">Set destination:</span>
-                              {(['company', 'answer_library', 'product', 'exclude'] as Destination[]).map((dest) => (
-                                <button
-                                  key={dest}
-                                  onClick={() => onDestinationChange(itemId, dest)}
-                                  className={`text-[10px] px-2 py-1 rounded border transition-colors ${
-                                    item.destination === dest
-                                      ? destinationColors[dest]
-                                      : 'bg-transparent text-muted-foreground border-border hover:bg-muted'
-                                  }`}
+                            {/* Content */}
+                            <div className="flex-1 min-w-0 overflow-hidden">
+                              <div className="flex items-center gap-2">
+                                <span className="text-[12px] text-neutral-500 truncate">
+                                  {item.label}
+                                </span>
+                              </div>
+                              <div className={`text-[13px] truncate ${
+                                item.value
+                                  ? "text-neutral-200"
+                                  : "text-neutral-600 italic"
+                              }`}>
+                                {item.value || "(empty)"}
+                              </div>
+                            </div>
+
+                            {/* Right side metadata */}
+                            <div className="flex flex-col items-end gap-0.5 pt-0.5">
+                              <div className="flex items-center gap-2">
+                                <span
+                                  className={`text-[10px] text-neutral-600 font-mono ${item.lCell && onCellRefClick ? "hover:text-blue-400 cursor-pointer" : ""}`}
+                                  onClick={(e) => {
+                                    if (item.lCell && onCellRefClick) {
+                                      e.stopPropagation();
+                                      onCellRefClick(item.lCell);
+                                    }
+                                  }}
                                 >
-                                  {dest === 'answer_library' ? 'library' : dest}
-                                </button>
-                              ))}
+                                  {item.lCell || ""}
+                                </span>
+                                <span className={`text-[10px] ${destConfig.color}`}>
+                                  {destConfig.label}
+                                </span>
+                                {reviewMode && reviewStatus && (
+                                  <span className={`text-[11px] ${
+                                    reviewStatus === "accepted"
+                                      ? "text-emerald-500"
+                                      : "text-red-500"
+                                  }`}>
+                                    {reviewStatus === "accepted" ? "✓" : "✗"}
+                                  </span>
+                                )}
+                              </div>
                             </div>
-                          )}
-
-                          {/* Review actions (when in review mode) */}
-                          {reviewMode && (
-                            <div className="flex gap-1 mt-2">
-                              <button
-                                onClick={() => onAccept(itemId)}
-                                className={`px-2 py-1 border border-border rounded text-xs cursor-pointer transition-colors ${
-                                  getReviewStatus(itemId) === 'accepted'
-                                    ? 'bg-green-900 text-green-400 border-green-700'
-                                    : 'bg-background text-muted-foreground hover:bg-green-900/50 hover:text-green-400 hover:border-green-700'
-                                }`}
-                              >
-                                ✓
-                              </button>
-                              <button
-                                onClick={() => onReject(itemId)}
-                                className={`px-2 py-1 border border-border rounded text-xs cursor-pointer transition-colors ${
-                                  getReviewStatus(itemId) === 'rejected'
-                                    ? 'bg-red-900 text-red-400 border-red-700'
-                                    : 'bg-background text-muted-foreground hover:bg-red-900/50 hover:text-red-400 hover:border-red-700'
-                                }`}
-                              >
-                                ✗
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-            );
-          })
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         )}
       </div>
     </div>
   );
-}
+});

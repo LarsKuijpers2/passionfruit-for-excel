@@ -136,6 +136,10 @@ export interface QuestionnaireStructure {
     customer?: string;
     /** Document type (excel, word, pdf) */
     documentType: DocumentType;
+    /** Passionfruit API evidence ID (when fetched from API) */
+    evidenceId?: number;
+    /** Passionfruit API evidence name (when fetched from API) */
+    evidenceName?: string;
   };
   /** All sheets */
   sheets: SheetData[];

@@ -19,6 +19,9 @@ import { RulesManager } from './rules/rules-manager.js';
 // TYPES
 // =============================================================================
 
+/** Entity role - which company does this data belong to */
+export type EntityRole = 'supplier' | 'client' | 'manufacturer' | 'other';
+
 /** A harvested item for the answer library */
 export interface HarvestedItem {
   id: string;
@@ -35,6 +38,8 @@ export interface HarvestedItem {
   topic: string;
   /** Level: standard or narrative */
   level: 'standard' | 'narrative';
+  /** Entity role - supplier, client, manufacturer */
+  entityRole?: EntityRole;
   /** Source provenance */
   source: {
     file: string;
@@ -43,6 +48,10 @@ export interface HarvestedItem {
     vCell?: string;
     ref?: string;
     harvestedAt: string;
+    /** Passionfruit API evidence ID (when fetched from API) */
+    evidenceId?: number;
+    /** Passionfruit API evidence name (when fetched from API) */
+    evidenceName?: string;
   };
 }
 
@@ -55,6 +64,59 @@ export interface AnswerLibrary {
   byTopic: Record<string, HarvestedItem[]>;
   /** Source files that contributed */
   sources: string[];
+}
+
+// =============================================================================
+// ENTITY ROLE DETECTION
+// =============================================================================
+
+/** Keywords that indicate supplier entity */
+const SUPPLIER_KEYWORDS = [
+  'supplier', 'fournisseur', 'leverancier', 'lieferant',
+  'vendor', 'our company', 'notre entreprise', 'ons bedrijf',
+];
+
+/** Keywords that indicate client/customer entity */
+const CLIENT_KEYWORDS = [
+  'client', 'customer', 'buyer', 'acheteur', 'klant', 'kunde',
+  'recipient', 'destinataire', 'ontvanger',
+];
+
+/** Keywords that indicate manufacturer entity */
+const MANUFACTURER_KEYWORDS = [
+  'manufacturer', 'fabricant', 'fabrikant', 'hersteller',
+  'producer', 'producteur', 'producent',
+];
+
+/**
+ * Detect entity role from label text
+ */
+function detectEntityRole(label: string): EntityRole {
+  const lowerLabel = label.toLowerCase();
+
+  // Check for supplier indicators
+  for (const keyword of SUPPLIER_KEYWORDS) {
+    if (lowerLabel.includes(keyword)) {
+      return 'supplier';
+    }
+  }
+
+  // Check for client indicators
+  for (const keyword of CLIENT_KEYWORDS) {
+    if (lowerLabel.includes(keyword)) {
+      return 'client';
+    }
+  }
+
+  // Check for manufacturer indicators
+  for (const keyword of MANUFACTURER_KEYWORDS) {
+    if (lowerLabel.includes(keyword)) {
+      return 'manufacturer';
+    }
+  }
+
+  // Default to 'other' if no match
+  return 'other';
 }
 
 // =============================================================================
@@ -116,6 +178,9 @@ export class AnswerHarvester {
           continue; // Skip excluded items
         }
 
+        // Detect entity role from label (for company-related topics)
+        const entityRole = detectEntityRole(item.label);
+
         let harvestedItem: HarvestedItem = {
           id: randomUUID().split('-')[0],
           type: item.type,
@@ -124,6 +189,7 @@ export class AnswerHarvester {
           lang: item.lang,
           topic: itemTopic,
           level: item.level as 'standard' | 'narrative',
+          entityRole,
           source: {
             file: indexed.source,
             sheet: section.sheet,
@@ -131,6 +197,11 @@ export class AnswerHarvester {
             vCell: item.vCell,
             ref: item.ref,
             harvestedAt: new Date().toISOString().split('T')[0],
+            // Include Passionfruit API source info if available
+            ...(indexed.sourceInfo && {
+              evidenceId: indexed.sourceInfo.evidenceId,
+              evidenceName: indexed.sourceInfo.evidenceName,
+            }),
           },
         };
 

@@ -55,11 +55,19 @@ export interface EvidenceResponse {
   status: string;
   classification?: string;
   filekey?: string;
+  fileType?: string;
+  fileTempURL?: string;
   metadata?: Record<string, any>;
   extractedMetadata?: Record<string, any>;
   entities: number[];
   createdAt: string;
   updatedAt: string;
+}
+
+export interface DownloadedFile {
+  buffer: Buffer;
+  filename: string;
+  contentType?: string;
 }
 
 export interface UploadResponse {
@@ -414,6 +422,51 @@ export class PassionfruitAPIClient {
     // Fall back to listing all
     const evidences = await this.listEvidences();
     return evidences.find(e => e.name === name) || null;
+  }
+
+  /**
+   * Fetch evidence metadata and download its file
+   *
+   * The API returns a pre-signed S3 URL (fileTempURL) when fetching an evidence by ID.
+   * This method fetches the evidence and downloads the file from that URL.
+   */
+  async fetchEvidenceWithFile(evidenceId: number): Promise<{
+    evidence: EvidenceResponse;
+    file: DownloadedFile;
+  }> {
+    // 1. Get evidence (includes fileTempURL from S3)
+    const evidence = await this.getEvidence(evidenceId);
+
+    if (!evidence.fileTempURL) {
+      throw new Error(`Evidence ${evidenceId} has no file URL - cannot download`);
+    }
+
+    // 2. Download from S3 using pre-signed URL
+    const response = await fetch(evidence.fileTempURL);
+
+    if (!response.ok) {
+      throw new Error(`Failed to download file: ${response.status} ${response.statusText}`);
+    }
+
+    const buffer = Buffer.from(await response.arrayBuffer());
+
+    // 3. Determine filename from evidence name + file type
+    let filename = evidence.name;
+    if (evidence.fileType && !filename.toLowerCase().endsWith(`.${evidence.fileType}`)) {
+      filename = `${filename}.${evidence.fileType}`;
+    }
+
+    // 4. Get content type from response
+    const contentType = response.headers.get('Content-Type') || undefined;
+
+    return {
+      evidence,
+      file: {
+        buffer,
+        filename,
+        contentType,
+      },
+    };
   }
 
   // ===========================================================================

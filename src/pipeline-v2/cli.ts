@@ -77,6 +77,20 @@ program
       const extractor = await getExtractor(filePath);
       const structure = await extractor.extract(filePath);
 
+      // Check for sidecar .meta.json file (created by fetch command)
+      const metadataPath = filePath + '.meta.json';
+      try {
+        const metadataContent = await readFile(metadataPath, 'utf-8');
+        const metadata = JSON.parse(metadataContent);
+        if (metadata.evidenceId && metadata.evidenceName) {
+          structure.source.evidenceId = metadata.evidenceId;
+          structure.source.evidenceName = metadata.evidenceName;
+          console.log(`  📎 API Source: Evidence #${metadata.evidenceId} - ${metadata.evidenceName}`);
+        }
+      } catch {
+        // No metadata file, continue without API source info
+      }
+
       console.log('  Sheets: ' + structure.stats.totalSheets);
       console.log('  Rows: ' + structure.stats.totalRows);
       console.log('  Filled cells: ' + structure.stats.filledCells + '/' + structure.stats.totalCells);
@@ -530,6 +544,153 @@ program
           process.exit(1);
         }
       }
+    } catch (error) {
+      console.error('\n❌ Error: ' + (error instanceof Error ? error.message : error));
+      process.exit(1);
+    }
+  });
+
+// =============================================================================
+// FETCH - Download questionnaire from Passionfruit API
+// =============================================================================
+
+program
+  .command('fetch')
+  .description('Fetch a questionnaire from Passionfruit API by evidence ID and process through pipeline')
+  .argument('<evidenceId>', 'Passionfruit evidence ID')
+  .option('-c, --customer <name>', 'Customer name (uses customer folder structure)')
+  .option('--output-dir <dir>', 'Output directory for downloaded file (legacy mode)')
+  .option('--process', 'Automatically run store and index after download')
+  .option('--dry-run', 'Show what would be downloaded without actually downloading')
+  .action(async (evidenceId: string, opts) => {
+    try {
+      const id = parseInt(evidenceId, 10);
+      if (isNaN(id)) {
+        throw new Error(`Invalid evidence ID: ${evidenceId}`);
+      }
+
+      if (!hasApiKey()) {
+        console.error('\n❌ PASSIONFRUIT_API_KEY not set');
+        console.error('Set the API key in your environment or .env file\n');
+        process.exit(1);
+      }
+
+      // Prompt for customer name if not provided
+      let customer = opts.customer as string | undefined;
+      if (!customer) {
+        const readline = await import('readline');
+        const rl = readline.createInterface({
+          input: process.stdin,
+          output: process.stdout,
+        });
+
+        customer = await new Promise<string>((resolve) => {
+          rl.question('\n📁 Enter customer name: ', (answer) => {
+            rl.close();
+            resolve(answer.trim());
+          });
+        });
+
+        if (!customer) {
+          console.error('❌ Customer name is required');
+          process.exit(1);
+        }
+      }
+
+      // Set up customer directories
+      const paths = ensureCustomerDirs(customer);
+      const incomingDir = paths.incoming;
+      const questionnairesDir = paths.questionnaires;
+      const indexedDir = paths.indexed;
+      const rulesDir = getRulesDir(customer);
+      console.log(`\n📁 Customer: ${customer}`);
+
+      console.log(`\n🔄 Fetching evidence ${id} from Passionfruit API...\n`);
+
+      const client = new PassionfruitAPIClient();
+
+      // Show environment
+      console.log(`  Environment: ${client.environment}`);
+      console.log(`  API URL: ${client.url}`);
+
+      if (opts.dryRun) {
+        // Dry run - just show evidence info
+        const evidence = await client.getEvidence(id);
+        console.log('\n📄 Evidence Details:');
+        console.log(`  ID: ${evidence.id}`);
+        console.log(`  UUID: ${evidence.uuid}`);
+        console.log(`  Name: ${evidence.name}`);
+        console.log(`  Status: ${evidence.status}`);
+        console.log(`  File Type: ${evidence.fileType || '(unknown)'}`);
+        console.log(`  Has File URL: ${evidence.fileTempURL ? 'Yes' : 'No'}`);
+        console.log(`  Classification: ${evidence.classification || '(none)'}`);
+
+        if (!evidence.fileTempURL) {
+          console.log('\n⚠️  This evidence has no file attached or URL is not available');
+        }
+        return;
+      }
+
+      // Fetch evidence and download file
+      const { evidence, file } = await client.fetchEvidenceWithFile(id);
+
+      console.log('\n📄 Evidence:');
+      console.log(`  ID: ${evidence.id}`);
+      console.log(`  Name: ${evidence.name}`);
+      console.log(`  File: ${file.filename}`);
+      console.log(`  Size: ${(file.buffer.length / 1024).toFixed(1)} KB`);
+
+      // Save file to incoming folder
+      const { writeFile: write, mkdir: mk } = await import('fs/promises');
+      await mk(incomingDir, { recursive: true });
+
+      const filepath = join(incomingDir, file.filename);
+      await write(filepath, file.buffer);
+
+      console.log(`\n✅ Downloaded: ${filepath}`);
+
+      // Write metadata file alongside for pipeline to pick up
+      const metadataPath = filepath + '.meta.json';
+      await write(metadataPath, JSON.stringify({
+        evidenceId: evidence.id,
+        evidenceUuid: evidence.uuid,
+        evidenceName: evidence.name,
+        downloadedAt: new Date().toISOString(),
+        classification: evidence.classification,
+        fileType: evidence.fileType,
+        metadata: evidence.metadata,
+      }, null, 2));
+
+      console.log(`✅ Metadata: ${metadataPath}`);
+
+      // Optionally process through pipeline
+      if (opts.process) {
+        console.log('\n📦 Processing through pipeline...\n');
+
+        // Store
+        const extractor = await getExtractor(filepath);
+        const structure = await extractor.extract(filepath);
+
+        // Inject API source info
+        structure.source.evidenceId = evidence.id;
+        structure.source.evidenceName = evidence.name;
+
+        const storage = new StructureStorage(questionnairesDir);
+        const jsonPath = await storage.save(structure);
+        console.log(`  ✅ Stored: ${jsonPath}`);
+
+        // Index
+        const indexer = new QuestionnaireIndexer(questionnairesDir, 'eu-central-1', rulesDir);
+        const indexed = await indexer.index(file.filename);
+
+        const indexedPath = await indexer.save(indexed, indexedDir);
+        console.log(`  ✅ Indexed: ${indexedPath}`);
+
+        console.log('\n✅ Pipeline complete! Run "tag" and "review" to continue.\n');
+      } else {
+        console.log('\n💡 Run with --process to automatically store and index the questionnaire\n');
+      }
+
     } catch (error) {
       console.error('\n❌ Error: ' + (error instanceof Error ? error.message : error));
       process.exit(1);

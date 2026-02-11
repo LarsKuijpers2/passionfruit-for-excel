@@ -113,6 +113,11 @@ export interface IndexedQuestionnaire {
   source: string;
   indexed: string;
   language: Language;
+  /** Passionfruit API source info (when fetched from API) */
+  sourceInfo?: {
+    evidenceId: number;
+    evidenceName: string;
+  };
   sections: IndexedSection[];
   stats: {
     total: number;
@@ -625,7 +630,8 @@ export class QuestionnaireIndexer {
     // Detect primary language
     const primaryLanguage = this.detectPrimaryLanguage(allItems);
 
-    return {
+    // Build result with optional sourceInfo from API
+    const result: IndexedQuestionnaire = {
       id: randomUUID().split('-')[0],
       source: structure.source.filename,
       indexed: new Date().toISOString().split('T')[0],
@@ -633,6 +639,16 @@ export class QuestionnaireIndexer {
       sections,
       stats,
     };
+
+    // Propagate Passionfruit API source info if available
+    if (structure.source.evidenceId && structure.source.evidenceName) {
+      result.sourceInfo = {
+        evidenceId: structure.source.evidenceId,
+        evidenceName: structure.source.evidenceName,
+      };
+    }
+
+    return result;
   }
 
   /**

@@ -7,12 +7,9 @@ pattern_overrides:
   - pattern: contact.*(product|ingredient|specification)
     destination: product
 topic_destinations:
-  # Company level
   company: company
   contacts: company
   financial: company
-
-  # Answer library (reusable across questionnaires)
   certifications: answer_library
   quality: answer_library
   quality_systems: answer_library
@@ -31,8 +28,6 @@ topic_destinations:
   approval: answer_library
   traceability: answer_library
   raw_materials: answer_library
-
-  # New facility/operations topics → answer_library
   premises: answer_library
   hygiene: answer_library
   training: answer_library
@@ -41,8 +36,6 @@ topic_destinations:
   equipment: answer_library
   monitoring: answer_library
   waste: answer_library
-
-  # Product level
   allergens: product
   ingredients: product
   formula_composition: product
@@ -59,10 +52,6 @@ topic_destinations:
   origin_provenance: product
   shelf_life: product
   gmo: product
-
-  # Exclude
   signature: exclude
-
-  # Fallback for unclassified topics
   other: answer_library
-updatedAt: 2026-02-09
+updatedAt: 2026-02-10

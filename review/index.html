@@ -1971,8 +1971,8 @@
 
           return `
             <div class="item${isEmpty ? ' no-value' : ''}${needsReview ? ' needs-review' : ''}" data-id="${item.id || ''}" data-index="${idx}" data-cells="${cells}" data-sheet="${escapeHtml(sheetName)}" data-label="${escapeHtml(item.label)}" data-section="${escapeHtml(section.name || section.title)}" data-topic="${item.topic || section.topic || ''}" data-level="${item.level || 'standard'}" data-ai-destination="${item.destination || ''}" data-needs-review="${needsReview}">
-              <div class="item-label">${escapeHtml(item.label)}${topicBadge}${destBadge}${reviewBadge}</div>
-              <div class="item-value${isEmpty ? ' empty' : ''}">${isEmpty ? '(empty)' : escapeHtml(value)}</div>
+              <div class="item-label" title="${escapeHtml(item.label)}">${escapeHtml(item.label)}${topicBadge}${destBadge}${reviewBadge}</div>
+              <div class="item-value${isEmpty ? ' empty' : ''}" title="${isEmpty ? '' : escapeHtml(value)}">${isEmpty ? '(empty)' : escapeHtml(value)}</div>
               <div class="item-ref">${sheetName ? sheetName + ': ' : ''}${cells}</div>
               <div class="item-actions review-only">
                 <button class="action-btn correct" title="Accept (C)">✓</button>
@@ -2048,10 +2048,9 @@
 
       // Get items with destinations from feedbackLog (excluding 'exclude')
       // Use destination field (or fall back to promotedTo for backwards compatibility)
-      // Include both 'promoted' and 'destination_changed' actions
       const itemsWithDest = feedbackLog.filter(fb => {
         const dest = fb.destination || fb.promotedTo;
-        return (fb.action === 'promoted' || fb.action === 'destination_changed') && dest && dest !== 'exclude';
+        return fb.action === 'promoted' && dest && dest !== 'exclude';
       });
 
       // Deduplicate by ID (preferred) or cells+label, keeping the latest
@@ -2091,8 +2090,8 @@
 
         return `
           <div class="item${isEmpty ? ' no-value' : ''}" data-id="${item.id || ''}" data-index="${item.idx}" data-cells="${cells}" data-sheet="${escapeHtml(sheetName)}" data-label="${escapeHtml(item.label || '')}" data-topic="${topic}" data-destination="${dest}">
-            <div class="item-label">${escapeHtml(item.label || '')}${topicBadge}</div>
-            <div class="item-value${isEmpty ? ' empty' : ''}">${isEmpty ? '(empty)' : escapeHtml(item.value || '')}</div>
+            <div class="item-label" title="${escapeHtml(item.label || '')}">${escapeHtml(item.label || '')}${topicBadge}</div>
+            <div class="item-value${isEmpty ? ' empty' : ''}" title="${isEmpty ? '' : escapeHtml(item.value || '')}">${isEmpty ? '(empty)' : escapeHtml(item.value || '')}</div>
             <div class="item-ref">${sheetName ? sheetName + ': ' : ''}${cells}</div>
           </div>
         `;
@@ -2598,8 +2597,8 @@
         itemEl.dataset.sheet = item.sheet || '';
         itemEl.dataset.label = item.label;
         itemEl.innerHTML = `
-          <div class="item-label">${escapeHtml(item.label)}</div>
-          <div class="item-value">${escapeHtml(item.value)}</div>
+          <div class="item-label" title="${escapeHtml(item.label)}">${escapeHtml(item.label)}</div>
+          <div class="item-value" title="${escapeHtml(item.value)}">${escapeHtml(item.value)}</div>
           <div class="item-ref">${item.sheet ? item.sheet + ': ' : ''}${cells}</div>
           <div class="item-actions review-only">
             <button class="action-btn correct" title="Accept (C)">✓</button>
@@ -3163,8 +3162,8 @@
                 newItem.dataset.entityRole = role;
               }
               newItem.innerHTML = `
-                <div class="item-label">${escapeHtml(label)}${entityBadge}${topicBadge}</div>
-                <div class="item-value">${escapeHtml(value)}</div>
+                <div class="item-label" title="${escapeHtml(label)}">${escapeHtml(label)}${entityBadge}${topicBadge}</div>
+                <div class="item-value" title="${escapeHtml(value)}">${escapeHtml(value)}</div>
                 <div class="item-ref">${sheetName ? sheetName + ': ' : ''}${cells}</div>
                 <div class="item-actions">
                   <button class="btn-icon correct" title="Accept (A)">✓</button>
@@ -3627,8 +3626,8 @@
       updateFeedbackCount();
       updateSheetTabCheckmarks();
 
-      // Re-render Save as panel when items are promoted or destination changes
-      if (feedbackItem.action === 'promoted' || feedbackItem.action === 'destination_changed' || feedbackItem.action === 'excluded') {
+      // Re-render Save as panel when items are promoted
+      if (feedbackItem.action === 'promoted') {
         renderSaveAsPanel();
       }
 
@@ -3789,8 +3788,8 @@
                 newItem.dataset.entityRole = entityRole;
               }
               newItem.innerHTML = `
-                <div class="item-label">${label}${entityBadge}${topicBadge}</div>
-                <div class="item-value">${value}</div>
+                <div class="item-label" title="${escapeHtml(label)}">${escapeHtml(label)}${entityBadge}${topicBadge}</div>
+                <div class="item-value" title="${escapeHtml(value)}">${escapeHtml(value)}</div>
                 <div class="item-ref">${sheetName ? sheetName + ': ' : ''}${cells}</div>
                 <div class="item-actions review-only">
                   <button class="action-btn correct" title="Accept (C)">✓</button>

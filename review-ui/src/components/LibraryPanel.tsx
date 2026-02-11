@@ -151,7 +151,7 @@ export function LibraryPanel({
                         >
                           {/* Item header */}
                           <div className="flex justify-between items-start gap-2 mb-2">
-                            <span className="text-xs text-muted-foreground flex-1">
+                            <span className="text-xs text-muted-foreground flex-1" title={item.label}>
                               {item.label}
                             </span>
                             <div className="flex items-center gap-2">
@@ -175,6 +175,7 @@ export function LibraryPanel({
                                 ? 'text-muted-foreground italic'
                                 : 'text-foreground'
                             }`}
+                            title={item.value || ''}
                           >
                             {item.value || '(empty)'}
                           </div>

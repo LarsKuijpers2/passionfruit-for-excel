@@ -268,10 +268,16 @@ function aggregateItems(
  * Aggregate all data for a customer
  */
 export function aggregateCustomerData(customerFolder: string): AggregatedCustomerData {
-  const approvedExportsDir = path.resolve('./approved-exports', customerFolder);
+  // Try new path structure first: customers/<customer>/approved
+  let approvedExportsDir = path.resolve('./customers', customerFolder, 'approved');
+
+  // Fall back to legacy path: approved-exports/<customer>
+  if (!fs.existsSync(approvedExportsDir)) {
+    approvedExportsDir = path.resolve('./approved-exports', customerFolder);
+  }
 
   if (!fs.existsSync(approvedExportsDir)) {
-    throw new Error(`Customer folder not found: ${approvedExportsDir}`);
+    throw new Error(`Customer folder not found. Tried:\n  - ./customers/${customerFolder}/approved\n  - ./approved-exports/${customerFolder}`);
   }
 
   // Find all questionnaire folders
@@ -367,7 +373,8 @@ export function aggregateCustomerData(customerFolder: string): AggregatedCustome
 async function main() {
   const args = process.argv.slice(2);
   const customerFolder = args[0] || 'kaas-pack';
-  const outputPath = args[1] || `./api-ready/${customerFolder}-aggregated.json`;
+  // Output to customers/<customer>/api-ready/ folder
+  const outputPath = args[1] || `./customers/${customerFolder}/api-ready/${customerFolder}-aggregated.json`;
 
   console.log(`\nAggregating data for customer: ${customerFolder}\n`);
 

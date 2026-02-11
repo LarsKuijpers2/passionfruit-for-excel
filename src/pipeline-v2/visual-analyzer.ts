@@ -532,7 +532,7 @@ Important:
           prefix += `[M:${cell.format.mergeRange}]`;
         }
 
-        const value = cell.value.substring(0, 60).replace(/\n/g, ' ');
+        const value = cell.value.replace(/\n/g, ' ');
         if (value || cell.role === 'input') {
           cellTexts.push(`${cell.ref}${prefix}: ${value || '(empty input)'}`);
         }

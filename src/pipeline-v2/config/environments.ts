@@ -35,7 +35,7 @@ export const ENVIRONMENTS: Record<Environment, EnvironmentConfig> = {
   },
   production: {
     name: 'production',
-    apiBaseUrl: 'https://passionfruitapi.com',
+    apiBaseUrl: 'https://production.passionfruitapi.com',
     requiresAuth: true,
     displayName: 'Production',
   },

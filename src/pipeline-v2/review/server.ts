@@ -1001,9 +1001,9 @@ export class ReviewServer {
 
     // Helper to process questionnaire files
     const processFile = async (file: string, indexedDir: string, customer?: string) => {
-      if (!file.endsWith('.yaml') && !file.endsWith('.yml')) return;
+      if (!file.endsWith('.yaml') && !file.endsWith('.yml') && !file.endsWith('.json')) return;
 
-      const name = file.replace(/\.(yaml|yml)$/, '');
+      const name = file.replace(/\.(yaml|yml|json)$/, '');
       const safeName = name.replace(/[^a-zA-Z0-9]/g, '_');
 
       // Find matching review HTML file (may have _xlsx or other suffixes)

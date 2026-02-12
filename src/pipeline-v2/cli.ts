@@ -698,6 +698,163 @@ program
   });
 
 // =============================================================================
+// BATCH-FETCH - Download multiple questionnaires from Passionfruit API
+// =============================================================================
+
+program
+  .command('batch-fetch')
+  .description('Fetch multiple questionnaires from Passionfruit API by evidence IDs')
+  .argument('<evidenceIds...>', 'Passionfruit evidence IDs (space or comma separated)')
+  .requiredOption('-c, --customer <name>', 'Customer name (required)')
+  .option('--process', 'Automatically run store and index after download (default: true)', true)
+  .option('--no-process', 'Skip automatic processing')
+  .option('--dry-run', 'Show what would be downloaded without actually downloading')
+  .option('--continue-on-error', 'Continue processing remaining IDs if one fails')
+  .action(async (evidenceIdsRaw: string[], opts) => {
+    try {
+      // Parse evidence IDs (handle both space and comma separated)
+      const evidenceIds = evidenceIdsRaw
+        .flatMap(id => id.split(','))
+        .map(id => id.trim())
+        .filter(id => id.length > 0)
+        .map(id => {
+          const num = parseInt(id, 10);
+          if (isNaN(num)) {
+            throw new Error(`Invalid evidence ID: ${id}`);
+          }
+          return num;
+        });
+
+      if (evidenceIds.length === 0) {
+        throw new Error('No evidence IDs provided');
+      }
+
+      if (!hasApiKey()) {
+        console.error('\n❌ PASSIONFRUIT_API_KEY not set');
+        console.error('Set the API key in your environment or .env file\n');
+        process.exit(1);
+      }
+
+      const customer = opts.customer as string;
+      const paths = ensureCustomerDirs(customer);
+      const incomingDir = paths.incoming;
+      const questionnairesDir = paths.questionnaires;
+      const indexedDir = paths.indexed;
+      const rulesDir = getRulesDir(customer);
+
+      console.log(`\n📁 Customer: ${customer}`);
+      console.log(`📋 Processing ${evidenceIds.length} evidence IDs: ${evidenceIds.join(', ')}\n`);
+
+      const client = new PassionfruitAPIClient();
+      console.log(`  Environment: ${client.environment}`);
+      console.log(`  API URL: ${client.url}\n`);
+
+      const results: { id: number; status: 'success' | 'error'; name?: string; error?: string }[] = [];
+
+      for (let i = 0; i < evidenceIds.length; i++) {
+        const id = evidenceIds[i];
+        console.log(`\n[${'─'.repeat(60)}]`);
+        console.log(`[${i + 1}/${evidenceIds.length}] Evidence ID: ${id}`);
+        console.log(`[${'─'.repeat(60)}]`);
+
+        try {
+          if (opts.dryRun) {
+            const evidence = await client.getEvidence(id);
+            console.log(`  Name: ${evidence.name}`);
+            console.log(`  File: ${evidence.fileType || '(unknown)'}`);
+            console.log(`  Has URL: ${evidence.fileTempURL ? 'Yes' : 'No'}`);
+            results.push({ id, status: 'success', name: evidence.name });
+            continue;
+          }
+
+          // Fetch evidence and download file
+          const { evidence, file } = await client.fetchEvidenceWithFile(id);
+          console.log(`  Name: ${evidence.name}`);
+          console.log(`  File: ${file.filename}`);
+          console.log(`  Size: ${(file.buffer.length / 1024).toFixed(1)} KB`);
+
+          // Save file
+          const { writeFile: write, mkdir: mk } = await import('fs/promises');
+          await mk(incomingDir, { recursive: true });
+          const filepath = join(incomingDir, file.filename);
+          await write(filepath, file.buffer);
+          console.log(`  ✅ Downloaded`);
+
+          // Write metadata
+          const metadataPath = filepath + '.meta.json';
+          await write(metadataPath, JSON.stringify({
+            evidenceId: evidence.id,
+            evidenceUuid: evidence.uuid,
+            evidenceName: evidence.name,
+            downloadedAt: new Date().toISOString(),
+            classification: evidence.classification,
+            fileType: evidence.fileType,
+            metadata: evidence.metadata,
+          }, null, 2));
+
+          // Process if requested
+          if (opts.process) {
+            const extractor = await getExtractor(filepath);
+            const structure = await extractor.extract(filepath);
+            structure.source.evidenceId = evidence.id;
+            structure.source.evidenceName = evidence.name;
+
+            const storage = new StructureStorage(questionnairesDir);
+            await storage.save(structure);
+            console.log(`  ✅ Stored`);
+
+            const indexer = new QuestionnaireIndexer(questionnairesDir, 'eu-central-1', rulesDir);
+            const indexed = await indexer.index(file.filename);
+            await indexer.save(indexed, indexedDir);
+            console.log(`  ✅ Indexed (${indexed.totalItems} items)`);
+          }
+
+          results.push({ id, status: 'success', name: evidence.name });
+
+        } catch (error) {
+          const errorMsg = error instanceof Error ? error.message : String(error);
+          console.error(`  ❌ Error: ${errorMsg}`);
+          results.push({ id, status: 'error', error: errorMsg });
+
+          if (!opts.continueOnError) {
+            throw error;
+          }
+        }
+      }
+
+      // Summary
+      console.log(`\n${'═'.repeat(60)}`);
+      console.log('BATCH FETCH SUMMARY');
+      console.log(`${'═'.repeat(60)}`);
+
+      const successful = results.filter(r => r.status === 'success');
+      const failed = results.filter(r => r.status === 'error');
+
+      console.log(`\n✅ Successful: ${successful.length}/${results.length}`);
+      for (const r of successful) {
+        console.log(`   ${r.id}: ${r.name || '(processed)'}`);
+      }
+
+      if (failed.length > 0) {
+        console.log(`\n❌ Failed: ${failed.length}/${results.length}`);
+        for (const r of failed) {
+          console.log(`   ${r.id}: ${r.error}`);
+        }
+      }
+
+      console.log();
+
+      if (failed.length > 0 && !opts.continueOnError) {
+        process.exit(1);
+      }
+
+    } catch (error) {
+      console.error('\n❌ Error: ' + (error instanceof Error ? error.message : error));
+      process.exit(1);
+    }
+  });
+
+// =============================================================================
 // AGGREGATE - Aggregate customer data for import
 // =============================================================================
 

@@ -161,7 +161,7 @@ export default function App() {
         markCompleted(currentQuestionnaire);
       }
       toast.success("Export completed", {
-        description: `Company: ${data.stats.company}, Library: ${data.stats.library}, Product: ${data.stats.product}`,
+        description: `Company: ${data.stats.company}, Library: ${data.stats.library}, Product: ${data.stats.product}, Questionnaire: ${data.stats.questionnaire}, Exclude: ${data.stats.exclude}`,
       });
     },
     onError: (error) => {
@@ -298,6 +298,8 @@ export default function App() {
     (updates: {
       action?: "accept" | "reject" | "reset";
       reason?: string;
+      label?: string;
+      value?: string;
       destination?: Destination;
       note?: string;
     }) => {
@@ -307,6 +309,14 @@ export default function App() {
 
       // Build server update payload
       const serverUpdates: Record<string, unknown> = {};
+
+      if (updates.label) {
+        serverUpdates.label = updates.label;
+      }
+
+      if (updates.value) {
+        serverUpdates.value = updates.value;
+      }
 
       if (updates.destination) {
         serverUpdates.destination = updates.destination;
@@ -318,7 +328,7 @@ export default function App() {
         serverUpdates.note = updates.note;
       }
 
-      // Handle destination and/or note change - persist to server
+      // Handle field changes - persist to server
       if (Object.keys(serverUpdates).length > 0) {
         // Optimistically update local state with immutable update
         if (questionnaireData?.indexed?.sections) {
@@ -328,6 +338,8 @@ export default function App() {
               selectedItems.has(item.id || "")
                 ? {
                     ...item,
+                    ...(updates.label && { label: updates.label }),
+                    ...(updates.value && { value: updates.value }),
                     ...(updates.destination && { destination: updates.destination, needs_review: false, tag_source: "manual" }),
                     ...(updates.note !== undefined && { note: updates.note })
                   }

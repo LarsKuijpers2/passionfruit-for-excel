@@ -276,6 +276,7 @@ Return JSON:
 Important:
 - Extract EVERY question/answer pair
 - For PDF yes/no tables, "x" typically means "Yes"
+- For strikethrough answers: if one option (YES/NO) has a line through it, the answer is the OTHER option
 - Use the row numbers exactly as shown`;
 
     const response = await this.invokeModel(prompt);
@@ -351,6 +352,11 @@ IMPORTANT EXTRACTION RULES:
 3. PREFER INDIVIDUAL ITEMS: Only use "table" type for truly tabular reference data with no filled answers. If rows have yes/no answers or text values, extract them individually.
 
 4. PDF YES/NO TABLES: In PDFs, you may see questions ending with "x" (e.g., "Is there a procedure in place? x"). This "x" indicates a checkmark in a Yes/No/N/A table and typically means "Yes". Extract these as yesno items with value "Yes". If you see a section header like "Yes No N/A COMMENTS", subsequent questions with "x" are from this table structure. The "x" mark means the answer is affirmative (Yes).
+
+5. STRIKETHROUGH ANSWERS: Some questionnaires use strikethrough to indicate the WRONG answer. When you see YES/NO options where one is struck through (has a line through it), the answer is the option WITHOUT strikethrough:
+   - If "NO" has strikethrough → answer is "Yes"
+   - If "YES" has strikethrough → answer is "No"
+   - Strikethrough may appear as text with a horizontal line through it, or as visually different (lighter/greyed) compared to the selected option
 
 And a level for reusability:
 - "standard" = Factual company data, can be auto-filled (name, address, cert numbers)

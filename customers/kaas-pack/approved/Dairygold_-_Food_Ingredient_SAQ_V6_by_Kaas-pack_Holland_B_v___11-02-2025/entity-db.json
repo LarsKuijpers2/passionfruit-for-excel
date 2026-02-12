@@ -1,7 +1,7 @@
 {
   "meta": {
     "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-    "exportedAt": "2026-02-09T16:47:22.989Z",
+    "exportedAt": "2026-02-09T20:36:07.658Z",
     "version": "1.0"
   },
   "items": [
@@ -43,7 +43,7 @@
       "topic": "approval",
       "destination": "company",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:30:57.335Z"
+      "approvedAt": "2026-02-09T20:23:41.882Z"
     },
     {
       "label": "Telephone",
@@ -164,6 +164,16 @@
       "destination": "company",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
       "approvedAt": "2026-02-09T16:42:14.231Z"
+    },
+    {
+      "label": "Healthmark of packing site",
+      "value": "NL Z 0159EG",
+      "cells": "A6 → B6",
+      "section": "Products Supplied/Proposed",
+      "topic": "approval",
+      "destination": "company",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T20:25:06.145Z"
     }
   ]
 }

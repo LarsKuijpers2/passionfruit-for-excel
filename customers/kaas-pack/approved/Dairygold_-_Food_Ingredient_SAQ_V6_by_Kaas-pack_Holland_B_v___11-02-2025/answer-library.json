@@ -1,7 +1,7 @@
 {
   "meta": {
     "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-    "exportedAt": "2026-02-09T16:47:22.989Z",
+    "exportedAt": "2026-02-09T20:36:07.658Z",
     "version": "1.0"
   },
   "items": [
@@ -13,7 +13,7 @@
       "topic": "company",
       "destination": "answer_library",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:42:28.603Z"
+      "approvedAt": "2026-02-09T20:14:59.281Z"
     },
     {
       "label": "Size of the site",
@@ -23,7 +23,7 @@
       "topic": "company",
       "destination": "answer_library",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:42:28.622Z"
+      "approvedAt": "2026-02-09T20:14:59.298Z"
     },
     {
       "label": "Is the factory purpose built",
@@ -33,7 +33,7 @@
       "topic": "company",
       "destination": "answer_library",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:42:28.648Z"
+      "approvedAt": "2026-02-09T20:14:59.314Z"
     },
     {
       "label": "Is the company Private/Limited/Public?",
@@ -43,17 +43,7 @@
       "topic": "company",
       "destination": "answer_library",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:42:28.657Z"
-    },
-    {
-      "label": "If part of a group please note parent company",
-      "value": "--",
-      "cells": "B5 → C5",
-      "section": "Company History",
-      "topic": "company",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:42:28.665Z"
+      "approvedAt": "2026-02-09T20:14:59.259Z"
     },
     {
       "label": "Do you operate to a recognized animal welfare status",
@@ -104,26 +94,6 @@
       "destination": "answer_library",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
       "approvedAt": "2026-02-09T16:42:28.712Z"
-    },
-    {
-      "label": "Please attach a copy",
-      "value": "AttachedKaas-Pack_Holland_BV_certificate_2026-2027.pdf",
-      "cells": "A12 → B12",
-      "section": "Company History",
-      "topic": "documents",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:42:28.722Z"
-    },
-    {
-      "label": "Expiry",
-      "value": "01/01/2027",
-      "cells": "A13 → B13",
-      "section": "Company History",
-      "topic": "financial",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:42:28.732Z"
     },
     {
       "label": "Outline principal products manufactured",
@@ -236,26 +206,6 @@
       "approvedAt": "2026-02-09T16:42:45.878Z"
     },
     {
-      "label": "Please attach current GFSI certificate",
-      "value": "N/A",
-      "cells": "B4 → C4",
-      "section": "Accreditation Details",
-      "topic": "documents",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:42:45.891Z"
-    },
-    {
-      "label": "Please confirm link to Dairygold Food Ingredients on BRC directory",
-      "value": "N/A",
-      "cells": "B5 → C5",
-      "section": "Accreditation Details",
-      "topic": "certifications",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:42:45.901Z"
-    },
-    {
       "label": "Please attach full GFSI report",
       "value": "N/A",
       "cells": "B6 → C6",
@@ -286,16 +236,6 @@
       "approvedAt": "2026-02-09T16:43:00.329Z"
     },
     {
-      "label": "Please attach specification of each of the products supplied",
-      "value": "Attached302442-2-DEU_15-11-22_1132.pdf303082-0-21-04-22.pdf3",
-      "cells": "B2 → C2",
-      "section": "Products Supplied/Proposed",
-      "topic": "documents",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:43:00.354Z"
-    },
-    {
       "label": "Do you pack these products on your site?",
       "value": "Yes",
       "cells": "B3 → C3",
@@ -303,7 +243,7 @@
       "topic": "packaging",
       "destination": "answer_library",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:43:00.378Z"
+      "approvedAt": "2026-02-09T20:35:53.332Z"
     },
     {
       "label": "Name of packing site",
@@ -313,17 +253,7 @@
       "topic": "packaging",
       "destination": "answer_library",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:43:00.389Z"
-    },
-    {
-      "label": "Healthmark of packing site",
-      "value": "NL Z 0159EG",
-      "cells": "A6 → B6",
-      "section": "Products Supplied/Proposed",
-      "topic": "approval",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:43:00.399Z"
+      "approvedAt": "2026-02-09T20:35:53.311Z"
     },
     {
       "label": "Accreditation status and attach current certificate",
@@ -334,36 +264,6 @@
       "destination": "answer_library",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
       "approvedAt": "2026-02-09T16:43:00.409Z"
-    },
-    {
-      "label": "Confirm and attach Food Safety Control in place e.g. HACCP",
-      "value": "Attached1048_flow_schema.pdf",
-      "cells": "A8 → B8",
-      "section": "Products Supplied/Proposed",
-      "topic": "food_safety",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:43:00.420Z"
-    },
-    {
-      "label": "For all dairy products supplied has the milk used been obtained from approved sources",
-      "value": "Yes",
-      "cells": "B10 → C10",
-      "section": "Products Supplied/Proposed",
-      "topic": "origin",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:43:00.433Z"
-    },
-    {
-      "label": "For all dairy products supplied has the milk used been obtained from approved farms",
-      "value": "Yes",
-      "cells": "B11 → C11",
-      "section": "Products Supplied/Proposed",
-      "topic": "origin",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:43:00.444Z"
     },
     {
       "label": "For all dairy products supplied has the milk used has been tested for residues",
@@ -396,6 +296,16 @@
       "approvedAt": "2026-02-09T16:43:00.481Z"
     },
     {
+      "label": "Please attach a copy of your HACCP, including CCP's, crit",
+      "value": "confidential",
+      "cells": "B3 → C3",
+      "section": "HACCP",
+      "topic": "documents",
+      "destination": "answer_library",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T20:27:06.831Z"
+    },
+    {
       "label": "Are you a SEDEX member (if so please provide SEDEX number in",
       "value": "Yes",
       "cells": "B1 → C1",
@@ -416,206 +326,6 @@
       "approvedAt": "2026-02-09T16:44:17.344Z"
     },
     {
-      "label": "If not, please answer question 6.2-6.16",
-      "value": "Yes",
-      "cells": "B3 → C3",
-      "section": "Ethical",
-      "topic": "other",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:44:17.366Z"
-    },
-    {
-      "label": "Is your annual turnover euro 36M or more",
-      "value": "Ethical Skip",
-      "cells": "B4 → C4",
-      "section": "Ethical",
-      "topic": "financial",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:44:17.383Z"
-    },
-    {
-      "label": "If yes, please confirm Modern Slavery Act statement is pu",
-      "value": "Ethical Skip",
-      "cells": "B5 → C5",
-      "section": "Ethical",
-      "topic": "ethical",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:44:17.396Z"
-    },
-    {
-      "label": "Does your company have a written ethical trading policy?",
-      "value": "Ethical Skip",
-      "cells": "B6 → C6",
-      "section": "Ethical",
-      "topic": "ethical",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:44:17.411Z"
-    },
-    {
-      "label": "If so please attach a copy",
-      "value": "Ethical Skip",
-      "cells": "B7 → C7",
-      "section": "Ethical",
-      "topic": "documents",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:44:17.425Z"
-    },
-    {
-      "label": "Please confirm that your company does not use forced labo",
-      "value": "Ethical Skip",
-      "cells": "B8 → C8",
-      "section": "Ethical",
-      "topic": "ethical",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:44:17.439Z"
-    },
-    {
-      "label": "Does your company have a written equal opportunities poli",
-      "value": "Ethical Skip",
-      "cells": "B9 → C9",
-      "section": "Ethical",
-      "topic": "ethical",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:44:17.458Z"
-    },
-    {
-      "label": "If so please attach a copy",
-      "value": "Ethical Skip",
-      "cells": "B10 → C10",
-      "section": "Ethical",
-      "topic": "documents",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:44:17.496Z"
-    },
-    {
-      "label": "Do all staff have a written contract of employment?",
-      "value": "Ethical Skip",
-      "cells": "B11 → C11",
-      "section": "Ethical",
-      "topic": "ethical",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:44:17.509Z"
-    },
-    {
-      "label": "Does your company have a written grievance procedure?",
-      "value": "Ethical Skip",
-      "cells": "B12 → C12",
-      "section": "Ethical",
-      "topic": "ethical",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:44:17.523Z"
-    },
-    {
-      "label": "Does your company have a written disciplinary procedure?",
-      "value": "Ethical Skip",
-      "cells": "B13 → C13",
-      "section": "Ethical",
-      "topic": "ethical",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:44:17.536Z"
-    },
-    {
-      "label": "Does the company operate maternity, paternity and parenta",
-      "value": "Ethical Skip",
-      "cells": "B14 → C14",
-      "section": "Ethical",
-      "topic": "ethical",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:44:17.556Z"
-    },
-    {
-      "label": "Do you have a written Health & Safety Policy?",
-      "value": "Ethical Skip",
-      "cells": "B15 → C15",
-      "section": "Ethical",
-      "topic": "food_safety",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:44:17.571Z"
-    },
-    {
-      "label": "Have risk assessments been completed?",
-      "value": "Ethical Skip",
-      "cells": "B16 → C16",
-      "section": "Ethical",
-      "topic": "food_safety",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:44:17.586Z"
-    },
-    {
-      "label": "Is formal Health & Safety Training carried out?",
-      "value": "Ethical Skip",
-      "cells": "B17 → C17",
-      "section": "Ethical",
-      "topic": "food_safety",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:44:17.600Z"
-    },
-    {
-      "label": "Is PPE provided for all staff?",
-      "value": "Ethical Skip",
-      "cells": "B18 → C18",
-      "section": "Ethical",
-      "topic": "food_safety",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:44:17.615Z"
-    },
-    {
-      "label": "If so is this free of charge?",
-      "value": "Ethical Skip",
-      "cells": "B19 → C19",
-      "section": "Ethical",
-      "topic": "food_safety",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:44:17.629Z"
-    },
-    {
-      "label": "Do you have a formal system for recording accidents?",
-      "value": "Ethical Skip",
-      "cells": "B20 → C20",
-      "section": "Ethical",
-      "topic": "food_safety",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:44:17.643Z"
-    },
-    {
-      "label": "Are rest areas and hygienic facilities provided for staff",
-      "value": "Ethical Skip",
-      "cells": "B21 → C21",
-      "section": "Ethical",
-      "topic": "ethical",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:44:17.658Z"
-    },
-    {
-      "label": "Are staff paid at least the minimum wage?",
-      "value": "Ethical Skip",
-      "cells": "B22 → C22",
-      "section": "Ethical",
-      "topic": "ethical",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:44:17.673Z"
-    },
-    {
       "label": "Do you have a recognized Environmental Management system?",
       "value": "No",
       "cells": "B1 → C1",
@@ -626,16 +336,6 @@
       "approvedAt": "2026-02-09T16:44:32.212Z"
     },
     {
-      "label": "If so, please attach a copy of the certificate",
-      "value": "N/A",
-      "cells": "B2 → C2",
-      "section": "Environmental",
-      "topic": "documents",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:44:32.240Z"
-    },
-    {
       "label": "Do you have a formal Environmental Policy?",
       "value": "Yes",
       "cells": "B3 → C3",
@@ -644,16 +344,6 @@
       "destination": "answer_library",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
       "approvedAt": "2026-02-09T16:44:32.265Z"
-    },
-    {
-      "label": "If so please attach a copy of policy",
-      "value": "AttachedMVO_Zelfverklaring_NEN-ISO_26000_2010_-_2021.docx",
-      "cells": "B4 → C4",
-      "section": "Environmental",
-      "topic": "documents",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:44:32.283Z"
     },
     {
       "label": "Is all solid waste reduced, re-used and recycled where possible?",
@@ -783,7 +473,7 @@
       "topic": "product",
       "destination": "answer_library",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:44:52.089Z"
+      "approvedAt": "2026-02-09T20:28:24.209Z"
     },
     {
       "label": "Are all records completed and suitably retained?",
@@ -823,7 +513,7 @@
       "topic": "product",
       "destination": "answer_library",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:44:52.178Z"
+      "approvedAt": "2026-02-09T20:28:30.209Z"
     },
     {
       "label": "Please attach an example of your traceability exercise",
@@ -874,16 +564,6 @@
       "destination": "answer_library",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
       "approvedAt": "2026-02-09T16:44:52.272Z"
-    },
-    {
-      "label": "Would you allow Dairygold's representative to audit your facility?",
-      "value": "N/A",
-      "cells": "B19 → C19",
-      "section": "Food Safety & Quality Management",
-      "topic": "audits",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:44:52.290Z"
     },
     {
       "label": "Do you allow smoking on site?",
@@ -1046,36 +726,6 @@
       "approvedAt": "2026-02-09T16:45:05.651Z"
     },
     {
-      "label": "If the site is covered by pest control contract, Please state company name",
-      "value": "N/A",
-      "cells": "B19 → C19",
-      "section": "Site Standards",
-      "topic": "food_safety",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:45:05.671Z"
-    },
-    {
-      "label": "Pest control contract details - Contact details",
-      "value": "N/A",
-      "cells": "A20 → B20",
-      "section": "Site Standards",
-      "topic": "contacts",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:45:05.689Z"
-    },
-    {
-      "label": "Pest control contract details - Additional information",
-      "value": "N/A",
-      "cells": "A21 → B21",
-      "section": "Site Standards",
-      "topic": "food_safety",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:45:05.717Z"
-    },
-    {
       "label": "Do you maintain a site plan showing the location of all traps and bait stations?",
       "value": "Yes",
       "cells": "A22 → B22",
@@ -1093,7 +743,7 @@
       "topic": "logistics",
       "destination": "answer_library",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:45:05.765Z"
+      "approvedAt": "2026-02-09T20:29:57.438Z"
     },
     {
       "label": "Are transport vehicles assessed for cleanliness/suitability?",
@@ -1103,7 +753,7 @@
       "topic": "logistics",
       "destination": "answer_library",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:45:05.784Z"
+      "approvedAt": "2026-02-09T20:29:57.462Z"
     },
     {
       "label": "If third party hauliers are used, have they been audited?",
@@ -1113,7 +763,7 @@
       "topic": "logistics",
       "destination": "answer_library",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:45:05.803Z"
+      "approvedAt": "2026-02-09T20:29:57.478Z"
     },
     {
       "label": "Are there procedures in place to ensure that the product integrity is maintained during transport?",
@@ -1123,7 +773,7 @@
       "topic": "logistics",
       "destination": "answer_library",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:45:05.823Z"
+      "approvedAt": "2026-02-09T20:29:38.368Z"
     },
     {
       "label": "Is there a vehicle breakdown procedure?",
@@ -1133,7 +783,7 @@
       "topic": "logistics",
       "destination": "answer_library",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:45:05.843Z"
+      "approvedAt": "2026-02-09T20:29:46.344Z"
     },
     {
       "label": "Are all raw material and finished product stored on site?",
@@ -1143,7 +793,7 @@
       "topic": "logistics",
       "destination": "answer_library",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:45:05.862Z"
+      "approvedAt": "2026-02-09T20:29:46.366Z"
     },
     {
       "label": "Raw material and finished product storage details",
@@ -1273,7 +923,7 @@
       "topic": "packaging",
       "destination": "answer_library",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:45:17.377Z"
+      "approvedAt": "2026-02-09T20:30:07.056Z"
     },
     {
       "label": "Do you ensure product is tested and inspected suitably to",
@@ -1396,16 +1046,6 @@
       "approvedAt": "2026-02-09T16:45:27.893Z"
     },
     {
-      "label": "What is fed to the animals which supply dairy products to",
-      "value": "unknown. DG supplies it own raw material",
-      "cells": "B1 → C1",
-      "section": "Soy Sustainability",
-      "topic": "sustainability",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:45:40.957Z"
-    },
-    {
       "label": "How do you track and manage the origin of soy within your",
       "value": "not",
       "cells": "B4 → C4",
@@ -1426,16 +1066,6 @@
       "approvedAt": "2026-02-09T16:45:41.018Z"
     },
     {
-      "label": "Please provide the accreditation status and attach current c",
-      "value": "Kaas-Pack already added",
-      "cells": "B2 → C2",
-      "section": "Section 19",
-      "topic": "certifications",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:46:48.605Z"
-    },
-    {
       "label": "If manufacturing site is accredited to GFSI standard, please",
       "value": "We are not BRC, but IFS certified",
       "cells": "B3 → C3",
@@ -1443,7 +1073,7 @@
       "topic": "certifications",
       "destination": "answer_library",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:46:48.647Z"
+      "approvedAt": "2026-02-09T20:32:01.682Z"
     },
     {
       "label": "Please attach a copy of the GFSI audit report",
@@ -1506,16 +1136,6 @@
       "approvedAt": "2026-02-09T16:46:48.798Z"
     },
     {
-      "label": "If you have a recognised Environmental Management System, pl",
-      "value": "the fill will be added by Kelly. thanks :)",
-      "cells": "B10 → C10",
-      "section": "Section 19",
-      "topic": "environment",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:46:48.818Z"
-    },
-    {
       "label": "What sustainability standards or certifications are being us",
       "value": "no feed information avalible",
       "cells": "B11 → C11",
@@ -1556,16 +1176,6 @@
       "approvedAt": "2026-02-09T16:46:57.251Z"
     },
     {
-      "label": "If manufacturing site is accredited to a recognized GFSI sch",
-      "value": "NA",
-      "cells": "B5 → C5",
-      "section": "Section 20",
-      "topic": "certifications",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:46:57.272Z"
-    },
-    {
       "label": "What formal training has your HACCP team undergone, Please a",
       "value": "same present for other members",
       "cells": "B6 → C6",
@@ -1596,16 +1206,6 @@
       "approvedAt": "2026-02-09T16:46:57.338Z"
     },
     {
-      "label": "If you have a formal environmental policy, please attach a c",
-      "value": "see attached",
-      "cells": "B9 → C9",
-      "section": "Section 20",
-      "topic": "environment",
-      "destination": "answer_library",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:46:57.359Z"
-    },
-    {
       "label": "Are nuts or ingredients containing nuts handled or present o",
       "value": "No tin production or related area's",
       "cells": "B10 → C10",
@@ -1613,7 +1213,7 @@
       "topic": "allergens",
       "destination": "answer_library",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:46:57.380Z"
+      "approvedAt": "2026-02-09T20:33:49.725Z"
     },
     {
       "label": "Is milk handled or present on manufacturer site at any time",
@@ -1623,7 +1223,7 @@
       "topic": "allergens",
       "destination": "answer_library",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:46:57.403Z"
+      "approvedAt": "2026-02-09T20:33:49.748Z"
     },
     {
       "label": "For all dairy products supplied has the milk used been obtai",
@@ -1633,7 +1233,7 @@
       "topic": "origin",
       "destination": "answer_library",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:46:57.435Z"
+      "approvedAt": "2026-02-09T20:33:49.761Z"
     },
     {
       "label": "For all dairy products supplied has the milk used been obtai",
@@ -1643,7 +1243,7 @@
       "topic": "origin",
       "destination": "answer_library",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:46:57.460Z"
+      "approvedAt": "2026-02-09T20:33:49.776Z"
     },
     {
       "label": "For all dairy products supplied has the milk used has been r",
@@ -1653,7 +1253,7 @@
       "topic": "quality",
       "destination": "answer_library",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:46:57.482Z"
+      "approvedAt": "2026-02-09T20:33:49.793Z"
     },
     {
       "label": "Are suitable allergen contamination controls in place includ",
@@ -1663,7 +1263,7 @@
       "topic": "allergens",
       "destination": "answer_library",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:46:57.505Z"
+      "approvedAt": "2026-02-09T20:33:49.706Z"
     }
   ]
 }

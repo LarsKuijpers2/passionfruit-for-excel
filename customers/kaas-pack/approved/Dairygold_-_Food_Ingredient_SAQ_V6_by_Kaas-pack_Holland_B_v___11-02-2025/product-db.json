@@ -1,7 +1,7 @@
 {
   "meta": {
     "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-    "exportedAt": "2026-02-09T16:47:22.989Z",
+    "exportedAt": "2026-02-09T20:36:07.658Z",
     "version": "1.0"
   },
   "items": [
@@ -54,16 +54,6 @@
       "destination": "product",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
       "approvedAt": "2026-02-09T16:41:10.107Z"
-    },
-    {
-      "label": "4.1.4 - Provide copies of policies and procedures to demonstrate",
-      "value": "Attached1064_Allergenenbeheersing.pdf",
-      "cells": "B19 → C19",
-      "section": "Allergens/Ingredients",
-      "topic": "documents",
-      "destination": "product",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:43:46.003Z"
     },
     {
       "label": "Cereals containing gluten ‒ Wheat, Rye, Barley, Spelt, Kh",
@@ -246,26 +236,6 @@
       "approvedAt": "2026-02-09T16:43:54.446Z"
     },
     {
-      "label": "Please attach the scope of HACCP plan for each product/s",
-      "value": "N/A",
-      "cells": "B2 → C2",
-      "section": "HACCP",
-      "topic": "documents",
-      "destination": "product",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:43:54.471Z"
-    },
-    {
-      "label": "Please attach a copy of your HACCP, including CCP's, crit",
-      "value": "confidential",
-      "cells": "B3 → C3",
-      "section": "HACCP",
-      "topic": "documents",
-      "destination": "product",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:43:54.496Z"
-    },
-    {
       "label": "Does this meet the requirements of Codex Alimentarius?",
       "value": "Yes",
       "cells": "B4 → C4",
@@ -274,16 +244,6 @@
       "destination": "product",
       "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
       "approvedAt": "2026-02-09T16:43:54.509Z"
-    },
-    {
-      "label": "Please attach HACCP flow process for each of the product",
-      "value": "AttachedPO-420.00_ENU_Processin-1-10-2021.pdf",
-      "cells": "B5 → C5",
-      "section": "HACCP",
-      "topic": "documents",
-      "destination": "product",
-      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
-      "approvedAt": "2026-02-09T16:43:54.523Z"
     },
     {
       "label": "Is the HACCP plan regularly reviewed?",

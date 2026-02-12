@@ -1,0 +1,26 @@
+{
+  "evidenceId": 3799,
+  "evidenceUuid": "3188f913-f15a-45cc-98a9-4d7e3dc6b97f",
+  "evidenceName": "Ad van der Westen__INK-F-01a Leveranciersenquete_Strik signed_20260102.docx",
+  "downloadedAt": "2026-02-12T07:30:46.578Z",
+  "classification": "",
+  "fileType": "docx",
+  "metadata": {
+    "summary": "Supplier questionnaire for Strik bv covering quality, traceability, food safety, and certifications.",
+    "type": "policies-and-procedures",
+    "entity": "Strik bv",
+    "reportingYear": "",
+    "issueDate": "2026-01-02",
+    "approvedByAuditor": "False",
+    "auditor": "",
+    "expirationDate": "",
+    "subject": [
+      "Product and ingredients"
+    ],
+    "tags": [
+      "Product Responsibility",
+      "Product Information and Labeling",
+      "Health and Safety"
+    ]
+  }
+}

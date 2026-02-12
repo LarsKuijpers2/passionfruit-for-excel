@@ -1,0 +1,25 @@
+{
+  "evidenceId": 3804,
+  "evidenceUuid": "e0c9c874-cf6a-493d-b04f-1f312df912b6",
+  "evidenceName": "Unitex F-3015_Dawn Farms Meat Free Questionnaire V5_20260206 (1).pdf",
+  "downloadedAt": "2026-02-12T07:32:16.553Z",
+  "classification": "",
+  "fileType": "pdf",
+  "metadata": {
+    "summary": "A risk assessment questionnaire for evaluating meat-free compliance.",
+    "type": "assessments-and-certifications",
+    "entity": "Dawn Farms",
+    "reportingYear": "2026",
+    "issueDate": "2018-10-17",
+    "approvedByAuditor": "False",
+    "auditor": "",
+    "expirationDate": "",
+    "subject": [
+      "Product and ingredients"
+    ],
+    "tags": [
+      "Product Responsibility",
+      "Product Information and Labeling"
+    ]
+  }
+}

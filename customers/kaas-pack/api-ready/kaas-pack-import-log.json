@@ -1,0 +1,10 @@
+{
+  "customer": "kaas-pack",
+  "importedAt": "2026-02-10T07:58:32.421Z",
+  "result": {
+    "created": 327,
+    "skipped": 4,
+    "failed": 0,
+    "errors": []
+  }
+}

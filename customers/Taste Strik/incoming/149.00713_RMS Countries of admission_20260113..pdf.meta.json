@@ -1,0 +1,25 @@
+{
+  "evidenceId": 3795,
+  "evidenceUuid": "d1b61840-d063-497b-8af1-3b613d2e9a71",
+  "evidenceName": "149.00713_RMS Countries of admission_20260113..pdf",
+  "downloadedAt": "2026-02-12T07:32:48.708Z",
+  "classification": "",
+  "fileType": "pdf",
+  "metadata": {
+    "summary": "Document detailing countries of admission and restrictions for a natural strawberry flavor.",
+    "type": "specification-sheet",
+    "entity": "Royal Fassin B.V.",
+    "reportingYear": "",
+    "issueDate": "2021-04-15",
+    "approvedByAuditor": "False",
+    "auditor": "",
+    "expirationDate": "",
+    "subject": [
+      "Product and ingredients"
+    ],
+    "tags": [
+      "Product Responsibility",
+      "Product Information and Labeling"
+    ]
+  }
+}

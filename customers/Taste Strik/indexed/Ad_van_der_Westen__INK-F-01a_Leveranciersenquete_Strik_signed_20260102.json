@@ -1,0 +1,892 @@
+{
+  "id": "e518eda6",
+  "source": "Ad van der Westen__INK-F-01a Leveranciersenquete_Strik signed_20260102.docx",
+  "indexed": "2026-02-12",
+  "language": "nl",
+  "sections": [
+    {
+      "title": "Algemene leveranciersinformatie",
+      "topic": "company_information",
+      "rows": "1-1",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "fb870fad",
+          "type": "field",
+          "label": "Naam leverancier",
+          "value": "Strik bv",
+          "topic": "company",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "answer_library",
+          "lCell": "T1R2C1",
+          "vCell": "T1R2C2"
+        },
+        {
+          "id": "57aed1f6",
+          "type": "field",
+          "label": "Straatnaam + nummer",
+          "value": "Bramenberg 19",
+          "topic": "company",
+          "level": "standard",
+          "lang": "de",
+          "destination": "answer_library",
+          "lCell": "T1R3C1",
+          "vCell": "T1R3C2"
+        },
+        {
+          "id": "653c8fd3",
+          "type": "field",
+          "label": "Postcode",
+          "value": "3755 BV",
+          "topic": "company",
+          "level": "standard",
+          "destination": "answer_library",
+          "lCell": "T1R4C1",
+          "vCell": "T1R4C2"
+        },
+        {
+          "id": "6aeefd7f",
+          "type": "field",
+          "label": "Plaats",
+          "value": "Eemnes",
+          "topic": "company",
+          "level": "standard",
+          "destination": "answer_library",
+          "lCell": "T1R5C1",
+          "vCell": "T1R5C2"
+        },
+        {
+          "id": "48e42871",
+          "type": "field",
+          "label": "Land",
+          "value": "Nederland",
+          "topic": "company",
+          "level": "standard",
+          "destination": "answer_library",
+          "lCell": "T1R6C1",
+          "vCell": "T1R6C2"
+        },
+        {
+          "id": "bd75705d",
+          "type": "field",
+          "label": "Telefoonnummer",
+          "value": "+31(0)355380107",
+          "topic": "contacts",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "answer_library",
+          "lCell": "T1R7C1",
+          "vCell": "T1R7C2"
+        },
+        {
+          "id": "05b7ebae",
+          "type": "field",
+          "label": "Website",
+          "value": "https://www.tastestrik.nl/",
+          "topic": "company",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "answer_library",
+          "lCell": "T1R8C1",
+          "vCell": "T1R8C2"
+        },
+        {
+          "id": "57afbef3",
+          "type": "field",
+          "label": "BTW-nummer",
+          "value": "NL 8124.50.425B01",
+          "topic": "company",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "T1R9C1",
+          "vCell": "T1R9C2"
+        },
+        {
+          "id": "b9de4ce2",
+          "type": "field",
+          "label": "Banknummer (IBAN)",
+          "value": "NL12 RABO 0315 9635 65",
+          "topic": "financial",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "answer_library",
+          "lCell": "T1R10C1",
+          "vCell": "T1R10C2"
+        },
+        {
+          "id": "24ab51d0",
+          "type": "choice",
+          "label": "Type bedrijf",
+          "value": "X Producent X Handelaar □ Outsourcer",
+          "topic": "company",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "T1R11C1",
+          "vCell": "T1R11C2"
+        },
+        {
+          "id": "84767fc4",
+          "type": "field",
+          "label": "Contactpersoon calamiteit / recall - Naam",
+          "value": "Hans Visser (Commercial Director) of Maarten Oosterloo (Supply Chain & Operations Manager)",
+          "topic": "contacts",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "T1R13C1",
+          "vCell": "T1R13C3"
+        },
+        {
+          "id": "7d0be70a",
+          "type": "field",
+          "label": "Contactpersoon calamiteit / recall - Telefoonnummer",
+          "value": "Hans Visser: +31 (0)6 30 75 91 59 Maarten Oosterloo: +31 (0)6 10 33 97 44",
+          "topic": "contacts",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "answer_library",
+          "lCell": "T1R14C1",
+          "vCell": "T1R14C2"
+        },
+        {
+          "id": "5e2333a5",
+          "type": "field",
+          "label": "Contactpersoon calamiteit / recall - E-mail",
+          "value": "sales@tastestrik.nl",
+          "topic": "contacts",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "T1R15C1",
+          "vCell": "T1R15C2"
+        },
+        {
+          "id": "cbffb2a6",
+          "type": "field",
+          "label": "Contactpersoon Kwaliteit - Naam",
+          "value": "Petrus Lenes",
+          "topic": "contacts",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "T1R16C1",
+          "vCell": "T1R16C3"
+        },
+        {
+          "id": "ac292006",
+          "type": "field",
+          "label": "Contactpersoon Kwaliteit - Telefoonnummer",
+          "value": "+31(0)355380107",
+          "topic": "contacts",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "T1R17C1",
+          "vCell": "T1R17C2"
+        },
+        {
+          "id": "a8390414",
+          "type": "field",
+          "label": "Contactpersoon Kwaliteit - E-mail",
+          "value": "qm@tastestrik.nl",
+          "topic": "contacts",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "T1R18C1",
+          "vCell": "T1R18C2"
+        }
+      ]
+    },
+    {
+      "title": "Allergenen",
+      "topic": "allergens",
+      "rows": "3-3",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "6cd054df",
+          "type": "text",
+          "label": "Kruisbesmetting allergenen - beheersmaatregelen",
+          "value": "Zie bijgesloten statement.",
+          "topic": "allergens",
+          "level": "narrative",
+          "lang": "nl",
+          "destination": "answer_library",
+          "lCell": "T3R2C1",
+          "vCell": "T3R3C1"
+        }
+      ]
+    },
+    {
+      "title": "Kwaliteitssystemen",
+      "topic": "quality_systems",
+      "rows": "4-4",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "27fec5b2",
+          "type": "text",
+          "label": "EG-erkenningsnummer",
+          "topic": "certifications",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "exclude",
+          "lCell": "T4R2C1",
+          "vCell": "EMPTY"
+        },
+        {
+          "id": "0e4f28a1",
+          "type": "yesno",
+          "label": "GFSI erkende standaard gecertificeerd",
+          "topic": "certifications",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "exclude",
+          "lCell": "T4R3C1",
+          "vCell": "T4R3C2"
+        },
+        {
+          "id": "8617e7c6",
+          "type": "yesno",
+          "label": "Producten vallen onder de scope",
+          "topic": "certifications",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "exclude",
+          "lCell": "T4R4C1",
+          "vCell": "T4R4C2"
+        },
+        {
+          "id": "4c4a8a2b",
+          "type": "yesno",
+          "label": "Andere certificaten",
+          "topic": "certifications",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "exclude",
+          "lCell": "T4R6C1",
+          "vCell": "T4R6C2"
+        },
+        {
+          "id": "4e4c7370",
+          "type": "field",
+          "label": "Andere certificaten - welke",
+          "value": "BRC Agents & Brokers, Bio, FairTrade, Rainforest Alliance, RSPO",
+          "topic": "certifications",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "answer_library",
+          "lCell": "T4R7C1",
+          "vCell": "T4R7C1"
+        }
+      ]
+    },
+    {
+      "title": "Klachten",
+      "topic": "other",
+      "rows": "5-5",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "ee0e28ae",
+          "type": "yesno",
+          "label": "Klachtenprocedure aanwezig",
+          "topic": "quality",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "exclude",
+          "lCell": "T5R2C1",
+          "vCell": "T5R2C2"
+        },
+        {
+          "id": "88814a2e",
+          "type": "text",
+          "label": "Acties bij klachten",
+          "topic": "quality",
+          "level": "narrative",
+          "lang": "nl",
+          "destination": "exclude",
+          "lCell": "T5R3C1",
+          "vCell": "EMPTY"
+        }
+      ]
+    },
+    {
+      "title": "Traceren / recall",
+      "topic": "other",
+      "rows": "6-6",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "0cf2c0e9",
+          "type": "text",
+          "label": "Traceerbaarheid producten",
+          "topic": "traceability",
+          "level": "narrative",
+          "lang": "nl",
+          "destination": "exclude",
+          "lCell": "T6R2C1",
+          "vCell": "EMPTY"
+        },
+        {
+          "id": "23a4aa1a",
+          "type": "yesno",
+          "label": "Traceren binnen 4 uur mogelijk",
+          "topic": "traceability",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "exclude",
+          "lCell": "T6R4C1",
+          "vCell": "T6R4C2"
+        },
+        {
+          "id": "e53c8dba",
+          "type": "yesno",
+          "label": "Registratie producten per batch",
+          "topic": "traceability",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "exclude",
+          "lCell": "T6R5C1",
+          "vCell": "T6R5C2"
+        },
+        {
+          "id": "8ac3b07e",
+          "type": "text",
+          "label": "Acties tijdens recall",
+          "topic": "crisis",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "T6R6C1",
+          "vCell": "EMPTY"
+        }
+      ]
+    },
+    {
+      "title": "Houdbaarheidstesten",
+      "topic": "other",
+      "rows": "7-7",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "03b42683",
+          "type": "yesno",
+          "label": "Houdbaarheidstesten uitgevoerd",
+          "topic": "quality",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "exclude",
+          "lCell": "T7R2C1",
+          "vCell": "T7R2C2"
+        },
+        {
+          "id": "69b41a60",
+          "type": "yesno",
+          "label": "Houdbaarheidstesten via geaccrediteerd lab",
+          "topic": "quality",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "exclude",
+          "lCell": "T7R3C1",
+          "vCell": "T7R3C2"
+        },
+        {
+          "id": "88408821",
+          "type": "yesno",
+          "label": "Resultaten houdbaarheidstesten inzienbaar",
+          "topic": "quality",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "exclude",
+          "lCell": "T7R4C1",
+          "vCell": "T7R4C2"
+        }
+      ]
+    },
+    {
+      "title": "Voedselfraude",
+      "topic": "food_fraud",
+      "rows": "8-8",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "3082b646",
+          "type": "text",
+          "label": "Risico inventarisatie voedselfraude",
+          "topic": "food_fraud",
+          "level": "narrative",
+          "lang": "nl",
+          "destination": "exclude",
+          "lCell": "T8R2C1",
+          "vCell": "EMPTY"
+        },
+        {
+          "id": "e478dfa1",
+          "type": "text",
+          "label": "Authenticiteit producten",
+          "topic": "food_fraud",
+          "level": "narrative",
+          "lang": "de",
+          "destination": "exclude",
+          "lCell": "T8R4C1",
+          "vCell": "EMPTY"
+        }
+      ]
+    },
+    {
+      "title": "Food defense",
+      "topic": "food_defense",
+      "rows": "9-9",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "8dd567f4",
+          "type": "text",
+          "label": "Risico inventarisatie Food defense",
+          "topic": "food_defense",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "T9R2C1",
+          "vCell": "EMPTY"
+        },
+        {
+          "id": "5eb056ee",
+          "type": "choice",
+          "label": "Toegang personeelsleden",
+          "value": "Badge In/ uit klokken",
+          "topic": "food_defense",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "answer_library",
+          "lCell": "T9R4C1",
+          "vCell": "T9R4C2"
+        },
+        {
+          "id": "87d7fade",
+          "type": "text",
+          "label": "Toegang personeelsleden - Anders",
+          "topic": "food_defense",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "T9R4C1",
+          "vCell": "T9R4C3"
+        },
+        {
+          "id": "23e085ee",
+          "type": "choice",
+          "label": "Toegang leveranciers en bezoekers",
+          "value": "Inschrijven Geen toegang",
+          "topic": "food_defense",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "answer_library",
+          "lCell": "T9R5C1",
+          "vCell": "T9R5C2"
+        },
+        {
+          "id": "833bd95c",
+          "type": "text",
+          "label": "Toegang leveranciers en bezoekers - Anders",
+          "topic": "food_defense",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "T9R5C1",
+          "vCell": "T9R5C3"
+        },
+        {
+          "id": "37cf53a8",
+          "type": "yesno",
+          "label": "Toegangsdeuren afgesloten voor derden",
+          "value": "Ja",
+          "topic": "food_defense",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "answer_library",
+          "lCell": "T9R6C1",
+          "vCell": "T9R6C2"
+        },
+        {
+          "id": "c45737f3",
+          "type": "choice",
+          "label": "Transport beveiliging",
+          "value": "Verzegeling Geen",
+          "topic": "logistics",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "answer_library",
+          "lCell": "T9R7C1",
+          "vCell": "T9R7C2"
+        },
+        {
+          "id": "d888dadd",
+          "type": "text",
+          "label": "Transport beveiliging - Anders",
+          "topic": "logistics",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "T9R7C1",
+          "vCell": "T9R7C3"
+        }
+      ]
+    },
+    {
+      "title": "Codering",
+      "topic": "other",
+      "rows": "10-10",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "680fbe01",
+          "type": "field",
+          "label": "Batchcode opbouw en locatie",
+          "value": "Dd/mm/yy, zie productlabel",
+          "topic": "traceability",
+          "level": "product",
+          "lang": "nl",
+          "destination": "product",
+          "lCell": "T10R2C1",
+          "vCell": "T10R2C2"
+        },
+        {
+          "id": "91a8e674",
+          "type": "field",
+          "label": "Houdbaarheid aanduiding en locatie",
+          "value": "Dd/mm/yy",
+          "topic": "traceability",
+          "level": "product",
+          "lang": "nl",
+          "destination": "product",
+          "lCell": "T10R3C1",
+          "vCell": "T10R3C2"
+        },
+        {
+          "id": "49cbe1df",
+          "type": "yesno",
+          "label": "Levering altijd uit één batch",
+          "topic": "traceability",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "exclude",
+          "lCell": "T10R4C1",
+          "vCell": "T10R4C2"
+        },
+        {
+          "id": "3c366ca2",
+          "type": "yesno",
+          "label": "Meerdere batches aangegeven op pakbon",
+          "topic": "traceability",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "exclude",
+          "lCell": "T10R5C1",
+          "vCell": "T10R5C2"
+        },
+        {
+          "id": "f25327a7",
+          "type": "yesno",
+          "label": "Meerdere batches aangegeven op pallet",
+          "topic": "traceability",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "exclude",
+          "lCell": "T10R6C1",
+          "vCell": "T10R6C2"
+        }
+      ]
+    },
+    {
+      "title": "Geschiktheid verpakkingsmaterialen",
+      "topic": "packaging",
+      "rows": "11-11",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "505be321",
+          "type": "yesno",
+          "label": "Verpakkingen geschikt voor gebruik",
+          "topic": "packaging",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "exclude",
+          "lCell": "T11R2C1",
+          "vCell": "T11R2C2"
+        },
+        {
+          "id": "45aeeedc",
+          "type": "yesno",
+          "label": "Conformiteitverklaring beschikbaar",
+          "topic": "packaging",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "exclude",
+          "lCell": "T11R3C1",
+          "vCell": "T11R3C2"
+        },
+        {
+          "id": "56c0f52a",
+          "type": "yesno",
+          "label": "Migratietest beschikbaar",
+          "topic": "packaging",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "exclude",
+          "lCell": "T11R4C1",
+          "vCell": "T11R4C2"
+        }
+      ]
+    },
+    {
+      "title": "Beheersing van vreemde delen",
+      "topic": "other",
+      "rows": "12-12",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "4eea7f78",
+          "type": "yesno",
+          "label": "Glas- en breekbare materialen inspectie",
+          "topic": "food_safety",
+          "level": "standard",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "T12R2C1",
+          "vCell": "T12R2C2"
+        },
+        {
+          "id": "9a8d4a2a",
+          "type": "yesno",
+          "label": "Procedure bij breuk van glas",
+          "topic": "food_safety",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "exclude",
+          "lCell": "T12R3C1",
+          "vCell": "T12R3C2"
+        },
+        {
+          "id": "8af7e3b5",
+          "type": "text",
+          "label": "Acties bij breuk",
+          "value": "Er worden corrigerende maatregelen genomen bij afwijkingen in producten of processen. Deze omvatten het blokkeren van niet-conforme producten, het analyseren van de oorzaak, het implementeren van corrigerende maatregelen en het controleren van de effectiviteit ervan.",
+          "topic": "food_safety",
+          "level": "narrative",
+          "lang": "nl",
+          "destination": "answer_library",
+          "lCell": "T12R4C1",
+          "vCell": "T12R5C1"
+        },
+        {
+          "id": "037631e4",
+          "type": "choice",
+          "label": "Metaaldetector controle",
+          "value": "elke lijn",
+          "topic": "food_safety",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "answer_library",
+          "lCell": "T12R6C1",
+          "vCell": "T12R6C2"
+        },
+        {
+          "id": "16a61920",
+          "type": "field",
+          "label": "Metaaldetectie testgrootte Ferro (mm)",
+          "value": "2,0",
+          "topic": "food_safety",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "answer_library",
+          "lCell": "T12R7C1",
+          "vCell": "T12R7C2"
+        },
+        {
+          "id": "f3cc0bde",
+          "type": "field",
+          "label": "Metaaldetectie testgrootte Non ferro (mm)",
+          "value": "2,5",
+          "topic": "food_safety",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "T12R7C1",
+          "vCell": "T12R7C3"
+        },
+        {
+          "id": "6d63772e",
+          "type": "field",
+          "label": "Metaaldetectie testgrootte RVS (mm)",
+          "value": "3,0",
+          "topic": "food_safety",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "answer_library",
+          "lCell": "T12R7C1",
+          "vCell": "T12R7C4"
+        },
+        {
+          "id": "b84d5fa0",
+          "type": "choice",
+          "label": "X-ray controle",
+          "value": "elke lijn",
+          "topic": "food_safety",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "T12R8C1",
+          "vCell": "T12R8C2"
+        },
+        {
+          "id": "f9ed2854",
+          "type": "text",
+          "label": "X-ray teststukken",
+          "topic": "food_safety",
+          "level": "narrative",
+          "lang": "nl",
+          "destination": "exclude",
+          "lCell": "T12R9C1",
+          "vCell": "EMPTY"
+        },
+        {
+          "id": "24b53844",
+          "type": "yesno",
+          "label": "Zeven / filters aanwezig",
+          "topic": "food_safety",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "exclude",
+          "lCell": "T12R11C1",
+          "vCell": "T12R11C2"
+        },
+        {
+          "id": "cd34fa8c",
+          "type": "text",
+          "label": "Zeven / filters locatie en maaswijdte",
+          "value": "De zeef wordt slechts gebruikt bij vloeibare aroma productie, de maaswijdte van de zeef is 1,0 mm.",
+          "topic": "food_safety",
+          "level": "narrative",
+          "lang": "nl",
+          "destination": "answer_library",
+          "lCell": "T12R12C1",
+          "vCell": "T12R13C1"
+        },
+        {
+          "id": "3372a2d4",
+          "type": "text",
+          "label": "Andere methoden vreemde delen",
+          "topic": "food_safety",
+          "level": "narrative",
+          "lang": "nl",
+          "destination": "exclude",
+          "lCell": "T12R14C1",
+          "vCell": "EMPTY"
+        }
+      ]
+    },
+    {
+      "title": "Borging kritische grondstofgevaren",
+      "topic": "other",
+      "rows": "13-13",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "ae3d8598",
+          "type": "field",
+          "label": "Grondstof/ingrediënt Natural Flavour Type Vanilla, Sweet - Kritisch grondstofgevaar",
+          "value": "Vreemde delen",
+          "topic": "raw_materials",
+          "level": "product",
+          "lang": "nl",
+          "destination": "product",
+          "lCell": "T13R3C1",
+          "vCell": "T13R3C2"
+        },
+        {
+          "id": "e48819f7",
+          "type": "field",
+          "label": "Grondstof/ingrediënt Natural Flavour Type Vanilla, Sweet - Beheersmaatregel",
+          "value": "Zeef",
+          "topic": "raw_materials",
+          "level": "product",
+          "lang": "nl",
+          "destination": "product",
+          "lCell": "T13R3C1",
+          "vCell": "T13R3C3"
+        }
+      ]
+    },
+    {
+      "title": "Leveranciersverklaring",
+      "topic": "other",
+      "rows": "15-15",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "9bcc9a4a",
+          "type": "date",
+          "label": "Datum ondertekening",
+          "value": "02-02-2026",
+          "topic": "signature",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "answer_library",
+          "lCell": "T15R3C1",
+          "vCell": "T15R3C2"
+        },
+        {
+          "id": "965f43df",
+          "type": "field",
+          "label": "Naam ondertekenaar",
+          "value": "Annefleur Wijmans",
+          "topic": "signature",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "answer_library",
+          "lCell": "T15R4C1",
+          "vCell": "T15R4C2"
+        },
+        {
+          "id": "2e9f22e9",
+          "type": "field",
+          "label": "Functie ondertekenaar",
+          "value": "Quality",
+          "topic": "signature",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "answer_library",
+          "lCell": "T15R5C1",
+          "vCell": "T15R5C2"
+        },
+        {
+          "id": "35e8f986",
+          "type": "signature",
+          "label": "Handtekening",
+          "topic": "signature",
+          "level": "standard",
+          "destination": "exclude",
+          "lCell": "T15R6C1",
+          "vCell": "EMPTY"
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "total": 67,
+    "answered": 36,
+    "standard": 49,
+    "narrative": 14,
+    "product": 4
+  },
+  "sourceInfo": {
+    "evidenceId": 3799,
+    "evidenceName": "Ad van der Westen__INK-F-01a Leveranciersenquete_Strik signed_20260102.docx"
+  }
+}

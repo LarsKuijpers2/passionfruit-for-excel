@@ -1,0 +1,2189 @@
+{
+  "id": "d121576b",
+  "source": "149.02044_10070080_Rohwarenspezifikation_Strik_20260127 (1).pdf",
+  "indexed": "2026-02-12",
+  "language": "en",
+  "sections": [
+    {
+      "title": "Supplier Information",
+      "topic": "other",
+      "rows": "1-8",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "539b79cf",
+          "type": "field",
+          "label": "Supplier",
+          "value": "Strik bv",
+          "topic": "company",
+          "level": "standard",
+          "destination": "answer_library",
+          "lCell": "A1",
+          "vCell": "B1"
+        },
+        {
+          "id": "47e3c784",
+          "type": "field",
+          "label": "Address",
+          "value": "Bramenberg 19, 3755 BV Eemnes",
+          "topic": "company",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "C1",
+          "vCell": "D1"
+        },
+        {
+          "id": "46f407d9",
+          "type": "field",
+          "label": "Person to contact",
+          "value": "Mrs Mariska Jansen",
+          "topic": "company",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A2",
+          "vCell": "B2"
+        },
+        {
+          "id": "57ed5290",
+          "type": "field",
+          "label": "Country",
+          "value": "Netherlands",
+          "topic": "company",
+          "level": "standard",
+          "destination": "answer_library",
+          "lCell": "C2",
+          "vCell": "D2"
+        },
+        {
+          "id": "53105dbf",
+          "type": "field",
+          "label": "e-mail",
+          "value": "sales@tastestrik.nl",
+          "topic": "company",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A3",
+          "vCell": "B3"
+        },
+        {
+          "id": "d6339778",
+          "type": "field",
+          "label": "Phone No.",
+          "value": "+31 (0)355380107",
+          "topic": "company",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A4",
+          "vCell": "A4"
+        },
+        {
+          "id": "6e5e9caa",
+          "type": "field",
+          "label": "Fax",
+          "topic": "company",
+          "level": "standard",
+          "destination": "exclude",
+          "lCell": "A4",
+          "vCell": "B4"
+        },
+        {
+          "id": "74da18a6",
+          "type": "field",
+          "label": "EU-registration-No.",
+          "topic": "company",
+          "level": "standard",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A5",
+          "vCell": "B5"
+        },
+        {
+          "id": "d431b71b",
+          "type": "field",
+          "label": "24/7 crisis phone no.",
+          "value": "See www.tastestrik.nl (emergency contact details)",
+          "topic": "company",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A6",
+          "vCell": "B6"
+        },
+        {
+          "id": "3700d001",
+          "type": "field",
+          "label": "supplier's article no.",
+          "value": "Strik art.no. 149.02044",
+          "topic": "company",
+          "level": "product",
+          "lang": "en",
+          "destination": "product",
+          "lCell": "A7",
+          "vCell": "B7"
+        },
+        {
+          "id": "4217e795",
+          "type": "field",
+          "label": "Product name/ Sales name",
+          "value": "Natural Flavour Type Butter",
+          "topic": "company",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "A8",
+          "vCell": "B8"
+        }
+      ]
+    },
+    {
+      "title": "Manufacturer Information",
+      "topic": "other",
+      "rows": "9-13",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "4cdc1a83",
+          "type": "field",
+          "label": "Manufacturer",
+          "value": "Strik bv",
+          "topic": "company",
+          "level": "standard",
+          "lang": "de",
+          "destination": "answer_library",
+          "lCell": "A9",
+          "vCell": "B9"
+        },
+        {
+          "id": "f34a4662",
+          "type": "field",
+          "label": "Address",
+          "value": "Bramenberg 19, 3755 BV Eemnes",
+          "topic": "company",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "C9",
+          "vCell": "D9"
+        },
+        {
+          "id": "f579f0b5",
+          "type": "field",
+          "label": "Person to contact",
+          "value": "Mrs Mariska Jansen",
+          "topic": "company",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A10",
+          "vCell": "B10"
+        },
+        {
+          "id": "ebb69f75",
+          "type": "field",
+          "label": "Country",
+          "value": "Netherlands",
+          "topic": "company",
+          "level": "standard",
+          "destination": "answer_library",
+          "lCell": "C10",
+          "vCell": "D10"
+        },
+        {
+          "id": "1ee61284",
+          "type": "field",
+          "label": "E-mail",
+          "value": "sales@tastestrik.nl",
+          "topic": "company",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A11",
+          "vCell": "C11"
+        },
+        {
+          "id": "fbcdf791",
+          "type": "field",
+          "label": "Phone No.",
+          "value": "+31 (0)355380107",
+          "topic": "company",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A12",
+          "vCell": "B12"
+        },
+        {
+          "id": "ae419ca1",
+          "type": "field",
+          "label": "24/7 crisis phone no.",
+          "value": "See www.tastestrik.nl (emergency contact details)",
+          "topic": "company",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A13",
+          "vCell": "B13"
+        }
+      ]
+    },
+    {
+      "title": "Organoleptic Description",
+      "topic": "other",
+      "rows": "15-18",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "abbb4ba5",
+          "type": "field",
+          "label": "Geruch / Smell",
+          "value": "characteristic",
+          "topic": "product",
+          "level": "narrative",
+          "lang": "de",
+          "destination": "answer_library",
+          "lCell": "A15",
+          "vCell": "B15"
+        },
+        {
+          "id": "55db2b3b",
+          "type": "field",
+          "label": "Geschmack / Taste",
+          "value": "characteristic",
+          "topic": "product",
+          "level": "narrative",
+          "lang": "de",
+          "destination": "answer_library",
+          "lCell": "A16",
+          "vCell": "B16"
+        },
+        {
+          "id": "16eae4f9",
+          "type": "field",
+          "label": "Aussehen / Appearance",
+          "value": "clear liquid",
+          "topic": "product",
+          "level": "narrative",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A17",
+          "vCell": "B17"
+        },
+        {
+          "id": "b2337b34",
+          "type": "field",
+          "label": "Konsistenz / Texture",
+          "value": "liquid",
+          "topic": "product",
+          "level": "narrative",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A18",
+          "vCell": "B18"
+        }
+      ]
+    },
+    {
+      "title": "Ingredient Specifications",
+      "topic": "formula_composition",
+      "rows": "19-47",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "a7173bb9",
+          "type": "field",
+          "label": "Specific name of the ingredient",
+          "value": "Natural Flavouring",
+          "topic": "ingredients",
+          "level": "product",
+          "lang": "en",
+          "destination": "product",
+          "lCell": "A19",
+          "vCell": "A20"
+        },
+        {
+          "id": "e3c9dc88",
+          "type": "field",
+          "label": "Part in %",
+          "value": "100",
+          "topic": "ingredients",
+          "level": "product",
+          "destination": "product",
+          "lCell": "D19",
+          "vCell": "D20"
+        },
+        {
+          "id": "5fb34109",
+          "type": "field",
+          "label": "Raw material base",
+          "value": "various",
+          "topic": "ingredients",
+          "level": "product",
+          "lang": "en",
+          "destination": "product",
+          "lCell": "F19",
+          "vCell": "F20"
+        },
+        {
+          "id": "fa48e14c",
+          "type": "field",
+          "label": "Description (Regulation (EC) 1334/2008)",
+          "value": "ame (Regulation (EC) 1334/2008): Natural Flav",
+          "topic": "ingredients",
+          "level": "product",
+          "lang": "en",
+          "destination": "product",
+          "lCell": "B40",
+          "vCell": "B41"
+        },
+        {
+          "id": "89c6324b",
+          "type": "yesno",
+          "label": "USA-Suitability",
+          "value": "Yes",
+          "topic": "ingredients",
+          "level": "standard",
+          "destination": "answer_library",
+          "lCell": "C40",
+          "vCell": "C41"
+        },
+        {
+          "id": "0bc0d78c",
+          "type": "field",
+          "label": "US-Notation",
+          "value": "Natural Flavor",
+          "topic": "ingredients",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "D40",
+          "vCell": "D41"
+        },
+        {
+          "id": "8903c626",
+          "type": "field",
+          "label": "Which carriers?",
+          "value": "triacetin",
+          "topic": "ingredients",
+          "level": "product",
+          "lang": "en",
+          "destination": "product",
+          "lCell": "A45",
+          "vCell": "B45"
+        },
+        {
+          "id": "1c100656",
+          "type": "text",
+          "label": "Technical aids: Which kind and origin?",
+          "value": "no technical aids",
+          "topic": "ingredients",
+          "level": "product",
+          "lang": "en",
+          "destination": "product",
+          "lCell": "A47",
+          "vCell": "B47"
+        }
+      ]
+    },
+    {
+      "title": "Dosage Recommendations",
+      "topic": "other",
+      "rows": "49-50",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "af6debdd",
+          "type": "text",
+          "label": "Dosierungsempfehlung / Recommendation for dosage",
+          "topic": "product",
+          "level": "product",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A49"
+        },
+        {
+          "id": "088f6619",
+          "type": "text",
+          "label": "Anwendungshinweise / Information of application",
+          "topic": "product",
+          "level": "product",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A50"
+        }
+      ]
+    },
+    {
+      "title": "Nutritional Information",
+      "topic": "nutritional",
+      "rows": "52-68",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "9126062f",
+          "type": "choice",
+          "label": "Data source method",
+          "value": "analysed",
+          "topic": "nutrition",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A52",
+          "vCell": "B52"
+        },
+        {
+          "id": "05d8144c",
+          "type": "field",
+          "label": "Energy value (kJ)",
+          "value": "654",
+          "topic": "nutrition",
+          "level": "product",
+          "lang": "nl",
+          "destination": "product",
+          "lCell": "A53",
+          "vCell": "C53"
+        },
+        {
+          "id": "a14a6b4c",
+          "type": "field",
+          "label": "Energy value (kcal)",
+          "value": "149",
+          "topic": "nutrition",
+          "level": "product",
+          "lang": "nl",
+          "destination": "product",
+          "lCell": "A54",
+          "vCell": "C54"
+        },
+        {
+          "id": "b086ae63",
+          "type": "field",
+          "label": "Protein (g)",
+          "value": "0",
+          "topic": "nutrition",
+          "level": "product",
+          "destination": "product",
+          "lCell": "A55",
+          "vCell": "C55"
+        },
+        {
+          "id": "b8762234",
+          "type": "field",
+          "label": "Total Fat (g)",
+          "value": "0",
+          "topic": "nutrition",
+          "level": "product",
+          "destination": "product",
+          "lCell": "A56",
+          "vCell": "C56"
+        },
+        {
+          "id": "569beb6d",
+          "type": "field",
+          "label": "Alcohol (%)",
+          "value": "0",
+          "topic": "nutrition",
+          "level": "product",
+          "destination": "product",
+          "lCell": "E56",
+          "vCell": "G56"
+        },
+        {
+          "id": "3074ce62",
+          "type": "field",
+          "label": "Fibres (g)",
+          "value": "0",
+          "topic": "nutrition",
+          "level": "product",
+          "destination": "product",
+          "lCell": "E57",
+          "vCell": "F57"
+        },
+        {
+          "id": "66a2115c",
+          "type": "field",
+          "label": "Saturated fat (g)",
+          "value": "0",
+          "topic": "nutrition",
+          "level": "product",
+          "destination": "product",
+          "lCell": "A58",
+          "vCell": "B58"
+        },
+        {
+          "id": "361123a0",
+          "type": "field",
+          "label": "Salt (g)",
+          "value": "0",
+          "topic": "nutrition",
+          "level": "product",
+          "destination": "product",
+          "lCell": "E60",
+          "vCell": "F60"
+        },
+        {
+          "id": "4447fe41",
+          "type": "field",
+          "label": "Total carbohydrates (g)",
+          "value": "0",
+          "topic": "nutrition",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "A63",
+          "vCell": "B63"
+        },
+        {
+          "id": "3e840339",
+          "type": "field",
+          "label": "Sugars (g)",
+          "value": "0",
+          "topic": "nutrition",
+          "level": "product",
+          "destination": "product",
+          "lCell": "A66",
+          "vCell": "D66"
+        },
+        {
+          "id": "99de503c",
+          "type": "field",
+          "label": "Added sugar (g)",
+          "value": "0",
+          "topic": "nutrition",
+          "level": "product",
+          "destination": "product",
+          "lCell": "A68",
+          "vCell": "B68"
+        }
+      ]
+    },
+    {
+      "title": "Special Dietary Properties",
+      "topic": "other",
+      "rows": "69-75",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "21805359",
+          "type": "yesno",
+          "label": "Vegetarian",
+          "value": "Yes",
+          "topic": "product",
+          "level": "standard",
+          "destination": "answer_library",
+          "lCell": "A69",
+          "vCell": "B69"
+        },
+        {
+          "id": "287911fe",
+          "type": "yesno",
+          "label": "Vegan",
+          "value": "Yes",
+          "topic": "product",
+          "level": "standard",
+          "destination": "answer_library",
+          "lCell": "A70",
+          "vCell": "B70"
+        },
+        {
+          "id": "8e6517b5",
+          "type": "yesno",
+          "label": "Celiac disease",
+          "value": "No",
+          "topic": "product",
+          "level": "standard",
+          "destination": "answer_library",
+          "lCell": "A71",
+          "vCell": "B71"
+        },
+        {
+          "id": "3f491fcc",
+          "type": "field",
+          "label": "Gluten content",
+          "topic": "product",
+          "level": "standard",
+          "destination": "exclude",
+          "lCell": "C71",
+          "vCell": "C71"
+        },
+        {
+          "id": "c7d7c3f3",
+          "type": "yesno",
+          "label": "Kosher",
+          "value": "Yes",
+          "topic": "product",
+          "level": "standard",
+          "destination": "answer_library",
+          "lCell": "A72",
+          "vCell": "B72"
+        },
+        {
+          "id": "c7a2e470",
+          "type": "yesno",
+          "label": "Halal",
+          "value": "Yes",
+          "topic": "product",
+          "level": "standard",
+          "destination": "answer_library",
+          "lCell": "A73",
+          "vCell": "B73"
+        },
+        {
+          "id": "5ab0f724",
+          "type": "yesno",
+          "label": "Organic",
+          "value": "No",
+          "topic": "product",
+          "level": "standard",
+          "destination": "answer_library",
+          "lCell": "A74",
+          "vCell": "B74"
+        },
+        {
+          "id": "96e42660",
+          "type": "yesno",
+          "label": "Dairy free",
+          "value": "Yes",
+          "topic": "product",
+          "level": "standard",
+          "destination": "answer_library",
+          "lCell": "A75",
+          "vCell": "B75"
+        },
+        {
+          "id": "6403bbe7",
+          "type": "field",
+          "label": "Lactose content",
+          "topic": "product",
+          "level": "standard",
+          "destination": "exclude",
+          "lCell": "C75",
+          "vCell": "C75"
+        }
+      ]
+    },
+    {
+      "title": "Allergen Information",
+      "topic": "allergens",
+      "rows": "84-100",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "160b93d6",
+          "type": "yesno",
+          "label": "Cereals containing gluten present",
+          "value": "No",
+          "topic": "allergens",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "A84",
+          "vCell": "B84"
+        },
+        {
+          "id": "925b3846",
+          "type": "yesno",
+          "label": "Cereals containing gluten cross contamination possible",
+          "value": "No",
+          "topic": "allergens",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "A84",
+          "vCell": "D84"
+        },
+        {
+          "id": "e87222ab",
+          "type": "yesno",
+          "label": "Cereals containing gluten absent in company",
+          "value": "Yes",
+          "topic": "allergens",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A84",
+          "vCell": "E84"
+        },
+        {
+          "id": "f188e756",
+          "type": "yesno",
+          "label": "Can gluten limit <20ppm be guaranteed",
+          "value": "Yes",
+          "topic": "allergens",
+          "level": "product",
+          "lang": "de",
+          "destination": "product",
+          "lCell": "A85",
+          "vCell": "B85"
+        },
+        {
+          "id": "c4d6b890",
+          "type": "yesno",
+          "label": "Crustaceans present",
+          "value": "No",
+          "topic": "allergens",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "A86",
+          "vCell": "B86"
+        },
+        {
+          "id": "7807ae65",
+          "type": "yesno",
+          "label": "Crustaceans cross contamination possible",
+          "value": "No",
+          "topic": "allergens",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "A86",
+          "vCell": "D86"
+        },
+        {
+          "id": "9e7ea89a",
+          "type": "yesno",
+          "label": "Crustaceans absent in company",
+          "value": "Yes",
+          "topic": "allergens",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A86",
+          "vCell": "E86"
+        },
+        {
+          "id": "879914f3",
+          "type": "yesno",
+          "label": "Eggs present",
+          "value": "No",
+          "topic": "allergens",
+          "level": "product",
+          "destination": "product",
+          "lCell": "A87",
+          "vCell": "B87"
+        },
+        {
+          "id": "692b3ef2",
+          "type": "yesno",
+          "label": "Eggs cross contamination possible",
+          "value": "No",
+          "topic": "allergens",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "A87",
+          "vCell": "D87"
+        },
+        {
+          "id": "6c6913e9",
+          "type": "yesno",
+          "label": "Eggs absent in company",
+          "value": "Yes",
+          "topic": "allergens",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A87",
+          "vCell": "E87"
+        },
+        {
+          "id": "0361eac1",
+          "type": "yesno",
+          "label": "Fish present",
+          "value": "No",
+          "topic": "allergens",
+          "level": "product",
+          "destination": "product",
+          "lCell": "A88",
+          "vCell": "B88"
+        },
+        {
+          "id": "5463c0dd",
+          "type": "yesno",
+          "label": "Fish cross contamination possible",
+          "value": "No",
+          "topic": "allergens",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "A88",
+          "vCell": "D88"
+        },
+        {
+          "id": "37c15757",
+          "type": "yesno",
+          "label": "Fish absent in company",
+          "value": "Yes",
+          "topic": "allergens",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A88",
+          "vCell": "E88"
+        },
+        {
+          "id": "f44e3759",
+          "type": "yesno",
+          "label": "Peanuts present",
+          "value": "No",
+          "topic": "allergens",
+          "level": "product",
+          "destination": "product",
+          "lCell": "A89",
+          "vCell": "B89"
+        },
+        {
+          "id": "ee28cbfc",
+          "type": "yesno",
+          "label": "Peanuts cross contamination possible",
+          "value": "No",
+          "topic": "allergens",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "A89",
+          "vCell": "D89"
+        },
+        {
+          "id": "d40cfea3",
+          "type": "yesno",
+          "label": "Peanuts absent in company",
+          "value": "Yes",
+          "topic": "allergens",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A89",
+          "vCell": "E89"
+        },
+        {
+          "id": "f1a32395",
+          "type": "yesno",
+          "label": "Soybeans present",
+          "value": "No",
+          "topic": "allergens",
+          "level": "product",
+          "destination": "product",
+          "lCell": "A90",
+          "vCell": "B90"
+        },
+        {
+          "id": "62851e8d",
+          "type": "yesno",
+          "label": "Soybeans cross contamination possible",
+          "value": "No",
+          "topic": "allergens",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "A90",
+          "vCell": "D90"
+        },
+        {
+          "id": "da4d4d08",
+          "type": "yesno",
+          "label": "Soybeans absent in company",
+          "value": "Yes",
+          "topic": "allergens",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A90",
+          "vCell": "E90"
+        },
+        {
+          "id": "d6cb2bdc",
+          "type": "yesno",
+          "label": "Milk present",
+          "value": "No",
+          "topic": "allergens",
+          "level": "product",
+          "destination": "product",
+          "lCell": "A91",
+          "vCell": "B91"
+        },
+        {
+          "id": "089a6a95",
+          "type": "yesno",
+          "label": "Milk cross contamination possible",
+          "value": "No",
+          "topic": "allergens",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "A91",
+          "vCell": "D91"
+        },
+        {
+          "id": "58a8696f",
+          "type": "yesno",
+          "label": "Milk absent in company",
+          "value": "Yes",
+          "topic": "allergens",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A91",
+          "vCell": "E91"
+        },
+        {
+          "id": "ba07197b",
+          "type": "yesno",
+          "label": "Tree nuts present",
+          "value": "No",
+          "topic": "allergens",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "A92",
+          "vCell": "B92"
+        },
+        {
+          "id": "a4c5a14a",
+          "type": "yesno",
+          "label": "Tree nuts cross contamination possible",
+          "value": "No",
+          "topic": "allergens",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "A92",
+          "vCell": "D92"
+        },
+        {
+          "id": "347c375c",
+          "type": "yesno",
+          "label": "Tree nuts absent in company",
+          "value": "Yes",
+          "topic": "allergens",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A92",
+          "vCell": "E92"
+        },
+        {
+          "id": "a2edffaf",
+          "type": "yesno",
+          "label": "Celery present",
+          "value": "No",
+          "topic": "allergens",
+          "level": "product",
+          "destination": "product",
+          "lCell": "A93",
+          "vCell": "B93"
+        },
+        {
+          "id": "b1b99a7b",
+          "type": "yesno",
+          "label": "Celery cross contamination possible",
+          "value": "No",
+          "topic": "allergens",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "A93",
+          "vCell": "D93"
+        },
+        {
+          "id": "abab4d9d",
+          "type": "yesno",
+          "label": "Celery absent in company",
+          "value": "Yes",
+          "topic": "allergens",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A93",
+          "vCell": "E93"
+        },
+        {
+          "id": "88c33a4d",
+          "type": "yesno",
+          "label": "Mustard present",
+          "value": "No",
+          "topic": "allergens",
+          "level": "product",
+          "destination": "product",
+          "lCell": "A94",
+          "vCell": "B94"
+        },
+        {
+          "id": "415310cb",
+          "type": "yesno",
+          "label": "Mustard cross contamination possible",
+          "value": "No",
+          "topic": "allergens",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "A94",
+          "vCell": "D94"
+        },
+        {
+          "id": "cba4bbe0",
+          "type": "yesno",
+          "label": "Mustard absent in company",
+          "value": "Yes",
+          "topic": "allergens",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A94",
+          "vCell": "E94"
+        },
+        {
+          "id": "c9597410",
+          "type": "yesno",
+          "label": "Sesame seeds present",
+          "value": "No",
+          "topic": "allergens",
+          "level": "product",
+          "lang": "en",
+          "destination": "product",
+          "lCell": "A95",
+          "vCell": "B95"
+        },
+        {
+          "id": "b2fbf932",
+          "type": "yesno",
+          "label": "Sesame seeds cross contamination possible",
+          "value": "No",
+          "topic": "allergens",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "A95",
+          "vCell": "D95"
+        },
+        {
+          "id": "05c0249d",
+          "type": "yesno",
+          "label": "Sesame seeds absent in company",
+          "value": "Yes",
+          "topic": "allergens",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A95",
+          "vCell": "E95"
+        },
+        {
+          "id": "800205c7",
+          "type": "yesno",
+          "label": "Sulphur dioxide and sulphites present",
+          "value": "No",
+          "topic": "allergens",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "A96",
+          "vCell": "B96"
+        },
+        {
+          "id": "0aa171e2",
+          "type": "yesno",
+          "label": "Sulphur dioxide and sulphites cross contamination possible",
+          "value": "No",
+          "topic": "allergens",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "A96",
+          "vCell": "D96"
+        },
+        {
+          "id": "55b479a5",
+          "type": "yesno",
+          "label": "Sulphur dioxide and sulphites absent in company",
+          "value": "Yes",
+          "topic": "allergens",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A96",
+          "vCell": "E96"
+        },
+        {
+          "id": "6b7b40a1",
+          "type": "field",
+          "label": "Sulphur dioxide concentration",
+          "value": "mg/kg",
+          "topic": "allergens",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "A98",
+          "vCell": "B98"
+        },
+        {
+          "id": "5200b3e6",
+          "type": "yesno",
+          "label": "Lupines present",
+          "value": "No",
+          "topic": "allergens",
+          "level": "product",
+          "destination": "product",
+          "lCell": "A99",
+          "vCell": "B99"
+        },
+        {
+          "id": "d259bc2e",
+          "type": "yesno",
+          "label": "Lupines cross contamination possible",
+          "value": "No",
+          "topic": "allergens",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "A99",
+          "vCell": "C99"
+        },
+        {
+          "id": "65057dee",
+          "type": "yesno",
+          "label": "Lupines absent in company",
+          "value": "Yes",
+          "topic": "allergens",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A99",
+          "vCell": "D99"
+        },
+        {
+          "id": "408e952a",
+          "type": "yesno",
+          "label": "Mollusc present",
+          "value": "No",
+          "topic": "allergens",
+          "level": "product",
+          "destination": "product",
+          "lCell": "A100",
+          "vCell": "B100"
+        },
+        {
+          "id": "a1254399",
+          "type": "yesno",
+          "label": "Mollusc cross contamination possible",
+          "value": "No",
+          "topic": "allergens",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "A100",
+          "vCell": "C100"
+        },
+        {
+          "id": "8fcb41ba",
+          "type": "yesno",
+          "label": "Mollusc absent in company",
+          "value": "Yes",
+          "topic": "allergens",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A100",
+          "vCell": "D100"
+        }
+      ]
+    },
+    {
+      "title": "Packaging Information",
+      "topic": "packaging",
+      "rows": "102-106",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "31edc51d",
+          "type": "choice",
+          "label": "Verpackungsart / Type of packaging",
+          "value": "HDPE can",
+          "topic": "packaging",
+          "level": "product",
+          "lang": "nl",
+          "destination": "product",
+          "lCell": "A102",
+          "vCell": "B102"
+        },
+        {
+          "id": "fc24f7d3",
+          "type": "field",
+          "label": "Gebindegröße / Size of package",
+          "value": "10 kg nett.",
+          "topic": "packaging",
+          "level": "product",
+          "lang": "nl",
+          "destination": "product",
+          "lCell": "A103",
+          "vCell": "B103"
+        },
+        {
+          "id": "865db2f1",
+          "type": "field",
+          "label": "Partienkennzeichnung / Marking of packing unit",
+          "topic": "packaging",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "exclude",
+          "lCell": "A104"
+        },
+        {
+          "id": "155ae8d4",
+          "type": "field",
+          "label": "Mindesthaltbarkeit / Shelf life",
+          "value": "24 months",
+          "topic": "packaging",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "A105",
+          "vCell": "B105"
+        },
+        {
+          "id": "8c6db243",
+          "type": "field",
+          "label": "Restlaufzeit bei Anlieferung / Residual term on delivery",
+          "value": "16 months",
+          "topic": "packaging",
+          "level": "product",
+          "lang": "de",
+          "destination": "product",
+          "lCell": "A106",
+          "vCell": "B106"
+        }
+      ]
+    },
+    {
+      "title": "Storage and Transport Conditions",
+      "topic": "storage_transport",
+      "rows": "107-114",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "1bc79394",
+          "type": "field",
+          "label": "Storing conditions temperature (°C)",
+          "value": "8-15℃",
+          "topic": "logistics",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "A107",
+          "vCell": "B107"
+        },
+        {
+          "id": "0287d233",
+          "type": "field",
+          "label": "Storing conditions relative humidity (%)",
+          "value": "< 70% rh",
+          "topic": "logistics",
+          "level": "product",
+          "lang": "en",
+          "destination": "product",
+          "lCell": "A108",
+          "vCell": "A108"
+        },
+        {
+          "id": "4c51aee4",
+          "type": "field",
+          "label": "Transport conditions temperature",
+          "value": "ambient",
+          "topic": "logistics",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "A109",
+          "vCell": "B109"
+        },
+        {
+          "id": "38342f81",
+          "type": "field",
+          "label": "Water content",
+          "value": "not available",
+          "topic": "logistics",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "A113",
+          "vCell": "B113"
+        },
+        {
+          "id": "cc90dec6",
+          "type": "field",
+          "label": "Dry substance content",
+          "value": "not applicabe",
+          "topic": "logistics",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "A114",
+          "vCell": "B114"
+        }
+      ]
+    },
+    {
+      "title": "Microbiological Standards",
+      "topic": "microbiological",
+      "rows": "118-129",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "f76c2475",
+          "type": "field",
+          "label": "Total number of germs",
+          "value": "< 5000",
+          "topic": "microbiology",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A118",
+          "vCell": "B118"
+        },
+        {
+          "id": "3d3ae5c8",
+          "type": "field",
+          "label": "Enterobacteriaceae",
+          "topic": "microbiology",
+          "level": "standard",
+          "destination": "exclude",
+          "lCell": "A119",
+          "vCell": "B119"
+        },
+        {
+          "id": "f0f0eebe",
+          "type": "field",
+          "label": "Coliform germs",
+          "topic": "microbiology",
+          "level": "standard",
+          "destination": "exclude",
+          "lCell": "A120",
+          "vCell": "B120"
+        },
+        {
+          "id": "724bd1d8",
+          "type": "field",
+          "label": "Escherichia coli",
+          "value": "negative",
+          "topic": "microbiology",
+          "level": "standard",
+          "lang": "de",
+          "destination": "answer_library",
+          "lCell": "A121",
+          "vCell": "B121"
+        },
+        {
+          "id": "7e1e1cff",
+          "type": "field",
+          "label": "Yeast, mould",
+          "value": ".00 (yeast), <100 (moul",
+          "topic": "microbiology",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A122",
+          "vCell": "B122"
+        },
+        {
+          "id": "22f2fc6d",
+          "type": "field",
+          "label": "Salmonella [in 25 g]",
+          "value": "Negative (cfu/25 g",
+          "topic": "microbiology",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A123",
+          "vCell": "B123"
+        },
+        {
+          "id": "b29d605c",
+          "type": "field",
+          "label": "Listeria monocytogenes [in 25 g]",
+          "topic": "microbiology",
+          "level": "standard",
+          "lang": "de",
+          "destination": "exclude",
+          "lCell": "A124",
+          "vCell": "B124"
+        },
+        {
+          "id": "c225e3b7",
+          "type": "field",
+          "label": "Staphylococcus areus",
+          "topic": "microbiology",
+          "level": "standard",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A125",
+          "vCell": "B125"
+        },
+        {
+          "id": "4a9e872b",
+          "type": "field",
+          "label": "Bacillus cereus",
+          "topic": "microbiology",
+          "level": "standard",
+          "destination": "exclude",
+          "lCell": "A126",
+          "vCell": "B126"
+        },
+        {
+          "id": "07e2f8a8",
+          "type": "yesno",
+          "label": "Cumarin-Gehalt",
+          "value": "No",
+          "topic": "microbiology",
+          "level": "standard",
+          "destination": "answer_library",
+          "lCell": "A128",
+          "vCell": "B128"
+        },
+        {
+          "id": "cdbeedf7",
+          "type": "field",
+          "label": "Others",
+          "topic": "microbiology",
+          "level": "narrative",
+          "destination": "exclude",
+          "lCell": "A129",
+          "vCell": "B129"
+        }
+      ]
+    },
+    {
+      "title": "MOSH/MOAH Confirmation",
+      "topic": "other",
+      "rows": "132-135",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "f53f682f",
+          "type": "field",
+          "label": "MOSH amount - orientation value existent for product group",
+          "topic": "food_safety",
+          "level": "product",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A132",
+          "vCell": "C132"
+        },
+        {
+          "id": "618470e3",
+          "type": "field",
+          "label": "MOSH amount - no orientation value existent for product group yet",
+          "topic": "food_safety",
+          "level": "product",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A132",
+          "vCell": "F132"
+        },
+        {
+          "id": "a1622f2b",
+          "type": "text",
+          "label": "MOSH/MOAH remark",
+          "topic": "food_safety",
+          "level": "narrative",
+          "destination": "exclude",
+          "lCell": "A132",
+          "vCell": "G132"
+        },
+        {
+          "id": "952cc6ae",
+          "type": "yesno",
+          "label": "Confirmation of the ALB orientation value for MOSH",
+          "topic": "food_safety",
+          "level": "product",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A133",
+          "vCell": "A133"
+        },
+        {
+          "id": "33551608",
+          "type": "yesno",
+          "label": "Confirmation of the MOSH amount indicated",
+          "topic": "food_safety",
+          "level": "product",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "D133",
+          "vCell": "D133"
+        },
+        {
+          "id": "cd9d7b31",
+          "type": "yesno",
+          "label": "Confirmation of the ALB orientation value for MOAH",
+          "topic": "food_safety",
+          "level": "product",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A134",
+          "vCell": "A134"
+        },
+        {
+          "id": "f865a652",
+          "type": "yesno",
+          "label": "Confirmation of the MOAH amount indicated",
+          "topic": "food_safety",
+          "level": "product",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "D134",
+          "vCell": "D134"
+        },
+        {
+          "id": "ce6595a4",
+          "type": "yesno",
+          "label": "Measures for minimisation according to the BLL toolbox (MOSH)",
+          "topic": "food_safety",
+          "level": "product",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A135",
+          "vCell": "A135"
+        },
+        {
+          "id": "1f9f383d",
+          "type": "yesno",
+          "label": "Measures for minimisation according to the BLL toolbox (MOAH)",
+          "topic": "food_safety",
+          "level": "product",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "D135",
+          "vCell": "D135"
+        }
+      ]
+    },
+    {
+      "title": "Quality Systems and Certifications",
+      "topic": "certifications",
+      "rows": "137-153",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "16302173",
+          "type": "yesno",
+          "label": "Does the manufacturer obtain a GFSI accepted QM certification?",
+          "value": "Yes",
+          "topic": "quality_systems",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A137",
+          "vCell": "B137"
+        },
+        {
+          "id": "68ece1cc",
+          "type": "yesno",
+          "label": "IFS Food",
+          "value": "No",
+          "topic": "quality_systems",
+          "level": "standard",
+          "destination": "answer_library",
+          "lCell": "A138",
+          "vCell": "B138"
+        },
+        {
+          "id": "0529ef91",
+          "type": "yesno",
+          "label": "BRC",
+          "value": "Yes",
+          "topic": "quality_systems",
+          "level": "standard",
+          "destination": "answer_library",
+          "lCell": "A139",
+          "vCell": "B139"
+        },
+        {
+          "id": "691e5769",
+          "type": "yesno",
+          "label": "FSSC 22000",
+          "value": "No",
+          "topic": "quality_systems",
+          "level": "standard",
+          "destination": "answer_library",
+          "lCell": "A140",
+          "vCell": "B140"
+        },
+        {
+          "id": "ce10b055",
+          "type": "yesno",
+          "label": "Global GAP",
+          "value": "No",
+          "topic": "quality_systems",
+          "level": "standard",
+          "destination": "answer_library",
+          "lCell": "A141",
+          "vCell": "B141"
+        },
+        {
+          "id": "64c5efc8",
+          "type": "yesno",
+          "label": "ISO 14000",
+          "value": "No",
+          "topic": "quality_systems",
+          "level": "standard",
+          "destination": "answer_library",
+          "lCell": "A145",
+          "vCell": "B145"
+        },
+        {
+          "id": "1d027cce",
+          "type": "field",
+          "label": "Energy management system: If Yes, which one?",
+          "value": "No",
+          "topic": "quality_systems",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A146",
+          "vCell": "B146"
+        },
+        {
+          "id": "c0a62fa6",
+          "type": "yesno",
+          "label": "RAC Certified",
+          "value": "Yes",
+          "topic": "quality_systems",
+          "level": "standard",
+          "destination": "answer_library",
+          "lCell": "A147",
+          "vCell": "B147"
+        },
+        {
+          "id": "c8d8f932",
+          "type": "yesno",
+          "label": "RSPO",
+          "value": "No",
+          "topic": "quality_systems",
+          "level": "standard",
+          "destination": "answer_library",
+          "lCell": "A148",
+          "vCell": "B148"
+        },
+        {
+          "id": "cf202e6e",
+          "type": "yesno",
+          "label": "Organic certification",
+          "value": "Yes",
+          "topic": "quality_systems",
+          "level": "product",
+          "lang": "en",
+          "destination": "product",
+          "lCell": "A151",
+          "vCell": "B151"
+        },
+        {
+          "id": "67a6a9fd",
+          "type": "yesno",
+          "label": "Kosher certificate available?",
+          "value": "Yes",
+          "topic": "quality_systems",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "A152",
+          "vCell": "B152"
+        },
+        {
+          "id": "278f25ec",
+          "type": "yesno",
+          "label": "Halal certificate available?",
+          "value": "Yes",
+          "topic": "quality_systems",
+          "level": "product",
+          "lang": "en",
+          "destination": "product",
+          "lCell": "A153",
+          "vCell": "B153"
+        }
+      ]
+    },
+    {
+      "title": "Physical Contamination Protection",
+      "topic": "contaminants",
+      "rows": "158-165",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "6c4074f8",
+          "type": "yesno",
+          "label": "Metal detection - Present?",
+          "topic": "food_safety",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "exclude",
+          "lCell": "A158",
+          "vCell": "B158"
+        },
+        {
+          "id": "f2be8585",
+          "type": "field",
+          "label": "Metal detection - Detection limit Fe",
+          "topic": "food_safety",
+          "level": "product",
+          "lang": "fr",
+          "destination": "exclude",
+          "lCell": "C158",
+          "vCell": "C158"
+        },
+        {
+          "id": "600ddbc3",
+          "type": "field",
+          "label": "Metal detection - Step of process",
+          "topic": "food_safety",
+          "level": "standard",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A158",
+          "vCell": "D158"
+        },
+        {
+          "id": "9a6b9a07",
+          "type": "field",
+          "label": "Metal detection - Detection limit Non-Fe",
+          "topic": "food_safety",
+          "level": "product",
+          "lang": "fr",
+          "destination": "exclude",
+          "lCell": "A159",
+          "vCell": "C159"
+        },
+        {
+          "id": "417c6322",
+          "type": "field",
+          "label": "Metal detection - Detection limit VA/SS",
+          "topic": "food_safety",
+          "level": "product",
+          "lang": "fr",
+          "destination": "exclude",
+          "lCell": "A160",
+          "vCell": "C160"
+        },
+        {
+          "id": "3eb65aea",
+          "type": "yesno",
+          "label": "Permanent magnet - Present?",
+          "topic": "food_safety",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "exclude",
+          "lCell": "A161",
+          "vCell": "B161"
+        },
+        {
+          "id": "f2851d7c",
+          "type": "field",
+          "label": "Permanent magnet - Detection limit",
+          "topic": "food_safety",
+          "level": "product",
+          "lang": "fr",
+          "destination": "exclude",
+          "lCell": "A161",
+          "vCell": "C161"
+        },
+        {
+          "id": "b4340db4",
+          "type": "field",
+          "label": "Permanent magnet - Step of process",
+          "topic": "food_safety",
+          "level": "standard",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A161",
+          "vCell": "D161"
+        },
+        {
+          "id": "9903c5d4",
+          "type": "yesno",
+          "label": "X-ray - Present?",
+          "topic": "food_safety",
+          "level": "standard",
+          "destination": "exclude",
+          "lCell": "A162",
+          "vCell": "B162"
+        },
+        {
+          "id": "58de86a3",
+          "type": "field",
+          "label": "X-ray - Detection limit",
+          "topic": "food_safety",
+          "level": "product",
+          "lang": "fr",
+          "destination": "exclude",
+          "lCell": "A162",
+          "vCell": "C162"
+        },
+        {
+          "id": "3c7578ab",
+          "type": "field",
+          "label": "X-ray - Step of process",
+          "topic": "food_safety",
+          "level": "standard",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A162",
+          "vCell": "D162"
+        },
+        {
+          "id": "0f999586",
+          "type": "yesno",
+          "label": "Sieves - Present?",
+          "value": "Yes",
+          "topic": "food_safety",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A163",
+          "vCell": "B163"
+        },
+        {
+          "id": "03f581fb",
+          "type": "field",
+          "label": "Sieves - Detection limit",
+          "topic": "food_safety",
+          "level": "product",
+          "lang": "fr",
+          "destination": "exclude",
+          "lCell": "A163",
+          "vCell": "C163"
+        },
+        {
+          "id": "9c94864c",
+          "type": "field",
+          "label": "Sieves - Step of process",
+          "topic": "food_safety",
+          "level": "standard",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A163",
+          "vCell": "D163"
+        },
+        {
+          "id": "db09ec17",
+          "type": "yesno",
+          "label": "Glass register (incl. Hard plastic) - Present?",
+          "value": "Yes",
+          "topic": "food_safety",
+          "level": "standard",
+          "lang": "de",
+          "destination": "answer_library",
+          "lCell": "A164",
+          "vCell": "B164"
+        },
+        {
+          "id": "e11f7df9",
+          "type": "field",
+          "label": "Glass register - Detection limit",
+          "topic": "food_safety",
+          "level": "product",
+          "lang": "fr",
+          "destination": "exclude",
+          "lCell": "A164",
+          "vCell": "C164"
+        },
+        {
+          "id": "6ce77819",
+          "type": "field",
+          "label": "Glass register - Step of process",
+          "topic": "food_safety",
+          "level": "standard",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A164",
+          "vCell": "D164"
+        },
+        {
+          "id": "df3f7321",
+          "type": "text",
+          "label": "Other installed protection - Which?",
+          "topic": "food_safety",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A165",
+          "vCell": "B165"
+        },
+        {
+          "id": "282dfd40",
+          "type": "field",
+          "label": "Other installed protection - Detection limit",
+          "topic": "food_safety",
+          "level": "product",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A165",
+          "vCell": "C165"
+        },
+        {
+          "id": "74e28d20",
+          "type": "field",
+          "label": "Other installed protection - Step of process",
+          "topic": "food_safety",
+          "level": "standard",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A165",
+          "vCell": "D165"
+        }
+      ]
+    },
+    {
+      "title": "Traceability and Food Contact Materials",
+      "topic": "contact_persons",
+      "rows": "169-170",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "7703d847",
+          "type": "yesno",
+          "label": "We guarantee a traceability of this product from the finished product including direct packaging material to the raw material",
+          "value": "Yes",
+          "topic": "traceability",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A169",
+          "vCell": "B169"
+        },
+        {
+          "id": "4c352ff0",
+          "type": "yesno",
+          "label": "Packaging material/transport containers are suitable for food and comply with Reg. (EC) No. 1935/2004",
+          "value": "Yes",
+          "topic": "traceability",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A170",
+          "vCell": "B170"
+        }
+      ]
+    },
+    {
+      "title": "GMO Declaration",
+      "topic": "gmo",
+      "rows": "172-179",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "7b514b85",
+          "type": "yesno",
+          "label": "The product above is a GMO or contains GMO (with the exception of the unintentional or technically unavoidable presence of GMO-material authorised in the EU < 0.9)?",
+          "value": "No",
+          "topic": "food_safety",
+          "level": "product",
+          "lang": "en",
+          "destination": "product",
+          "lCell": "A172",
+          "vCell": "B172"
+        },
+        {
+          "id": "3c2a0278",
+          "type": "yesno",
+          "label": "The product above is completely or partly produced from GMOs?",
+          "value": "No",
+          "topic": "food_safety",
+          "level": "product",
+          "lang": "en",
+          "destination": "product",
+          "lCell": "A173",
+          "vCell": "B173"
+        },
+        {
+          "id": "083c8822",
+          "type": "yesno",
+          "label": "The product above contains an ingredient/substance that is completely or partly produced from GMOs (with the exception of unintentional or technically unavoidable presence of GMO-material authorized in the EU < 0.9)?",
+          "value": "No",
+          "topic": "food_safety",
+          "level": "product",
+          "lang": "en",
+          "destination": "product",
+          "lCell": "A175",
+          "vCell": "B175"
+        },
+        {
+          "id": "aaaaec5f",
+          "type": "yesno",
+          "label": "Is the product above and/or an ingredient/substance produced with the aid of genetically modified microorganisms?",
+          "value": "No",
+          "topic": "food_safety",
+          "level": "product",
+          "lang": "en",
+          "destination": "product",
+          "lCell": "A178",
+          "vCell": "B178"
+        },
+        {
+          "id": "c637e7f7",
+          "type": "yesno",
+          "label": "Is the product above and/or an ingredient/substance produced with the aid of enzymes from genetically modified microorganisms?",
+          "value": "No",
+          "topic": "food_safety",
+          "level": "product",
+          "lang": "en",
+          "destination": "product",
+          "lCell": "A179",
+          "vCell": "B179"
+        }
+      ]
+    },
+    {
+      "title": "Supplier Signature Section",
+      "topic": "signature",
+      "rows": "180-182",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "f59cec6d",
+          "type": "field",
+          "label": "Supplier",
+          "value": "Strik bv",
+          "topic": "signature",
+          "level": "standard",
+          "destination": "answer_library",
+          "lCell": "A180",
+          "vCell": "B180"
+        },
+        {
+          "id": "8b587390",
+          "type": "date",
+          "label": "Place, date",
+          "value": "Eemnes, 27-1-2026",
+          "topic": "signature",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A181",
+          "vCell": "B181"
+        },
+        {
+          "id": "c45d7469",
+          "type": "signature",
+          "label": "Signature, stamp",
+          "value": "8 O TASTESTRIK @ Creators | Manufacturers | Distributors Strik bv | TasteStrik\" Bramenberg 19 3755 BV Eemnes, The Netherlands | T +31 (0)35 53 80 107 sales@tastestrik.nl | tastestrik.nl | VAT NL 8124.50.425B01 BRC CERTIFIED",
+          "topic": "signature",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A182",
+          "vCell": "B182"
+        }
+      ]
+    },
+    {
+      "title": "Quality Control Approval",
+      "topic": "quality_systems",
+      "rows": "183-184",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "77d05280",
+          "type": "field",
+          "label": "Coppenrath QS geprüft durch",
+          "topic": "approval",
+          "level": "standard",
+          "lang": "de",
+          "destination": "exclude",
+          "lCell": "A183"
+        },
+        {
+          "id": "308d46d7",
+          "type": "signature",
+          "label": "Unterschrift, Ort, Datum / Signature, place, date",
+          "topic": "approval",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "exclude",
+          "lCell": "A184",
+          "vCell": "A184"
+        },
+        {
+          "id": "b282fca5",
+          "type": "signature",
+          "label": "Unterschrift, Ort, Datum / Signature, place, date",
+          "topic": "approval",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "exclude",
+          "lCell": "B184",
+          "vCell": "B184"
+        }
+      ]
+    },
+    {
+      "title": "Revision Information",
+      "topic": "other",
+      "rows": "185-187",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "b9eff036",
+          "type": "text",
+          "label": "Grund für Revision",
+          "value": "Bedarf nach Abfrage von spezifischeren Informationen. Zusammenlegen von Spezifikationsabfrage und Lieferantenfragebogen.",
+          "topic": "documents",
+          "level": "narrative",
+          "lang": "de",
+          "destination": "answer_library",
+          "lCell": "A185",
+          "vCell": "B185"
+        },
+        {
+          "id": "4b70c639",
+          "type": "text",
+          "label": "Änderung",
+          "value": "Format des FB aktualisiert, Rohstoffgruppen aufgeteilt und mit spezifischen Abfragen angelegt, Lieferantenfragebogen eingefügt.",
+          "topic": "documents",
+          "level": "narrative",
+          "lang": "de",
+          "destination": "answer_library",
+          "lCell": "A186",
+          "vCell": "B186"
+        },
+        {
+          "id": "cd5373e7",
+          "type": "field",
+          "label": "Geändert durch",
+          "value": "D. Berthuis, J. Sandmann",
+          "topic": "documents",
+          "level": "standard",
+          "lang": "de",
+          "destination": "answer_library",
+          "lCell": "A187",
+          "vCell": "B187"
+        },
+        {
+          "id": "d0a6ce39",
+          "type": "field",
+          "label": "Geprüft durch",
+          "value": "J. Onken",
+          "topic": "documents",
+          "level": "standard",
+          "lang": "de",
+          "destination": "answer_library",
+          "lCell": "C187",
+          "vCell": "D187"
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "total": 176,
+    "answered": 133,
+    "standard": 83,
+    "narrative": 9,
+    "product": 84
+  },
+  "sourceInfo": {
+    "evidenceId": 3796,
+    "evidenceName": "149.02044_10070080_Rohwarenspezifikation_Strik_20260127 (1).pdf"
+  }
+}

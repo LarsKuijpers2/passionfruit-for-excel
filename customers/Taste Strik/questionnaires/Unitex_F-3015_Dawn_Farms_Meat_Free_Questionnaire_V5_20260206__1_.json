@@ -1,0 +1,1470 @@
+{
+  "source": {
+    "filename": "Unitex F-3015_Dawn Farms Meat Free Questionnaire V5_20260206 (1).pdf",
+    "filepath": "/Users/larskuijpers/repos/passionfruit-for-excel/customers/Taste Strik/incoming/Unitex F-3015_Dawn Farms Meat Free Questionnaire V5_20260206 (1).pdf",
+    "extractedAt": "2026-02-12T07:32:21.490Z",
+    "customer": "Unitex",
+    "documentType": "pdf",
+    "evidenceId": 3804,
+    "evidenceName": "Unitex F-3015_Dawn Farms Meat Free Questionnaire V5_20260206 (1).pdf"
+  },
+  "sheets": [
+    {
+      "name": "Document",
+      "index": 0,
+      "rows": [
+        {
+          "row": 1,
+          "cells": {
+            "A": {
+              "ref": "A1",
+              "value": "FARMS",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B1",
+              "value": "Note : Spreadsheet contains live formulas, please do not amend.",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 2,
+          "cells": {
+            "A": {
+              "ref": "A2",
+              "value": "Product Name",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B2",
+              "value": "Unitex F-3015",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 3,
+          "cells": {
+            "A": {
+              "ref": "A3",
+              "value": "Supplier",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B3",
+              "value": "Strik bv",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 4,
+          "cells": {
+            "A": {
+              "ref": "A4",
+              "value": "Date of Review",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B4",
+              "value": "6-2-2026",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 5,
+          "cells": {
+            "A": {
+              "ref": "A5",
+              "value": "Risk Rating",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 6,
+          "cells": {
+            "A": {
+              "ref": "A6",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B6",
+              "value": "Topic",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C6",
+              "value": "10",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D6",
+              "value": "5",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E6",
+              "value": "4",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F6",
+              "value": "3",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G6",
+              "value": "2",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H6",
+              "value": "1",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 7,
+          "cells": {
+            "A": {
+              "ref": "A7",
+              "value": "QUESTION A",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B7",
+              "value": "Meat & Meat Derivates on Site\"",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C7",
+              "value": "Same manufacturing line, same equipment with unvalidated cleaning segregation",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D7",
+              "value": "Same manufacturing line, same equipment with validated cleaning segregation",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E7",
+              "value": "Separate lines, some shared storage with validated cleaning segregation",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F7",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G7",
+              "value": "Separate lines, no shared equipment or storage areas or personnel",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H7",
+              "value": "No Animal or Animal Derivates on site ***",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 8,
+          "cells": {
+            "A": {
+              "ref": "A8",
+              "value": "QUESTION B",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B8",
+              "value": "Cleaning Controls",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C8",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D8",
+              "value": "Same cleaning equipment inc portable equipment, dishwasher etc for MF and MC ingredients where validation hasn't been carried out to show risk of cross contamination",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E8",
+              "value": "Separate portable cleaning equipment (brushes, buckets, cloths etc) but same dishwasher / tray wash as meal containing ingredients where validation hasn't been carried out to show risk of cross contamination",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F8",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G8",
+              "value": "Same cleaning equipment ine portable equipment, dishwasher etc between Meat Free and Meat containing ingredients but history of validation and verification that cross contamination doesn't occur",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H8",
+              "value": "No Animal or Animal Derivates site ***",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 9,
+          "cells": {
+            "A": {
+              "ref": "A9",
+              "value": "QUESTION C",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B9",
+              "value": "Suitability for Vegan or Vegetarian Status **",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C9",
+              "value": "Not suitable for Vegans or Vegetarians and no risk assessments or Segregation carried out.",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D9",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E9",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F9",
+              "value": "Site have completed risk assessments and have implemented segregation controls and validation to ensure Vegetarian Status can be complied with",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G9",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H9",
+              "value": "Site have completed risk assessments and have nplemented segregation controls and validations to ensure Vegan Status can be complied with",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 10,
+          "cells": {
+            "A": {
+              "ref": "A10",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B10",
+              "value": "Yes/No",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 11,
+          "cells": {
+            "A": {
+              "ref": "A11",
+              "value": "Does the product comply with above definition for suitable for vegetarians?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B11",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 12,
+          "cells": {
+            "A": {
+              "ref": "A12",
+              "value": "Does the product comply with above definition for suitable for vegan?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B12",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 13,
+          "cells": {
+            "A": {
+              "ref": "A13",
+              "value": "Ingredient",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B13",
+              "value": "Question A",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C13",
+              "value": "Question B",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "D": {
+              "ref": "D13",
+              "value": "Question C",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "E": {
+              "ref": "E13",
+              "value": "Overall Risk Rating",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "F": {
+              "ref": "F13",
+              "value": "Outcome (see below table)",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 14,
+          "cells": {
+            "A": {
+              "ref": "A14",
+              "value": "textured vegetable protein",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B14",
+              "value": "2",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C14",
+              "value": "2",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D14",
+              "value": "1",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E14",
+              "value": "5",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F14",
+              "value": "0-11 Self Assessment Questionnaire Sufficient",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 15,
+          "cells": {
+            "A": {
+              "ref": "A15",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B15",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C15",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D15",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E15",
+              "value": "0",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F15",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 16,
+          "cells": {
+            "A": {
+              "ref": "A16",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B16",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C16",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D16",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E16",
+              "value": "0",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F16",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 17,
+          "cells": {
+            "A": {
+              "ref": "A17",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B17",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C17",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D17",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E17",
+              "value": "0",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F17",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 18,
+          "cells": {
+            "A": {
+              "ref": "A18",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B18",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C18",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D18",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E18",
+              "value": "0",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F18",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 19,
+          "cells": {
+            "A": {
+              "ref": "A19",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B19",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C19",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D19",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E19",
+              "value": "0",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F19",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 20,
+          "cells": {
+            "A": {
+              "ref": "A20",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B20",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C20",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D20",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E20",
+              "value": "0",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F20",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 21,
+          "cells": {
+            "A": {
+              "ref": "A21",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B21",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C21",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D21",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E21",
+              "value": "0",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F21",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 22,
+          "cells": {
+            "A": {
+              "ref": "A22",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B22",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C22",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D22",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E22",
+              "value": "0",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F22",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 23,
+          "cells": {
+            "A": {
+              "ref": "A23",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B23",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C23",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D23",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E23",
+              "value": "0",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F23",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 24,
+          "cells": {
+            "A": {
+              "ref": "A24",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B24",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C24",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D24",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E24",
+              "value": "0",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F24",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 25,
+          "cells": {
+            "A": {
+              "ref": "A25",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B25",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C25",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D25",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E25",
+              "value": "0",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F25",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 26,
+          "cells": {
+            "A": {
+              "ref": "A26",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B26",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C26",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D26",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E26",
+              "value": "0",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F26",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 27,
+          "cells": {
+            "A": {
+              "ref": "A27",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B27",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C27",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D27",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E27",
+              "value": "0",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F27",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 28,
+          "cells": {
+            "A": {
+              "ref": "A28",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B28",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C28",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D28",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E28",
+              "value": "0",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F28",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 29,
+          "cells": {
+            "A": {
+              "ref": "A29",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B29",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C29",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D29",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E29",
+              "value": "0",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F29",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 30,
+          "cells": {
+            "A": {
+              "ref": "A30",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B30",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C30",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D30",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E30",
+              "value": "0",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F30",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 31,
+          "cells": {
+            "A": {
+              "ref": "A31",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B31",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C31",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D31",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E31",
+              "value": "0",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F31",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 32,
+          "cells": {
+            "A": {
+              "ref": "A32",
+              "value": "Outcome",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B32",
+              "value": "Brand Risk High - Consult with Technical Manager before progressing, audit maybe required depending on Risk Assessment",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C32",
+              "value": "25",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 33,
+          "cells": {
+            "A": {
+              "ref": "A33",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B33",
+              "value": "12-24",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 34,
+          "cells": {
+            "A": {
+              "ref": "A34",
+              "value": "Site to provide species Policy, cleaning validation",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B34",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 35,
+          "cells": {
+            "A": {
+              "ref": "A35",
+              "value": "Self Assessment Questionnaire Sufficient",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B35",
+              "value": "0-11",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        }
+      ],
+      "mergedRanges": [],
+      "topic": "Questionnaire",
+      "rowCount": 35,
+      "columnCount": 8,
+      "stats": {
+        "totalCells": 170,
+        "filledCells": 73,
+        "emptyRows": 0,
+        "mergedRanges": 0
+      }
+    }
+  ],
+  "stats": {
+    "totalSheets": 1,
+    "totalRows": 35,
+    "totalCells": 170,
+    "filledCells": 73
+  }
+}

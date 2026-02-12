@@ -1,0 +1,25 @@
+{
+  "evidenceId": 3802,
+  "evidenceUuid": "c48fe4a0-1cc2-4a82-871f-46102b83de2d",
+  "evidenceName": "Jimmy's_RF-014.11 Vragenlijst leverancier 22-05-2025_20260209.pdf",
+  "downloadedAt": "2026-02-12T07:09:44.824Z",
+  "classification": "",
+  "fileType": "pdf",
+  "metadata": {
+    "summary": "Supplier questionnaire for Jimmy Products BV to assess compliance.",
+    "type": "policies-and-procedures",
+    "entity": "Jimmy Products BV",
+    "reportingYear": "",
+    "issueDate": "2025-05-22",
+    "approvedByAuditor": "True",
+    "auditor": "DNV",
+    "expirationDate": "",
+    "subject": [
+      "Product and ingredients"
+    ],
+    "tags": [
+      "Product Responsibility",
+      "Product Information and Labeling"
+    ]
+  }
+}

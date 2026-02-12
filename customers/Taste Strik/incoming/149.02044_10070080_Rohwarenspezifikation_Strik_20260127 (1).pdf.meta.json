@@ -1,0 +1,25 @@
+{
+  "evidenceId": 3796,
+  "evidenceUuid": "b48efcd7-4e84-485a-9603-47ba2864ff6f",
+  "evidenceName": "149.02044_10070080_Rohwarenspezifikation_Strik_20260127 (1).pdf",
+  "downloadedAt": "2026-02-12T07:33:49.112Z",
+  "classification": "",
+  "fileType": "pdf",
+  "metadata": {
+    "summary": "Raw material specification for natural flavor butter, including supplier and product details.",
+    "type": "specification-sheet",
+    "entity": "Coppenrath Feingebäck GmbH",
+    "reportingYear": "",
+    "issueDate": "2023-12-15",
+    "approvedByAuditor": "False",
+    "auditor": "",
+    "expirationDate": "",
+    "subject": [
+      "Product and ingredients"
+    ],
+    "tags": [
+      "Product Responsibility",
+      "Product Information and Labeling"
+    ]
+  }
+}

@@ -1,0 +1,430 @@
+{
+  "id": "e0361558",
+  "source": "Euro Patisserie Apeldoorn_Vragenlijst leveranciers_20250610.pdf",
+  "indexed": "2026-02-11",
+  "language": "fr",
+  "sections": [
+    {
+      "title": "Supplier Information",
+      "topic": "other",
+      "rows": "1-6",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "e88829ea",
+          "type": "field",
+          "label": "Supplier Name",
+          "value": "Strik bv",
+          "topic": "company",
+          "level": "standard",
+          "lang": "de",
+          "destination": "answer_library",
+          "lCell": "A1",
+          "vCell": "B1"
+        },
+        {
+          "id": "ee2349c0",
+          "type": "field",
+          "label": "Address",
+          "value": "Bramenberg 19 3755 BV Eemnes",
+          "topic": "company",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A2",
+          "vCell": "B2"
+        },
+        {
+          "id": "58acae1b",
+          "type": "field",
+          "label": "Phone",
+          "value": "31(0)355380107",
+          "topic": "company",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A3",
+          "vCell": "B3"
+        },
+        {
+          "id": "46430c63",
+          "type": "field",
+          "label": "Email",
+          "value": "sales@tastestrik.nl",
+          "topic": "company",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A4",
+          "vCell": "B4"
+        },
+        {
+          "id": "e9b52000",
+          "type": "text",
+          "label": "Product List",
+          "value": "Strik Art. No. 095.00184 - Dark Chocolate Shavings thick - min. 50% cocoa (GRCHOCOL- SCHAAFSEL-DONKER) Strik Art. No. 203.00038 - Lemon Oil Cold Pressed Type California (GRaroma-citroen- TO)",
+          "topic": "product",
+          "level": "product",
+          "lang": "en",
+          "destination": "product",
+          "lCell": "A5",
+          "vCell": "B5"
+        },
+        {
+          "id": "d650e524",
+          "type": "text",
+          "label": "Product List (continued)",
+          "value": "Strik Art. No. 203.00067 - Lemon Oil Cold Pressed Type California (GRaroma-citroen- TO) Strik Art. No. 149.02108 - Natural Flavour Type Peanut, Roasted (GRaroma-pinda- natuurlijk) Strik Art. No. 149.03051 - Natural Flavour Type Coconut, Strong (GRaroma-kokos)",
+          "topic": "product",
+          "level": "product",
+          "lang": "en",
+          "destination": "product",
+          "lCell": "A6",
+          "vCell": "A6"
+        }
+      ]
+    },
+    {
+      "title": "Contact Persons - Supplier",
+      "topic": "contact_persons",
+      "rows": "8-10",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "4f3a4781",
+          "type": "field",
+          "label": "Sales Contact Name",
+          "value": "Charlotte Peterse",
+          "topic": "contacts",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A8",
+          "vCell": "B8"
+        },
+        {
+          "id": "0cab7c83",
+          "type": "field",
+          "label": "Sales Contact Phone",
+          "value": "31(0)355380107",
+          "topic": "contacts",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A8",
+          "vCell": "C8"
+        },
+        {
+          "id": "e041842a",
+          "type": "field",
+          "label": "Sales Contact Email",
+          "value": "sales@tastestrik.nl",
+          "topic": "contacts",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A8",
+          "vCell": "E8"
+        },
+        {
+          "id": "8d1dd40e",
+          "type": "field",
+          "label": "Quality Contact Name",
+          "value": "Petrus Lenes",
+          "topic": "contacts",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A9",
+          "vCell": "B9"
+        },
+        {
+          "id": "2aaabcfa",
+          "type": "field",
+          "label": "Quality Contact Phone",
+          "value": "31(0)355380107",
+          "topic": "contacts",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A9",
+          "vCell": "C9"
+        },
+        {
+          "id": "38d1ed49",
+          "type": "field",
+          "label": "Quality Contact Email",
+          "value": "gm@tastestrik.nl",
+          "topic": "contacts",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A9",
+          "vCell": "E9"
+        },
+        {
+          "id": "e13e53b5",
+          "type": "field",
+          "label": "Recall Contact Name (24h)",
+          "value": "Hans Visser / Maarten Oosterloo",
+          "topic": "crisis",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A10",
+          "vCell": "B10"
+        },
+        {
+          "id": "e0610288",
+          "type": "field",
+          "label": "Recall Contact Phone (24h)",
+          "value": "31(0)630759159 / 31(0)610339744",
+          "topic": "crisis",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A10",
+          "vCell": "C10"
+        },
+        {
+          "id": "c2ee5075",
+          "type": "field",
+          "label": "Recall Contact Email (24h)",
+          "value": "sales@tastestrik.nl / logistics@tastestrik.nl",
+          "topic": "crisis",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A10",
+          "vCell": "E10"
+        }
+      ]
+    },
+    {
+      "title": "Contact Persons - Customer",
+      "topic": "contact_persons",
+      "rows": "12-12",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "96f00fd8",
+          "type": "field",
+          "label": "Purchasing Contact Name",
+          "value": "Andres Seghers",
+          "topic": "contacts",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A12",
+          "vCell": "B12"
+        },
+        {
+          "id": "582a76aa",
+          "type": "field",
+          "label": "Purchasing Contact Phone",
+          "value": "+32 (0)3 710 65 65",
+          "topic": "contacts",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A12",
+          "vCell": "C12"
+        },
+        {
+          "id": "aef40aed",
+          "type": "field",
+          "label": "Purchasing Contact Fax",
+          "value": "+ 32 (0)3 771 27 55",
+          "topic": "contacts",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A12",
+          "vCell": "D12"
+        },
+        {
+          "id": "c702776d",
+          "type": "field",
+          "label": "Purchasing Contact Email",
+          "value": "aankoop@biscuits.be",
+          "topic": "contacts",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A12",
+          "vCell": "E12"
+        }
+      ]
+    },
+    {
+      "title": "Quality Standards & Certifications",
+      "topic": "certifications",
+      "rows": "20-23",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "ec657a16",
+          "type": "yesno",
+          "label": "FSSC 22000 Certified",
+          "value": "nee-no",
+          "topic": "certifications",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A20",
+          "vCell": "B20"
+        },
+        {
+          "id": "dc24a6f4",
+          "type": "yesno",
+          "label": "BRC Certified",
+          "value": "ja-yes",
+          "topic": "certifications",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A21",
+          "vCell": "B21"
+        },
+        {
+          "id": "0b4e033a",
+          "type": "date",
+          "label": "BRC Certificate End Date",
+          "value": "5-9-2025",
+          "topic": "certifications",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "answer_library",
+          "lCell": "A21",
+          "vCell": "C21"
+        },
+        {
+          "id": "2da861d1",
+          "type": "field",
+          "label": "BRC Certifying Body",
+          "value": "DNV",
+          "topic": "certifications",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "answer_library",
+          "lCell": "A21",
+          "vCell": "D21"
+        },
+        {
+          "id": "139922dd",
+          "type": "yesno",
+          "label": "IFS Certified",
+          "value": "nee-no",
+          "topic": "certifications",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A22",
+          "vCell": "B22"
+        },
+        {
+          "id": "185241e8",
+          "type": "yesno",
+          "label": "BRC Agents&Brokers Certified",
+          "value": "ja-yes",
+          "topic": "certifications",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A23",
+          "vCell": "B23"
+        },
+        {
+          "id": "552d38f9",
+          "type": "date",
+          "label": "BRC Agents&Brokers Certificate End Date",
+          "value": "8-1-2026",
+          "topic": "certifications",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A23",
+          "vCell": "C23"
+        },
+        {
+          "id": "c2ce8bcd",
+          "type": "field",
+          "label": "BRC Agents&Brokers Certifying Body",
+          "value": "DNV",
+          "topic": "certifications",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A23",
+          "vCell": "D23"
+        }
+      ]
+    },
+    {
+      "title": "Form Completion",
+      "topic": "other",
+      "rows": "85-88",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "3032f939",
+          "type": "field",
+          "label": "Completed By",
+          "value": "Annefleur Wijmans",
+          "topic": "signature",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A85",
+          "vCell": "B85"
+        },
+        {
+          "id": "c6fe4f57",
+          "type": "field",
+          "label": "Function",
+          "value": "Quality",
+          "topic": "signature",
+          "level": "narrative",
+          "destination": "answer_library",
+          "lCell": "A86",
+          "vCell": "B86"
+        },
+        {
+          "id": "0b7986ad",
+          "type": "date",
+          "label": "Completion Date",
+          "value": "10-6-2025",
+          "topic": "signature",
+          "level": "narrative",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A87",
+          "vCell": "B87"
+        },
+        {
+          "id": "0020c23f",
+          "type": "signature",
+          "label": "Signature",
+          "value": "en",
+          "topic": "signature",
+          "level": "narrative",
+          "lang": "nl",
+          "destination": "answer_library",
+          "lCell": "A88",
+          "vCell": "B88"
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "total": 31,
+    "answered": 31,
+    "standard": 25,
+    "narrative": 4,
+    "product": 2
+  },
+  "sourceInfo": {
+    "evidenceId": 3801,
+    "evidenceName": "Euro Patisserie Apeldoorn_Vragenlijst leveranciers_20250610.pdf"
+  }
+}

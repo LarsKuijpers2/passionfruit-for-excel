@@ -1,0 +1,1189 @@
+{
+  "source": {
+    "filename": "149.00713_RMS Countries of admission_20260113..pdf",
+    "filepath": "/Users/larskuijpers/repos/passionfruit-for-excel/customers/Taste Strik/incoming/149.00713_RMS Countries of admission_20260113..pdf",
+    "extractedAt": "2026-02-12T07:32:54.471Z",
+    "customer": "149",
+    "documentType": "pdf",
+    "evidenceId": 3795,
+    "evidenceName": "149.00713_RMS Countries of admission_20260113..pdf"
+  },
+  "sheets": [
+    {
+      "name": "Document",
+      "index": 0,
+      "rows": [
+        {
+          "row": 1,
+          "cells": {
+            "A": {
+              "ref": "A1",
+              "value": "Supplier",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B1",
+              "value": "Strik bv",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 2,
+          "cells": {
+            "A": {
+              "ref": "A2",
+              "value": "Article number Royal Fassin BV",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B2",
+              "value": "ANSTRA9",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 3,
+          "cells": {
+            "A": {
+              "ref": "A3",
+              "value": "Name raw material",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B3",
+              "value": "149.00713 - Natural Flavour Type Strawberry, Fresh, Fruity, Ripe",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 4,
+          "cells": {
+            "A": {
+              "ref": "A4",
+              "value": "Country",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B4",
+              "value": "Admission (Yes/ No) ->confectionary",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C4",
+              "value": "Restriction (Yes/ No) ->confectionary",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "D": {
+              "ref": "D4",
+              "value": "Applicable highest levels in finished product according to legislation ->confectionary",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "E": {
+              "ref": "E4",
+              "value": "Recommended Declaration",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 5,
+          "cells": {
+            "A": {
+              "ref": "A5",
+              "value": "EU",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B5",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C5",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D5",
+              "value": "6,47 g/kg",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E5",
+              "value": "Natural Flavouring",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 6,
+          "cells": {
+            "A": {
+              "ref": "A6",
+              "value": "Specific EU countries",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B6",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C6",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D6",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E6",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 7,
+          "cells": {
+            "A": {
+              "ref": "A7",
+              "value": "· Germany",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B7",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C7",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D7",
+              "value": "6,47 g/kg",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E7",
+              "value": "Natural Flavouring",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 8,
+          "cells": {
+            "A": {
+              "ref": "A8",
+              "value": "· Austria",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B8",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C8",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D8",
+              "value": "6,47 g/kg",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E8",
+              "value": "Natural Flavouring",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 9,
+          "cells": {
+            "A": {
+              "ref": "A9",
+              "value": "· Denmark",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B9",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C9",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D9",
+              "value": "6,47 g/kg",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E9",
+              "value": "Natural Flavouring",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 10,
+          "cells": {
+            "A": {
+              "ref": "A10",
+              "value": "· UK",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B10",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C10",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D10",
+              "value": "6,47 g/kg",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E10",
+              "value": "Natural Flavouring",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 11,
+          "cells": {
+            "A": {
+              "ref": "A11",
+              "value": "Australia",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B11",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C11",
+              "value": "No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D11",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E11",
+              "value": "Natural Flavouring",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 12,
+          "cells": {
+            "A": {
+              "ref": "A12",
+              "value": "Canada",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B12",
+              "value": "Yes*",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C12",
+              "value": "No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D12",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E12",
+              "value": "Natural Flavour",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 13,
+          "cells": {
+            "A": {
+              "ref": "A13",
+              "value": "China",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B13",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C13",
+              "value": "No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D13",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E13",
+              "value": "Flavouring",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 14,
+          "cells": {
+            "A": {
+              "ref": "A14",
+              "value": "Israël",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B14",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C14",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D14",
+              "value": "6,47 g/kg",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E14",
+              "value": "Natural Flavouring",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 15,
+          "cells": {
+            "A": {
+              "ref": "A15",
+              "value": "Japan",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B15",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C15",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D15",
+              "value": "12,95 g/kg",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E15",
+              "value": "Flavor",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 16,
+          "cells": {
+            "A": {
+              "ref": "A16",
+              "value": "Jordan",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B16",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C16",
+              "value": "No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D16",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E16",
+              "value": "Natural Flavouring",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 17,
+          "cells": {
+            "A": {
+              "ref": "A17",
+              "value": "Kuwait",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B17",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C17",
+              "value": "No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D17",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E17",
+              "value": "Natural Flavouring",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 18,
+          "cells": {
+            "A": {
+              "ref": "A18",
+              "value": "Malaysia",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B18",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C18",
+              "value": "No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D18",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E18",
+              "value": "Natural Flavouring",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 19,
+          "cells": {
+            "A": {
+              "ref": "A19",
+              "value": "Mexico",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B19",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C19",
+              "value": "No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D19",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E19",
+              "value": "Natural Flavouring",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 20,
+          "cells": {
+            "A": {
+              "ref": "A20",
+              "value": "New Zealand",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B20",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C20",
+              "value": "No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D20",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E20",
+              "value": "Natural Flavouring",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 21,
+          "cells": {
+            "A": {
+              "ref": "A21",
+              "value": "Russia",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B21",
+              "value": "Yes **",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C21",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D21",
+              "value": "6,47 g/kg",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E21",
+              "value": "Natural Flavouring",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 22,
+          "cells": {
+            "A": {
+              "ref": "A22",
+              "value": "Saudi Arabia",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B22",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C22",
+              "value": "No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D22",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E22",
+              "value": "Natural Flavouring",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 23,
+          "cells": {
+            "A": {
+              "ref": "A23",
+              "value": "Singapore",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B23",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C23",
+              "value": "No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D23",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E23",
+              "value": "Natural Flavouring",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 24,
+          "cells": {
+            "A": {
+              "ref": "A24",
+              "value": "South Africa",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B24",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C24",
+              "value": "No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D24",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E24",
+              "value": "Natural Flavouring",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 25,
+          "cells": {
+            "A": {
+              "ref": "A25",
+              "value": "South Korea",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B25",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C25",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D25",
+              "value": "43,17 g/kg",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E25",
+              "value": "Flavorings",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 26,
+          "cells": {
+            "A": {
+              "ref": "A26",
+              "value": "Switzerland",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B26",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C26",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D26",
+              "value": "6,47 g/kg",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E26",
+              "value": "Natural Flavouring",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 27,
+          "cells": {
+            "A": {
+              "ref": "A27",
+              "value": "Taiwan",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B27",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C27",
+              "value": "No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D27",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E27",
+              "value": "Natural Flavor",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 28,
+          "cells": {
+            "A": {
+              "ref": "A28",
+              "value": "United Arab Emirates",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B28",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C28",
+              "value": "No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D28",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E28",
+              "value": "Natural Flavouring",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 29,
+          "cells": {
+            "A": {
+              "ref": "A29",
+              "value": "USA",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B29",
+              "value": "Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C29",
+              "value": "No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D29",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E29",
+              "value": "Natural Flavor",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        }
+      ],
+      "mergedRanges": [],
+      "rowCount": 29,
+      "columnCount": 5,
+      "stats": {
+        "totalCells": 136,
+        "filledCells": 118,
+        "emptyRows": 0,
+        "mergedRanges": 0
+      }
+    }
+  ],
+  "stats": {
+    "totalSheets": 1,
+    "totalRows": 29,
+    "totalCells": 136,
+    "filledCells": 118
+  }
+}

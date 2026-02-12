@@ -1,0 +1,2351 @@
+{
+  "source": {
+    "filename": "Euro Patisserie Apeldoorn_Vragenlijst leveranciers_20250610.pdf",
+    "filepath": "/Users/larskuijpers/repos/passionfruit-for-excel/customers/Taste Strik/incoming/Euro Patisserie Apeldoorn_Vragenlijst leveranciers_20250610.pdf",
+    "extractedAt": "2026-02-11T18:46:44.734Z",
+    "customer": "Euro",
+    "documentType": "pdf",
+    "evidenceId": 3801,
+    "evidenceName": "Euro Patisserie Apeldoorn_Vragenlijst leveranciers_20250610.pdf"
+  },
+  "sheets": [
+    {
+      "name": "Document",
+      "index": 0,
+      "rows": [
+        {
+          "row": 1,
+          "cells": {
+            "A": {
+              "ref": "A1",
+              "value": "Naam leverancier",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B1",
+              "value": "Strik bv",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 2,
+          "cells": {
+            "A": {
+              "ref": "A2",
+              "value": "Adres",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B2",
+              "value": "Bramenberg 19 3755 BV Eemnes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 3,
+          "cells": {
+            "A": {
+              "ref": "A3",
+              "value": "Tel",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B3",
+              "value": "31(0)355380107",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 4,
+          "cells": {
+            "A": {
+              "ref": "A4",
+              "value": "E-mail",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B4",
+              "value": "sales@tastestrik.nl",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 5,
+          "cells": {
+            "A": {
+              "ref": "A5",
+              "value": "Lijst van de producten die u levert",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B5",
+              "value": "Strik Art. No. 095.00184 - Dark Chocolate Shavings thick - min. 50% cocoa (GRCHOCOL- SCHAAFSEL-DONKER) Strik Art. No. 203.00038 - Lemon Oil Cold Pressed Type California (GRaroma-citroen- TO)",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 6,
+          "cells": {
+            "A": {
+              "ref": "A6",
+              "value": "Strik Art. No. 203.00067 - Lemon Oil Cold Pressed Type California (GRaroma-citroen- TO) Strik Art. No. 149.02108 - Natural Flavour Type Peanut, Roasted (GRaroma-pinda- natuurlijk) Strik Art. No. 149.03051 - Natural Flavour Type Coconut, Strong (GRaroma-kokos)",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 7,
+          "cells": {
+            "A": {
+              "ref": "A7",
+              "value": "verantwoordelijke",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B7",
+              "value": "naam",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C7",
+              "value": "telefoon",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "D": {
+              "ref": "D7",
+              "value": "fax",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "E": {
+              "ref": "E7",
+              "value": "email",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 8,
+          "cells": {
+            "A": {
+              "ref": "A8",
+              "value": "verkoop",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B8",
+              "value": "Charlotte Peterse",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C8",
+              "value": "31(0)355380107",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D8",
+              "value": "n.v.t.",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E8",
+              "value": "sales@tastestrik.nl",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 9,
+          "cells": {
+            "A": {
+              "ref": "A9",
+              "value": "kwaliteit",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B9",
+              "value": "Petrus Lenes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C9",
+              "value": "31(0)355380107",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D9",
+              "value": "n.v.t.",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E9",
+              "value": "gm@tastestrik.nl",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 10,
+          "cells": {
+            "A": {
+              "ref": "A10",
+              "value": "recall (24u/24u)",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B10",
+              "value": "Hans Visser / Maarten Oosterloo",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C10",
+              "value": "31(0)630759159 / 31(0)610339744",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D10",
+              "value": "n.v.t.",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E10",
+              "value": "sales@tastestrik.nl / logistics@tastestrik.nl",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 11,
+          "cells": {
+            "A": {
+              "ref": "A11",
+              "value": "verantwoordelijke",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B11",
+              "value": "naam",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C11",
+              "value": "telefoon",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "D": {
+              "ref": "D11",
+              "value": "fax",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "E": {
+              "ref": "E11",
+              "value": "email",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 12,
+          "cells": {
+            "A": {
+              "ref": "A12",
+              "value": "aankoop",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B12",
+              "value": "Andres Seghers",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C12",
+              "value": "+32 (0)3 710 65 65",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D12",
+              "value": "+ 32 (0)3 771 27 55",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E12",
+              "value": "aankoop@biscuits.be",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 13,
+          "cells": {
+            "A": {
+              "ref": "A13",
+              "value": "kwaliteit Biscuiterie Seghers",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B13",
+              "value": "Marita Van Trappen Lieselot De Vos",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C13",
+              "value": "+32 (0)3 710 65 65",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D13",
+              "value": "+ 32 (0)3 771 27 55",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E13",
+              "value": "coord@biscuits.be",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 14,
+          "cells": {
+            "A": {
+              "ref": "A14",
+              "value": "kwaliteit Europatisserie",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B14",
+              "value": "Rob Haarman",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C14",
+              "value": "+31 571273974",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D14",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E14",
+              "value": "rhaarman@europatisserie.nl",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 15,
+          "cells": {
+            "A": {
+              "ref": "A15",
+              "value": "kwaliteit Van Doorn Bakkerijen",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B15",
+              "value": "Ton Koomen",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C15",
+              "value": "+31 571273974",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D15",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E15",
+              "value": "tkoomen@europatisserie.nl",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 16,
+          "cells": {
+            "A": {
+              "ref": "A16",
+              "value": "recall Biscuiterie Seghers (24u/24u)",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B16",
+              "value": "Marita Van Trappen",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C16",
+              "value": "+ 32 (0)3 710 65 65",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D16",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E16",
+              "value": "coord@biscuits.be",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 17,
+          "cells": {
+            "A": {
+              "ref": "A17",
+              "value": "recall Europatisserie (24u/24u)",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B17",
+              "value": "Andres Seghers",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C17",
+              "value": "+31 555 49 65 00",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D17",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E17",
+              "value": "andres@biscuits.be;",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 18,
+          "cells": {
+            "A": {
+              "ref": "A18",
+              "value": "recall Van Doorn (24u/24u)",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B18",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 19,
+          "cells": {
+            "A": {
+              "ref": "A19",
+              "value": "Volgens welke kwaliteitsnormen werkt uw bedrijf?",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B19",
+              "value": "Is uw kwaliteitssysteem gecertificeerd?",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C19",
+              "value": "Einddatum certificaat",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "D": {
+              "ref": "D19",
+              "value": "Certificerende instelling",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 20,
+          "cells": {
+            "A": {
+              "ref": "A20",
+              "value": "FSSC 22000",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B20",
+              "value": "nee",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C20",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D20",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 21,
+          "cells": {
+            "A": {
+              "ref": "A21",
+              "value": "BRC",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B21",
+              "value": "ja",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C21",
+              "value": "5-9-2025",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D21",
+              "value": "DNV",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 22,
+          "cells": {
+            "A": {
+              "ref": "A22",
+              "value": "IFS",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B22",
+              "value": "nee",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C22",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D22",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 23,
+          "cells": {
+            "A": {
+              "ref": "A23",
+              "value": "Ander: welk? - > BRC Agents&Brokers",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B23",
+              "value": "ja",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C23",
+              "value": "8-1-2026",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D23",
+              "value": "DNV",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 24,
+          "cells": {
+            "A": {
+              "ref": "A24",
+              "value": "Bestaat er een inventaris van al het glas en hard plastic, aanwezig in het bedrijf?",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B24",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 25,
+          "cells": {
+            "A": {
+              "ref": "A25",
+              "value": "Wordt het inventaris regelmatig gecontroleerd? Wat is de frequentie?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B25",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 26,
+          "cells": {
+            "A": {
+              "ref": "A26",
+              "value": "Bestaat er een glasbreukprocedure?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B26",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 27,
+          "cells": {
+            "A": {
+              "ref": "A27",
+              "value": "Welke maatregelen worden genomen tegen mogelijke chemische contaminatie?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B27",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 28,
+          "cells": {
+            "A": {
+              "ref": "A28",
+              "value": "Zijn noten en/of pinda's aanwezig in de fabriek?",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B28",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 29,
+          "cells": {
+            "A": {
+              "ref": "A29",
+              "value": "Indien ja, welke maatregelen worden genomen om kruiscontaminatie te vermijden?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B29",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 30,
+          "cells": {
+            "A": {
+              "ref": "A30",
+              "value": "Laboanalysen (niet voor verpakking)",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B30",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 31,
+          "cells": {
+            "A": {
+              "ref": "A31",
+              "value": "Worden de geleverde producten periodiek geanalyseerd?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B31",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 32,
+          "cells": {
+            "A": {
+              "ref": "A32",
+              "value": "Worden houdbaarheidstesten uitgevoerd op de aan ons geleverde (type) producten?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B32",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 33,
+          "cells": {
+            "A": {
+              "ref": "A33",
+              "value": "Wat is de frequentie van de houdbaarheidstesten?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B33",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 34,
+          "cells": {
+            "A": {
+              "ref": "A34",
+              "value": "Gebeuren de analyses in een ISO 17025 geaccrediteerd labo? Welk?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B34",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 35,
+          "cells": {
+            "A": {
+              "ref": "A35",
+              "value": "Indien de analysen intern gebeuren, zijn deze dan afgedekt via externe ringtesten?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B35",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 36,
+          "cells": {
+            "A": {
+              "ref": "A36",
+              "value": "Seghers Enao Platescbio",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B36",
+              "value": "FORMULIER",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C36",
+              "value": "FOR 5.2/01",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 37,
+          "cells": {
+            "A": {
+              "ref": "A37",
+              "value": "Vragenlijst leveranciers",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 38,
+          "cells": {
+            "A": {
+              "ref": "A38",
+              "value": "Datum: 28/10/2024",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B38",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C38",
+              "value": "Versie: A",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 39,
+          "cells": {
+            "A": {
+              "ref": "A39",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B39",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 40,
+          "cells": {
+            "A": {
+              "ref": "A40",
+              "value": "Reiniging en desinfectie",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B40",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C40",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 41,
+          "cells": {
+            "A": {
+              "ref": "A41",
+              "value": "Bestaat er een reinigingsplan?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B41",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C41",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 42,
+          "cells": {
+            "A": {
+              "ref": "A42",
+              "value": "Wie voert de reiniging uit?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B42",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C42",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 43,
+          "cells": {
+            "A": {
+              "ref": "A43",
+              "value": "Wat is de frequentie van de visuele controle op de reiniging?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B43",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 44,
+          "cells": {
+            "A": {
+              "ref": "A44",
+              "value": "Wat is de frequentie van de desinfectiecontrole?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B44",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 45,
+          "cells": {
+            "A": {
+              "ref": "A45",
+              "value": "Is er controle op residuen van reinigingsproducten?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B45",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 46,
+          "cells": {
+            "A": {
+              "ref": "A46",
+              "value": "Koelcellen (enkel bij gekoelde producten)",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B46",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 47,
+          "cells": {
+            "A": {
+              "ref": "A47",
+              "value": "Zijn de koelcellen uitgerust met een (automatisch) registratiesysteem?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B47",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 48,
+          "cells": {
+            "A": {
+              "ref": "A48",
+              "value": "Is er een alarm voorzien bij defect van de koelcellen?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B48",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 49,
+          "cells": {
+            "A": {
+              "ref": "A49",
+              "value": "Onderhoud & kalibraties",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B49",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C49",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 50,
+          "cells": {
+            "A": {
+              "ref": "A50",
+              "value": "Onderhoudsplan voor machines aanwezig?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B50",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 51,
+          "cells": {
+            "A": {
+              "ref": "A51",
+              "value": "Gebruikt U USDAH1 of NSF foodgrade smeermiddelen voor onderhoud? Zijn deze allergenen- vrij?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B51",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 52,
+          "cells": {
+            "A": {
+              "ref": "A52",
+              "value": "Zijn er regels geformaliseerd rond voedselveiligheid tijdens onderhoud door internen en externen?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B52",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 53,
+          "cells": {
+            "A": {
+              "ref": "A53",
+              "value": "Worden meetmiddelen regelmatig gekalibreerd?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B53",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 54,
+          "cells": {
+            "A": {
+              "ref": "A54",
+              "value": "Pest control",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B54",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C54",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 55,
+          "cells": {
+            "A": {
+              "ref": "A55",
+              "value": "Ongediertebestrijding in eigen beheer of externe firma? Indien externe firma, welke?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B55",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 56,
+          "cells": {
+            "A": {
+              "ref": "A56",
+              "value": "Welke types ongedierte worden beheerst? kruipend ongedierte",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B56",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 57,
+          "cells": {
+            "A": {
+              "ref": "A57",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B57",
+              "value": "vliegend ongedierte",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C57",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 58,
+          "cells": {
+            "A": {
+              "ref": "A58",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B58",
+              "value": "knagend ongedierte",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C58",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 59,
+          "cells": {
+            "A": {
+              "ref": "A59",
+              "value": "Met welke frequentie wordt er gecontroleerd? (aantal per jaar)",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B59",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 60,
+          "cells": {
+            "A": {
+              "ref": "A60",
+              "value": "Persoonlijke hygiëne",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B60",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C60",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 61,
+          "cells": {
+            "A": {
+              "ref": "A61",
+              "value": "Bestaat er een instructie hygiëneregels?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B61",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C61",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 62,
+          "cells": {
+            "A": {
+              "ref": "A62",
+              "value": "Wanneer gebeurde de laatste training GMP-HACCP-hygiëne voor alle productiemedewerkers?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B62",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 63,
+          "cells": {
+            "A": {
+              "ref": "A63",
+              "value": "Specificatiebeheer",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B63",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C63",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 64,
+          "cells": {
+            "A": {
+              "ref": "A64",
+              "value": "Bestaat er een procedure voor het beheersen van grondstofspecificaties, recepturen en eindproductspecificaties?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B64",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 65,
+          "cells": {
+            "A": {
+              "ref": "A65",
+              "value": "Specificaties grondstof/eindproduct aanwezig?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B65",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 66,
+          "cells": {
+            "A": {
+              "ref": "A66",
+              "value": "Indien ja, graag een kopie toevoegen. Indien nee, wanneer beschikbaar?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B66",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C66",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 67,
+          "cells": {
+            "A": {
+              "ref": "A67",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 68,
+          "cells": {
+            "A": {
+              "ref": "A68",
+              "value": "Voor primaire verpakkingsmaterialen: - Specificaties verpakkingsmateriaal aanwezig? - Attest voedingsgeschiktheid beschikbaar + migratietesten?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B68",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 69,
+          "cells": {
+            "A": {
+              "ref": "A69",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 70,
+          "cells": {
+            "A": {
+              "ref": "A70",
+              "value": "Indien ja, graag een kopie toevoegen. Indien nee, wanneer beschikbaar?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B70",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 71,
+          "cells": {
+            "A": {
+              "ref": "A71",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 72,
+          "cells": {
+            "A": {
+              "ref": "A72",
+              "value": "Aankoop",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B72",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C72",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 73,
+          "cells": {
+            "A": {
+              "ref": "A73",
+              "value": "Is er een aankoopprocedure voor selectie, verificatie en evaluatie van uw leveranciers in gebruik?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B73",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 74,
+          "cells": {
+            "A": {
+              "ref": "A74",
+              "value": "Transport",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B74",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C74",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 75,
+          "cells": {
+            "A": {
+              "ref": "A75",
+              "value": "Indien gekoelde producten, is er monitoring van de temperatuur?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B75",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 76,
+          "cells": {
+            "A": {
+              "ref": "A76",
+              "value": "Bestaat er een reinigingsplan voor de vrachtwagen?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B76",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 77,
+          "cells": {
+            "A": {
+              "ref": "A77",
+              "value": "Seghers Enno Pitschis",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B77",
+              "value": "FORMULIER",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C77",
+              "value": "FOR 5.2/01",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 78,
+          "cells": {
+            "A": {
+              "ref": "A78",
+              "value": "Vragenlijst leveranciers",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 79,
+          "cells": {
+            "A": {
+              "ref": "A79",
+              "value": "Datum: 28/10/2024",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B79",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C79",
+              "value": "Versie: A",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 80,
+          "cells": {
+            "A": {
+              "ref": "A80",
+              "value": "Is groupagetransport met chemicaliën of producten die geur of smaakafwijkingen kunnen geven verboden?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B80",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 81,
+          "cells": {
+            "A": {
+              "ref": "A81",
+              "value": "Food fraude & food defense",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B81",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 82,
+          "cells": {
+            "A": {
+              "ref": "A82",
+              "value": "Beschikt de firma over een uitgewerkt FOOD DEFENSE - FOOD FRAUDE systeem?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 83,
+          "cells": {
+            "A": {
+              "ref": "A83",
+              "value": "Zo ja, gelieve kort samen te vatten welke maatregelen U genomen heeft hieromtrent? Zo neen, hoe kan U ons garanderen dat de producten die U aan ons levert vrij zijn van enige mogelijke contaminatie en de",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 84,
+          "cells": {
+            "A": {
+              "ref": "A84",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 85,
+          "cells": {
+            "A": {
+              "ref": "A85",
+              "value": "Ingevuld door",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B85",
+              "value": "Annefleur Wijmans",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 86,
+          "cells": {
+            "A": {
+              "ref": "A86",
+              "value": "Functie",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B86",
+              "value": "Quality",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 87,
+          "cells": {
+            "A": {
+              "ref": "A87",
+              "value": "Datum",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B87",
+              "value": "10-6-2025",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 88,
+          "cells": {
+            "A": {
+              "ref": "A88",
+              "value": "Handtekening",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B88",
+              "value": "en",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 89,
+          "cells": {
+            "A": {
+              "ref": "A89",
+              "value": "Seghers Euro Patisotio",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B89",
+              "value": "FORMULIER",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C89",
+              "value": "FOR 5.2/01",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 90,
+          "cells": {
+            "A": {
+              "ref": "A90",
+              "value": "Vragenlijst leveranciers",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 91,
+          "cells": {
+            "A": {
+              "ref": "A91",
+              "value": "Datum: 28/10/2024",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B91",
+              "value": "Versie: A",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 92,
+          "cells": {
+            "A": {
+              "ref": "A92",
+              "value": "Vragenlijst goedgekeurd door",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B92",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 93,
+          "cells": {
+            "A": {
+              "ref": "A93",
+              "value": "Datum goedkeuring",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B93",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C93",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        }
+      ],
+      "mergedRanges": [],
+      "rowCount": 93,
+      "columnCount": 5,
+      "stats": {
+        "totalCells": 238,
+        "filledCells": 157,
+        "emptyRows": 0,
+        "mergedRanges": 0
+      }
+    }
+  ],
+  "stats": {
+    "totalSheets": 1,
+    "totalRows": 93,
+    "totalCells": 238,
+    "filledCells": 157
+  }
+}

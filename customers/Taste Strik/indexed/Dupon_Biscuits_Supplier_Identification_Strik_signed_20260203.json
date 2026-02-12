@@ -1,0 +1,657 @@
+{
+  "id": "72efa976",
+  "source": "Dupon Biscuits_Supplier Identification_Strik signed_20260203.pdf",
+  "indexed": "2026-02-12",
+  "language": "en",
+  "sections": [
+    {
+      "title": "General Information",
+      "topic": "other",
+      "rows": "5-14",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "5b506744",
+          "type": "field",
+          "label": "Business Name",
+          "value": "Strik bv",
+          "topic": "company",
+          "level": "standard",
+          "lang": "de",
+          "destination": "answer_library",
+          "lCell": "A5",
+          "vCell": "A5"
+        },
+        {
+          "id": "23495733",
+          "type": "field",
+          "label": "Address",
+          "value": "Bramenberg 19, 3755 XB, Eemnes, The Netherlands",
+          "topic": "company",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A6",
+          "vCell": "A6"
+        },
+        {
+          "id": "d25e1d2a",
+          "type": "field",
+          "label": "VAT Number",
+          "value": "NL 8124.50.425B01",
+          "topic": "company",
+          "level": "standard",
+          "lang": "nl",
+          "destination": "answer_library",
+          "lCell": "A7",
+          "vCell": "A7"
+        },
+        {
+          "id": "df7461c6",
+          "type": "field",
+          "label": "Year of Foundation",
+          "value": "1991",
+          "topic": "company",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A8",
+          "vCell": "A8"
+        },
+        {
+          "id": "fb364ec8",
+          "type": "field",
+          "label": "Production Site Address",
+          "value": "Bramenberg 19, 3755 XB, Eemnes, The Netherlands",
+          "topic": "company",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A9",
+          "vCell": "A9"
+        },
+        {
+          "id": "4c19e045",
+          "type": "field",
+          "label": "Number of Employees",
+          "topic": "company",
+          "level": "standard",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A10",
+          "vCell": "A10"
+        },
+        {
+          "id": "1f74313f",
+          "type": "field",
+          "label": "Fixed Employees",
+          "topic": "company",
+          "level": "standard",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "B10",
+          "vCell": "B10"
+        },
+        {
+          "id": "b8e9817e",
+          "type": "field",
+          "label": "Seasonal Employees",
+          "topic": "company",
+          "level": "standard",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "C10",
+          "vCell": "C10"
+        },
+        {
+          "id": "528c2378",
+          "type": "field",
+          "label": "Quality/HACCP Referent Phone",
+          "value": "+31(0)355380107",
+          "topic": "contacts",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A12",
+          "vCell": "B12"
+        },
+        {
+          "id": "390e0cf1",
+          "type": "field",
+          "label": "Quality/HACCP Referent Fax",
+          "value": "Not applicable",
+          "topic": "contacts",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A12",
+          "vCell": "C12"
+        },
+        {
+          "id": "20c5c66d",
+          "type": "field",
+          "label": "Quality/HACCP Referent Email",
+          "value": "gm@tastestrik.nl",
+          "topic": "contacts",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A12",
+          "vCell": "D12"
+        },
+        {
+          "id": "42b37971",
+          "type": "field",
+          "label": "Sales Referent Phone",
+          "value": "+31(0)355380107",
+          "topic": "contacts",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A13",
+          "vCell": "B13"
+        },
+        {
+          "id": "376a5e95",
+          "type": "field",
+          "label": "Sales Referent Fax",
+          "value": "Not applicable",
+          "topic": "contacts",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A13",
+          "vCell": "C13"
+        },
+        {
+          "id": "2f6e0e30",
+          "type": "field",
+          "label": "Sales Referent Email",
+          "value": "sales@tastestrik.nl",
+          "topic": "contacts",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A13",
+          "vCell": "D13"
+        },
+        {
+          "id": "f1ca8362",
+          "type": "field",
+          "label": "Health Alert Referent Phone",
+          "value": "Not applicable",
+          "topic": "contacts",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A14",
+          "vCell": "B14"
+        },
+        {
+          "id": "72520951",
+          "type": "field",
+          "label": "Health Alert Referent Fax",
+          "value": "Not applicable",
+          "topic": "contacts",
+          "level": "standard",
+          "lang": "de",
+          "destination": "answer_library",
+          "lCell": "A14",
+          "vCell": "C14"
+        },
+        {
+          "id": "bceee0f9",
+          "type": "field",
+          "label": "Health Alert Referent Email",
+          "value": "Not applicable",
+          "topic": "contacts",
+          "level": "standard",
+          "lang": "de",
+          "destination": "answer_library",
+          "lCell": "A14",
+          "vCell": "D14"
+        }
+      ]
+    },
+    {
+      "title": "Certifications",
+      "topic": "certifications",
+      "rows": "19-19",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "6a147520",
+          "type": "yesno",
+          "label": "Company has certification according to ISO, IFS FOOD, BRC or other recognized standards",
+          "topic": "certifications",
+          "level": "standard",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A19",
+          "vCell": "B19"
+        }
+      ]
+    },
+    {
+      "title": "Structural Requirements",
+      "topic": "other",
+      "rows": "21-26",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "97ae64a8",
+          "type": "yesno",
+          "label": "Perimeter area well cared for and free from waste",
+          "topic": "premises",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A21",
+          "vCell": "B21"
+        },
+        {
+          "id": "4a60e97d",
+          "type": "yesno",
+          "label": "Areas for loading and unloading separated from production departments",
+          "topic": "premises",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A22",
+          "vCell": "B22"
+        },
+        {
+          "id": "b1ca84d6",
+          "type": "yesno",
+          "label": "Pest protection ensured",
+          "topic": "pest_control",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A23",
+          "vCell": "B23"
+        },
+        {
+          "id": "8cafe1b5",
+          "type": "yesno",
+          "label": "Floors, walls and ceilings in good maintenance conditions",
+          "topic": "premises",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A24",
+          "vCell": "B24"
+        },
+        {
+          "id": "65f92c93",
+          "type": "text",
+          "label": "How are maintenance interventions managed",
+          "topic": "equipment",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A25",
+          "vCell": "A25"
+        },
+        {
+          "id": "68c957c7",
+          "type": "yesno",
+          "label": "Company has site and product protection systems (food defense)",
+          "topic": "food_defense",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A26",
+          "vCell": "B26"
+        }
+      ]
+    },
+    {
+      "title": "Layout",
+      "topic": "other",
+      "rows": "28-31",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "8f61e384",
+          "type": "yesno",
+          "label": "Separate storage areas for food, non-food raw materials and finished products",
+          "topic": "premises",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A28",
+          "vCell": "B28"
+        },
+        {
+          "id": "b5a6de86",
+          "type": "yesno",
+          "label": "Staff accesses to production area regulated",
+          "topic": "premises",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A29",
+          "vCell": "B29"
+        },
+        {
+          "id": "bc4cc6b5",
+          "type": "yesno",
+          "label": "Plant structured to allow linearity of production flow and avoid crossings",
+          "topic": "premises",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A30",
+          "vCell": "B30"
+        },
+        {
+          "id": "afc47b3b",
+          "type": "yesno",
+          "label": "Toilets and changing rooms have adequate characteristics",
+          "topic": "premises",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A31",
+          "vCell": "B31"
+        }
+      ]
+    },
+    {
+      "title": "Staff Training & Hygiene",
+      "topic": "other",
+      "rows": "35-42",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "d5ab2253",
+          "type": "yesno",
+          "label": "Staff has been trained",
+          "topic": "training",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A35",
+          "vCell": "B35"
+        },
+        {
+          "id": "52ec4e13",
+          "type": "yesno",
+          "label": "Environmental hygiene control conducted through visual inspection",
+          "topic": "hygiene",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A36",
+          "vCell": "B36"
+        },
+        {
+          "id": "bc34f6e6",
+          "type": "yesno",
+          "label": "Microbiological checks of surfaces carried out",
+          "topic": "microbiology",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A37",
+          "vCell": "B37"
+        },
+        {
+          "id": "dbffe4e6",
+          "type": "yesno",
+          "label": "Periodic calibrations and checks of control instruments performed",
+          "topic": "equipment",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A38",
+          "vCell": "B38"
+        },
+        {
+          "id": "4ab767b0",
+          "type": "yesno",
+          "label": "Training program on staff hygiene exists",
+          "topic": "training",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A39",
+          "vCell": "B39"
+        },
+        {
+          "id": "eabbd192",
+          "type": "yesno",
+          "label": "Devices for washing hands in work areas available",
+          "topic": "hygiene",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A40",
+          "vCell": "B40"
+        },
+        {
+          "id": "811e611c",
+          "type": "yesno",
+          "label": "Training documented and verified",
+          "topic": "training",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A41",
+          "vCell": "B41"
+        },
+        {
+          "id": "73126e6c",
+          "type": "yesno",
+          "label": "Training includes aspects of good processing practices",
+          "topic": "training",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A42",
+          "vCell": "B42"
+        }
+      ]
+    },
+    {
+      "title": "Material Control & Fraud Management",
+      "topic": "food_fraud",
+      "rows": "46-47",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "38e6844b",
+          "type": "yesno",
+          "label": "Written procedures for checking materials/services purchased exist",
+          "topic": "raw_materials",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A46",
+          "vCell": "B46"
+        },
+        {
+          "id": "17de94bd",
+          "type": "yesno",
+          "label": "Company has developed procedure for managing fraud",
+          "topic": "food_fraud",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A47",
+          "vCell": "B47"
+        }
+      ]
+    },
+    {
+      "title": "Finished Product Control and Management",
+      "topic": "identification",
+      "rows": "49-53",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "cf92c3ac",
+          "type": "yesno",
+          "label": "Analysis plan has been drawn up",
+          "topic": "quality",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A49",
+          "vCell": "B49"
+        },
+        {
+          "id": "4dc2caf2",
+          "type": "yesno",
+          "label": "Checks on finished product carried out",
+          "topic": "quality",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A50",
+          "vCell": "B50"
+        },
+        {
+          "id": "d568d2d1",
+          "type": "text",
+          "label": "Frequency and type of checks carried out",
+          "topic": "quality",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A51",
+          "vCell": "A51"
+        },
+        {
+          "id": "392b5ee9",
+          "type": "yesno",
+          "label": "Laboratory(s) contacted are accredited",
+          "topic": "quality",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A52",
+          "vCell": "B52"
+        },
+        {
+          "id": "ce9919aa",
+          "type": "text",
+          "label": "Copy of latest analyses on products to be supplied",
+          "topic": "quality",
+          "level": "product",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A53",
+          "vCell": "A53"
+        }
+      ]
+    },
+    {
+      "title": "Allergens and GMOs",
+      "topic": "allergens",
+      "rows": "55-57",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "8e552acc",
+          "type": "yesno",
+          "label": "Products contain allergens",
+          "topic": "allergens",
+          "level": "product",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A55",
+          "vCell": "B55"
+        },
+        {
+          "id": "b1579a03",
+          "type": "yesno",
+          "label": "Procedure for managing cross-contamination exists",
+          "topic": "allergens",
+          "level": "narrative",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A56",
+          "vCell": "B56"
+        },
+        {
+          "id": "292867a5",
+          "type": "yesno",
+          "label": "Products contain GMOs and GMO management procedures exist",
+          "topic": "allergens",
+          "level": "product",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A57",
+          "vCell": "B57"
+        }
+      ]
+    },
+    {
+      "title": "Document Completion",
+      "topic": "declaration",
+      "rows": "58-61",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "1098ce68",
+          "type": "field",
+          "label": "Questionnaire completed by",
+          "value": "Annefleur Wijmans",
+          "topic": "signature",
+          "level": "standard",
+          "lang": "fr",
+          "destination": "answer_library",
+          "lCell": "A58",
+          "vCell": "B58"
+        },
+        {
+          "id": "f596787f",
+          "type": "field",
+          "label": "Function in Company",
+          "value": "Quality",
+          "topic": "signature",
+          "level": "standard",
+          "lang": "en",
+          "destination": "answer_library",
+          "lCell": "A59",
+          "vCell": "B59"
+        },
+        {
+          "id": "2824bf48",
+          "type": "signature",
+          "label": "Sign",
+          "value": "C",
+          "topic": "signature",
+          "level": "standard",
+          "destination": "answer_library",
+          "lCell": "A60",
+          "vCell": "B60"
+        },
+        {
+          "id": "6eb0a996",
+          "type": "date",
+          "label": "Data",
+          "value": "03-02-2026",
+          "topic": "signature",
+          "level": "standard",
+          "destination": "answer_library",
+          "lCell": "A61",
+          "vCell": "B61"
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "total": 50,
+    "answered": 18,
+    "standard": 22,
+    "narrative": 25,
+    "product": 3
+  },
+  "sourceInfo": {
+    "evidenceId": 3800,
+    "evidenceName": "Dupon Biscuits_Supplier Identification_Strik signed_20260203.pdf"
+  }
+}

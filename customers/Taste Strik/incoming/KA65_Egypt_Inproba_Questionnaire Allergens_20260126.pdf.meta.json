@@ -1,0 +1,25 @@
+{
+  "evidenceId": 3803,
+  "evidenceUuid": "d2164ddf-6757-48a8-ac86-7ea9b19017b8",
+  "evidenceName": "KA65_Egypt_Inproba_Questionnaire Allergens_20260126.pdf",
+  "downloadedAt": "2026-02-11T18:47:23.103Z",
+  "classification": "",
+  "fileType": "pdf",
+  "metadata": {
+    "summary": "Allergen questionnaire for Yeast extract KA65 by Angel Yeast (Egypt) Co., Ltd.",
+    "type": "specification-sheet",
+    "entity": "Angel Yeast (Egypt) Co., Ltd.",
+    "reportingYear": "",
+    "issueDate": "2026-01-21",
+    "approvedByAuditor": "False",
+    "auditor": "",
+    "expirationDate": "",
+    "subject": [
+      "Product and ingredients"
+    ],
+    "tags": [
+      "Product Responsibility",
+      "Product Information and Labeling"
+    ]
+  }
+}

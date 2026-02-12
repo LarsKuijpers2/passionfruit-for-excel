@@ -1,0 +1,229 @@
+{
+  "meta": {
+    "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+    "exportedAt": "2026-02-10T07:00:17.231Z",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "label": "Supplier Name",
+      "value": "Kaas-Pack Holland BV",
+      "lCells": "A1",
+      "vCells": "B1",
+      "section": "Supplier Information",
+      "topic": "company",
+      "destination": "company",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:30:57.283Z"
+    },
+    {
+      "label": "Supplier Address Head Office",
+      "value": "Buitenvaart 2109  Hoogeveen Nederland",
+      "lCells": "A2",
+      "vCells": "B2",
+      "section": "Supplier Information",
+      "topic": "company",
+      "destination": "company",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:30:57.305Z"
+    },
+    {
+      "label": "Post Code",
+      "value": "7905 SW",
+      "lCells": "A8",
+      "vCells": "B8",
+      "section": "Supplier Information",
+      "topic": "company",
+      "destination": "company",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:30:57.331Z"
+    },
+    {
+      "label": "Healthmark (if applicable)",
+      "value": "NL Z 015- EG",
+      "lCells": "A9",
+      "vCells": "B9",
+      "section": "Supplier Information",
+      "topic": "approval",
+      "destination": "company",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-10T06:59:02.380Z"
+    },
+    {
+      "label": "Telephone",
+      "value": "+31 (0)528-268246",
+      "lCells": "A10",
+      "vCells": "B10",
+      "section": "Supplier Information",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:30:57.342Z"
+    },
+    {
+      "label": "Fax",
+      "value": "not available",
+      "lCells": "A11",
+      "vCells": "B11",
+      "section": "Supplier Information",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:30:57.349Z"
+    },
+    {
+      "label": "E-mail",
+      "value": "info@kaaspack.nl",
+      "lCells": "A12",
+      "vCells": "B12",
+      "section": "Supplier Information",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:30:57.358Z"
+    },
+    {
+      "label": "Manufacturing site name",
+      "value": "buitenvaart 2109",
+      "lCells": "A1",
+      "vCells": "B1",
+      "section": "Manufacturing Site Information",
+      "topic": "company",
+      "destination": "company",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-10T06:58:20.017Z"
+    },
+    {
+      "label": "Full address of Manufacturing site",
+      "value": "7905SW Hoogeveen Nederland",
+      "lCells": "A7",
+      "vCells": "B7",
+      "section": "Manufacturing Site Information",
+      "topic": "company",
+      "destination": "company",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-10T06:58:20.049Z"
+    },
+    {
+      "label": "Health Mark",
+      "value": "NL-Z-0159-EG",
+      "lCells": "A8",
+      "vCells": "B8",
+      "section": "Manufacturing Site Information",
+      "topic": "company",
+      "destination": "company",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-10T06:59:10.546Z"
+    },
+    {
+      "label": "Name (24 Hours Emergency Contact 1)",
+      "value": "Leo Smit",
+      "lCells": "A2",
+      "vCells": "B2",
+      "section": "24 Hours Emergency Contact 1",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:41:22.300Z"
+    },
+    {
+      "label": "Title (24 Hours Emergency Contact 1)",
+      "value": "Sales manager",
+      "lCells": "A3",
+      "vCells": "B3",
+      "section": "24 Hours Emergency Contact 1",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:41:22.309Z"
+    },
+    {
+      "label": "Mobile (24 Hours Emergency Contact 1)",
+      "value": "+31 (0) 621 865719",
+      "lCells": "A4",
+      "vCells": "B4",
+      "section": "24 Hours Emergency Contact 1",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:41:22.326Z"
+    },
+    {
+      "label": "Telephone (24 Hours Emergency Contact 1)",
+      "value": "+31 (0) 621 865719",
+      "lCells": "A5",
+      "vCells": "B5",
+      "section": "24 Hours Emergency Contact 1",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:41:22.342Z"
+    },
+    {
+      "label": "E-mail (24 Hours Emergency Contact 1)",
+      "value": "l.smit@kaaspack.nl",
+      "lCells": "A6",
+      "vCells": "B6",
+      "section": "24 Hours Emergency Contact 1",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:41:22.353Z"
+    },
+    {
+      "label": "Name (Emergency Contact 2)",
+      "value": "Ingrid Vegter",
+      "lCells": "A2",
+      "vCells": "B2",
+      "section": "24 Hours Emergency Contact 2",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:42:14.178Z"
+    },
+    {
+      "label": "Title (Emergency Contact 2)",
+      "value": "QA manager",
+      "lCells": "A3",
+      "vCells": "B3",
+      "section": "24 Hours Emergency Contact 2",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:42:14.195Z"
+    },
+    {
+      "label": "Telephone (Emergency Contact 2)",
+      "value": "+31 (0) 528-268246",
+      "lCells": "A5",
+      "vCells": "B5",
+      "section": "24 Hours Emergency Contact 2",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:42:14.223Z"
+    },
+    {
+      "label": "E-mail (Emergency Contact 2)",
+      "value": "quality@kaaspack.nl",
+      "lCells": "A6",
+      "vCells": "B6",
+      "section": "24 Hours Emergency Contact 2",
+      "topic": "contacts",
+      "destination": "company",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:42:14.231Z"
+    },
+    {
+      "label": "Healthmark of packing site",
+      "value": "NL Z 0159EG",
+      "lCells": "A6",
+      "vCells": "B6",
+      "section": "Products Supplied/Proposed",
+      "topic": "approval",
+      "destination": "company",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T20:25:06.145Z"
+    }
+  ]
+}

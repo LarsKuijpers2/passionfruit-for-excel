@@ -1,0 +1,273 @@
+{
+  "meta": {
+    "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+    "exportedAt": "2026-02-10T07:00:17.231Z",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "label": "Telephone",
+      "value": "+31 (0) 528-268246",
+      "lCells": "A9",
+      "vCells": "B9",
+      "section": "Manufacturing Site Information",
+      "topic": "contacts",
+      "destination": "product",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:41:10.093Z"
+    },
+    {
+      "label": "E-mail",
+      "value": "info@kaaspack.nl",
+      "lCells": "A10",
+      "vCells": "B10",
+      "section": "Manufacturing Site Information",
+      "topic": "contacts",
+      "destination": "product",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:41:10.107Z"
+    },
+    {
+      "label": "Cereals containing gluten ‒ Wheat, Rye, Barley, Spelt, Kh",
+      "value": "No",
+      "lCells": "A2",
+      "vCells": "B2",
+      "section": "Allergens/Ingredients",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:43:46.027Z"
+    },
+    {
+      "label": "Crustaceans (Shellfish)",
+      "value": "No",
+      "lCells": "A3",
+      "vCells": "B3",
+      "section": "Allergens/Ingredients",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:43:46.048Z"
+    },
+    {
+      "label": "Egg",
+      "value": "No",
+      "lCells": "A4",
+      "vCells": "B4",
+      "section": "Allergens/Ingredients",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:43:46.064Z"
+    },
+    {
+      "label": "Fish",
+      "value": "No",
+      "lCells": "A5",
+      "vCells": "B5",
+      "section": "Allergens/Ingredients",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:43:46.077Z"
+    },
+    {
+      "label": "Peanuts",
+      "value": "No",
+      "lCells": "A6",
+      "vCells": "B6",
+      "section": "Allergens/Ingredients",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:43:46.090Z"
+    },
+    {
+      "label": "Milk",
+      "value": "Yes",
+      "lCells": "A7",
+      "vCells": "B7",
+      "section": "Allergens/Ingredients",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:43:46.103Z"
+    },
+    {
+      "label": "Molluscs",
+      "value": "No",
+      "lCells": "A8",
+      "vCells": "B8",
+      "section": "Allergens/Ingredients",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:43:46.118Z"
+    },
+    {
+      "label": "Tree Nuts",
+      "value": "No",
+      "lCells": "A9",
+      "vCells": "B9",
+      "section": "Allergens/Ingredients",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:43:46.130Z"
+    },
+    {
+      "label": "Soya",
+      "value": "No",
+      "lCells": "A10",
+      "vCells": "B10",
+      "section": "Allergens/Ingredients",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:43:46.142Z"
+    },
+    {
+      "label": "Lupin",
+      "value": "No",
+      "lCells": "A11",
+      "vCells": "B11",
+      "section": "Allergens/Ingredients",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:43:46.157Z"
+    },
+    {
+      "label": "Celery",
+      "value": "No",
+      "lCells": "A12",
+      "vCells": "B12",
+      "section": "Allergens/Ingredients",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:43:46.173Z"
+    },
+    {
+      "label": "Sesame",
+      "value": "No",
+      "lCells": "A13",
+      "vCells": "B13",
+      "section": "Allergens/Ingredients",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:43:46.185Z"
+    },
+    {
+      "label": "Mustard",
+      "value": "No",
+      "lCells": "A14",
+      "vCells": "B14",
+      "section": "Allergens/Ingredients",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:43:46.197Z"
+    },
+    {
+      "label": "Sulphur dioxide and Sulphites",
+      "value": "No",
+      "lCells": "A15",
+      "vCells": "B15",
+      "section": "Allergens/Ingredients",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:43:46.209Z"
+    },
+    {
+      "label": "4.1.1 - Are all raw materials assessed for allergens",
+      "value": "Yes",
+      "lCells": "B16",
+      "vCells": "C16",
+      "section": "Allergens/Ingredients",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:43:46.223Z"
+    },
+    {
+      "label": "4.1.2 - Are suitable allergen contamination controls in place inc",
+      "value": "No",
+      "lCells": "B17",
+      "vCells": "C17",
+      "section": "Allergens/Ingredients",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:43:46.243Z"
+    },
+    {
+      "label": "4.1.3 - If any of allergen are present on site (except of milk) p",
+      "value": "non",
+      "lCells": "B18",
+      "vCells": "C18",
+      "section": "Allergens/Ingredients",
+      "topic": "allergens",
+      "destination": "product",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:43:46.257Z"
+    },
+    {
+      "label": "Is there a documented HACCP system covering all products",
+      "value": "Yes",
+      "lCells": "B1",
+      "vCells": "C1",
+      "section": "HACCP",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:43:54.446Z"
+    },
+    {
+      "label": "Does this meet the requirements of Codex Alimentarius?",
+      "value": "Yes",
+      "lCells": "B4",
+      "vCells": "C4",
+      "section": "HACCP",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:43:54.509Z"
+    },
+    {
+      "label": "Is the HACCP plan regularly reviewed?",
+      "value": "Yes",
+      "lCells": "B6",
+      "vCells": "C6",
+      "section": "HACCP",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:43:54.536Z"
+    },
+    {
+      "label": "Who is in your HACCP Team Please details job title",
+      "value": "Director, QA manager, Innovation manager, Production manager",
+      "lCells": "B7",
+      "vCells": "C7",
+      "section": "HACCP",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:43:54.550Z"
+    },
+    {
+      "label": "What Training Have the HACCP Team undertaken? Please",
+      "value": "HACCP training for HACCP team membersCertificaat_HACCP-teaml",
+      "lCells": "B8",
+      "vCells": "C8",
+      "section": "HACCP",
+      "topic": "food_safety",
+      "destination": "product",
+      "source": "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+      "approvedAt": "2026-02-09T16:43:54.567Z"
+    }
+  ]
+}

@@ -1,0 +1,7209 @@
+{
+  "source": {
+    "filename": "149.02044_10070080_Rohwarenspezifikation_Strik_20260127 (1).pdf",
+    "filepath": "/Users/larskuijpers/repos/passionfruit-for-excel/customers/Taste Strik/incoming/149.02044_10070080_Rohwarenspezifikation_Strik_20260127 (1).pdf",
+    "extractedAt": "2026-02-12T07:33:57.547Z",
+    "customer": "149",
+    "documentType": "pdf",
+    "evidenceId": 3796,
+    "evidenceName": "149.02044_10070080_Rohwarenspezifikation_Strik_20260127 (1).pdf"
+  },
+  "sheets": [
+    {
+      "name": "Document",
+      "index": 0,
+      "rows": [
+        {
+          "row": 1,
+          "cells": {
+            "A": {
+              "ref": "A1",
+              "value": "Lieferant / Supplier",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B1",
+              "value": "Strik bv",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C1",
+              "value": "Anschrift / Address",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "D": {
+              "ref": "D1",
+              "value": "Bramenberg 19, 3755 BV Eemnes",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 2,
+          "cells": {
+            "A": {
+              "ref": "A2",
+              "value": "Ansprechpartner / Person to contact",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B2",
+              "value": "Mrs Mariska Jansen",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C2",
+              "value": "Land / Country",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D2",
+              "value": "Netherlands",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 3,
+          "cells": {
+            "A": {
+              "ref": "A3",
+              "value": "E-Mail / e-mail",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B3",
+              "value": "sales@tastestrik.nl",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 4,
+          "cells": {
+            "A": {
+              "ref": "A4",
+              "value": "Telefon-Nr. / Phone No. +31 (0)355380107",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B4",
+              "value": "Telefax / Fax",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 5,
+          "cells": {
+            "A": {
+              "ref": "A5",
+              "value": "EU-Zulassungs-Nr. / EU-registration-No .:",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B5",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 6,
+          "cells": {
+            "A": {
+              "ref": "A6",
+              "value": "24/7 Krisentelefon-Nr. / 24/7 crisis phone no .:",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B6",
+              "value": "See www.tastestrik.nl (emergency contact details)",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 7,
+          "cells": {
+            "A": {
+              "ref": "A7",
+              "value": "Art .- Nr. des Lieferanten / supplier's article no .:",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B7",
+              "value": "Strik art.no. 149.02044",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 8,
+          "cells": {
+            "A": {
+              "ref": "A8",
+              "value": "Produktname/ Verkaufsname / Product name/ Sales",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B8",
+              "value": "name Natural Flavour Type Butter",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 9,
+          "cells": {
+            "A": {
+              "ref": "A9",
+              "value": "Hersteller / Manufacturer",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B9",
+              "value": "Strik bv",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C9",
+              "value": "Anschrift / Address",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "D": {
+              "ref": "D9",
+              "value": "Bramenberg 19, 3755 BV Eemnes",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 10,
+          "cells": {
+            "A": {
+              "ref": "A10",
+              "value": "Ansprechpartner / Person to contact",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B10",
+              "value": "Mrs Mariska Jansen",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C10",
+              "value": "Land / Country",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D10",
+              "value": "Netherlands",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 11,
+          "cells": {
+            "A": {
+              "ref": "A11",
+              "value": "E-Mail / e-mail",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B11",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C11",
+              "value": "sales@tastestrik.nl",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 12,
+          "cells": {
+            "A": {
+              "ref": "A12",
+              "value": "Telefon-Nr. / Phone No.",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B12",
+              "value": "+31 (0)355380107",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C12",
+              "value": "Telefax / Fax",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 13,
+          "cells": {
+            "A": {
+              "ref": "A13",
+              "value": "24/7 Krisentelefon-Nr. / 24/7 crisis phone no .:",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B13",
+              "value": "See www.tastestrik.nl (emergency contact details)",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 14,
+          "cells": {
+            "A": {
+              "ref": "A14",
+              "value": "5. Sensorische Beschreibung / Organoleptic description",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 15,
+          "cells": {
+            "A": {
+              "ref": "A15",
+              "value": "Geruch / Smell",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B15",
+              "value": "characteristic",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 16,
+          "cells": {
+            "A": {
+              "ref": "A16",
+              "value": "Geschmack / Taste",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B16",
+              "value": "characteristic",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 17,
+          "cells": {
+            "A": {
+              "ref": "A17",
+              "value": "Aussehen / Appearance",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B17",
+              "value": "clear liquid",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 18,
+          "cells": {
+            "A": {
+              "ref": "A18",
+              "value": "Konsistenz / Texture",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B18",
+              "value": "liquid",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 19,
+          "cells": {
+            "A": {
+              "ref": "A19",
+              "value": "Spezielle Bezeichnung der Zutat / Specific name of the ingredient",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B19",
+              "value": "E-Nr. / E-No .",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C19",
+              "value": "Angabe der Klasse/ Classification",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "D": {
+              "ref": "D19",
+              "value": "Anteil in % / Part in %",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "E": {
+              "ref": "E19",
+              "value": "Biologischer Ursprung / Biological origin",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "F": {
+              "ref": "F19",
+              "value": "Ausgangsrohstoff / Raw material base",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "G": {
+              "ref": "G19",
+              "value": "Herkunftsland / Country of origin",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 20,
+          "cells": {
+            "A": {
+              "ref": "A20",
+              "value": "Natural Flavouring",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B20",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C20",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D20",
+              "value": "100",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E20",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F20",
+              "value": "various",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G20",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H20",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I20",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J20",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "K": {
+              "ref": "K20",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "L": {
+              "ref": "L20",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 21,
+          "cells": {
+            "A": {
+              "ref": "A21",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B21",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C21",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D21",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E21",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F21",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G21",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H21",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I21",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J21",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "K": {
+              "ref": "K21",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "L": {
+              "ref": "L21",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 22,
+          "cells": {
+            "A": {
+              "ref": "A22",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B22",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C22",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D22",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E22",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F22",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G22",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H22",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I22",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J22",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "K": {
+              "ref": "K22",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "L": {
+              "ref": "L22",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 23,
+          "cells": {
+            "A": {
+              "ref": "A23",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B23",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C23",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D23",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E23",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F23",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G23",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H23",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I23",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J23",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "K": {
+              "ref": "K23",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "L": {
+              "ref": "L23",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 24,
+          "cells": {
+            "A": {
+              "ref": "A24",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B24",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C24",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D24",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E24",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F24",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G24",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H24",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I24",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J24",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "K": {
+              "ref": "K24",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "L": {
+              "ref": "L24",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 25,
+          "cells": {
+            "A": {
+              "ref": "A25",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B25",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C25",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D25",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E25",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F25",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G25",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H25",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I25",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J25",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "K": {
+              "ref": "K25",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "L": {
+              "ref": "L25",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 26,
+          "cells": {
+            "A": {
+              "ref": "A26",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B26",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C26",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D26",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E26",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F26",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G26",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H26",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I26",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J26",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "K": {
+              "ref": "K26",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "L": {
+              "ref": "L26",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 27,
+          "cells": {
+            "A": {
+              "ref": "A27",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B27",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C27",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D27",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E27",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F27",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G27",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H27",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I27",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J27",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "K": {
+              "ref": "K27",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "L": {
+              "ref": "L27",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 28,
+          "cells": {
+            "A": {
+              "ref": "A28",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B28",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C28",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D28",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E28",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F28",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G28",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H28",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I28",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J28",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "K": {
+              "ref": "K28",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "L": {
+              "ref": "L28",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 29,
+          "cells": {
+            "A": {
+              "ref": "A29",
+              "value": "6.2 Aufschlüsselung enthaltener zusammengesetzter Zutaten / Breakdown of compound ingredients",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 30,
+          "cells": {
+            "A": {
+              "ref": "A30",
+              "value": "Spezielle Bezeichnung der Zutat / Specific name of the ingredient",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B30",
+              "value": "E-Nr. / E-No .",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C30",
+              "value": "Angabe der Klasse/ Classification",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D30",
+              "value": "Anteil in % / Part in %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E30",
+              "value": "Biologischer Ursprung / Biological origin",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F30",
+              "value": "Ausgangsrohstoff / Raw material base",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G30",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H30",
+              "value": "Country",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I30",
+              "value": "Herkunftsland / of origin",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 31,
+          "cells": {
+            "A": {
+              "ref": "A31",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B31",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C31",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D31",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E31",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F31",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G31",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H31",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I31",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J31",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "K": {
+              "ref": "K31",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "L": {
+              "ref": "L31",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 32,
+          "cells": {
+            "A": {
+              "ref": "A32",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B32",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C32",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D32",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E32",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F32",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G32",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H32",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I32",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J32",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "K": {
+              "ref": "K32",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "L": {
+              "ref": "L32",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 33,
+          "cells": {
+            "A": {
+              "ref": "A33",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B33",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C33",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D33",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E33",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F33",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G33",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H33",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I33",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J33",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "K": {
+              "ref": "K33",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "L": {
+              "ref": "L33",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 34,
+          "cells": {
+            "A": {
+              "ref": "A34",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B34",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C34",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D34",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E34",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F34",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G34",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H34",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I34",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J34",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "K": {
+              "ref": "K34",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "L": {
+              "ref": "L34",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 35,
+          "cells": {
+            "A": {
+              "ref": "A35",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B35",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C35",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D35",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E35",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F35",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G35",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H35",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I35",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J35",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "K": {
+              "ref": "K35",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "L": {
+              "ref": "L35",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 36,
+          "cells": {
+            "A": {
+              "ref": "A36",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B36",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C36",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D36",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E36",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F36",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G36",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H36",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I36",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J36",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "K": {
+              "ref": "K36",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "L": {
+              "ref": "L36",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 37,
+          "cells": {
+            "A": {
+              "ref": "A37",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B37",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C37",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D37",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E37",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F37",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G37",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H37",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I37",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J37",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "K": {
+              "ref": "K37",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "L": {
+              "ref": "L37",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 38,
+          "cells": {
+            "A": {
+              "ref": "A38",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B38",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C38",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D38",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E38",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F38",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G38",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H38",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I38",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J38",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "K": {
+              "ref": "K38",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "L": {
+              "ref": "L38",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 39,
+          "cells": {
+            "A": {
+              "ref": "A39",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B39",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C39",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D39",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E39",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F39",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G39",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H39",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I39",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J39",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "K": {
+              "ref": "K39",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "L": {
+              "ref": "L39",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 40,
+          "cells": {
+            "A": {
+              "ref": "A40",
+              "value": "Aromen / Flavours:",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B40",
+              "value": "Bezeichnung / Description",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C40",
+              "value": "USA- Tauglichkeit / US-Suitability",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "D": {
+              "ref": "D40",
+              "value": "USA-Bezeichnung / US-Notation",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 41,
+          "cells": {
+            "A": {
+              "ref": "A41",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B41",
+              "value": "ame (Regulation (EC) 1334/2008): Natural Flav",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C41",
+              "value": "Ja / Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D41",
+              "value": "Natural Flavor",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 42,
+          "cells": {
+            "A": {
+              "ref": "A42",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B42",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C42",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D42",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 43,
+          "cells": {
+            "A": {
+              "ref": "A43",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B43",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C43",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D43",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 44,
+          "cells": {
+            "A": {
+              "ref": "A44",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B44",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C44",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D44",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 45,
+          "cells": {
+            "A": {
+              "ref": "A45",
+              "value": "Welche Trägerstoffe? / Which carriers?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B45",
+              "value": "triacetin",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C45",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D45",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 46,
+          "cells": {
+            "A": {
+              "ref": "A46",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B46",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C46",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 47,
+          "cells": {
+            "A": {
+              "ref": "A47",
+              "value": "Technische Hilfsstoffe: Welcher Art und Herkunft? / Technical aids: Which kind and origin?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B47",
+              "value": "no technical aids",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C47",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D47",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 48,
+          "cells": {
+            "A": {
+              "ref": "A48",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B48",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C48",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 49,
+          "cells": {
+            "A": {
+              "ref": "A49",
+              "value": "Dosierungsempfehlung / Recommendation for dosage",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B49",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 50,
+          "cells": {
+            "A": {
+              "ref": "A50",
+              "value": "Anwendungshinweise / Information of application",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B50",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 51,
+          "cells": {
+            "A": {
+              "ref": "A51",
+              "value": "7. Nährwertangaben pro / Nutritive Values per 100 g",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 52,
+          "cells": {
+            "A": {
+              "ref": "A52",
+              "value": "berechnet / calculated",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B52",
+              "value": "☒ analysiert / analysed",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C52",
+              "value": "☐ aus der Literatur / from literature",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D52",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E52",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 53,
+          "cells": {
+            "A": {
+              "ref": "A53",
+              "value": "Energiewert",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B53",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C53",
+              "value": "654",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D53",
+              "value": "kJ",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E53",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F53",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G53",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 54,
+          "cells": {
+            "A": {
+              "ref": "A54",
+              "value": "Energie Value*",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B54",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C54",
+              "value": "149",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D54",
+              "value": "kcal",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E54",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F54",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 55,
+          "cells": {
+            "A": {
+              "ref": "A55",
+              "value": "Protein / Protein",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B55",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C55",
+              "value": "0",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D55",
+              "value": "g",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E55",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F55",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 56,
+          "cells": {
+            "A": {
+              "ref": "A56",
+              "value": "Fett / Total Fat",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B56",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C56",
+              "value": "0",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D56",
+              "value": "g",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E56",
+              "value": "Alkohol / Alcohol",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F56",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G56",
+              "value": "%0",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 57,
+          "cells": {
+            "A": {
+              "ref": "A57",
+              "value": "davon / of which",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B57",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C57",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D57",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E57",
+              "value": "Ballaststoffe / Fibres",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F57",
+              "value": "0",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G57",
+              "value": "g",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 58,
+          "cells": {
+            "A": {
+              "ref": "A58",
+              "value": "gesättigte Fettsäuren / saturated fat",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B58",
+              "value": "0",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C58",
+              "value": "g",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D58",
+              "value": "Cholesterin / Cholesterol",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E58",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F58",
+              "value": "g",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 59,
+          "cells": {
+            "A": {
+              "ref": "A59",
+              "value": "ungesättigte Fettsäuren / unsaturated fat",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B59",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C59",
+              "value": "g",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D59",
+              "value": "Natrium / Sodium",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E59",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F59",
+              "value": "g",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 60,
+          "cells": {
+            "A": {
+              "ref": "A60",
+              "value": "aus natürl. Quelle /",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B60",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C60",
+              "value": "aus industriell. Quelle",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D60",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E60",
+              "value": "Salz / Salt",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F60",
+              "value": "0",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G60",
+              "value": "g",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 61,
+          "cells": {
+            "A": {
+              "ref": "A61",
+              "value": "from natural source",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B61",
+              "value": "from industrial source",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C61",
+              "value": "Kalium / Potassium",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D61",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E61",
+              "value": "mg",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 62,
+          "cells": {
+            "A": {
+              "ref": "A62",
+              "value": "trans-Fettsäuren / trans fat",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B62",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C62",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D62",
+              "value": "g",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E62",
+              "value": "Calcium / Calcium",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F62",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G62",
+              "value": "mg",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 63,
+          "cells": {
+            "A": {
+              "ref": "A63",
+              "value": "Kohlenhydrate / total carbohydrates",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B63",
+              "value": "0",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C63",
+              "value": "g",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D63",
+              "value": "Eisen / Iron",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E63",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F63",
+              "value": "mg",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 64,
+          "cells": {
+            "A": {
+              "ref": "A64",
+              "value": "davon / of which",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B64",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C64",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D64",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E64",
+              "value": "Sonstige / Others",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F64",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G64",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 65,
+          "cells": {
+            "A": {
+              "ref": "A65",
+              "value": "Stärke / Starch",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B65",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C65",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D65",
+              "value": "g",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E65",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F65",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G65",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 66,
+          "cells": {
+            "A": {
+              "ref": "A66",
+              "value": "Zucker / Sugars",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B66",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C66",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D66",
+              "value": "0",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E66",
+              "value": "g",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F66",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G66",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H66",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 67,
+          "cells": {
+            "A": {
+              "ref": "A67",
+              "value": "mehrwertige Alkohole / polyvalent alcohols",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B67",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C67",
+              "value": "g",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D67",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E67",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F67",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 68,
+          "cells": {
+            "A": {
+              "ref": "A68",
+              "value": "Zugesetzter Zucker / Added sugar",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B68",
+              "value": "0",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C68",
+              "value": "g",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D68",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E68",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F68",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 69,
+          "cells": {
+            "A": {
+              "ref": "A69",
+              "value": "Vegetarisch / Vegeterian",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B69",
+              "value": "a / Ye",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C69",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 70,
+          "cells": {
+            "A": {
+              "ref": "A70",
+              "value": "Vegan / Vegan",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B70",
+              "value": "a / Ye",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 71,
+          "cells": {
+            "A": {
+              "ref": "A71",
+              "value": "Zöliakie / Celiac disease",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B71",
+              "value": "ein /",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C71",
+              "value": "NGlutengehalt: / Gluten content:",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 72,
+          "cells": {
+            "A": {
+              "ref": "A72",
+              "value": "Kosher / Kosher",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B72",
+              "value": "a / Ye",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C72",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 73,
+          "cells": {
+            "A": {
+              "ref": "A73",
+              "value": "Halal / Halal",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B73",
+              "value": "a / Ye",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C73",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 74,
+          "cells": {
+            "A": {
+              "ref": "A74",
+              "value": "Bio / Organic",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B74",
+              "value": "ein / N",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C74",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 75,
+          "cells": {
+            "A": {
+              "ref": "A75",
+              "value": "Milchfreiheit / Dairy free",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B75",
+              "value": "a / Ye",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C75",
+              "value": "Lactosegehalt: / Lactose content:",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 76,
+          "cells": {
+            "A": {
+              "ref": "A76",
+              "value": "Zutat/Stoff / Ingredient/substance",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B76",
+              "value": "Nachhaltigkeitsprogramm (z.B .: RSPO, UTZ, Rainforest Alliance, ... ) / Sustainability program (e.g. RSPO, UTZ, Rainforest Alliance, ... )",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C76",
+              "value": "Lieferkettenmodell (z.B .: Identity Preserved (IP), Segregation (SG), Mass Balance (MB), Book and Claim (B&C), ... ) / Supply chain model (e.g .: IP, SG, MB, B&C, ... )",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 77,
+          "cells": {
+            "A": {
+              "ref": "A77",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B77",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C77",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 78,
+          "cells": {
+            "A": {
+              "ref": "A78",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B78",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C78",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 79,
+          "cells": {
+            "A": {
+              "ref": "A79",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B79",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C79",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 80,
+          "cells": {
+            "A": {
+              "ref": "A80",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B80",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C80",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 81,
+          "cells": {
+            "A": {
+              "ref": "A81",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B81",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C81",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 82,
+          "cells": {
+            "A": {
+              "ref": "A82",
+              "value": "10. Allergene Inhaltsstoffe / Allergen information",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 83,
+          "cells": {
+            "A": {
+              "ref": "A83",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B83",
+              "value": "Enthalten? / Present?",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C83",
+              "value": "Bestandteil welcher Zutat/Verarbeitungshilfsst off / Component of which ingredient/processing aid",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D83",
+              "value": "Kreuzkontamination möglich? / Cross contamiantion?",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E83",
+              "value": "Im Betrieb nicht vorhanden / Absent in the company",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 84,
+          "cells": {
+            "A": {
+              "ref": "A84",
+              "value": "Glutenhaltiges Getreide, namentlich Weizen (wie Dinkel und Khorasan-Weizen), Roggen, Gerste, Hafer oder Hybridstämme davon sowie daraus hergestellte Erzeugnisse / Cereals containing gluten, namely wheat (such as spelt and khorasan wheat), rye barley, oats or their hybridised strains and products thereof",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B84",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C84",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D84",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E84",
+              "value": "Ja / Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 85,
+          "cells": {
+            "A": {
+              "ref": "A85",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B85",
+              "value": "Kann ein Grenzwert <20ppm gewährleistet werden? / Can a limit <20ppm be garantueed? a / Ye",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 86,
+          "cells": {
+            "A": {
+              "ref": "A86",
+              "value": "Krebstiere und Krebstiererzeugnisse / Crustaceans and products thereof",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B86",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C86",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D86",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E86",
+              "value": "Ja / Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 87,
+          "cells": {
+            "A": {
+              "ref": "A87",
+              "value": "Eier und Eierzeugnisse / Eggs and products thereof",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B87",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C87",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D87",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E87",
+              "value": "Ja / Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 88,
+          "cells": {
+            "A": {
+              "ref": "A88",
+              "value": "Fisch und Fischerzeugnisse / Fish and products thereof",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B88",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C88",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D88",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E88",
+              "value": "Ja / Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 89,
+          "cells": {
+            "A": {
+              "ref": "A89",
+              "value": "Erdnuss und Erdnusserzeugnisse / Peanuts and products thereof",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B89",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C89",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D89",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E89",
+              "value": "Ja / Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 90,
+          "cells": {
+            "A": {
+              "ref": "A90",
+              "value": "Soja und Sojaerzeugnisse / Soybeans and products therof",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B90",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C90",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D90",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E90",
+              "value": "Ja / Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 91,
+          "cells": {
+            "A": {
+              "ref": "A91",
+              "value": "Milch und Milcherzeugnisse (einschl. Laktose) / Milk and products thereof (including lactose)",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B91",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C91",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D91",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E91",
+              "value": "Ja / Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 92,
+          "cells": {
+            "A": {
+              "ref": "A92",
+              "value": "Schalenfrüchte (d.h. Mandel, Haselnuss, Walnuss, Cashewnuss, Pecannuss, Paranuss,",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B92",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C92",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D92",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E92",
+              "value": "Ja / Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 93,
+          "cells": {
+            "A": {
+              "ref": "A93",
+              "value": "Sellerie und Sellerieerzeugnisse / Celery and products thereof",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B93",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C93",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D93",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E93",
+              "value": "Ja / Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 94,
+          "cells": {
+            "A": {
+              "ref": "A94",
+              "value": "Senf und Senferzeugnisse / Mustard and products thereof",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B94",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C94",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D94",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E94",
+              "value": "Ja / Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 95,
+          "cells": {
+            "A": {
+              "ref": "A95",
+              "value": "Sesam und Sesamerzeugnisse / Sesame seeds and products thereof",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B95",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C95",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D95",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E95",
+              "value": "Ja / Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 96,
+          "cells": {
+            "A": {
+              "ref": "A96",
+              "value": "Schwefeldioxid und Sulfite in einer Konzentration von mehr als 10mg/kg oder 10mg/l als SO2 angegeben / Sulphur",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B96",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C96",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D96",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E96",
+              "value": "Ja / Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 97,
+          "cells": {
+            "A": {
+              "ref": "A97",
+              "value": "dioxide ans sulphites at",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B97",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 98,
+          "cells": {
+            "A": {
+              "ref": "A98",
+              "value": "concentrations of more than 10mg/kg or 10mg/litre expressed as SO2",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B98",
+              "value": "mg/kg",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C98",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 99,
+          "cells": {
+            "A": {
+              "ref": "A99",
+              "value": "Lupine und Lupinenerzeugnisse / Lupines and products thereof",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B99",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C99",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "D": {
+              "ref": "D99",
+              "value": "Ja / Yes",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 100,
+          "cells": {
+            "A": {
+              "ref": "A100",
+              "value": "Weichtiere und Weichtiererzeugnisse / Mollusc and products thereof",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B100",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C100",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D100",
+              "value": "Ja / Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 101,
+          "cells": {
+            "A": {
+              "ref": "A101",
+              "value": "Weichtiere und Weichtiererzeugnisse / Mollusc and products thereof",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B101",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C101",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D101",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 102,
+          "cells": {
+            "A": {
+              "ref": "A102",
+              "value": "Verpackungsart / Type of packaging",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B102",
+              "value": "HDPE can",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 103,
+          "cells": {
+            "A": {
+              "ref": "A103",
+              "value": "Gebindegröße / Size of package",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B103",
+              "value": "10 kg nett.",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 104,
+          "cells": {
+            "A": {
+              "ref": "A104",
+              "value": "Partienkennzeichnung / Marking of packing unit",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B104",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 105,
+          "cells": {
+            "A": {
+              "ref": "A105",
+              "value": "Mindesthaltbarkeit / Shelf life",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B105",
+              "value": "24 months",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 106,
+          "cells": {
+            "A": {
+              "ref": "A106",
+              "value": "Restlaufzeit bei Anlieferung / Residual term on delivery",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B106",
+              "value": "16 months",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 107,
+          "cells": {
+            "A": {
+              "ref": "A107",
+              "value": "Lagerungsbedingungen / Storing conditions (bitte machen Sie genaue Temperatur- und rel. Luftfeuchteangaben/ please specify the temperatur and relative humidity)",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B107",
+              "value": "8-15℃",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C107",
+              "value": "ºC",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 108,
+          "cells": {
+            "A": {
+              "ref": "A108",
+              "value": "< 70% rh",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B108",
+              "value": "%",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 109,
+          "cells": {
+            "A": {
+              "ref": "A109",
+              "value": "Transportbedingungen / Transport conditions",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B109",
+              "value": "ambient",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C109",
+              "value": "ºC",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 110,
+          "cells": {
+            "A": {
+              "ref": "A110",
+              "value": "(bitte machen Sie genaue Temperatur- und rel. Luftfeuchteangaben/ please specify the temperatur and relative humidity)",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B110",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C110",
+              "value": "%",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 111,
+          "cells": {
+            "A": {
+              "ref": "A111",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B111",
+              "value": "Menge / Amount",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C111",
+              "value": "Methode / Method",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 112,
+          "cells": {
+            "A": {
+              "ref": "A112",
+              "value": "Cumarin / Coumarin (bei zimthaltigen Produkten / cinnamon containing products )",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B112",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C112",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 113,
+          "cells": {
+            "A": {
+              "ref": "A113",
+              "value": "Wasser / Water",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B113",
+              "value": "not available",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C113",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 114,
+          "cells": {
+            "A": {
+              "ref": "A114",
+              "value": "Trockenmasse / Dry substance",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B114",
+              "value": "not applicabe",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C114",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 115,
+          "cells": {
+            "A": {
+              "ref": "A115",
+              "value": "Andere / other:",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B115",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C115",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 116,
+          "cells": {
+            "A": {
+              "ref": "A116",
+              "value": "13. Mikrobiologische Daten / Microbiologic standards",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 117,
+          "cells": {
+            "A": {
+              "ref": "A117",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B117",
+              "value": "DGHM-Grenzwerte / DGHM limitation",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C117",
+              "value": "Menge / Amount ( KbE/g / CFU/g)",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D117",
+              "value": "Methode / Method",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 118,
+          "cells": {
+            "A": {
+              "ref": "A118",
+              "value": "Gesamtkeimzahl / Total number of germs",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B118",
+              "value": "< 5000",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C118",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D118",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 119,
+          "cells": {
+            "A": {
+              "ref": "A119",
+              "value": "Enterobacteriaceae",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B119",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C119",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D119",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 120,
+          "cells": {
+            "A": {
+              "ref": "A120",
+              "value": "Coliforme Keime / Coliform germs",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B120",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C120",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D120",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 121,
+          "cells": {
+            "A": {
+              "ref": "A121",
+              "value": "Escherichia coli",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B121",
+              "value": "negative",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C121",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D121",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 122,
+          "cells": {
+            "A": {
+              "ref": "A122",
+              "value": "Hefen, Schimmel / Yeast, mould",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B122",
+              "value": ".00 (yeast), <100 (moul",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C122",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D122",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 123,
+          "cells": {
+            "A": {
+              "ref": "A123",
+              "value": "Salmonellen / Salmonella [in 25 g]",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B123",
+              "value": "Negative (cfu/25 g",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C123",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D123",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 124,
+          "cells": {
+            "A": {
+              "ref": "A124",
+              "value": "Listeria monocytogenes [in 25 g]",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B124",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C124",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D124",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 125,
+          "cells": {
+            "A": {
+              "ref": "A125",
+              "value": "Staphylococcus areus",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B125",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C125",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D125",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 126,
+          "cells": {
+            "A": {
+              "ref": "A126",
+              "value": "Bacillus cereus",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B126",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C126",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D126",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 127,
+          "cells": {
+            "A": {
+              "ref": "A127",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B127",
+              "value": "Wird durchgeführt? / Is applied?",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C127",
+              "value": "Methode / Method",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "D": {
+              "ref": "D127",
+              "value": "Überwachung / Monitoring",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 128,
+          "cells": {
+            "A": {
+              "ref": "A128",
+              "value": "Cumarin-Gehalt",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B128",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C128",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D128",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 129,
+          "cells": {
+            "A": {
+              "ref": "A129",
+              "value": "Andere / Others",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B129",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C129",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D129",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 130,
+          "cells": {
+            "A": {
+              "ref": "A130",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B130",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C130",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D130",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 131,
+          "cells": {
+            "A": {
+              "ref": "A131",
+              "value": "15. MOSH/MOAH Bestätigung / MOSH/MOAH Confirmation",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 132,
+          "cells": {
+            "A": {
+              "ref": "A132",
+              "value": "Orientierungswerte für die Produktgruppe vorhanden / Orientation value existent for the product group",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B132",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C132",
+              "value": "Gehalt / Amount [mg/kg]",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D132",
+              "value": "Bisher noch keine Orientierungswerte für die Produktgruppe vorhanden / No orientation value existent for the product group yet",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E132",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F132",
+              "value": "Gehalt / Amount [mg/kg]",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G132",
+              "value": "Bemerkung / remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 133,
+          "cells": {
+            "A": {
+              "ref": "A133",
+              "value": "Bestätigung des MOSH Orientierungswertes der ALB / Confirmation of the ALB orientation value for MOSH",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B133",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C133",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D133",
+              "value": "Bestätigung des angegebenen MOSH Gehaltes / Confirmation of the MOSH amount indicated:",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E133",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F133",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G133",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 134,
+          "cells": {
+            "A": {
+              "ref": "A134",
+              "value": "Bestätigung des MOAH Orientierungswertes der ALB / Confirmation of the ALB orientation value for MOAH",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B134",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C134",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D134",
+              "value": "Bestätigung des angegebenen MOAH Gehaltes/ Confirmation of the MOAH amount indicated:",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E134",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F134",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G134",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 135,
+          "cells": {
+            "A": {
+              "ref": "A135",
+              "value": "Maßnahmen zur Reduzierung nach BLL- Toolbox / Measures for minimisation according to the BLL toolbox",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B135",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C135",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D135",
+              "value": "Maßnahmen zur Reduzierung nach BLL-Toolbox / Measures for minimisation according to the BLL toolbox",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E135",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F135",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G135",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 136,
+          "cells": {
+            "A": {
+              "ref": "A136",
+              "value": "16. Qualitätsfähigkeit / Guarantee of quality",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 137,
+          "cells": {
+            "A": {
+              "ref": "A137",
+              "value": "Ist der Hersteller nach einem GFSI anerkannten QM- System zertifiziert? / Does the manufacturer obtain a GFSI accepted QM certification?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B137",
+              "value": "Ja / Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C137",
+              "value": "Lieferantenselbstauskunft",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 138,
+          "cells": {
+            "A": {
+              "ref": "A138",
+              "value": "1. IFS Food",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B138",
+              "value": "Nein / N",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C138",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 139,
+          "cells": {
+            "A": {
+              "ref": "A139",
+              "value": "2. BRC",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B139",
+              "value": "Ja / Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 140,
+          "cells": {
+            "A": {
+              "ref": "A140",
+              "value": "3. FSSC 22000",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B140",
+              "value": "Nein / N",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 141,
+          "cells": {
+            "A": {
+              "ref": "A141",
+              "value": "4. Global GAP",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B141",
+              "value": "Nein / N",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 142,
+          "cells": {
+            "A": {
+              "ref": "A142",
+              "value": "5. Andere / Others",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B142",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C142",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 143,
+          "cells": {
+            "A": {
+              "ref": "A143",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B143",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C143",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 144,
+          "cells": {
+            "A": {
+              "ref": "A144",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B144",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C144",
+              "value": "Produkt / Product",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "D": {
+              "ref": "D144",
+              "value": "Händler / Retailer",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "E": {
+              "ref": "E144",
+              "value": "Hersteller / Manufacturer",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 145,
+          "cells": {
+            "A": {
+              "ref": "A145",
+              "value": "ISO 14000 Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B145",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C145",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D145",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 146,
+          "cells": {
+            "A": {
+              "ref": "A146",
+              "value": "Energiemanagementsystem / Energy management system : Wenn Ja, welches / If Yes, which one?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B146",
+              "value": "Nein /",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C146",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D146",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E146",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 147,
+          "cells": {
+            "A": {
+              "ref": "A147",
+              "value": "RAC Certified",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B147",
+              "value": "Ja / Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C147",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D147",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E147",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 148,
+          "cells": {
+            "A": {
+              "ref": "A148",
+              "value": "RSPO",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B148",
+              "value": "Nein / N",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C148",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D148",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E148",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 149,
+          "cells": {
+            "A": {
+              "ref": "A149",
+              "value": "MB",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B149",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C149",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D149",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E149",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 150,
+          "cells": {
+            "A": {
+              "ref": "A150",
+              "value": "SG",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B150",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C150",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "D": {
+              "ref": "D150",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "E": {
+              "ref": "E150",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 151,
+          "cells": {
+            "A": {
+              "ref": "A151",
+              "value": "Bio-Zertifizierung / Organic certification",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B151",
+              "value": "Ja / Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C151",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D151",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E151",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 152,
+          "cells": {
+            "A": {
+              "ref": "A152",
+              "value": "Kosher Zertifikat vorhanden / Kosher certificate available?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B152",
+              "value": "Ja / Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C152",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D152",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E152",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 153,
+          "cells": {
+            "A": {
+              "ref": "A153",
+              "value": "Halal Zertifikat vorhanden? / Halal certificate available?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B153",
+              "value": "Ja / Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C153",
+              "value": "☐ 1",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D153",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E153",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 154,
+          "cells": {
+            "A": {
+              "ref": "A154",
+              "value": "Andere / Others",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B154",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C154",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D154",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E154",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 155,
+          "cells": {
+            "A": {
+              "ref": "A155",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B155",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C155",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D155",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E155",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 156,
+          "cells": {
+            "A": {
+              "ref": "A156",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B156",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C156",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D156",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E156",
+              "value": "☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 157,
+          "cells": {
+            "A": {
+              "ref": "A157",
+              "value": "Installierte Schutzeinrichtung / Installed barrier",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B157",
+              "value": "Vorhanden?/ Present?",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C157",
+              "value": "Nachweisgrenze / Detection limit",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "D": {
+              "ref": "D157",
+              "value": "Prozessschritt / Step of process",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 158,
+          "cells": {
+            "A": {
+              "ref": "A158",
+              "value": "Metalldetektor / Metal detection",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B158",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C158",
+              "value": "Fe:",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D158",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 159,
+          "cells": {
+            "A": {
+              "ref": "A159",
+              "value": "Non-Fe:",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 160,
+          "cells": {
+            "A": {
+              "ref": "A160",
+              "value": "VA/SS:",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B160",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 161,
+          "cells": {
+            "A": {
+              "ref": "A161",
+              "value": "Dauermagnet / Permanent magnet",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B161",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C161",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D161",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 162,
+          "cells": {
+            "A": {
+              "ref": "A162",
+              "value": "Röntgendetektor / X-ray",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B162",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C162",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D162",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 163,
+          "cells": {
+            "A": {
+              "ref": "A163",
+              "value": "Siebe / Sieves",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B163",
+              "value": "Ja / Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C163",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D163",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 164,
+          "cells": {
+            "A": {
+              "ref": "A164",
+              "value": "Glasregister / Glass register (einschl. Hartplastik / incl. Hard plastic )",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B164",
+              "value": "Ja / Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C164",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D164",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 165,
+          "cells": {
+            "A": {
+              "ref": "A165",
+              "value": "Sonstige installierte Schutzeinrichtungen / Other installed protection",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B165",
+              "value": "Welche? / Which?",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C165",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D165",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 166,
+          "cells": {
+            "A": {
+              "ref": "A166",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B166",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C166",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 167,
+          "cells": {
+            "A": {
+              "ref": "A167",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B167",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C167",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 168,
+          "cells": {
+            "A": {
+              "ref": "A168",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B168",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C168",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 169,
+          "cells": {
+            "A": {
+              "ref": "A169",
+              "value": "Die Rückverfolgbarkeit dieses Produktes inkl. direkter Verpackungsmaterialien wird vom Fertigprodukt bis zur Rohwarenlieferung gewährleistet. / We garantuee a traceability of this product from the finished product including direct packaging material to the raw- material.",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B169",
+              "value": "Ja / Yes",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 170,
+          "cells": {
+            "A": {
+              "ref": "A170",
+              "value": "Verpackungen/Transportbehälter sind lebensmittelgeeignet und entsprechen VO (EG) Nr. 1935/2004. / Packaging material/ transport containers are suitable for food and comply with Reg. (EC) No. 1935/2004.",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B170",
+              "value": "Ja / Yes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 171,
+          "cells": {
+            "A": {
+              "ref": "A171",
+              "value": "18. GVO-Erklärung / GMO-Confirmation",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 172,
+          "cells": {
+            "A": {
+              "ref": "A172",
+              "value": "Das o.g. Produkt ist ein GVO oder enthält GVO (ausgenommen unbeabsichtigte oder technisch nicht vermeidbare Kontamination von in der EU zugelassenem GVO- Material <0,9) ? / The product above is a GMO or contains GMO (with the exception of the unintentional or technically unavoidable presence of GMO-material authorised in the EU < 0.9) ?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B172",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 173,
+          "cells": {
+            "A": {
+              "ref": "A173",
+              "value": "Das o.g. Produkt wird ganz oder teilweise aus einem GVO hergestellt? / The product above is completely or partly produced from GMOs?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B173",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 174,
+          "cells": {
+            "A": {
+              "ref": "A174",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 175,
+          "cells": {
+            "A": {
+              "ref": "A175",
+              "value": "Das o.g. Produkt enthält eine Zutat/einen Stoff, die ganz oder teilweise aus GVO hergestellt ist (ausgenommen unbeabsichtigte oder technisch nicht vermeidbare Kontamination von in der EU zugelassenem GVO-Material < 0,9? / The product above contains an ingredient/substance that is completely or partly produced from GMOs (with the exception of unintentional or technically unavoidable presence of",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B175",
+              "value": "Nein / No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 176,
+          "cells": {
+            "A": {
+              "ref": "A176",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 177,
+          "cells": {
+            "A": {
+              "ref": "A177",
+              "value": "GMO-material athorized in the EU < 0.9)?",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B177",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C177",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 178,
+          "cells": {
+            "A": {
+              "ref": "A178",
+              "value": "Wird das o.g. Produkt und/oder eine Zutat/ein Stoff mit Hilfe von genetisch veränderten Mikroorganismen hergestellt? / Is the product above and/or an ingredient/s substance produced with the aid of genetically modified microorganisms?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B178",
+              "value": "ein / N",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C178",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D178",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E178",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 179,
+          "cells": {
+            "A": {
+              "ref": "A179",
+              "value": "Wird das o.g. Produkt und/oder eine Zutat/ein Stoff mit Hilfe von Enzymen aus genetisch veränderten Mikroorganismen hergestellt? / Is the product above and/or an ingredient/s substance produced with the aid of enzymes from genetically modified microorganisms?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B179",
+              "value": "ein / N",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C179",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D179",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E179",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 180,
+          "cells": {
+            "A": {
+              "ref": "A180",
+              "value": "Lieferant / Supplier:",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B180",
+              "value": "Strik bv",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 181,
+          "cells": {
+            "A": {
+              "ref": "A181",
+              "value": "Ort, Datum / Place, date:",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B181",
+              "value": "Eemnes, 27-1-2026",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 182,
+          "cells": {
+            "A": {
+              "ref": "A182",
+              "value": "Unterschrift, Stempel / Signature, stamp:",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B182",
+              "value": "8 O TASTESTRIK @ Creators | Manufacturers | Distributors Strik bv | TasteStrik\" Bramenberg 19 3755 BV Eemnes, The Netherlands | T +31 (0)35 53 80 107 sales@tastestrik.nl | tastestrik.nl | VAT NL 8124.50.425B01 BRC CERTIFIED",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 183,
+          "cells": {
+            "A": {
+              "ref": "A183",
+              "value": "Coppenrath QS geprüft durch:",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B183",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 184,
+          "cells": {
+            "A": {
+              "ref": "A184",
+              "value": "Unterschrift, Ort, Datum / Signature, place, date:",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B184",
+              "value": "Unterschrift, Ort, Datum / Signature, place, date:",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 185,
+          "cells": {
+            "A": {
+              "ref": "A185",
+              "value": "Grund für Revision:",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B185",
+              "value": "Bedarf nach Abfrage von spezifischeren Informationen. Zusammenlegen von Spezifikationsabfrage und Lieferantenfragebogen.",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 186,
+          "cells": {
+            "A": {
+              "ref": "A186",
+              "value": "Änderung:",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B186",
+              "value": "Format des FB aktualisiert, Rohstoffgruppen aufgeteilt und mit spezifischen Abfragen angelegt, Lieferantenfragebogen eingefügt.",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 187,
+          "cells": {
+            "A": {
+              "ref": "A187",
+              "value": "Geändert durch:",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B187",
+              "value": "D. Berthuis, J. Sandmann",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C187",
+              "value": "Geprüft durch:",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D187",
+              "value": "J. Onken",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        }
+      ],
+      "mergedRanges": [],
+      "rowCount": 187,
+      "columnCount": 12,
+      "stats": {
+        "totalCells": 838,
+        "filledCells": 406,
+        "emptyRows": 0,
+        "mergedRanges": 0
+      }
+    }
+  ],
+  "stats": {
+    "totalSheets": 1,
+    "totalRows": 187,
+    "totalCells": 838,
+    "filledCells": 406
+  }
+}

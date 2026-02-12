@@ -1,0 +1,1554 @@
+{
+  "source": {
+    "filename": "Dupon Biscuits_Supplier Identification_Strik signed_20260203.pdf",
+    "filepath": "/Users/larskuijpers/repos/passionfruit-for-excel/customers/Taste Strik/incoming/Dupon Biscuits_Supplier Identification_Strik signed_20260203.pdf",
+    "extractedAt": "2026-02-12T07:13:34.152Z",
+    "customer": "Dupon",
+    "documentType": "pdf",
+    "evidenceId": 3800,
+    "evidenceName": "Dupon Biscuits_Supplier Identification_Strik signed_20260203.pdf"
+  },
+  "sheets": [
+    {
+      "name": "Document",
+      "index": 0,
+      "rows": [
+        {
+          "row": 1,
+          "cells": {
+            "A": {
+              "ref": "A1",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B1",
+              "value": "QUESTIONNAIRE OF SUPPLIERS EVALUATION",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C1",
+              "value": "DI-P14 QFOR Revisione: 01",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 2,
+          "cells": {
+            "A": {
+              "ref": "A2",
+              "value": "DUPON BISCUITS",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 3,
+          "cells": {
+            "A": {
+              "ref": "A3",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B3",
+              "value": "Data 01/04/2021 Pag .: 1/5",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 4,
+          "cells": {
+            "A": {
+              "ref": "A4",
+              "value": "GENERAL INFORMATION",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B4",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C4",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 5,
+          "cells": {
+            "A": {
+              "ref": "A5",
+              "value": "BUSINESS NAME: Strik bv",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B5",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C5",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 6,
+          "cells": {
+            "A": {
+              "ref": "A6",
+              "value": "ADRESS: Bramenberg 19, 3755 XB, Eemnes, The Netherlands",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B6",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 7,
+          "cells": {
+            "A": {
+              "ref": "A7",
+              "value": "VAT NUMBER: NL 8124.50.425B01",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B7",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C7",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 8,
+          "cells": {
+            "A": {
+              "ref": "A8",
+              "value": "YEAR OF FOUNDATION OF THE COMPANY: 1991",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B8",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C8",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 9,
+          "cells": {
+            "A": {
+              "ref": "A9",
+              "value": "PRODUCTION SITE ADRESS: Bramenberg 19, 3755 XB, Eemnes, The Netherlands",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 10,
+          "cells": {
+            "A": {
+              "ref": "A10",
+              "value": "NUMBER OF EMPLOYEES:",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B10",
+              "value": "OF WHICH FIXED:",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C10",
+              "value": "SEASONAL:",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 11,
+          "cells": {
+            "A": {
+              "ref": "A11",
+              "value": "REFERENTS",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B11",
+              "value": "PHONE",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C11",
+              "value": "FAX",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "D": {
+              "ref": "D11",
+              "value": "MAIL",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 12,
+          "cells": {
+            "A": {
+              "ref": "A12",
+              "value": "QUALITY/HACCP REFERENT",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B12",
+              "value": "+31(0)355380107",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C12",
+              "value": "Not applicable",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D12",
+              "value": "gm@tastestrik.nl",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 13,
+          "cells": {
+            "A": {
+              "ref": "A13",
+              "value": "SALES REFERENT",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B13",
+              "value": "+31(0)355380107",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C13",
+              "value": "Not applicable",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D13",
+              "value": "sales@tastestrik.nl",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 14,
+          "cells": {
+            "A": {
+              "ref": "A14",
+              "value": "HEALT ALERT REFERENT",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B14",
+              "value": "Not applicable",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C14",
+              "value": "Not applicable",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D14",
+              "value": "Not applicable",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 15,
+          "cells": {
+            "A": {
+              "ref": "A15",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B15",
+              "value": "QUESTIONNAIRE OF SUPPLIERS EVALUATION",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C15",
+              "value": "DI-P14 QFOR Revisione: 01",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 16,
+          "cells": {
+            "A": {
+              "ref": "A16",
+              "value": "DUPON BISCUITS",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 17,
+          "cells": {
+            "A": {
+              "ref": "A17",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B17",
+              "value": "Data 01/04/2021 Pag .: 2/5",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 18,
+          "cells": {
+            "A": {
+              "ref": "A18",
+              "value": "CERTIFICATIONS",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 19,
+          "cells": {
+            "A": {
+              "ref": "A19",
+              "value": "Does the company have a certification according to ISO, IFS FOOD, BRC or other recognized standards? (If yes, attach a copy of the certificate)",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B19",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C19",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 20,
+          "cells": {
+            "A": {
+              "ref": "A20",
+              "value": "STRUCTURAL REQUIREMENTS",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 21,
+          "cells": {
+            "A": {
+              "ref": "A21",
+              "value": "Is the perimeter area well cared for and free from waste? Indicate the frequency of checks and reordering of the perimeter areas",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B21",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C21",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 22,
+          "cells": {
+            "A": {
+              "ref": "A22",
+              "value": "Are there areas for loading and unloading raw materials and products separated from the production departments?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B22",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C22",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 23,
+          "cells": {
+            "A": {
+              "ref": "A23",
+              "value": "How is pest protection ensured?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B23",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C23",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 24,
+          "cells": {
+            "A": {
+              "ref": "A24",
+              "value": "Are the floors, walls and ceilings in good maintenance conditions?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B24",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C24",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 25,
+          "cells": {
+            "A": {
+              "ref": "A25",
+              "value": "How are maintenance interventions managed?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B25",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C25",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 26,
+          "cells": {
+            "A": {
+              "ref": "A26",
+              "value": "Does the company have site and product protection systems in place? (food defense)",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B26",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C26",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 27,
+          "cells": {
+            "A": {
+              "ref": "A27",
+              "value": "LAY-OUT",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 28,
+          "cells": {
+            "A": {
+              "ref": "A28",
+              "value": "Are there separate storage areas for food, non-food raw materials and finished products?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B28",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C28",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 29,
+          "cells": {
+            "A": {
+              "ref": "A29",
+              "value": "How are staff accesses to the production area regulated?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B29",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C29",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 30,
+          "cells": {
+            "A": {
+              "ref": "A30",
+              "value": "Is the plant structured in such a way as to allow the linearity of the production flow and avoid crossings?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B30",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C30",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 31,
+          "cells": {
+            "A": {
+              "ref": "A31",
+              "value": "Do the toilets and changing rooms have adequate characteristics for the number of staff and do they meet normal sanitary needs?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B31",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C31",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 32,
+          "cells": {
+            "A": {
+              "ref": "A32",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B32",
+              "value": "QUESTIONNAIRE OF SUPPLIERS EVALUATION",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C32",
+              "value": "DI-P14 QFOR Revisione: 01",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 33,
+          "cells": {
+            "A": {
+              "ref": "A33",
+              "value": "DUPON BISCUITS",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 34,
+          "cells": {
+            "A": {
+              "ref": "A34",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B34",
+              "value": "Data 01/04/2021 Pag .: 3/5",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 35,
+          "cells": {
+            "A": {
+              "ref": "A35",
+              "value": "Has the staff been trained?",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B35",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C35",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 36,
+          "cells": {
+            "A": {
+              "ref": "A36",
+              "value": "Is environmental hygiene control conducted through visual inspection? If so, how often?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B36",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C36",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 37,
+          "cells": {
+            "A": {
+              "ref": "A37",
+              "value": "Are microbiological checks of the surfaces also carried out?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B37",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C37",
+              "value": "No",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 38,
+          "cells": {
+            "A": {
+              "ref": "A38",
+              "value": "Do you perform periodic calibrations and checks of the control instruments?",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B38",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C38",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 39,
+          "cells": {
+            "A": {
+              "ref": "A39",
+              "value": "Is there a training program on staff hygiene? Indicate training frequency Refresh training takes place each year",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B39",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C39",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 40,
+          "cells": {
+            "A": {
+              "ref": "A40",
+              "value": "There are devices for washing the hands in work areas?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B40",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C40",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 41,
+          "cells": {
+            "A": {
+              "ref": "A41",
+              "value": "Is the training documented and verified?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B41",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C41",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 42,
+          "cells": {
+            "A": {
+              "ref": "A42",
+              "value": "Does the training include only aspects of good processing practices?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B42",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C42",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 43,
+          "cells": {
+            "A": {
+              "ref": "A43",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B43",
+              "value": "QUESTIONNAIRE OF SUPPLIERS EVALUATION",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C43",
+              "value": "DI-P14 QFOR Revisione: 01",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 44,
+          "cells": {
+            "A": {
+              "ref": "A44",
+              "value": "DUPON BISCUITS",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 45,
+          "cells": {
+            "A": {
+              "ref": "A45",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B45",
+              "value": "Data 01/04/2021 Pag .: 4/5",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 46,
+          "cells": {
+            "A": {
+              "ref": "A46",
+              "value": "Do you have written procedures for checking the materials / services purchased? Indicate the checks carried out",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B46",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C46",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 47,
+          "cells": {
+            "A": {
+              "ref": "A47",
+              "value": "Has the company developed a procedure for managing fraud?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B47",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C47",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 48,
+          "cells": {
+            "A": {
+              "ref": "A48",
+              "value": "FINISHED PRODUCT CONTROL AND MANAGEMENT",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 49,
+          "cells": {
+            "A": {
+              "ref": "A49",
+              "value": "Has an analysis plan been drawn up?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B49",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C49",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 50,
+          "cells": {
+            "A": {
+              "ref": "A50",
+              "value": "Do you carry out checks on the finished product?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B50",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C50",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 51,
+          "cells": {
+            "A": {
+              "ref": "A51",
+              "value": "Indicate the frequency and type of checks carried out",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B51",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C51",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 52,
+          "cells": {
+            "A": {
+              "ref": "A52",
+              "value": "Are the laboratory (s) you contact accredited?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B52",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C52",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 53,
+          "cells": {
+            "A": {
+              "ref": "A53",
+              "value": "Send a copy of the latest analyzes carried out on the products to be supplied or other analyzes",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 54,
+          "cells": {
+            "A": {
+              "ref": "A54",
+              "value": "ALLERGENS AND GMOS",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 55,
+          "cells": {
+            "A": {
+              "ref": "A55",
+              "value": "Do your products contain allergens? If so, indicate which ones",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B55",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C55",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 56,
+          "cells": {
+            "A": {
+              "ref": "A56",
+              "value": "Do you have a procedure for managing cross-contamination?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B56",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C56",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 57,
+          "cells": {
+            "A": {
+              "ref": "A57",
+              "value": "Do your products contain GMOs? If you have GMO management procedures?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B57",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C57",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 58,
+          "cells": {
+            "A": {
+              "ref": "A58",
+              "value": "This questionnaire was completed by",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B58",
+              "value": "Annefleur Wijmans",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 59,
+          "cells": {
+            "A": {
+              "ref": "A59",
+              "value": "Function in the Company",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B59",
+              "value": "Quality",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 60,
+          "cells": {
+            "A": {
+              "ref": "A60",
+              "value": "Sign",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B60",
+              "value": "C",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 61,
+          "cells": {
+            "A": {
+              "ref": "A61",
+              "value": "Data",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B61",
+              "value": "03-02-2026",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        }
+      ],
+      "mergedRanges": [],
+      "topic": "Company Information",
+      "rowCount": 61,
+      "columnCount": 4,
+      "stats": {
+        "totalCells": 156,
+        "filledCells": 135,
+        "emptyRows": 0,
+        "mergedRanges": 0
+      }
+    }
+  ],
+  "stats": {
+    "totalSheets": 1,
+    "totalRows": 61,
+    "totalCells": 156,
+    "filledCells": 135
+  }
+}

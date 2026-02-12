@@ -1,0 +1,26 @@
+{
+  "evidenceId": 3801,
+  "evidenceUuid": "61167ebe-1722-4e6f-9464-c5ac93edd66e",
+  "evidenceName": "Euro Patisserie Apeldoorn_Vragenlijst leveranciers_20250610.pdf",
+  "downloadedAt": "2026-02-11T18:46:37.366Z",
+  "classification": "",
+  "fileType": "pdf",
+  "metadata": {
+    "summary": "Supplier questionnaire for Euro Patisserie, including quality standards, certifications, and procedures.",
+    "type": "policies-and-procedures",
+    "entity": "Euro Patisserie",
+    "reportingYear": "",
+    "issueDate": "2024-10-28",
+    "approvedByAuditor": "False",
+    "auditor": "",
+    "expirationDate": "",
+    "subject": [
+      "Product and ingredients"
+    ],
+    "tags": [
+      "Product Responsibility",
+      "Product Information and Labeling",
+      "Business Ethics and Integrity"
+    ]
+  }
+}

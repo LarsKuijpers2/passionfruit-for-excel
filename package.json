@@ -7,8 +7,8 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "cli": "tsx src/pipeline-v2/cli.ts",
-    "review": "tsx src/pipeline-v2/review/server.ts",
+    "cli": "tsx src/cli.ts",
+    "server": "tsx src/server.ts",
     "lint": "eslint src/",
     "typecheck": "tsc --noEmit"
   },

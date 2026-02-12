@@ -1,0 +1,172 @@
+{
+  "id": "b1cc6a5a",
+  "source": "Unitex F-3015_Dawn Farms Meat Free Questionnaire V5_20260206 (1).pdf",
+  "indexed": "2026-02-12",
+  "language": "en",
+  "sections": [
+    {
+      "title": "Header Information",
+      "topic": "other",
+      "rows": "2-4",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "d0bc6e6e",
+          "type": "field",
+          "label": "Product Name",
+          "value": "Unitex F-3015",
+          "topic": "product",
+          "level": "product",
+          "lang": "en",
+          "destination": "product",
+          "lCell": "A2",
+          "vCell": "B2"
+        },
+        {
+          "id": "3f521139",
+          "type": "field",
+          "label": "Supplier",
+          "value": "Strik bv",
+          "topic": "raw_materials",
+          "level": "standard",
+          "destination": "answer_library",
+          "lCell": "A3",
+          "vCell": "B3"
+        },
+        {
+          "id": "8aa69d15",
+          "type": "date",
+          "label": "Date of Review",
+          "value": "6-2-2026",
+          "topic": "audits",
+          "level": "product",
+          "lang": "nl",
+          "destination": "product",
+          "lCell": "A4",
+          "vCell": "B4"
+        }
+      ]
+    },
+    {
+      "title": "Vegetarian/Vegan Compliance",
+      "topic": "other",
+      "rows": "11-12",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "8f0af0b9",
+          "type": "yesno",
+          "label": "Does the product comply with above definition for suitable for vegetarians?",
+          "topic": "food_safety",
+          "level": "product",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A11",
+          "vCell": "B11"
+        },
+        {
+          "id": "dfd31746",
+          "type": "yesno",
+          "label": "Does the product comply with above definition for suitable for vegan?",
+          "topic": "food_safety",
+          "level": "product",
+          "lang": "en",
+          "destination": "exclude",
+          "lCell": "A12",
+          "vCell": "B12"
+        }
+      ]
+    },
+    {
+      "title": "Ingredient Assessment",
+      "topic": "formula_composition",
+      "rows": "13-13",
+      "sheet": "Document",
+      "items": [
+        {
+          "id": "96ee4251",
+          "type": "field",
+          "label": "Ingredient Name",
+          "value": "textured vegetable protein",
+          "topic": "ingredients",
+          "level": "product",
+          "lang": "en",
+          "destination": "product",
+          "lCell": "A13",
+          "vCell": "A14"
+        },
+        {
+          "id": "c85c1354",
+          "type": "choice",
+          "label": "Question A (Meat & Meat Derivatives on Site) - textured vegetable protein",
+          "value": "2",
+          "topic": "food_safety",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "B13",
+          "vCell": "B14"
+        },
+        {
+          "id": "5c92b762",
+          "type": "choice",
+          "label": "Question B (Cleaning Controls) - textured vegetable protein",
+          "value": "2",
+          "topic": "cleaning",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "C13",
+          "vCell": "C14"
+        },
+        {
+          "id": "6765b90d",
+          "type": "choice",
+          "label": "Question C (Suitability for Vegan or Vegetarian Status) - textured vegetable protein",
+          "value": "1",
+          "topic": "food_safety",
+          "level": "product",
+          "lang": "en",
+          "destination": "product",
+          "lCell": "D13",
+          "vCell": "D14"
+        },
+        {
+          "id": "ff20e803",
+          "type": "field",
+          "label": "Overall Risk Rating - textured vegetable protein",
+          "value": "5",
+          "topic": "food_safety",
+          "level": "product",
+          "lang": "en",
+          "destination": "product",
+          "lCell": "E13",
+          "vCell": "E14"
+        },
+        {
+          "id": "5ee01f60",
+          "type": "field",
+          "label": "Outcome - textured vegetable protein",
+          "value": "0-11 Self Assessment Questionnaire Sufficient",
+          "topic": "food_safety",
+          "level": "product",
+          "lang": "fr",
+          "destination": "product",
+          "lCell": "F13",
+          "vCell": "F14"
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "total": 11,
+    "answered": 9,
+    "standard": 1,
+    "narrative": 0,
+    "product": 10
+  },
+  "sourceInfo": {
+    "evidenceId": 3804,
+    "evidenceName": "Unitex F-3015_Dawn Farms Meat Free Questionnaire V5_20260206 (1).pdf"
+  }
+}

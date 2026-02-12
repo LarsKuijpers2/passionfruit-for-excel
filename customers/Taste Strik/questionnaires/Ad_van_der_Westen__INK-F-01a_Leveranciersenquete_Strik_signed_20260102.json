@@ -1,0 +1,1942 @@
+{
+  "source": {
+    "filename": "Ad van der Westen__INK-F-01a Leveranciersenquete_Strik signed_20260102.docx",
+    "filepath": "/Users/larskuijpers/repos/passionfruit-for-excel/customers/Taste Strik/incoming/Ad van der Westen__INK-F-01a Leveranciersenquete_Strik signed_20260102.docx",
+    "extractedAt": "2026-02-12T07:30:46.811Z",
+    "customer": "Ad",
+    "documentType": "word",
+    "evidenceId": 3799,
+    "evidenceName": "Ad van der Westen__INK-F-01a Leveranciersenquete_Strik signed_20260102.docx"
+  },
+  "sheets": [
+    {
+      "name": "Document",
+      "index": 0,
+      "rows": [
+        {
+          "row": 1,
+          "cells": {
+            "A": {
+              "ref": "T1R1C1",
+              "value": "Algemene leveranciersinformatie",
+              "type": "string",
+              "filled": true,
+              "role": "header",
+              "format": {
+                "bold": true
+              }
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 2,
+          "cells": {
+            "A": {
+              "ref": "T1R2C1",
+              "value": "NAAM LEVERANCIER",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T1R2C2",
+              "value": "Strik bv",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 3,
+          "cells": {
+            "A": {
+              "ref": "T1R3C1",
+              "value": "Straatnaam + nummer",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T1R3C2",
+              "value": "Bramenberg 19",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 4,
+          "cells": {
+            "A": {
+              "ref": "T1R4C1",
+              "value": "Postcode",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T1R4C2",
+              "value": "3755 BV",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 5,
+          "cells": {
+            "A": {
+              "ref": "T1R5C1",
+              "value": "Plaats",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T1R5C2",
+              "value": "Eemnes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 6,
+          "cells": {
+            "A": {
+              "ref": "T1R6C1",
+              "value": "Land",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T1R6C2",
+              "value": "Nederland",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 7,
+          "cells": {
+            "A": {
+              "ref": "T1R7C1",
+              "value": "🕾 Telefoonnummer",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T1R7C2",
+              "value": "+31(0)355380107",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 8,
+          "cells": {
+            "A": {
+              "ref": "T1R8C1",
+              "value": "Website",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T1R8C2",
+              "value": "https://www.tastestrik.nl/",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 9,
+          "cells": {
+            "A": {
+              "ref": "T1R9C1",
+              "value": "BTW-nummer",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T1R9C2",
+              "value": "NL 8124.50.425B01",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 10,
+          "cells": {
+            "A": {
+              "ref": "T1R10C1",
+              "value": "Banknummer (IBAN)",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T1R10C2",
+              "value": "NL12 RABO 0315 9635 65",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 11,
+          "cells": {
+            "A": {
+              "ref": "T1R11C1",
+              "value": "Type bedrijf *",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T1R11C2",
+              "value": "X Producent X Handelaar □ Outsourcer",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 12,
+          "cells": {
+            "A": {
+              "ref": "T1R12C1",
+              "value": "* Indien u een NIET-GFSI-gecertificeerde handelaar of outsourcer bent, willen wij u vragen om kenbaar te maken van welke producenten en/of origines de producten vandaan komen.",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 13,
+          "cells": {
+            "A": {
+              "ref": "T1R13C1",
+              "value": "Contactpersoon calamiteit / recall (24/7 bereikbaar)",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T1R13C2",
+              "value": "Naam",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "T1R13C3",
+              "value": "Hans Visser (Commercial Director) of Maarten Oosterloo (Supply Chain & Operations Manager)",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 14,
+          "cells": {
+            "A": {
+              "ref": "T1R14C1",
+              "value": "Telefoonnummer",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T1R14C2",
+              "value": "Hans Visser: +31 (0)6 30 75 91 59 Maarten Oosterloo: +31 (0)6 10 33 97 44",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 15,
+          "cells": {
+            "A": {
+              "ref": "T1R15C1",
+              "value": "E-mail",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T1R15C2",
+              "value": "sales@tastestrik.nl",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 16,
+          "cells": {
+            "A": {
+              "ref": "T1R16C1",
+              "value": "Contactpersoon Kwaliteit",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T1R16C2",
+              "value": "Naam",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "T1R16C3",
+              "value": "Petrus Lenes",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 17,
+          "cells": {
+            "A": {
+              "ref": "T1R17C1",
+              "value": "Telefoonnummer",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T1R17C2",
+              "value": "+31(0)355380107",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 18,
+          "cells": {
+            "A": {
+              "ref": "T1R18C1",
+              "value": "E-mail",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T1R18C2",
+              "value": "qm@tastestrik.nl",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 19,
+          "cells": {
+            "A": {
+              "ref": "T2R1C1",
+              "value": "Specificaties",
+              "type": "string",
+              "filled": true,
+              "role": "header",
+              "format": {
+                "bold": true
+              }
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 20,
+          "cells": {
+            "A": {
+              "ref": "T2R2C1",
+              "value": "Graag ontvangen wij specificaties van onze producten, die niet ouder zijn dan 3 jaar. De specificaties moeten minimaal de volgende informatie bevatten: Declaratie van ingrediënten in aflopende volgorde met percentages (let op: bron aangeven van zetmeel, olie/vet, e.d.); GMO status; Voedingswaarden; Land van herkomst / oorsprong van de afzonderlijke ingrediënten / locatie van de productiefaciliteit Microbiologische en chemische eigenschappen; Allergenen; Bewaarcondities en houdbaarheid;",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 21,
+          "cells": {
+            "A": {
+              "ref": "T3R1C1",
+              "value": "Allergenen",
+              "type": "string",
+              "filled": true,
+              "role": "header",
+              "format": {
+                "bold": true
+              }
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 22,
+          "cells": {
+            "A": {
+              "ref": "T3R2C1",
+              "value": "Welke maatregelen heeft uw bedrijf genomen om kruisbesmetting met allergenen te minimaliseren? Graag specifieke beheersmaatregelen vermelden en dus bijvoorbeeld niet “we maken schoon”, “zie procedure” .",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 23,
+          "cells": {
+            "A": {
+              "ref": "T3R3C1",
+              "value": "Zie bijgesloten statement.",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 24,
+          "cells": {
+            "A": {
+              "ref": "T4R1C1",
+              "value": "Kwaliteitssystemen",
+              "type": "string",
+              "filled": true,
+              "role": "header",
+              "format": {
+                "bold": true
+              }
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 25,
+          "cells": {
+            "A": {
+              "ref": "T4R2C1",
+              "value": "Indien van toepassing, wat is uw EG-erkenningsnummer?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T4R2C2",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 26,
+          "cells": {
+            "A": {
+              "ref": "T4R3C1",
+              "value": "Is uw bedrijf volgens een GFSI erkende standaard (bijv. BRC, IFS, FSSC 22000) gecertificeerd?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T4R3C2",
+              "value": "Ja / Nee",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 27,
+          "cells": {
+            "A": {
+              "ref": "T4R4C1",
+              "value": "Vallen de producten, die aan ons worden geleverd, onder de scope?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T4R4C2",
+              "value": "Ja / Nee",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 28,
+          "cells": {
+            "A": {
+              "ref": "T4R5C1",
+              "value": "Als uw bedrijf niet volgens een GFSI erkende standaard gecertificeerd is of als de producten niet onder de scope vallen, dan graag uw HACCP plan toevoegen.",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 29,
+          "cells": {
+            "A": {
+              "ref": "T4R6C1",
+              "value": "Heeft uw bedrijf nog andere certificaten? Zo ja welke?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T4R6C2",
+              "value": "Ja / Nee",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 30,
+          "cells": {
+            "A": {
+              "ref": "T4R7C1",
+              "value": "BRC Agents & Brokers, Bio, FairTrade, Rainforest Alliance, RSPO",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 31,
+          "cells": {
+            "A": {
+              "ref": "T4R8C1",
+              "value": "GRAAG EEN KOPIE VAN ALLE GELDIGE CERTIFICATEN TOEVOEGEN -> zie onze website: https://www.tastestrik.nl/",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 32,
+          "cells": {
+            "A": {
+              "ref": "P32",
+              "value": "Volgens GFSI erkende standaard gecertificeerde bedrijven kunnen verder gaan met vraag 10.",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 33,
+          "cells": {
+            "A": {
+              "ref": "T5R1C1",
+              "value": "Klachten",
+              "type": "string",
+              "filled": true,
+              "role": "header",
+              "format": {
+                "bold": true
+              }
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 34,
+          "cells": {
+            "A": {
+              "ref": "T5R2C1",
+              "value": "Heeft uw bedrijf een klachtenprocedure?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T5R2C2",
+              "value": "Ja / Nee",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 35,
+          "cells": {
+            "A": {
+              "ref": "T5R3C1",
+              "value": "Welke acties worden ondernomen wanneer wij een klacht heeft over één van uw producten? Graag kort omschrijven. Als u naar een procedure verwijst voeg deze dan toe.",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 36,
+          "cells": {
+            "A": {
+              "ref": "T5R4C1",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 37,
+          "cells": {
+            "A": {
+              "ref": "T6R1C1",
+              "value": "Traceren / recall",
+              "type": "string",
+              "filled": true,
+              "role": "header",
+              "format": {
+                "bold": true
+              }
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 38,
+          "cells": {
+            "A": {
+              "ref": "T6R2C1",
+              "value": "Hoe is de traceerbaarheid van uw producten geborgd? Graag kort omschrijven. Als u naar een procedure verwijst, voeg deze dan toe.",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 39,
+          "cells": {
+            "A": {
+              "ref": "T6R3C1",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 40,
+          "cells": {
+            "A": {
+              "ref": "T6R4C1",
+              "value": "Is uw bedrijf in staat producten binnen 4 uur zowel achterwaarts als voorwaarts te traceren in het geval van een calamiteit?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T6R4C2",
+              "value": "Ja / Nee",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 41,
+          "cells": {
+            "A": {
+              "ref": "T6R5C1",
+              "value": "Registreert u welke producten van welke batch zijn geleverd en wanneer?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T6R5C2",
+              "value": "Ja / Nee",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 42,
+          "cells": {
+            "A": {
+              "ref": "T6R6C1",
+              "value": "Welke acties worden ondernomen tijdens een recall? Graag kort omschrijven. Als u naar een procedure verwijst voeg deze dan toe.",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 43,
+          "cells": {
+            "A": {
+              "ref": "T6R7C1",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 44,
+          "cells": {
+            "A": {
+              "ref": "T7R1C1",
+              "value": "Houdbaarheidstesten",
+              "type": "string",
+              "filled": true,
+              "role": "header",
+              "format": {
+                "bold": true
+              }
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 45,
+          "cells": {
+            "A": {
+              "ref": "T7R2C1",
+              "value": "Voert uw bedrijf houdbaarheidstesten uit op uw producten of productgroepen?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T7R2C2",
+              "value": "Ja / Nee",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 46,
+          "cells": {
+            "A": {
+              "ref": "T7R3C1",
+              "value": "Worden de houdbaarheidstesten met behulp van een geaccrediteerd laboratorium uitgevoerd?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T7R3C2",
+              "value": "Ja / Nee",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 47,
+          "cells": {
+            "A": {
+              "ref": "T7R4C1",
+              "value": "Zijn de resultaten, indien wij dit nodig achten, in te zien?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T7R4C2",
+              "value": "Ja / Nee",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 48,
+          "cells": {
+            "A": {
+              "ref": "T8R1C1",
+              "value": "Voedselfraude",
+              "type": "string",
+              "filled": true,
+              "role": "header",
+              "format": {
+                "bold": true
+              }
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 49,
+          "cells": {
+            "A": {
+              "ref": "T8R2C1",
+              "value": "Heeft u een risico inventarisatie met betrekking tot voedselfraude uitgevoerd (grondstoffen, verpakkingen, uitbestede productie)? Graag kort omschrijven.",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 50,
+          "cells": {
+            "A": {
+              "ref": "T8R3C1",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 51,
+          "cells": {
+            "A": {
+              "ref": "T8R4C1",
+              "value": "Hoe toont u de authenticiteit van uw producten aan (beantwoorden voor geclaimde producten)?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 52,
+          "cells": {
+            "A": {
+              "ref": "T8R5C1",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 53,
+          "cells": {
+            "A": {
+              "ref": "T8R6C1",
+              "value": "Als u in het bezit bent van herkomstcertificaten dan ontvangen wij graag een kopie van deze certificaten voor de producten die wij bij u afnemen",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 54,
+          "cells": {
+            "A": {
+              "ref": "T9R1C1",
+              "value": "Food defense",
+              "type": "string",
+              "filled": true,
+              "role": "header",
+              "format": {
+                "bold": true
+              }
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 55,
+          "cells": {
+            "A": {
+              "ref": "T9R2C1",
+              "value": "Heeft u een risico inventarisatie met betrekking tot Food defense uitgevoerd? Graag kort omschrijven.",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 56,
+          "cells": {
+            "A": {
+              "ref": "T9R3C1",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 57,
+          "cells": {
+            "A": {
+              "ref": "T9R4C1",
+              "value": "Toegang personeelsleden?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T9R4C2",
+              "value": "Badge In/ uit klokken",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "T9R4C3",
+              "value": "Anders, namelijk:",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 58,
+          "cells": {
+            "A": {
+              "ref": "T9R5C1",
+              "value": "Toegang leveranciers en bezoekers?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T9R5C2",
+              "value": "Inschrijven Geen toegang",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "T9R5C3",
+              "value": "Anders, namelijk:",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 59,
+          "cells": {
+            "A": {
+              "ref": "T9R6C1",
+              "value": "Toegangsdeuren, poorten, hekken, etc. zijn afgesloten voor derden",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T9R6C2",
+              "value": "Ja",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "T9R6C3",
+              "value": "Nee",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 60,
+          "cells": {
+            "A": {
+              "ref": "T9R7C1",
+              "value": "Transport is beveiligd middels:",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T9R7C2",
+              "value": "Verzegeling Geen",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "T9R7C3",
+              "value": "Anders, namelijk:",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 61,
+          "cells": {
+            "A": {
+              "ref": "T10R1C1",
+              "value": "Codering",
+              "type": "string",
+              "filled": true,
+              "role": "header",
+              "format": {
+                "bold": true
+              }
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 62,
+          "cells": {
+            "A": {
+              "ref": "T10R2C1",
+              "value": "Hoe is uw batchcode opgebouwd en waar bevindt deze zich?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T10R2C2",
+              "value": "Dd/mm/yy, zie productlabel",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 63,
+          "cells": {
+            "A": {
+              "ref": "T10R3C1",
+              "value": "Hoe is de houdbaarheid op uw product aangegeven (bijvoorbeeld mm/yyyy of dd/mm/yy) en waar bevindt deze zich?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T10R3C2",
+              "value": "Dd/mm/yy",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 64,
+          "cells": {
+            "A": {
+              "ref": "T10R4C1",
+              "value": "Is een levering altijd afkomstig uit één unieke batch?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T10R4C2",
+              "value": "Ja / Nee",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 65,
+          "cells": {
+            "A": {
+              "ref": "T10R5C1",
+              "value": "Wanneer er meerdere batches zijn binnen één levering geeft u dit dan aan op de pakbon?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T10R5C2",
+              "value": "Ja / Nee",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 66,
+          "cells": {
+            "A": {
+              "ref": "T10R6C1",
+              "value": "Wanneer er meerdere batches zijn binnen één levering geeft u dit dan aan op de pallet?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T10R6C2",
+              "value": "Ja / Nee",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 67,
+          "cells": {
+            "A": {
+              "ref": "T11R1C1",
+              "value": "Geschiktheid verpakkingsmaterialen",
+              "type": "string",
+              "filled": true,
+              "role": "header",
+              "format": {
+                "bold": true
+              }
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 68,
+          "cells": {
+            "A": {
+              "ref": "T11R2C1",
+              "value": "Zijn de verpakkingen van uw producten geschikt voor bedoeld gebruik?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T11R2C2",
+              "value": "Ja / Nee",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 69,
+          "cells": {
+            "A": {
+              "ref": "T11R3C1",
+              "value": "Kunt u dit onderbouwen met een conformiteitverklaring, die u op aanvraag kunt overleggen?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T11R3C2",
+              "value": "Ja / Nee",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 70,
+          "cells": {
+            "A": {
+              "ref": "T11R4C1",
+              "value": "Kunt u dit onderbouwen met een migratietest, die u op aanvraag kunt overleggen?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T11R4C2",
+              "value": "Ja / Nee",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 71,
+          "cells": {
+            "A": {
+              "ref": "T12R1C1",
+              "value": "Beheersing van vreemde delen",
+              "type": "string",
+              "filled": true,
+              "role": "header",
+              "format": {
+                "bold": true
+              }
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 72,
+          "cells": {
+            "A": {
+              "ref": "T12R2C1",
+              "value": "Wordt er een glas- en breekbare materialen inspectie uitgevoerd?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T12R2C2",
+              "value": "Ja / Nee",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 73,
+          "cells": {
+            "A": {
+              "ref": "T12R3C1",
+              "value": "Heeft uw bedrijf een procedure hoe te handelen bij breuk van glas- en breekbare materialen?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T12R3C2",
+              "value": "Ja / Nee",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 74,
+          "cells": {
+            "A": {
+              "ref": "T12R4C1",
+              "value": "Welke acties worden er ondernomen bij breuk? Graag kort omschrijven. Als u naar een procedure verwijst voeg deze dan toe.",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 75,
+          "cells": {
+            "A": {
+              "ref": "T12R5C1",
+              "value": "Er worden corrigerende maatregelen genomen bij afwijkingen in producten of processen. Deze omvatten het blokkeren van niet-conforme producten, het analyseren van de oorzaak, het implementeren van corrigerende maatregelen en het controleren van de effectiviteit ervan.",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 76,
+          "cells": {
+            "A": {
+              "ref": "T12R6C1",
+              "value": "Metaaldetector (ferro, non ferro, RVS) controle:",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T12R6C2",
+              "value": "elke lijn",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "T12R6C3",
+              "value": "specifieke lijnen",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "T12R6C4",
+              "value": "Geen",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 77,
+          "cells": {
+            "A": {
+              "ref": "T12R7C1",
+              "value": "Metaaldetectie testgrootte (mm):",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T12R7C2",
+              "value": "Ferro: 2,0",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "T12R7C3",
+              "value": "Non ferro: 2,5",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "T12R7C4",
+              "value": "RVS: 3,0",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 78,
+          "cells": {
+            "A": {
+              "ref": "T12R8C1",
+              "value": "X-ray (röntgenapparatuur) controle:",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T12R8C2",
+              "value": "elke lijn",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "T12R8C3",
+              "value": "specifieke lijnen",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "T12R8C4",
+              "value": "Geen",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 79,
+          "cells": {
+            "A": {
+              "ref": "T12R9C1",
+              "value": "Indien X-ray wordt toegepast, welke teststukken worden er dan gebruikt?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 80,
+          "cells": {
+            "A": {
+              "ref": "T12R10C1",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 81,
+          "cells": {
+            "A": {
+              "ref": "T12R11C1",
+              "value": "Zeven / filters aanwezig?",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T12R11C2",
+              "value": "Ja / Nee",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 82,
+          "cells": {
+            "A": {
+              "ref": "T12R12C1",
+              "value": "Indien ja, omschrijf op welk plek aanwezig en de maaswijdte die gebruikt wordt",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 83,
+          "cells": {
+            "A": {
+              "ref": "T12R13C1",
+              "value": "De zeef wordt slechts gebruikt bij vloeibare aroma productie, de maaswijdte van de zeef is 1,0 mm.",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 84,
+          "cells": {
+            "A": {
+              "ref": "T12R14C1",
+              "value": "Als uw bedrijf nog een andere methode gebruikt, dan graag kort omschrijven. Als u naar een procedure verwijst voeg deze dan toe",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 85,
+          "cells": {
+            "A": {
+              "ref": "T12R15C1",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 86,
+          "cells": {
+            "A": {
+              "ref": "T13R1C1",
+              "value": "Borging kritische grondstofgevaren",
+              "type": "string",
+              "filled": true,
+              "role": "header",
+              "format": {
+                "bold": true
+              }
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 87,
+          "cells": {
+            "A": {
+              "ref": "T13R2C1",
+              "value": "Grondstof/ingrediënt",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T13R2C2",
+              "value": "Kritisch grondstofgevaar",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "T13R2C3",
+              "value": "Beheersmaatregel",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 88,
+          "cells": {
+            "A": {
+              "ref": "T13R3C1",
+              "value": "Natural Flavour Type Vanilla, Sweet",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T13R3C2",
+              "value": "Vreemde delen",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "T13R3C3",
+              "value": "Zeef",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 89,
+          "cells": {
+            "A": {
+              "ref": "T13R4C1",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T13R4C2",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "T13R4C3",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 90,
+          "cells": {
+            "A": {
+              "ref": "T13R5C1",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T13R5C2",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "T13R5C3",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 91,
+          "cells": {
+            "A": {
+              "ref": "T14R1C1",
+              "value": "Opmerkingen",
+              "type": "string",
+              "filled": true,
+              "role": "header",
+              "format": {
+                "bold": true
+              }
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 92,
+          "cells": {
+            "A": {
+              "ref": "T14R2C1",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            }
+          },
+          "isEmpty": true,
+          "rowType": "data"
+        },
+        {
+          "row": 93,
+          "cells": {
+            "A": {
+              "ref": "T15R1C1",
+              "value": "Leveranciersverklaring",
+              "type": "string",
+              "filled": true,
+              "role": "header",
+              "format": {
+                "bold": true
+              }
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 94,
+          "cells": {
+            "A": {
+              "ref": "T15R2C1",
+              "value": "Ondertekende verklaart bij deze dat: Hij/zij dit document (met in acht neming van de op het moment van invullen beschikbare kennis) volledig naar waarheid heeft ingevuld. Hij/zij Van der Westen Organic Family Bakery z.s.m. zal informeren over wijzigingen waarvan redelijkerwijs kan worden verwacht dat die belangrijk zijn voor de productveiligheid of kwaliteit van de geleverde grondstoffen/producten. Denk aan samenstelling, certificeringsstatus, herkomstgegevens, etc..",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 95,
+          "cells": {
+            "A": {
+              "ref": "T15R3C1",
+              "value": "Datum",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T15R3C2",
+              "value": "02-02-2026",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 96,
+          "cells": {
+            "A": {
+              "ref": "T15R4C1",
+              "value": "Naam",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T15R4C2",
+              "value": "Annefleur Wijmans",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 97,
+          "cells": {
+            "A": {
+              "ref": "T15R5C1",
+              "value": "Functie",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T15R5C2",
+              "value": "Quality",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 98,
+          "cells": {
+            "A": {
+              "ref": "T15R6C1",
+              "value": "Handtekening",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "T15R6C2",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 99,
+          "cells": {
+            "A": {
+              "ref": "T15R7C1",
+              "value": "Namens Van der Westen Organic Family Bakery hartelijk dank voor uw tijd en het invullen van deze vragenlijst.",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        }
+      ],
+      "mergedRanges": [],
+      "topic": "Sustainability",
+      "rowCount": 99,
+      "columnCount": 3,
+      "stats": {
+        "totalCells": 167,
+        "filledCells": 150,
+        "emptyRows": 11,
+        "mergedRanges": 0
+      }
+    }
+  ],
+  "stats": {
+    "totalSheets": 1,
+    "totalRows": 99,
+    "totalCells": 167,
+    "filledCells": 150
+  }
+}

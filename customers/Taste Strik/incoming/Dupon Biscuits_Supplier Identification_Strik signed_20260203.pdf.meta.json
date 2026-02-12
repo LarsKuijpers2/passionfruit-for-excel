@@ -1,0 +1,28 @@
+{
+  "evidenceId": 3800,
+  "evidenceUuid": "e21d1f73-ec59-4301-9e23-3768663da24a",
+  "evidenceName": "Dupon Biscuits_Supplier Identification_Strik signed_20260203.pdf",
+  "downloadedAt": "2026-02-12T07:13:28.253Z",
+  "classification": "",
+  "fileType": "pdf",
+  "metadata": {
+    "summary": "Supplier evaluation questionnaire for Strik bv by Dupon Biscuits.",
+    "type": "policies-and-procedures",
+    "entity": "Dupon Biscuits",
+    "reportingYear": "",
+    "issueDate": "2026-02-03",
+    "approvedByAuditor": "False",
+    "auditor": "",
+    "expirationDate": "",
+    "subject": [
+      "Product and ingredients"
+    ],
+    "tags": [
+      "Product Responsibility",
+      "Product Information and Labeling",
+      "Health and Safety",
+      "Training and Skills Development",
+      "Pollution"
+    ]
+  }
+}

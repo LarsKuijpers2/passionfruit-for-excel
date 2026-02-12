@@ -1,0 +1,25 @@
+{
+  "evidenceId": 1145,
+  "evidenceUuid": "c34220bb-c59d-4201-ab01-390ce6f5a014",
+  "evidenceName": "215.00022_Raw Material Info File_Mix of Blue and Pink Sugar Sour Bites_20260113 (1).pdf",
+  "downloadedAt": "2026-02-11T10:51:52.852Z",
+  "classification": "",
+  "fileType": "pdf",
+  "metadata": {
+    "summary": "Raw Material Information File for Mix of Blue and Pink Sugar Sour Bites.",
+    "type": "specification-sheet",
+    "entity": "Cloetta",
+    "reportingYear": "",
+    "issueDate": "2026-01-13",
+    "approvedByAuditor": "False",
+    "auditor": "",
+    "expirationDate": "",
+    "subject": [
+      "Product and ingredients"
+    ],
+    "tags": [
+      "Product Responsibility",
+      "Product Information and Labeling"
+    ]
+  }
+}

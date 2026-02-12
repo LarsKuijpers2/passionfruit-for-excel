@@ -1,0 +1,2982 @@
+{
+  "source": {
+    "filename": "KA65_Egypt_Inproba_Questionnaire Allergens_20260126.pdf",
+    "filepath": "/Users/larskuijpers/repos/passionfruit-for-excel/customers/Taste Strik/incoming/KA65_Egypt_Inproba_Questionnaire Allergens_20260126.pdf",
+    "extractedAt": "2026-02-11T18:47:29.118Z",
+    "customer": "KA65 Egypt Inproba Questionnaire",
+    "documentType": "pdf",
+    "evidenceId": 3803,
+    "evidenceName": "KA65_Egypt_Inproba_Questionnaire Allergens_20260126.pdf"
+  },
+  "sheets": [
+    {
+      "name": "Document",
+      "index": 0,
+      "rows": [
+        {
+          "row": 1,
+          "cells": {
+            "A": {
+              "ref": "A1",
+              "value": "Supplier:",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B1",
+              "value": "Angel Yeast (Egypt) Co., Ltd.",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C1",
+              "value": "Product name:",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "D": {
+              "ref": "D1",
+              "value": "Yeast extract KA65",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 2,
+          "cells": {
+            "A": {
+              "ref": "A2",
+              "value": "Production site/ producer:",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B2",
+              "value": "Angel Yeast (Egypt) Co., Ltd.",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C2",
+              "value": "Material no. supplier:",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D2",
+              "value": "KA65",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 3,
+          "cells": {
+            "A": {
+              "ref": "A3",
+              "value": "1. Allergens",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B3",
+              "value": "Recipe/ product formula = intentionally added",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C3",
+              "value": "Cross-contact = may contain Unintended Allergen Presence (UAP) is the total of cross-contact of processes and raw materials/ supply chain4 Used on Cross- Quantity per type of cross-contact4 in order Recommendations on labelling of same contact to perform a Quantitative Risk Assessment cross-contact (PAL) eg. if UAP is not equip- possible (QRA)5 considered to be at risk?6 ment",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 4,
+          "cells": {
+            "A": {
+              "ref": "A4",
+              "value": "Used as an ingredient?1",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B4",
+              "value": "Exemption/ allergen labelling not required ??",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 5,
+          "cells": {
+            "A": {
+              "ref": "A5",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B5",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C5",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D5",
+              "value": "Labelling remarks",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E5",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F5",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G5",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H5",
+              "value": "Homogeneous (eg. powder, liquid, paste)",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I5",
+              "value": "Particulate (eg. seeds, nuts, beans, flakes, kernels)",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J5",
+              "value": "PAL labelling remarks",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 6,
+          "cells": {
+            "A": {
+              "ref": "A6",
+              "value": "Cereals containing gluten",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B6",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C6",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D6",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E6",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F6",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G6",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H6",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I6",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J6",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 7,
+          "cells": {
+            "A": {
+              "ref": "A7",
+              "value": "Wheat, spelt, khorasan",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B7",
+              "value": "☐ protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C7",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D7",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E7",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F7",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G7",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H7",
+              "value": "☐ ppm protein",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I7",
+              "value": "☐ grams, protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J7",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 8,
+          "cells": {
+            "A": {
+              "ref": "A8",
+              "value": "Rye",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B8",
+              "value": "☐ protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C8",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D8",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E8",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F8",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G8",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H8",
+              "value": "☐ ppm protein",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I8",
+              "value": "☐ grams, protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J8",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 9,
+          "cells": {
+            "A": {
+              "ref": "A9",
+              "value": "Barley",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B9",
+              "value": "☐ protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C9",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D9",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E9",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F9",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G9",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H9",
+              "value": "☐ ppm protein",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I9",
+              "value": "☐ grams, protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J9",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 10,
+          "cells": {
+            "A": {
+              "ref": "A10",
+              "value": "Oats",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B10",
+              "value": "☐ protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C10",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D10",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E10",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F10",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G10",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H10",
+              "value": "☐ ppm protein",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I10",
+              "value": "☐ grams, protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J10",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 11,
+          "cells": {
+            "A": {
+              "ref": "A11",
+              "value": "Crustaceans",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B11",
+              "value": "☐ protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C11",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D11",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E11",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F11",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G11",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H11",
+              "value": "☐ ppm protein",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I11",
+              "value": "☐ grams, protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J11",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 12,
+          "cells": {
+            "A": {
+              "ref": "A12",
+              "value": "Eggs",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B12",
+              "value": "☐ protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C12",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D12",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E12",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F12",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G12",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H12",
+              "value": "☐ ppm protein",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I12",
+              "value": "☐ grams, protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J12",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 13,
+          "cells": {
+            "A": {
+              "ref": "A13",
+              "value": "Fish",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B13",
+              "value": "☐ protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C13",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D13",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E13",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F13",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G13",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H13",
+              "value": "☐ ppm protein",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I13",
+              "value": "☐ grams, protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J13",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 14,
+          "cells": {
+            "A": {
+              "ref": "A14",
+              "value": "Peanuts",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B14",
+              "value": "☐ protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C14",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D14",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E14",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F14",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G14",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H14",
+              "value": "☐ ppm protein",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I14",
+              "value": "☐ grams, protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J14",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 15,
+          "cells": {
+            "A": {
+              "ref": "A15",
+              "value": "Soybeans",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B15",
+              "value": "☐ protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C15",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D15",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E15",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F15",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G15",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H15",
+              "value": "☐ ppm protein",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I15",
+              "value": "☐ grams, protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J15",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 16,
+          "cells": {
+            "A": {
+              "ref": "A16",
+              "value": "Milk",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B16",
+              "value": "☐ protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C16",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D16",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E16",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F16",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G16",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H16",
+              "value": "☐ ppm protein",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I16",
+              "value": "☐ grams, protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J16",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 17,
+          "cells": {
+            "A": {
+              "ref": "A17",
+              "value": "(Tree) Nuts",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B17",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C17",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D17",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E17",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F17",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G17",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H17",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I17",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J17",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 18,
+          "cells": {
+            "A": {
+              "ref": "A18",
+              "value": "Almond",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B18",
+              "value": "☐ protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C18",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D18",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E18",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F18",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G18",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H18",
+              "value": "☐ ppm protein",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I18",
+              "value": "☐ grams, protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J18",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 19,
+          "cells": {
+            "A": {
+              "ref": "A19",
+              "value": "Hazelnut",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B19",
+              "value": "☐ protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C19",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D19",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E19",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F19",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G19",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H19",
+              "value": "☐ ppm protein",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I19",
+              "value": "☐ grams, protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J19",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 20,
+          "cells": {
+            "A": {
+              "ref": "A20",
+              "value": "Walnuts",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B20",
+              "value": "☐ protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C20",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D20",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E20",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F20",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G20",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H20",
+              "value": "☐ ppm protein",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I20",
+              "value": "☐ grams, protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J20",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 21,
+          "cells": {
+            "A": {
+              "ref": "A21",
+              "value": "Cashews",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B21",
+              "value": "☐ protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C21",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D21",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E21",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F21",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G21",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H21",
+              "value": "☐ ppm protein",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I21",
+              "value": "☐ grams, protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J21",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 22,
+          "cells": {
+            "A": {
+              "ref": "A22",
+              "value": "Pecan nuts",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B22",
+              "value": "☐ protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C22",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D22",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E22",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F22",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G22",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H22",
+              "value": "☐ ppm protein",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I22",
+              "value": "☐ grams, protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J22",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 23,
+          "cells": {
+            "A": {
+              "ref": "A23",
+              "value": "Brazil nuts",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B23",
+              "value": "☐ protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C23",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D23",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E23",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F23",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G23",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H23",
+              "value": "☐ ppm protein",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I23",
+              "value": "☐ grams, protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J23",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 24,
+          "cells": {
+            "A": {
+              "ref": "A24",
+              "value": "Pistachio nuts",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B24",
+              "value": "☐ protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C24",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D24",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E24",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F24",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G24",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H24",
+              "value": "☐ ppm protein",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I24",
+              "value": "☐ grams, protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J24",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 25,
+          "cells": {
+            "A": {
+              "ref": "A25",
+              "value": "Macadamia nuts",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B25",
+              "value": "☐ protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C25",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D25",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E25",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F25",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G25",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H25",
+              "value": "☐ ppm protein",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I25",
+              "value": "☐ grams, protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J25",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 26,
+          "cells": {
+            "A": {
+              "ref": "A26",
+              "value": "Celery",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B26",
+              "value": "☐ protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C26",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D26",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E26",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F26",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G26",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H26",
+              "value": "☐ ppm protein",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I26",
+              "value": "☐ grams, protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J26",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 27,
+          "cells": {
+            "A": {
+              "ref": "A27",
+              "value": "Mustard",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B27",
+              "value": "☐ protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C27",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D27",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E27",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F27",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G27",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H27",
+              "value": "☐ ppm protein",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I27",
+              "value": "☐ grams, protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J27",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 28,
+          "cells": {
+            "A": {
+              "ref": "A28",
+              "value": "Sesame seeds",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B28",
+              "value": "☐ protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C28",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D28",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E28",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F28",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G28",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H28",
+              "value": "☐ ppm protein",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I28",
+              "value": "☐ grams, protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J28",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 29,
+          "cells": {
+            "A": {
+              "ref": "A29",
+              "value": "Sulphur dioxide and sulphites",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B29",
+              "value": "☐ natural or added",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C29",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D29",
+              "value": "☐ <10 ppm 3 ☐ >10 ppm",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E29",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F29",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G29",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H29",
+              "value": "☐ <10 ppm ☐ >10 ppm",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I29",
+              "value": "☐ grams, ppm sulphites",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J29",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 30,
+          "cells": {
+            "A": {
+              "ref": "A30",
+              "value": "Lupin",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B30",
+              "value": "☐ protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C30",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D30",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E30",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F30",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G30",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H30",
+              "value": "☐ ppm protein",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I30",
+              "value": "☐ grams, protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J30",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 31,
+          "cells": {
+            "A": {
+              "ref": "A31",
+              "value": "Molluscs",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B31",
+              "value": "☐ protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C31",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D31",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "E": {
+              "ref": "E31",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "F": {
+              "ref": "F31",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "G": {
+              "ref": "G31",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "H": {
+              "ref": "H31",
+              "value": "☐ ppm protein",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "I": {
+              "ref": "I31",
+              "value": "☐ grams, protein %",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "J": {
+              "ref": "J31",
+              "value": "remark",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 32,
+          "cells": {
+            "A": {
+              "ref": "A32",
+              "value": "2. Additional allergy warning statement Novel Foods Implementing Regulation (EU) 2017/2470",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "B": {
+              "ref": "B32",
+              "value": "Used as an ingredient?",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            },
+            "C": {
+              "ref": "C32",
+              "value": "Additional allergy warning",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 33,
+          "cells": {
+            "A": {
+              "ref": "A33",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B33",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C33",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D33",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 34,
+          "cells": {
+            "A": {
+              "ref": "A34",
+              "value": "Rapeseed/ canola protein (not applicable for canola oil, only partially defatted powders and proteins)",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B34",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C34",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D34",
+              "value": "mustard",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 35,
+          "cells": {
+            "A": {
+              "ref": "A35",
+              "value": "Insects (lesser and yellow mealworm, house cricket and locust)",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B35",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C35",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D35",
+              "value": "crustaceans (and/ or molluscs) and dust mites",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 36,
+          "cells": {
+            "A": {
+              "ref": "A36",
+              "value": "Root extract of 3 specific herbs",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B36",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C36",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D36",
+              "value": "celery",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 37,
+          "cells": {
+            "A": {
+              "ref": "A37",
+              "value": "Dried kenari nuts",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B37",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C37",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D37",
+              "value": "hazelnut, cashew and pistachio",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 38,
+          "cells": {
+            "A": {
+              "ref": "A38",
+              "value": "Dried pili nuts",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B38",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C38",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D38",
+              "value": "cashew and walnut",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 39,
+          "cells": {
+            "A": {
+              "ref": "A39",
+              "value": "Bambara nuts",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B39",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C39",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D39",
+              "value": "peanut and soybeans",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 40,
+          "cells": {
+            "A": {
+              "ref": "A40",
+              "value": "4a. Signature and authorization",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 41,
+          "cells": {
+            "A": {
+              "ref": "A41",
+              "value": "Supplier",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B41",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 42,
+          "cells": {
+            "A": {
+              "ref": "A42",
+              "value": "Name",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B42",
+              "value": "Mr. Wang Ziling",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 43,
+          "cells": {
+            "A": {
+              "ref": "A43",
+              "value": "Job title",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B43",
+              "value": "QA",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 44,
+          "cells": {
+            "A": {
+              "ref": "A44",
+              "value": "Company name",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B44",
+              "value": "Angel Yeast (Egypt) Co., Ltd.",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 45,
+          "cells": {
+            "A": {
+              "ref": "A45",
+              "value": "Telephone number",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B45",
+              "value": "+86-717-6369888",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 46,
+          "cells": {
+            "A": {
+              "ref": "A46",
+              "value": "Email address",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B46",
+              "value": "wangzlz@angelyeast.com",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 47,
+          "cells": {
+            "A": {
+              "ref": "A47",
+              "value": "Date",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B47",
+              "value": "2026-1-21",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 48,
+          "cells": {
+            "A": {
+              "ref": "A48",
+              "value": "Agree on change procedure*",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B48",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 49,
+          "cells": {
+            "A": {
+              "ref": "A49",
+              "value": "Signature",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B49",
+              "value": "QA: Wang Ziling",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 50,
+          "cells": {
+            "A": {
+              "ref": "A50",
+              "value": "3. Allergen free-from claims",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 51,
+          "cells": {
+            "A": {
+              "ref": "A51",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B51",
+              "value": "YES",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C51",
+              "value": "NO",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D51",
+              "value": "",
+              "type": "string",
+              "filled": false,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 52,
+          "cells": {
+            "A": {
+              "ref": "A52",
+              "value": "Gluten-free",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B52",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C52",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D52",
+              "value": "Explain threshold used eg. 20 ppm",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 53,
+          "cells": {
+            "A": {
+              "ref": "A53",
+              "value": "Lactose-free",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B53",
+              "value": "☒ ☒",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C53",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D53",
+              "value": "Explain threshold used eg. 100 ppm",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 54,
+          "cells": {
+            "A": {
+              "ref": "A54",
+              "value": "Others (e.g. milk- or soy-free)",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B54",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "C": {
+              "ref": "C54",
+              "value": "☐ ☐",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            },
+            "D": {
+              "ref": "D54",
+              "value": "List applicable claim(s) and threshold(s) used",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 55,
+          "cells": {
+            "A": {
+              "ref": "A55",
+              "value": "4b. Signature and authorization",
+              "type": "string",
+              "filled": true,
+              "role": "header"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "header"
+        },
+        {
+          "row": 56,
+          "cells": {
+            "A": {
+              "ref": "A56",
+              "value": "Purchaser/ receiving",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B56",
+              "value": "location approval",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 57,
+          "cells": {
+            "A": {
+              "ref": "A57",
+              "value": "Name",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B57",
+              "value": "name",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 58,
+          "cells": {
+            "A": {
+              "ref": "A58",
+              "value": "Job title",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B58",
+              "value": "job title",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 59,
+          "cells": {
+            "A": {
+              "ref": "A59",
+              "value": "Date",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B59",
+              "value": "date",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        },
+        {
+          "row": 60,
+          "cells": {
+            "A": {
+              "ref": "A60",
+              "value": "Signature",
+              "type": "string",
+              "filled": true,
+              "role": "label"
+            },
+            "B": {
+              "ref": "B60",
+              "value": "signature",
+              "type": "string",
+              "filled": true,
+              "role": "value"
+            }
+          },
+          "isEmpty": false,
+          "rowType": "data"
+        }
+      ],
+      "mergedRanges": [],
+      "topic": "Allergens",
+      "rowCount": 60,
+      "columnCount": 10,
+      "stats": {
+        "totalCells": 361,
+        "filledCells": 339,
+        "emptyRows": 0,
+        "mergedRanges": 0
+      }
+    }
+  ],
+  "stats": {
+    "totalSheets": 1,
+    "totalRows": 60,
+    "totalCells": 361,
+    "filledCells": 339
+  }
+}

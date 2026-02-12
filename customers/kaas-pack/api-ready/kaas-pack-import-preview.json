@@ -1,0 +1,4005 @@
+{
+  "customer": "kaas-pack",
+  "preparedAt": "2026-02-10T07:03:33.751Z",
+  "questionnaires": [
+    "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo",
+    "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+    "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_",
+    "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+  ],
+  "entity": {
+    "name": "Kaas-Pack Holland B.V.",
+    "fields": {
+      "street": "Buitenvaart 2109",
+      "zipCode": "7905 SW",
+      "city": "Hoogeveen",
+      "country": "The Netherlands",
+      "phone": "+31 528 268 246",
+      "email": "info@kaaspack.nl",
+      "website": "https://kaaspack.nl/"
+    },
+    "data": {
+      "Contactpersoon": "I. Vegter",
+      "Functie": "QA Manager",
+      "Email-adres": "quality@kaaspack.nl",
+      "Bedrijfsactiviteiten": "versnijden en raspen van kaas",
+      "Product range": "Zuivel",
+      "EG-nummer": "NL Z 0159 EG",
+      "Supplier Address Head Office": "Buitenvaart 2109  Hoogeveen Nederland",
+      "Post Code": "7905 SW",
+      "Healthmark (if applicable)": "NL Z 015- EG",
+      "Telephone": "+31 (0)528-268246",
+      "Fax": "not available",
+      "Name (24 Hours Emergency Contact 1)": "Leo Smit",
+      "Title (24 Hours Emergency Contact 1)": "Sales manager",
+      "Mobile (24 Hours Emergency Contact 1)": "+31 (0) 621 865719",
+      "Telephone (24 Hours Emergency Contact 1)": "+31 (0) 621 865719",
+      "E-mail (24 Hours Emergency Contact 1)": "l.smit@kaaspack.nl",
+      "Name (Emergency Contact 2)": "Ingrid Vegter",
+      "Title (Emergency Contact 2)": "QA manager",
+      "Telephone (Emergency Contact 2)": "+31 (0) 528-268246",
+      "E-mail (Emergency Contact 2)": "quality@kaaspack.nl",
+      "Document Type": "FICHE TECHNIQUE",
+      "Company Address": "1, rue Professeur Louis Neel",
+      "Company Address 2": "BP 20 - 21601 Longvic France",
+      "Company Phone": "+33 (0)3 80 31 66 19",
+      "Document Reference": "Ref: E.023 Version: 6",
+      "Document Creation/Revision Date": "Crée le : 12/09/2017 Révisé le : 30/12/2024",
+      "Health Approval Number / Estampille Sanitaire": "NL Z0159 EU",
+      "Crisis Management Procedure Available": "yes",
+      "Emergency Contact Name": "Quality department",
+      "Emergency Contact Phone": "+31 528 26 82 46",
+      "Emergency Contact Email": "quality@kaaspack.nl",
+      "24/7 Emergency Phone": "+31 6 21 86 57 19",
+      "Quality Department Email": "quality@kaaspack.nl",
+      "Quality Department Phone": "+31 528 26 82 46",
+      "Name": "G. Sok",
+      "Date": "2025-10-07",
+      "General Email Address": "orderdesk@kaaspack.nl",
+      "Contact Person Name": "L. Smit",
+      "Contact Person Phone": "+31 (0)6 21 86 57 19",
+      "Contact Person Email": "l.smit@kaaspack.nl",
+      "Tax Number": "NL809333120B01",
+      "Bank Details (IBAN)": "NL67 RABO 0329 0821 16",
+      "Bank Details (BIC)": "RABONL2U",
+      "Accounting Contact": "Bookkeeping department",
+      "Accounting Phone": "+31 528 268 246",
+      "Accounting Email": "finance@kaaspack.nl",
+      "Sales Contact": "L. Smit",
+      "Sales Phone": "+31 (0)6 21 86 57 19",
+      "Sales Email": "l.smit@kaaspack.nl",
+      "Quality Management Contact": "Quality department",
+      "Quality Management Email": "quality@kaaspack.nl",
+      "Quality Management Phone": "+31 528 268 246",
+      "Manufacturer or Trader": "Hersteller-Producer",
+      "Agree to F+S Audit": "yes",
+      "Name (Nachhaltigkeitsabteilung) / Name (Sustainability Department)": "G. Sok",
+      "Telefon (Nachhaltigkeitsabteilung) / Phone (Sustainability Department)": "+31 528 268 246",
+      "Mobil-Telefon (Nachhaltigkeitsabteilung) / Mobile Phone (Sustainability Department)": "N/A",
+      "E-Mail-Adresse (Nachhaltigkeitsabteilung) / Email Address (Sustainability Department)": "quality@kaaspack.nl",
+      "Crisis Contact Name (Contact Person 1)": "Quality department",
+      "Crisis Contact Name (Contact Person 2)": "L. Smit",
+      "Crisis Contact Phone (Contact Person 1)": "+31 528 268 246",
+      "Crisis Contact Phone (Contact Person 2)": "+31 528 268 246",
+      "Crisis Contact Mobile (Contact Person 1)": "N/A",
+      "Crisis Contact Mobile (Contact Person 2)": "+31 (0)6 21 86 57 19",
+      "Crisis Contact Email (Contact Person 1)": "quality@kaaspack.nl",
+      "Crisis Contact Email (Contact Person 2)": "l.smit@kaaspack.nl",
+      "Name contact person": "L. Smit",
+      "Phone contact person": "+31 (0)6 21 86 57 19",
+      "Email address contact person": "l.smit@kaaspack.nl",
+      "EU-approval number": "NL Z0159 EU"
+    },
+    "fieldSources": {
+      "name": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "street": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "zipCode": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "city": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "country": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Contactpersoon": [
+        "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo"
+      ],
+      "Functie": [
+        "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo"
+      ],
+      "phone": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Email-adres": [
+        "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo"
+      ],
+      "Bedrijfsactiviteiten": [
+        "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo"
+      ],
+      "Product range": [
+        "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo"
+      ],
+      "EG-nummer": [
+        "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo"
+      ],
+      "Supplier Address Head Office": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "Post Code": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "Healthmark (if applicable)": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "Telephone": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "Fax": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "email": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "Name (24 Hours Emergency Contact 1)": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "Title (24 Hours Emergency Contact 1)": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "Mobile (24 Hours Emergency Contact 1)": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "Telephone (24 Hours Emergency Contact 1)": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "E-mail (24 Hours Emergency Contact 1)": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "Name (Emergency Contact 2)": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "Title (Emergency Contact 2)": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "Telephone (Emergency Contact 2)": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "E-mail (Emergency Contact 2)": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "Document Type": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "Company Address": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "Company Address 2": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "Company Phone": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "Document Reference": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "Document Creation/Revision Date": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "Health Approval Number / Estampille Sanitaire": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "Crisis Management Procedure Available": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "Emergency Contact Name": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "Emergency Contact Phone": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "Emergency Contact Email": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "24/7 Emergency Phone": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "Quality Department Email": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "Quality Department Phone": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "Name": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "Date": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "website": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "General Email Address": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Contact Person Name": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Contact Person Phone": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Contact Person Email": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Tax Number": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Bank Details (IBAN)": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Bank Details (BIC)": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Accounting Contact": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Accounting Phone": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Accounting Email": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Sales Contact": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Sales Phone": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Sales Email": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Quality Management Contact": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Quality Management Email": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Quality Management Phone": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Manufacturer or Trader": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Agree to F+S Audit": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Name (Nachhaltigkeitsabteilung) / Name (Sustainability Department)": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Telefon (Nachhaltigkeitsabteilung) / Phone (Sustainability Department)": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Mobil-Telefon (Nachhaltigkeitsabteilung) / Mobile Phone (Sustainability Department)": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "E-Mail-Adresse (Nachhaltigkeitsabteilung) / Email Address (Sustainability Department)": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Crisis Contact Name (Contact Person 1)": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Crisis Contact Name (Contact Person 2)": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Crisis Contact Phone (Contact Person 1)": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Crisis Contact Phone (Contact Person 2)": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Crisis Contact Mobile (Contact Person 1)": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Crisis Contact Mobile (Contact Person 2)": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Crisis Contact Email (Contact Person 1)": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Crisis Contact Email (Contact Person 2)": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Name contact person": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Phone contact person": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "Email address contact person": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "EU-approval number": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ]
+    }
+  },
+  "answers": [
+    {
+      "localId": "7pe2s9",
+      "question": "Welke kwaliteitsstandaarden zijn in werking binnen uw bedrijf?",
+      "answer": "VLOG en Weidegang",
+      "topic": "certifications",
+      "sources": [
+        "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo"
+      ],
+      "section": "Kwaliteitsmanagement",
+      "action": "create"
+    },
+    {
+      "localId": "dwin7r",
+      "question": "Hoe is contaminatie met vreemde delen (metaal, steentjes, hout, glas etc.) in grondstoffen voorkomen?",
+      "answer": "Controle op metaaldeeltjes door metaaldetector verder visuel",
+      "topic": "food_safety",
+      "sources": [
+        "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo"
+      ],
+      "section": "Kwaliteitsmanagement",
+      "action": "create"
+    },
+    {
+      "localId": "cmh9f0",
+      "question": "Hoe is verontreiniging met niet gedeclareerde allergenen in uw bedrijf voorkomen?",
+      "answer": "Alleen melk, als allergeen, wordt binnen ons pand verwerkt.",
+      "topic": "allergens",
+      "sources": [
+        "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo"
+      ],
+      "section": "Kwaliteitsmanagement",
+      "action": "create"
+    },
+    {
+      "localId": "n8pf8r",
+      "question": "Leg kort uit hoe gevaren die via de grondstoffen uw product kunnen bereiken worden beheerst",
+      "answer": "Afstemming binnen het HACCP team betreffende gevaren. Daar w",
+      "topic": "food_safety",
+      "sources": [
+        "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo"
+      ],
+      "section": "Chemische, Fysische en Microbiologische gevaren",
+      "action": "create"
+    },
+    {
+      "localId": "r35v12",
+      "question": "Voert u Chemische en/of microbiologische analyses uit om de veiligheid van uw product te waarborgen?",
+      "answer": "Er worden volgen monsterplanning onderzoeken op microbiologi",
+      "topic": "microbiology",
+      "sources": [
+        "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo"
+      ],
+      "section": "Chemische, Fysische en Microbiologische gevaren",
+      "action": "create"
+    },
+    {
+      "localId": "qai0yr",
+      "question": "Is er een Food Fraude-analyse uitgevoerd op de grondstoffen en ingrediënten?",
+      "answer": "yes",
+      "topic": "food_fraud",
+      "sources": [
+        "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo"
+      ],
+      "section": "Food Fraude management",
+      "action": "create"
+    },
+    {
+      "localId": "em3flg",
+      "question": "Voert u analyses uit op grondstoffen om fraude eerder in het proces te detecteren?",
+      "answer": "Nee. We kopen kaas in van gecertificeerde producenten. Er wo",
+      "topic": "food_fraud",
+      "sources": [
+        "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo"
+      ],
+      "section": "Food Fraude management",
+      "action": "create"
+    },
+    {
+      "localId": "qeudpi",
+      "question": "Bevat het milieubeleid van uw organisatie, zelf toegekende en/of externe doelstellingen?",
+      "answer": "Er wordt intern gewerkt met een CAP 26000 gebaseerd systeem.",
+      "topic": "environment",
+      "sources": [
+        "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo"
+      ],
+      "section": "Milieubeleid",
+      "action": "create"
+    },
+    {
+      "localId": "ft2hfa",
+      "question": "When was the company established?",
+      "answer": "1974",
+      "topic": "company",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Company History",
+      "action": "create"
+    },
+    {
+      "localId": "2xuyb7",
+      "question": "Company History: Size of the site",
+      "answer": "8000 m2",
+      "topic": "company",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Company History",
+      "action": "create"
+    },
+    {
+      "localId": "27cck2",
+      "question": "Is the factory purpose built",
+      "answer": "yes",
+      "topic": "company",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Company History",
+      "action": "create"
+    },
+    {
+      "localId": "7e7i29",
+      "question": "Is the company Private/Limited/Public?",
+      "answer": "private",
+      "topic": "company",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Company History",
+      "action": "create"
+    },
+    {
+      "localId": "9jr87w",
+      "question": "If part of a group please note parent company",
+      "answer": "--",
+      "topic": "company",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Company History",
+      "action": "create"
+    },
+    {
+      "localId": "ac1gpj",
+      "question": "Do you operate to a recognized animal welfare status",
+      "answer": "no",
+      "topic": "animal_welfare",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Company History",
+      "action": "create"
+    },
+    {
+      "localId": "j0y84s",
+      "question": "Number of factories/production sites from which you supply",
+      "answer": "ca 70 incl cheese, packaging, karton factories",
+      "topic": "company",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Company History",
+      "action": "create"
+    },
+    {
+      "localId": "g1a632",
+      "question": "Do you have full product/ingredient/public liability insurance",
+      "answer": "yes",
+      "topic": "financial",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Company History",
+      "action": "create"
+    },
+    {
+      "localId": "ekbi4a",
+      "question": "Company History: Name of the insurer",
+      "answer": "AIG Europe S.A., Netherlands Branch",
+      "topic": "financial",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Company History",
+      "action": "create"
+    },
+    {
+      "localId": "ju9g8g",
+      "question": "Company History: Insured Limit euro",
+      "answer": "EUR 5,000,000.00 per claim and EUR 15,000,000.00 in the aggr",
+      "topic": "financial",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Company History",
+      "action": "create"
+    },
+    {
+      "localId": "1va12k",
+      "question": "Company History: Please attach a copy",
+      "answer": "AttachedKaas-Pack_Holland_BV_certificate_2026-2027.pdf",
+      "topic": "documents",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Company History",
+      "action": "create"
+    },
+    {
+      "localId": "rzbora",
+      "question": "Company History: Expiry",
+      "answer": "01/01/2027",
+      "topic": "financial",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Company History",
+      "action": "create"
+    },
+    {
+      "localId": "wn5cq8",
+      "question": "Company History: Outline principal products manufactured",
+      "answer": "slices, grating and cubes cheese.",
+      "topic": "product",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Company History",
+      "action": "create"
+    },
+    {
+      "localId": "7lz33j",
+      "question": "Please indicate 'other products' produced",
+      "answer": "Analog slices, grating and cubes",
+      "topic": "product",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Company History",
+      "action": "create"
+    },
+    {
+      "localId": "sy8fi4",
+      "question": "Do you produce Retailer own label product",
+      "answer": "yes",
+      "topic": "product",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Company History",
+      "action": "create"
+    },
+    {
+      "localId": "tqhytx",
+      "question": "Halal",
+      "answer": "yes",
+      "topic": "certifications",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Company History",
+      "action": "create"
+    },
+    {
+      "localId": "yxjkph",
+      "question": "Kosher",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025",
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Company History",
+      "action": "create"
+    },
+    {
+      "localId": "dhm9ew",
+      "question": "Organic",
+      "answer": "yes",
+      "topic": "certifications",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Company History",
+      "action": "create"
+    },
+    {
+      "localId": "ep11mi",
+      "question": "RSPO",
+      "answer": "N/A",
+      "topic": "certifications",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Company History",
+      "action": "create"
+    },
+    {
+      "localId": "qy3zn6",
+      "question": "Company History: Other certifications (Please state)",
+      "answer": "BRCGS, IFS, VLOG, Weidegang",
+      "topic": "certifications",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Company History",
+      "action": "create"
+    },
+    {
+      "localId": "ouvajd",
+      "question": "Is the company inspected against any GFSI standard (BRC / IFS / FSSC 22000 / SQF / GLOBALG.A.P. / GRMS)?",
+      "answer": "yes",
+      "topic": "certifications",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Accreditation Details",
+      "action": "create"
+    },
+    {
+      "localId": "tlv76j",
+      "question": "Which GFSI certification status does the manufacturing site have?",
+      "answer": "IFS",
+      "topic": "certifications",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Accreditation Details",
+      "action": "create"
+    },
+    {
+      "localId": "2fc6wo",
+      "question": "Accreditation Details: Expiry date of current GFSI certificate",
+      "answer": "05/02/2026",
+      "topic": "certifications",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Accreditation Details",
+      "action": "create"
+    },
+    {
+      "localId": "ja0u7y",
+      "question": "Accreditation Details: Please attach current GFSI certificate",
+      "answer": "N/A",
+      "topic": "documents",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Accreditation Details",
+      "action": "create"
+    },
+    {
+      "localId": "n8mmd9",
+      "question": "Please confirm link to Dairygold Food Ingredients on BRC directory",
+      "answer": "N/A",
+      "topic": "certifications",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Accreditation Details",
+      "action": "create"
+    },
+    {
+      "localId": "f58qv",
+      "question": "Accreditation Details: Please attach full GFSI report",
+      "answer": "N/A",
+      "topic": "documents",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Accreditation Details",
+      "action": "create"
+    },
+    {
+      "localId": "sej661",
+      "question": "If you are not accredited to a recognized GFSI scheme or your certificate has expired, are you planning to obtain GFSI accreditation?",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Accreditation Details",
+      "action": "create"
+    },
+    {
+      "localId": "xgrgkk",
+      "question": "Please list current or proposed product supplied to Da",
+      "answer": "Cheddar rouge mature 50% Fidm grated 3mm 2x5kg, 112S - Count",
+      "topic": "product",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Products Supplied/Proposed",
+      "action": "create"
+    },
+    {
+      "localId": "t87ceu",
+      "question": "Please attach specification of each of the products supplied",
+      "answer": "Attached302442-2-DEU_15-11-22_1132.pdf303082-0-21-04-22.pdf3",
+      "topic": "documents",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Products Supplied/Proposed",
+      "action": "create"
+    },
+    {
+      "localId": "m2jnwy",
+      "question": "Do you pack these products on your site?",
+      "answer": "yes",
+      "topic": "packaging",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Products Supplied/Proposed",
+      "action": "create"
+    },
+    {
+      "localId": "f9nyqn",
+      "question": "Products Supplied/Proposed: Name of packing site",
+      "answer": "Kaas-Pack is the packaging site",
+      "topic": "packaging",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Products Supplied/Proposed",
+      "action": "create"
+    },
+    {
+      "localId": "bu3p23",
+      "question": "Products Supplied/Proposed: Healthmark of packing site",
+      "answer": "NL Z 0159EG",
+      "topic": "approval",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Products Supplied/Proposed",
+      "action": "create"
+    },
+    {
+      "localId": "uky60k",
+      "question": "Accreditation status and attach current certificate",
+      "answer": "N/A",
+      "topic": "certifications",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Products Supplied/Proposed",
+      "action": "create"
+    },
+    {
+      "localId": "nxpb70",
+      "question": "Confirm and attach Food Safety Control in place e.g. HACCP",
+      "answer": "Attached1048_flow_schema.pdf",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Products Supplied/Proposed",
+      "action": "create"
+    },
+    {
+      "localId": "gyvp8u",
+      "question": "For all dairy products supplied has the milk used been obtained from approved sources",
+      "answer": "yes",
+      "topic": "origin",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Products Supplied/Proposed",
+      "action": "create"
+    },
+    {
+      "localId": "zd1ffx",
+      "question": "For all dairy products supplied has the milk used been obtained from approved farms",
+      "answer": "yes",
+      "topic": "origin",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Products Supplied/Proposed",
+      "action": "create"
+    },
+    {
+      "localId": "afn2vd",
+      "question": "For all dairy products supplied has the milk used has been tested for residues",
+      "answer": "yes",
+      "topic": "quality",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Products Supplied/Proposed",
+      "action": "create"
+    },
+    {
+      "localId": "8eivxe",
+      "question": "Are all dairy products supplied compliant with EU reg 853",
+      "answer": "yes",
+      "topic": "approval",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Products Supplied/Proposed",
+      "action": "create"
+    },
+    {
+      "localId": "mddqxv",
+      "question": "For all dairy products supplied has the milk used has subjected to heat treatment",
+      "answer": "yes",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Products Supplied/Proposed",
+      "action": "create"
+    },
+    {
+      "localId": "vv73q1",
+      "question": "Are you a SEDEX member (if so please provide SEDEX number in",
+      "answer": "yes",
+      "topic": "certifications",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Ethical",
+      "action": "create"
+    },
+    {
+      "localId": "pn7ic5",
+      "question": "Please confirm Dairygold is or will be linked to your sit",
+      "answer": "yes",
+      "topic": "certifications",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Ethical",
+      "action": "create"
+    },
+    {
+      "localId": "97s68e",
+      "question": "Ethical: If not, please answer question 6.2-6.16",
+      "answer": "yes",
+      "topic": "other",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Ethical",
+      "action": "create"
+    },
+    {
+      "localId": "kj27u5",
+      "question": "Is your annual turnover euro 36M or more",
+      "answer": "Ethical Skip",
+      "topic": "financial",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Ethical",
+      "action": "create"
+    },
+    {
+      "localId": "63ysjc",
+      "question": "If yes, please confirm Modern Slavery Act statement is pu",
+      "answer": "Ethical Skip",
+      "topic": "ethical",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Ethical",
+      "action": "create"
+    },
+    {
+      "localId": "ue6umn",
+      "question": "Does your company have a written ethical trading policy?",
+      "answer": "Ethical Skip",
+      "topic": "ethical",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Ethical",
+      "action": "create"
+    },
+    {
+      "localId": "19zk4f",
+      "question": "Ethical: If so please attach a copy",
+      "answer": "Ethical Skip",
+      "topic": "documents",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Ethical",
+      "action": "create"
+    },
+    {
+      "localId": "qyzpny",
+      "question": "Please confirm that your company does not use forced labo",
+      "answer": "Ethical Skip",
+      "topic": "ethical",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Ethical",
+      "action": "create"
+    },
+    {
+      "localId": "oayjv1",
+      "question": "Does your company have a written equal opportunities poli",
+      "answer": "Ethical Skip",
+      "topic": "ethical",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Ethical",
+      "action": "create"
+    },
+    {
+      "localId": "zgnec8",
+      "question": "Do all staff have a written contract of employment?",
+      "answer": "Ethical Skip",
+      "topic": "ethical",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Ethical",
+      "action": "create"
+    },
+    {
+      "localId": "1vvn9d",
+      "question": "Does your company have a written grievance procedure?",
+      "answer": "Ethical Skip",
+      "topic": "ethical",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Ethical",
+      "action": "create"
+    },
+    {
+      "localId": "t1q81q",
+      "question": "Does your company have a written disciplinary procedure?",
+      "answer": "Ethical Skip",
+      "topic": "ethical",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Ethical",
+      "action": "create"
+    },
+    {
+      "localId": "tzxzcr",
+      "question": "Does the company operate maternity, paternity and parenta",
+      "answer": "Ethical Skip",
+      "topic": "ethical",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Ethical",
+      "action": "create"
+    },
+    {
+      "localId": "l5e4sh",
+      "question": "Do you have a written Health & Safety Policy?",
+      "answer": "Ethical Skip",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Ethical",
+      "action": "create"
+    },
+    {
+      "localId": "nbqbuk",
+      "question": "Have risk assessments been completed?",
+      "answer": "Ethical Skip",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Ethical",
+      "action": "create"
+    },
+    {
+      "localId": "kfnm7i",
+      "question": "Is formal Health & Safety Training carried out?",
+      "answer": "Ethical Skip",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Ethical",
+      "action": "create"
+    },
+    {
+      "localId": "i60mhv",
+      "question": "Is PPE provided for all staff?",
+      "answer": "Ethical Skip",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Ethical",
+      "action": "create"
+    },
+    {
+      "localId": "cpmsaj",
+      "question": "If so is this free of charge?",
+      "answer": "Ethical Skip",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Ethical",
+      "action": "create"
+    },
+    {
+      "localId": "7rpx9e",
+      "question": "Do you have a formal system for recording accidents?",
+      "answer": "Ethical Skip",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Ethical",
+      "action": "create"
+    },
+    {
+      "localId": "mqjdux",
+      "question": "Are rest areas and hygienic facilities provided for staff",
+      "answer": "Ethical Skip",
+      "topic": "ethical",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Ethical",
+      "action": "create"
+    },
+    {
+      "localId": "vrbimi",
+      "question": "Are staff paid at least the minimum wage?",
+      "answer": "Ethical Skip",
+      "topic": "ethical",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Ethical",
+      "action": "create"
+    },
+    {
+      "localId": "oet7ja",
+      "question": "Do you have a recognized Environmental Management system?",
+      "answer": "no",
+      "topic": "environment",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Environmental",
+      "action": "create"
+    },
+    {
+      "localId": "mvc0ph",
+      "question": "If so, please attach a copy of the certificate",
+      "answer": "N/A",
+      "topic": "documents",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Environmental",
+      "action": "create"
+    },
+    {
+      "localId": "fdy31t",
+      "question": "Do you have a formal Environmental Policy?",
+      "answer": "yes",
+      "topic": "environment",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Environmental",
+      "action": "create"
+    },
+    {
+      "localId": "x3r2wl",
+      "question": "Environmental: If so please attach a copy of policy",
+      "answer": "AttachedMVO_Zelfverklaring_NEN-ISO_26000_2010_-_2021.docx",
+      "topic": "documents",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Environmental",
+      "action": "create"
+    },
+    {
+      "localId": "v08lr3",
+      "question": "Is all solid waste reduced, re-used and recycled where possible?",
+      "answer": "yes",
+      "topic": "environment",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Environmental",
+      "action": "create"
+    },
+    {
+      "localId": "q9n4u2",
+      "question": "Is the use of hazardous substances reviewed regularly?",
+      "answer": "yes",
+      "topic": "environment",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Environmental",
+      "action": "create"
+    },
+    {
+      "localId": "zehx4a",
+      "question": "Are emissions of dust, gas and vapours minimized?",
+      "answer": "yes",
+      "topic": "environment",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Environmental",
+      "action": "create"
+    },
+    {
+      "localId": "t4j74a",
+      "question": "Is Energy usage monitored and reduced where possible?",
+      "answer": "yes",
+      "topic": "environment",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Environmental",
+      "action": "create"
+    },
+    {
+      "localId": "vwuqki",
+      "question": "Is packaging designed to minimize environmental impact?",
+      "answer": "yes",
+      "topic": "packaging",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Environmental",
+      "action": "create"
+    },
+    {
+      "localId": "e3q1j6",
+      "question": "Do you have a documented food safety and quality management system?",
+      "answer": "yes",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Food Safety & Quality Management",
+      "action": "create"
+    },
+    {
+      "localId": "na1uxm",
+      "question": "Is this documented in a manual available to all staff?",
+      "answer": "yes",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Food Safety & Quality Management",
+      "action": "create"
+    },
+    {
+      "localId": "8fcdxg",
+      "question": "Does the company have an organizational chart including staff responsibilities?",
+      "answer": "yes",
+      "topic": "quality",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Food Safety & Quality Management",
+      "action": "create"
+    },
+    {
+      "localId": "bhhgcz",
+      "question": "Are processes in place to ensure customer requirements are met?",
+      "answer": "yes",
+      "topic": "quality",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Food Safety & Quality Management",
+      "action": "create"
+    },
+    {
+      "localId": "o3e9m6",
+      "question": "Are internal audits carried out and documented with corrective actions?",
+      "answer": "yes",
+      "topic": "audits",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Food Safety & Quality Management",
+      "action": "create"
+    },
+    {
+      "localId": "5o556l",
+      "question": "Is an approved supplier system in place including supplier monitoring?",
+      "answer": "yes",
+      "topic": "quality",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Food Safety & Quality Management",
+      "action": "create"
+    },
+    {
+      "localId": "s7l0jg",
+      "question": "Do you formally audit your supplier at least once every 3 years?",
+      "answer": "yes",
+      "topic": "audits",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Food Safety & Quality Management",
+      "action": "create"
+    },
+    {
+      "localId": "os5cs2",
+      "question": "Do you hold specifications for raw materials, semi-processed and finished products?",
+      "answer": "yes",
+      "topic": "product",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Food Safety & Quality Management",
+      "action": "create"
+    },
+    {
+      "localId": "8a0p3j",
+      "question": "Are all records completed and suitably retained?",
+      "answer": "yes",
+      "topic": "documents",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Food Safety & Quality Management",
+      "action": "create"
+    },
+    {
+      "localId": "r8tyx",
+      "question": "Do you have a documented Non conformance system with procedures?",
+      "answer": "yes",
+      "topic": "quality",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Food Safety & Quality Management",
+      "action": "create"
+    },
+    {
+      "localId": "yz2wvo",
+      "question": "Do you have a documented traceability system in place?",
+      "answer": "yes",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Food Safety & Quality Management",
+      "action": "create"
+    },
+    {
+      "localId": "ht4276",
+      "question": "Are all product batch coded?",
+      "answer": "yes",
+      "topic": "product",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Food Safety & Quality Management",
+      "action": "create"
+    },
+    {
+      "localId": "cqw9xm",
+      "question": "Please attach an example of your traceability exercise",
+      "answer": "we are certified.",
+      "topic": "documents",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Food Safety & Quality Management",
+      "action": "create"
+    },
+    {
+      "localId": "ecoala",
+      "question": "Do you have a product recall procedure? Please attach",
+      "answer": "yes",
+      "topic": "crisis",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Food Safety & Quality Management",
+      "action": "create"
+    },
+    {
+      "localId": "28avem",
+      "question": "Has your recall system been tested and proven to work?",
+      "answer": "yes",
+      "topic": "crisis",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Food Safety & Quality Management",
+      "action": "create"
+    },
+    {
+      "localId": "ofzieh",
+      "question": "Are customer notified should an incident take place, that may affect product quality or safety?",
+      "answer": "yes",
+      "topic": "crisis",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Food Safety & Quality Management",
+      "action": "create"
+    },
+    {
+      "localId": "lxvxuf",
+      "question": "Is there a formal, documented system for complaint handling?",
+      "answer": "yes",
+      "topic": "quality",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Food Safety & Quality Management",
+      "action": "create"
+    },
+    {
+      "localId": "br3fua",
+      "question": "Would you allow Dairygold's representative to audit your facility?",
+      "answer": "N/A",
+      "topic": "audits",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Food Safety & Quality Management",
+      "action": "create"
+    },
+    {
+      "localId": "3khb9o",
+      "question": "Do you allow smoking on site?",
+      "answer": "yes",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Site Standards",
+      "action": "create"
+    },
+    {
+      "localId": "joe7zg",
+      "question": "If so, is the area separate from production areas?",
+      "answer": "yes",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Site Standards",
+      "action": "create"
+    },
+    {
+      "localId": "di4l9s",
+      "question": "If so, do staff have to wash their hands before re-entering production areas?",
+      "answer": "yes",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Site Standards",
+      "action": "create"
+    },
+    {
+      "localId": "qzw995",
+      "question": "Is the site a suitable size, location and construction?",
+      "answer": "yes",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Site Standards",
+      "action": "create"
+    },
+    {
+      "localId": "o1fu2r",
+      "question": "Is security suitable to prevent unauthorized access to production areas?",
+      "answer": "yes",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Site Standards",
+      "action": "create"
+    },
+    {
+      "localId": "ipdszv",
+      "question": "Are utilities to and within the production and storage areas suitable?",
+      "answer": "yes",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Site Standards",
+      "action": "create"
+    },
+    {
+      "localId": "o1bdwq",
+      "question": "Is equipment designed for relevant product use and to prevent contamination?",
+      "answer": "yes",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Site Standards",
+      "action": "create"
+    },
+    {
+      "localId": "io3w2f",
+      "question": "Is there a documented system of planned maintenance?",
+      "answer": "yes",
+      "topic": "quality",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Site Standards",
+      "action": "create"
+    },
+    {
+      "localId": "7hou91",
+      "question": "Staff facilities such as lockers etc. are appropriate?",
+      "answer": "yes",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Site Standards",
+      "action": "create"
+    },
+    {
+      "localId": "yx1oke",
+      "question": "Do storage and cleaning systems ensure product is not subject to contamination?",
+      "answer": "yes",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Site Standards",
+      "action": "create"
+    },
+    {
+      "localId": "mhpm43",
+      "question": "Is housekeeping and cleaning in place to ensure suitable hygiene standards?",
+      "answer": "yes",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Site Standards",
+      "action": "create"
+    },
+    {
+      "localId": "mq2per",
+      "question": "Is the effectiveness of the cleaning and sanitation procedures monitored?",
+      "answer": "yes",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Site Standards",
+      "action": "create"
+    },
+    {
+      "localId": "sy90m4",
+      "question": "Are suitable systems in place for the collection, collation and disposal of waste?",
+      "answer": "yes",
+      "topic": "environment",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Site Standards",
+      "action": "create"
+    },
+    {
+      "localId": "kfv726",
+      "question": "Do you have a trade waste contract?",
+      "answer": "yes",
+      "topic": "environment",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Site Standards",
+      "action": "create"
+    },
+    {
+      "localId": "ue4vfb",
+      "question": "Are all waste removal contractors licensed?",
+      "answer": "yes",
+      "topic": "environment",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Site Standards",
+      "action": "create"
+    },
+    {
+      "localId": "r73u4b",
+      "question": "Is there a documented preventative pest control system in place?",
+      "answer": "yes",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Site Standards",
+      "action": "create"
+    },
+    {
+      "localId": "jgcjmw",
+      "question": "If the site is covered by pest control contract, Please state company name",
+      "answer": "N/A",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Site Standards",
+      "action": "create"
+    },
+    {
+      "localId": "qbptl3",
+      "question": "Pest control contract details - Contact details",
+      "answer": "N/A",
+      "topic": "contacts",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Site Standards",
+      "action": "create"
+    },
+    {
+      "localId": "moq8ii",
+      "question": "Pest control contract details - Additional information",
+      "answer": "N/A",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Site Standards",
+      "action": "create"
+    },
+    {
+      "localId": "mituk",
+      "question": "Do you maintain a site plan showing the location of all traps and bait stations?",
+      "answer": "yes",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Site Standards",
+      "action": "create"
+    },
+    {
+      "localId": "i0gpvb",
+      "question": "Are storage and transport facilities suitable for purpose?",
+      "answer": "yes",
+      "topic": "logistics",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Site Standards",
+      "action": "create"
+    },
+    {
+      "localId": "7kaycr",
+      "question": "Are transport vehicles assessed for cleanliness/suitability?",
+      "answer": "yes",
+      "topic": "logistics",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Site Standards",
+      "action": "create"
+    },
+    {
+      "localId": "7wgzdf",
+      "question": "If third party hauliers are used, have they been audited?",
+      "answer": "yes",
+      "topic": "logistics",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Site Standards",
+      "action": "create"
+    },
+    {
+      "localId": "64l86u",
+      "question": "Are there procedures in place to ensure that the product integrity is maintained during transport?",
+      "answer": "yes",
+      "topic": "logistics",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Site Standards",
+      "action": "create"
+    },
+    {
+      "localId": "yevz9n",
+      "question": "Is there a vehicle breakdown procedure?",
+      "answer": "N/A",
+      "topic": "logistics",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Site Standards",
+      "action": "create"
+    },
+    {
+      "localId": "ld811s",
+      "question": "Are all raw material and finished product stored on site?",
+      "answer": "no",
+      "topic": "logistics",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Site Standards",
+      "action": "create"
+    },
+    {
+      "localId": "o18rkj",
+      "question": "Raw material and finished product storage details",
+      "answer": "No N/A",
+      "topic": "logistics",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Site Standards",
+      "action": "create"
+    },
+    {
+      "localId": "7nai4v",
+      "question": "Is there a documented procedure followed for product rele",
+      "answer": "yes",
+      "topic": "quality",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Product Control",
+      "action": "create"
+    },
+    {
+      "localId": "41bahl",
+      "question": "Are product development procedures in place to ensure tha",
+      "answer": "yes",
+      "topic": "quality",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Product Control",
+      "action": "create"
+    },
+    {
+      "localId": "uxfwrq",
+      "question": "Does product labelling comply with the appropriate legal req",
+      "answer": "yes",
+      "topic": "quality",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Product Control",
+      "action": "create"
+    },
+    {
+      "localId": "gsa0x8",
+      "question": "Is there a system in place to minimize the risk of purcha",
+      "answer": "yes",
+      "topic": "quality",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Product Control",
+      "action": "create"
+    },
+    {
+      "localId": "z3us3f",
+      "question": "Do you have testing processes in place to reduce risk, wh",
+      "answer": "yes",
+      "topic": "quality",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Product Control",
+      "action": "create"
+    },
+    {
+      "localId": "d28c4h",
+      "question": "Please refer to the SUPPLIER REFERENCE INFORMATION",
+      "answer": "confidential",
+      "topic": "documents",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Product Control",
+      "action": "create"
+    },
+    {
+      "localId": "wp4sa5",
+      "question": "Are suitable foreign body detection systems in place incl",
+      "answer": "yes",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Product Control",
+      "action": "create"
+    },
+    {
+      "localId": "wor66s",
+      "question": "Product Control: Ferrous sensitivity (mm)",
+      "answer": "3",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Product Control",
+      "action": "create"
+    },
+    {
+      "localId": "gd8oqv",
+      "question": "Product Control: Non-Ferrous sensitivity (mm)",
+      "answer": "3",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Product Control",
+      "action": "create"
+    },
+    {
+      "localId": "lrr71u",
+      "question": "Product Control: Stainless Steel sensitivity (mm)",
+      "answer": "4",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Product Control",
+      "action": "create"
+    },
+    {
+      "localId": "878nwy",
+      "question": "Product Control: If others, please detail",
+      "answer": "no",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Product Control",
+      "action": "create"
+    },
+    {
+      "localId": "bvlfoc",
+      "question": "Is product packaging suitable for the intended use (i.e.",
+      "answer": "yes",
+      "topic": "packaging",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Product Control",
+      "action": "create"
+    },
+    {
+      "localId": "op5fnl",
+      "question": "Do you ensure product is tested and inspected suitably to",
+      "answer": "yes",
+      "topic": "quality",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Product Control",
+      "action": "create"
+    },
+    {
+      "localId": "ogq14k",
+      "question": "Is all non-conforming products clearly identified, labell",
+      "answer": "yes",
+      "topic": "quality",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Product Control",
+      "action": "create"
+    },
+    {
+      "localId": "anjvuk",
+      "question": "Do the processes and equipment ensure that the product ca",
+      "answer": "yes",
+      "topic": "quality",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Process Control",
+      "action": "create"
+    },
+    {
+      "localId": "ygj0m1",
+      "question": "Is a legal quantity control system in place (i.e. check w",
+      "answer": "yes",
+      "topic": "quality",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Process Control",
+      "action": "create"
+    },
+    {
+      "localId": "acoacf",
+      "question": "Are all instruments used for such controls calibrated to",
+      "answer": "yes",
+      "topic": "quality",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Process Control",
+      "action": "create"
+    },
+    {
+      "localId": "vh7pup",
+      "question": "Are all staff and contractors trained prior to commencing",
+      "answer": "yes",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Personnel",
+      "action": "create"
+    },
+    {
+      "localId": "xha8r0",
+      "question": "Have staff working on a CCP had documented training which",
+      "answer": "yes",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Personnel",
+      "action": "create"
+    },
+    {
+      "localId": "j9vruh",
+      "question": "Are training records for all staff filed and updated?",
+      "answer": "yes",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Personnel",
+      "action": "create"
+    },
+    {
+      "localId": "li6289",
+      "question": "Are procedures in place to ensure that access and movemen",
+      "answer": "yes",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Personnel",
+      "action": "create"
+    },
+    {
+      "localId": "2szv3y",
+      "question": "Are documented hygiene standards communicated and agreed",
+      "answer": "yes",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Personnel",
+      "action": "create"
+    },
+    {
+      "localId": "b34mbv",
+      "question": "Is there a documented medical screening procedure in plac",
+      "answer": "yes",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Personnel",
+      "action": "create"
+    },
+    {
+      "localId": "h2yfzo",
+      "question": "Is suitable protective clothing provided and readily avai",
+      "answer": "yes",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Personnel",
+      "action": "create"
+    },
+    {
+      "localId": "utb9xq",
+      "question": "What is fed to the animals which supply dairy products to",
+      "answer": "unknown. DG supplies it own raw material",
+      "topic": "sustainability",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Soy Sustainability",
+      "action": "create"
+    },
+    {
+      "localId": "1xqiyx",
+      "question": "How do you track and manage the origin of soy within your",
+      "answer": "not",
+      "topic": "sustainability",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Soy Sustainability",
+      "action": "create"
+    },
+    {
+      "localId": "ns9cqh",
+      "question": "What sustainability standards or certifications are being",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Soy Sustainability",
+      "action": "create"
+    },
+    {
+      "localId": "2r7d3e",
+      "question": "Please provide the accreditation status and attach current c",
+      "answer": "Kaas-Pack already added",
+      "topic": "certifications",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Section 19",
+      "action": "create"
+    },
+    {
+      "localId": "hmsqlx",
+      "question": "If manufacturing site is accredited to GFSI standard, please",
+      "answer": "We are not BRC, but IFS certified",
+      "topic": "certifications",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Section 19",
+      "action": "create"
+    },
+    {
+      "localId": "pdapme",
+      "question": "Please attach a copy of the GFSI audit report",
+      "answer": "We are not BRC certified",
+      "topic": "certifications",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Section 19",
+      "action": "create"
+    },
+    {
+      "localId": "ubqnz",
+      "question": "Please attach the scope of HACCP plan for each product/s sup",
+      "answer": "We are BRC certified",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Section 19",
+      "action": "create"
+    },
+    {
+      "localId": "98pvjz",
+      "question": "Please attach a copy of your HACCP, including CCP's, criti",
+      "answer": "confidential",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Section 19",
+      "action": "create"
+    },
+    {
+      "localId": "tdj8mw",
+      "question": "Please attach an example of your traceability exercise",
+      "answer": "we are certified",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Section 19",
+      "action": "create"
+    },
+    {
+      "localId": "kyjyj2",
+      "question": "Do you have a product recall procedure,If Yes please attach",
+      "answer": "we are certified",
+      "topic": "crisis",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Section 19",
+      "action": "create"
+    },
+    {
+      "localId": "6oh70d",
+      "question": "Please download and complete a copy of supply mapping docume",
+      "answer": "confidential",
+      "topic": "origin",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Section 19",
+      "action": "create"
+    },
+    {
+      "localId": "p2ss5n",
+      "question": "If you have a recognised Environmental Management System, pl",
+      "answer": "the fill will be added by Kelly. thanks :)",
+      "topic": "environment",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Section 19",
+      "action": "create"
+    },
+    {
+      "localId": "987vbb",
+      "question": "What sustainability standards or certifications are being us",
+      "answer": "no feed information avalible",
+      "topic": "sustainability",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Section 19",
+      "action": "create"
+    },
+    {
+      "localId": "1mianb",
+      "question": "Do you operate to a recognized animal welfare status e.g. Fa",
+      "answer": "We don't produce, but are slicing and grating cheese",
+      "topic": "animal_welfare",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Section 20",
+      "action": "create"
+    },
+    {
+      "localId": "84cmp",
+      "question": "Do you hold certification for RSPO",
+      "answer": "We are member of RSPO",
+      "topic": "certifications",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Section 20",
+      "action": "create"
+    },
+    {
+      "localId": "8chtfz",
+      "question": "Please attach a copy of the GFSI audit report",
+      "answer": "confidential",
+      "topic": "audits",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Section 20",
+      "action": "create"
+    },
+    {
+      "localId": "wn25ur",
+      "question": "If manufacturing site is accredited to a recognized GFSI sch",
+      "answer": "N/A",
+      "topic": "certifications",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Section 20",
+      "action": "create"
+    },
+    {
+      "localId": "fzgevp",
+      "question": "What formal training has your HACCP team undergone, Please a",
+      "answer": "same present for other members",
+      "topic": "food_safety",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Section 20",
+      "action": "create"
+    },
+    {
+      "localId": "mhlswl",
+      "question": "Would you allow Dairygold's representative to audit your qua",
+      "answer": "if a request comes in we can discuss this.",
+      "topic": "audits",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Section 20",
+      "action": "create"
+    },
+    {
+      "localId": "bp4d82",
+      "question": "Do you allow smoking on site",
+      "answer": "outside",
+      "topic": "quality",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Section 20",
+      "action": "create"
+    },
+    {
+      "localId": "dyramy",
+      "question": "If you have a formal environmental policy, please attach a c",
+      "answer": "see attached",
+      "topic": "environment",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Section 20",
+      "action": "create"
+    },
+    {
+      "localId": "meebti",
+      "question": "Are nuts or ingredients containing nuts handled or present o",
+      "answer": "No tin production or related area's",
+      "topic": "allergens",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Section 20",
+      "action": "create"
+    },
+    {
+      "localId": "842bzk",
+      "question": "Is milk handled or present on manufacturer site at any time",
+      "answer": "Main ingredient of cheese",
+      "topic": "allergens",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Section 20",
+      "action": "create"
+    },
+    {
+      "localId": "83vese",
+      "question": "For all dairy products supplied has the milk used been obtai",
+      "answer": "this is done by the cheese supplier, not at Kaas-Pack.",
+      "topic": "origin",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Section 20",
+      "action": "create"
+    },
+    {
+      "localId": "w4qlay",
+      "question": "For all dairy products supplied has the milk used been obtai",
+      "answer": "based on VET information",
+      "topic": "origin",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Section 20",
+      "action": "create"
+    },
+    {
+      "localId": "o43o47",
+      "question": "For all dairy products supplied has the milk used has been r",
+      "answer": "test taken out at producing factories",
+      "topic": "quality",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Section 20",
+      "action": "create"
+    },
+    {
+      "localId": "hajxet",
+      "question": "Are suitable allergen contamination controls in place includ",
+      "answer": "before entering the prodcution site, there is change of clot",
+      "topic": "allergens",
+      "sources": [
+        "Dairygold_-_Food_Ingredient_SAQ_V6_by_Kaas-pack_Holland_B_v___11-02-2025"
+      ],
+      "section": "Section 20",
+      "action": "create"
+    },
+    {
+      "localId": "jm6a14",
+      "question": "Have you carried out an animal welfare study?",
+      "answer": "no",
+      "topic": "animal_welfare",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Animal Welfare",
+      "action": "create"
+    },
+    {
+      "localId": "tosucj",
+      "question": "Do you have animal welfare audits in place?",
+      "answer": "no",
+      "topic": "animal_welfare",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Animal Welfare",
+      "action": "create"
+    },
+    {
+      "localId": "bfv2n1",
+      "question": "Specify at which stage (slaughter, breeding, transport)",
+      "answer": "N/A",
+      "topic": "animal_welfare",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Animal Welfare",
+      "action": "create"
+    },
+    {
+      "localId": "zdzt9p",
+      "question": "Does the raw material have an animal welfare certification?",
+      "answer": "no",
+      "topic": "animal_welfare",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Animal Welfare",
+      "action": "create"
+    },
+    {
+      "localId": "l1k9by",
+      "question": "Which certification does the raw material have?",
+      "answer": "N/A",
+      "topic": "certifications",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Animal Welfare",
+      "action": "create"
+    },
+    {
+      "localId": "rxglvr",
+      "question": "What criteria did you integrate for the selection of your raw material?",
+      "answer": "N/A",
+      "topic": "animal_welfare",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Animal Welfare",
+      "action": "create"
+    },
+    {
+      "localId": "cij5d6",
+      "question": "Halal Certified",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Certifications and Dietary Requirements",
+      "action": "create"
+    },
+    {
+      "localId": "bbm78q",
+      "question": "Certifications and Dietary Requirements: Kasher/Kosher Certified",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Certifications and Dietary Requirements",
+      "action": "create"
+    },
+    {
+      "localId": "x6sqon",
+      "question": "Certifications and Dietary Requirements: Ovo-lacto Vegetarian Suitable",
+      "answer": "yes",
+      "topic": "certifications",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Certifications and Dietary Requirements",
+      "action": "create"
+    },
+    {
+      "localId": "xkde38",
+      "question": "Certifications and Dietary Requirements: Lactose-free",
+      "answer": "no",
+      "topic": "allergens",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Certifications and Dietary Requirements",
+      "action": "create"
+    },
+    {
+      "localId": "4c6508",
+      "question": "Certifications and Dietary Requirements: Lactose Level (g/100g)",
+      "answer": "<0,2",
+      "topic": "nutrition",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Certifications and Dietary Requirements",
+      "action": "create"
+    },
+    {
+      "localId": "z589cp",
+      "question": "V Label Requirements: Vegan Suitable",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "V Label Requirements",
+      "action": "create"
+    },
+    {
+      "localId": "ne9ka",
+      "question": "V Label Requirements: Vegetarian Suitable",
+      "answer": "yes",
+      "topic": "certifications",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "V Label Requirements",
+      "action": "create"
+    },
+    {
+      "localId": "msgdwv",
+      "question": "Is the milk or dairy product FairTrade certified?",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Milk/Dairy",
+      "action": "create"
+    },
+    {
+      "localId": "532ppe",
+      "question": "Is the dairy product certified under another certification?",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Milk/Dairy",
+      "action": "create"
+    },
+    {
+      "localId": "z44ri7",
+      "question": "Which certification (dairy product)?",
+      "answer": "N/A",
+      "topic": "certifications",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Milk/Dairy",
+      "action": "create"
+    },
+    {
+      "localId": "2jfkx5",
+      "question": "Have you made a commitment to respect human rights in your milk supply chain?",
+      "answer": "no",
+      "topic": "sustainability",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Milk/Dairy",
+      "action": "create"
+    },
+    {
+      "localId": "ajwspa",
+      "question": "Which human rights commitment?",
+      "answer": "N/A",
+      "topic": "sustainability",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Milk/Dairy",
+      "action": "create"
+    },
+    {
+      "localId": "5i2w4l",
+      "question": "Have you made a non-deforestation and non-conversion commitment?",
+      "answer": "no",
+      "topic": "sustainability",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Milk/Dairy",
+      "action": "create"
+    },
+    {
+      "localId": "8546a6",
+      "question": "Which non-deforestation commitment?",
+      "answer": "N/A",
+      "topic": "sustainability",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Milk/Dairy",
+      "action": "create"
+    },
+    {
+      "localId": "thevhm",
+      "question": "Is the animal fed with soy?",
+      "answer": "yes",
+      "topic": "sustainability",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Milk/Dairy",
+      "action": "create"
+    },
+    {
+      "localId": "5fkuhh",
+      "question": "Can you specify where this soy comes from?",
+      "answer": "No, but the Dutch dairy industry uses since 2015 only certified soy",
+      "topic": "sustainability",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Milk/Dairy",
+      "action": "create"
+    },
+    {
+      "localId": "38fat6",
+      "question": "Is the soy from a source that guarantees cultivation without deforestation?",
+      "answer": "yes",
+      "topic": "sustainability",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Milk/Dairy",
+      "action": "create"
+    },
+    {
+      "localId": "z0pkwn",
+      "question": "Have you made a deforestation/non-conversion commitment on soy?",
+      "answer": "no",
+      "topic": "sustainability",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Milk/Dairy",
+      "action": "create"
+    },
+    {
+      "localId": "ppldb8",
+      "question": "Milk/Dairy: Details / Précisions",
+      "answer": "See remark about the Dutch dairy industry.",
+      "topic": "sustainability",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Milk/Dairy",
+      "action": "create"
+    },
+    {
+      "localId": "qe1wtr",
+      "question": "Responsible purchasing policies - Environmental issues",
+      "answer": "yes",
+      "topic": "sustainability",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Responsible Purchasing",
+      "action": "create"
+    },
+    {
+      "localId": "h31zkc",
+      "question": "Responsible purchasing policies - Social practices related to human rights",
+      "answer": "yes",
+      "topic": "sustainability",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Responsible Purchasing",
+      "action": "create"
+    },
+    {
+      "localId": "wuy46m",
+      "question": "Responsible purchasing policies - Purchasing products from sustainable sources",
+      "answer": "yes",
+      "topic": "sustainability",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Responsible Purchasing",
+      "action": "create"
+    },
+    {
+      "localId": "o5at4m",
+      "question": "Key performance indicators (KPIs) in responsible purchasing",
+      "answer": "yes",
+      "topic": "sustainability",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Responsible Purchasing",
+      "action": "create"
+    },
+    {
+      "localId": "7axacn",
+      "question": "Responsible purchasing KPIs details",
+      "answer": "We are working on the definitive list",
+      "topic": "sustainability",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Responsible Purchasing",
+      "action": "create"
+    },
+    {
+      "localId": "60cf8f",
+      "question": "Environmental policy status",
+      "answer": "Not yet",
+      "topic": "environment",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Environment",
+      "action": "create"
+    },
+    {
+      "localId": "55uwx7",
+      "question": "Environmental KPIs details",
+      "answer": "See previous remark",
+      "topic": "environment",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Environment",
+      "action": "create"
+    },
+    {
+      "localId": "ih8xck",
+      "question": "Environment: Carbon footprint availability",
+      "answer": "no",
+      "topic": "environment",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Environment",
+      "action": "create"
+    },
+    {
+      "localId": "7wmgr7",
+      "question": "Environment: Carbon footprint value",
+      "answer": "To be calculated",
+      "topic": "environment",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Environment",
+      "action": "create"
+    },
+    {
+      "localId": "lckr9n",
+      "question": "Environment: Greenhouse gas reduction target",
+      "answer": "yes",
+      "topic": "environment",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Environment",
+      "action": "create"
+    },
+    {
+      "localId": "ac7zzx",
+      "question": "Greenhouse gas reduction objective details",
+      "answer": "We are woking on it",
+      "topic": "environment",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Environment",
+      "action": "create"
+    },
+    {
+      "localId": "gnwuam",
+      "question": "Environment: Recyclable materials project",
+      "answer": "yes",
+      "topic": "packaging",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Environment",
+      "action": "create"
+    },
+    {
+      "localId": "vo62zb",
+      "question": "Environment: Anti-waste law reference",
+      "answer": "Which law are you refering to?",
+      "topic": "environment",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Environment",
+      "action": "create"
+    },
+    {
+      "localId": "mvhbtw",
+      "question": "Industrial testing with recycled packaging",
+      "answer": "yes",
+      "topic": "packaging",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Environment",
+      "action": "create"
+    },
+    {
+      "localId": "5wh5xc",
+      "question": "Environment: Recyclable materials for packaging",
+      "answer": "Mono foils",
+      "topic": "packaging",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Environment",
+      "action": "create"
+    },
+    {
+      "localId": "86ds03",
+      "question": "Environment: Recyclable packaging objectives",
+      "answer": "No, work in progress",
+      "topic": "packaging",
+      "sources": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025__300724_"
+      ],
+      "section": "Environment",
+      "action": "create"
+    },
+    {
+      "localId": "7umpp4",
+      "question": "Liegt Ihnen ein Product Carbon Footprint (PCF) vor? / Do you have a Product Carbon Footprint (PCF)?",
+      "answer": "no",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Product Carbon Footprint (PCF)",
+      "action": "create"
+    },
+    {
+      "localId": "bf86st",
+      "question": "Wenn nein, planen Sie die Berechnung eines PCF? / If not, are you planning to calculate a PCF?",
+      "answer": "no",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Product Carbon Footprint (PCF)",
+      "action": "create"
+    },
+    {
+      "localId": "jx2lz",
+      "question": "Do you fall under EU Deforestation Regulation (EUDR)?",
+      "answer": "no",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Non-deforestation Supply Chain",
+      "action": "create"
+    },
+    {
+      "localId": "r6ay59",
+      "question": "Do the items delivered to us contain at least 5% of a critical raw material?",
+      "answer": "no",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Non-deforestation Supply Chain",
+      "action": "create"
+    },
+    {
+      "localId": "he8uk4",
+      "question": "Is there a self-commitment to deforestation-free supply chains?",
+      "answer": "no",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Non-deforestation Supply Chain",
+      "action": "create"
+    },
+    {
+      "localId": "uugm6n",
+      "question": "Do you plan to commit to a deforestation-free supply chain?",
+      "answer": "no",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Non-deforestation Supply Chain",
+      "action": "create"
+    },
+    {
+      "localId": "asxw89",
+      "question": "Company Production Plant",
+      "answer": "Kaas-Pack Holland B.V.",
+      "topic": "company",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Production Plant Information",
+      "action": "create"
+    },
+    {
+      "localId": "rzrmvi",
+      "question": "Production Plant Information: Street",
+      "answer": "Buitenvaart 2109",
+      "topic": "company",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Production Plant Information",
+      "action": "create"
+    },
+    {
+      "localId": "vtjt0b",
+      "question": "Production Plant Information: Postal Code",
+      "answer": "7905 SW",
+      "topic": "company",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Production Plant Information",
+      "action": "create"
+    },
+    {
+      "localId": "lijbsf",
+      "question": "Production Plant Information: City",
+      "answer": "Hoogeveen",
+      "topic": "company",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Production Plant Information",
+      "action": "create"
+    },
+    {
+      "localId": "e30uil",
+      "question": "Production Plant Information: Country",
+      "answer": "The Netherlands",
+      "topic": "company",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Production Plant Information",
+      "action": "create"
+    },
+    {
+      "localId": "8wk0c2",
+      "question": "Production Plant Information: Website",
+      "answer": "https://kaaspack.nl/",
+      "topic": "company",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Production Plant Information",
+      "action": "create"
+    },
+    {
+      "localId": "w9vby8",
+      "question": "Production Plant Information: Phone",
+      "answer": "+31 528 268 246",
+      "topic": "contacts",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Production Plant Information",
+      "action": "create"
+    },
+    {
+      "localId": "cep434",
+      "question": "Production Plant Information: General e-mail address",
+      "answer": "orderdesk@kaaspack.nl",
+      "topic": "contacts",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Production Plant Information",
+      "action": "create"
+    },
+    {
+      "localId": "o2euod",
+      "question": "Production Plant Information: Name contact person",
+      "answer": "L. Smit",
+      "topic": "contacts",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Production Plant Information",
+      "action": "create"
+    },
+    {
+      "localId": "w5yivw",
+      "question": "Production Plant Information: Phone contact person",
+      "answer": "+31 (0)6 21 86 57 19",
+      "topic": "contacts",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Production Plant Information",
+      "action": "create"
+    },
+    {
+      "localId": "7swks9",
+      "question": "Production Plant Information: Email address contact person",
+      "answer": "l.smit@kaaspack.nl",
+      "topic": "contacts",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Production Plant Information",
+      "action": "create"
+    },
+    {
+      "localId": "ymhftb",
+      "question": "Production Plant Information: EU-approval number",
+      "answer": "NL Z0159 EU",
+      "topic": "approval",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Production Plant Information",
+      "action": "create"
+    },
+    {
+      "localId": "ctdpju",
+      "question": "Haben Sie sich CO₂-Reduktionsziele gesetzt? / Have you set CO₂ reduction targets?",
+      "answer": "no",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "CO₂-Reduktionsmaßnahmen",
+      "action": "create"
+    },
+    {
+      "localId": "8i42j4",
+      "question": "Bemerkung zu CO₂-Reduktionszielen / Comment on CO₂ reduction targets",
+      "answer": "Es wurde ein Konzeptplan erstellt, der noch vom Managementteam",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "CO₂-Reduktionsmaßnahmen",
+      "action": "create"
+    },
+    {
+      "localId": "qu5squ",
+      "question": "Wenn nein, für wann planen Sie, sich Ziele zu setzen? / If no, when do you plan to set targets?",
+      "answer": "end of 2025",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "CO₂-Reduktionsmaßnahmen",
+      "action": "create"
+    },
+    {
+      "localId": "xoyl3q",
+      "question": "Haben Sie sich zu SBTi verpflichtet? / Have you committed to SBTi?",
+      "answer": "no",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "CO₂-Reduktionsmaßnahmen",
+      "action": "create"
+    },
+    {
+      "localId": "ok967t",
+      "question": "Bemerkung zu SBTi Verpflichtung / Comment on SBTi commitment",
+      "answer": "Noch nicht, wir stehen mit SBTi in Kontakt, um die von uns g",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "CO₂-Reduktionsmaßnahmen",
+      "action": "create"
+    },
+    {
+      "localId": "mql3aq",
+      "question": "Haben Sie SBTi-validierte Ziele? / Do you have SBTi-validated targets?",
+      "answer": "no",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "CO₂-Reduktionsmaßnahmen",
+      "action": "create"
+    },
+    {
+      "localId": "hxv3dx",
+      "question": "Bemerkung zu SBTi-validierten Zielen / Comment on SBTi-validated targets",
+      "answer": "Noch nicht, wir stehen mit SBTi in Kontakt, um die von uns g",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "CO₂-Reduktionsmaßnahmen",
+      "action": "create"
+    },
+    {
+      "localId": "9k8t8a",
+      "question": "Planen Sie, sich zu SBTi zu verpflichten? / Are you planning to commit to SBTi?",
+      "answer": "yes",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "CO₂-Reduktionsmaßnahmen",
+      "action": "create"
+    },
+    {
+      "localId": "r7zozn",
+      "question": "Bemerkung zu SBTi Plänen / Comment on SBTi plans",
+      "answer": "Ende 2025 / Anfang 2026",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "CO₂-Reduktionsmaßnahmen",
+      "action": "create"
+    },
+    {
+      "localId": "kxrag9",
+      "question": "Supplied Product(s) in Calendar Year 2024",
+      "answer": "z.B. Gouda / e.g. gouda",
+      "topic": "product",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Product Carbon Footprint (PCF)",
+      "action": "create"
+    },
+    {
+      "localId": "60dyoy",
+      "question": "Product Carbon Footprint (Cradle-to-Gate) in g CO₂e / kg",
+      "answer": "z. B. 1200 / e. g. 1200",
+      "topic": "environment",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Product Carbon Footprint (PCF)",
+      "action": "create"
+    },
+    {
+      "localId": "20gznr",
+      "question": "GFSI anerkannte Zertifizierungen z.B. IFS, BRC, FSSC 22000",
+      "answer": "yes",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "bchz63",
+      "question": "IFS Food",
+      "answer": "yes",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "hmvake",
+      "question": "IFS COID Nummer",
+      "answer": "34736",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "mu829k",
+      "question": "BRC",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "ndw9ri",
+      "question": "FSSC 22000",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "lab2lq",
+      "question": "Certificates: Sonstige QM-Zertifikate z.B. ISO 9001",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "zgm6g3",
+      "question": "Certificates: ISO 14001: Umweltmanagement",
+      "answer": "no",
+      "topic": "environment",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "1u9bbo",
+      "question": "Certificates: ISO 45001: Arbeitsschutzmanagement",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "7mruts",
+      "question": "Certificates: ISO 50001: Energiemanagement",
+      "answer": "no",
+      "topic": "environment",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "nfu5b2",
+      "question": "Certificates: Member of Ecovadis",
+      "answer": "yes",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "dcma4x",
+      "question": "Certificates: Member of Sedex",
+      "answer": "yes",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "tp1urt",
+      "question": "Sedex Mitgliedsnummer",
+      "answer": "ZC408415203",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "jfjfw0",
+      "question": "Certificates: Bio / Organic",
+      "answer": "yes",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "cbjss2",
+      "question": "Certificates: Öko-Kontrollstellennummer",
+      "answer": "024804",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "kjimfj",
+      "question": "GMP",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "1s7g9l",
+      "question": "QS",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "bn5v29",
+      "question": "Certificates: oGT / Non GMO/ VLOG",
+      "answer": "yes",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "676slx",
+      "question": "Certificates: Weidemilch / Pasture milk",
+      "answer": "yes",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "9xhms8",
+      "question": "V-Label Bestätigung für vegetarisches/veganes Produkt",
+      "answer": "yes",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "yj60z",
+      "question": "Halal",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "nttvxi",
+      "question": "Weitere Zertifizierungen / Further certificates",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "pbp5t5",
+      "question": "Gibt es bei Ihren Vorlieferanten Vorgaben, auf bestimmte Herkunftsländer zu verzichten? / Do your suppliers have requirements to avoid certain countries of origin?",
+      "answer": "no",
+      "topic": "animal_welfare",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Angaben zum Tierwohl",
+      "action": "create"
+    },
+    {
+      "localId": "9mf48s",
+      "question": "Bemerkung zu Herkunftsländern / Comment on countries of origin",
+      "answer": "Wir kaufen nur Käse, der aus Milch aus EU-Ländern hergestell",
+      "topic": "animal_welfare",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Angaben zum Tierwohl",
+      "action": "create"
+    },
+    {
+      "localId": "e1ud9m",
+      "question": "Gibt es bei Ihren Vorlieferanten bereits verbindliche Vorgaben bezüglich Tierschutz? / Do your suppliers already have binding requirements regarding animal welfare?",
+      "answer": "no",
+      "topic": "animal_welfare",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Angaben zum Tierwohl",
+      "action": "create"
+    },
+    {
+      "localId": "d5i3zd",
+      "question": "Die nationalen und Europäischen Gesetze und Verordnungen hinsichtlich Tierwohl werden eingehalten / National and European laws and regulations regarding animal welfare are complied with",
+      "answer": "yes",
+      "topic": "animal_welfare",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Angaben zum Tierwohl",
+      "action": "create"
+    },
+    {
+      "localId": "yyqf74",
+      "question": "Bemerkung zu Tierwohl-Gesetzen / Comment on animal welfare laws",
+      "answer": "Wir kaufen nur Käse, der aus Milch aus EU-Ländern hergestell",
+      "topic": "animal_welfare",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Angaben zum Tierwohl",
+      "action": "create"
+    },
+    {
+      "localId": "svcz42",
+      "question": "Do you have data on use of soy or/and palm products in feed?",
+      "answer": "no",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Soy and Palm Products in Feed",
+      "action": "create"
+    },
+    {
+      "localId": "kg3igf",
+      "question": "Soy Deforestation-Free Certificates: Donau/Europe Soya - BC",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Soy Deforestation-Free Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "km4lzv",
+      "question": "Soy Deforestation-Free Certificates: Donau/Europe Soya - MB",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Soy Deforestation-Free Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "kpikho",
+      "question": "Soy Deforestation-Free Certificates: Donau/Europe Soya - SG",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Soy Deforestation-Free Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "kk6dft",
+      "question": "Soy Deforestation-Free Certificates: Donau/Europe Soya - IP",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Soy Deforestation-Free Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "v95vdp",
+      "question": "Soy Deforestation-Free Certificates: ProTerra - MB",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Soy Deforestation-Free Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "v5rwvw",
+      "question": "Soy Deforestation-Free Certificates: ProTerra - SG",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Soy Deforestation-Free Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "vb43xr",
+      "question": "Soy Deforestation-Free Certificates: ProTerra - IP",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Soy Deforestation-Free Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "x3l9e1",
+      "question": "Soy Deforestation-Free Certificates: RTRS - BC",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Soy Deforestation-Free Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "wxk5ul",
+      "question": "Soy Deforestation-Free Certificates: RTRS - MB",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Soy Deforestation-Free Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "wu67cs",
+      "question": "Soy Deforestation-Free Certificates: RTRS - SG",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Soy Deforestation-Free Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "bwiirg",
+      "question": "Soy Deforestation-Free Certificates: ISCC - MB",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Soy Deforestation-Free Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "bzwh99",
+      "question": "Soy Deforestation-Free Certificates: ISCC - SG",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Soy Deforestation-Free Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "buka7e",
+      "question": "Soy Deforestation-Free Certificates: ISCC - IP",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Soy Deforestation-Free Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "e8sm2d",
+      "question": "Soy Deforestation-Free Certificates: QS-Soja+/QM (BC)",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Soy Deforestation-Free Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "ebr3ae",
+      "question": "RSPO - BC",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Palm Deforestation-Free Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "wbtdzh",
+      "question": "RSPO - BC (Smallholder Certification)",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Palm Deforestation-Free Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "cqp8ce",
+      "question": "RSPO - MB",
+      "answer": "yes",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Palm Deforestation-Free Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "e2c195",
+      "question": "RSPO - SG",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Palm Deforestation-Free Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "e7o8b0",
+      "question": "RSPO - IP",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Palm Deforestation-Free Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "jmejcl",
+      "question": "Palm Deforestation-Free Certificates: ISCC Plus",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Palm Deforestation-Free Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "9lfah7",
+      "question": "QM System: Art und Erhitzung des Produktes",
+      "answer": "N/A",
+      "topic": "product",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "QM System",
+      "action": "create"
+    },
+    {
+      "localId": "332x22",
+      "question": "QM System: Art- und Anzahl der CCPs",
+      "answer": "Metal detection",
+      "topic": "food_safety",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "QM System",
+      "action": "create"
+    },
+    {
+      "localId": "emjs4c",
+      "question": "QM System: Maßnahmen zum Produktschutz",
+      "answer": "- Das Firmengelände ist mit einem Zaun abgesichert. - Besuch",
+      "topic": "food_safety",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "QM System",
+      "action": "create"
+    },
+    {
+      "localId": "3vevp5",
+      "question": "QM System: Maßnahmen gegen Lebensmittelbetrug",
+      "answer": "Kaas-Pack verfügt über einen Vulnerability Control Plan, der",
+      "topic": "food_fraud",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "QM System",
+      "action": "create"
+    },
+    {
+      "localId": "1278rs",
+      "question": "Maßnahmen zur Reduzierung von MOSH / MOAH",
+      "answer": "Die von Kaas-Pack verwendeten Verpackungsmaterialien werden",
+      "topic": "food_safety",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "QM System",
+      "action": "create"
+    },
+    {
+      "localId": "puh60f",
+      "question": "Maßnahmen zur Reduzierung von Trichlormethan",
+      "answer": "N/A",
+      "topic": "food_safety",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "QM System",
+      "action": "create"
+    },
+    {
+      "localId": "sv54rf",
+      "question": "QM System: Maßnahmen zur Reduzierung von QAV",
+      "answer": "N/A",
+      "topic": "food_safety",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "QM System",
+      "action": "create"
+    },
+    {
+      "localId": "v4p6pf",
+      "question": "Financial Data: Company Listed on Stock Exchange",
+      "answer": "no",
+      "topic": "financial",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Financial Data",
+      "action": "create"
+    },
+    {
+      "localId": "ve4197",
+      "question": "Financial Data: Company Part of Group",
+      "answer": "no",
+      "topic": "financial",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Financial Data",
+      "action": "create"
+    },
+    {
+      "localId": "6miwmf",
+      "question": "Financial Data: Company Has Subsidiaries",
+      "answer": "no",
+      "topic": "financial",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Financial Data",
+      "action": "create"
+    },
+    {
+      "localId": "kzmd5q",
+      "question": "Product Carbon Footprint (PCF) available",
+      "answer": "no",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Product Carbon Footprint (PCF)",
+      "action": "create"
+    },
+    {
+      "localId": "nekbk4",
+      "question": "Product Carbon Footprint (PCF): Planning to calculate PCF",
+      "answer": "no",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Product Carbon Footprint (PCF)",
+      "action": "create"
+    },
+    {
+      "localId": "6jnbt4",
+      "question": "Do the articles delivered to us contain at least 5% of a critical raw material?",
+      "answer": "no",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Self-commitment to deforestation-free supply chain",
+      "action": "create"
+    },
+    {
+      "localId": "gyuxvq",
+      "question": "CO₂-Reduktionsmaßnahmen / CO₂ reduction measures: CO₂ reduction goals set",
+      "answer": "no",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "CO₂-Reduktionsmaßnahmen / CO₂ reduction measures",
+      "action": "create"
+    },
+    {
+      "localId": "talxce",
+      "question": "CO₂-Reduktionsmaßnahmen / CO₂ reduction measures: CO₂ reduction goals (comments)",
+      "answer": "Es wurde ein Konzeptplan erstellt, der noch vom Managementte",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "CO₂-Reduktionsmaßnahmen / CO₂ reduction measures",
+      "action": "create"
+    },
+    {
+      "localId": "j9x3od",
+      "question": "CO₂-Reduktionsmaßnahmen / CO₂ reduction measures: When planning to set CO₂ goals",
+      "answer": "end of 2025",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "CO₂-Reduktionsmaßnahmen / CO₂ reduction measures",
+      "action": "create"
+    },
+    {
+      "localId": "zf2wza",
+      "question": "CO₂-Reduktionsmaßnahmen / CO₂ reduction measures: Committed to SBTi",
+      "answer": "no",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "CO₂-Reduktionsmaßnahmen / CO₂ reduction measures",
+      "action": "create"
+    },
+    {
+      "localId": "rbptar",
+      "question": "CO₂-Reduktionsmaßnahmen / CO₂ reduction measures: SBTi commitment (comments)",
+      "answer": "Noch nicht, wir stehen mit SBTi in Kontakt, um die von uns g",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "CO₂-Reduktionsmaßnahmen / CO₂ reduction measures",
+      "action": "create"
+    },
+    {
+      "localId": "3sikxb",
+      "question": "CO₂-Reduktionsmaßnahmen / CO₂ reduction measures: SBTi-validated goals",
+      "answer": "no",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "CO₂-Reduktionsmaßnahmen / CO₂ reduction measures",
+      "action": "create"
+    },
+    {
+      "localId": "cbw5nq",
+      "question": "CO₂-Reduktionsmaßnahmen / CO₂ reduction measures: SBTi-validated goals (comments)",
+      "answer": "Noch nicht, wir stehen mit SBTi in Kontakt, um die von uns g",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "CO₂-Reduktionsmaßnahmen / CO₂ reduction measures",
+      "action": "create"
+    },
+    {
+      "localId": "1cup8v",
+      "question": "CO₂-Reduktionsmaßnahmen / CO₂ reduction measures: Planning to commit to SBTi",
+      "answer": "yes",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "CO₂-Reduktionsmaßnahmen / CO₂ reduction measures",
+      "action": "create"
+    },
+    {
+      "localId": "zcrgil",
+      "question": "CO₂-Reduktionsmaßnahmen / CO₂ reduction measures: SBTi commitment timeline",
+      "answer": "Ende 2025 / Anfang 2026",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "CO₂-Reduktionsmaßnahmen / CO₂ reduction measures",
+      "action": "create"
+    },
+    {
+      "localId": "qii1bm",
+      "question": "GFSI recognised certifications (IFS, BRC, FSSC 22000)",
+      "answer": "yes",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "r1wq7r",
+      "question": "IFS COID Number",
+      "answer": "34736",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "aw0zfs",
+      "question": "Other QM certificates (ISO 9001)",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "4j7c6h",
+      "question": "Certificates: ISO 14001: Environmental management",
+      "answer": "no",
+      "topic": "environment",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "qerp4n",
+      "question": "ISO 45001: Occupational safety management",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "q8o42j",
+      "question": "Certificates: ISO 50001: Energy management",
+      "answer": "no",
+      "topic": "environment",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "b5rnda",
+      "question": "Sedex membership number",
+      "answer": "ZC408415203",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "wg7rcb",
+      "question": "Organic control body number",
+      "answer": "024804",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "9vnvch",
+      "question": "Certificates: Non GMO / VLOG",
+      "answer": "yes",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "mzvodq",
+      "question": "Certificates: Pasture milk",
+      "answer": "yes",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "luais",
+      "question": "Certificates: V-Label confirmation",
+      "answer": "yes",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "r3j7wd",
+      "question": "Further certificates",
+      "answer": "no",
+      "topic": "certifications",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Certificates",
+      "action": "create"
+    },
+    {
+      "localId": "aga23p",
+      "question": "Animal welfare requirements for suppliers regarding country restrictions",
+      "answer": "no",
+      "topic": "animal_welfare",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Angaben zum Tierwohl / Information on animal welfare",
+      "action": "create"
+    },
+    {
+      "localId": "c9f2d2",
+      "question": "Animal welfare country restrictions (comments)",
+      "answer": "Wir kaufen nur Käse, der aus Milch aus EU-Ländern hergestell",
+      "topic": "animal_welfare",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Angaben zum Tierwohl / Information on animal welfare",
+      "action": "create"
+    },
+    {
+      "localId": "10qr26",
+      "question": "Binding animal welfare requirements for suppliers",
+      "answer": "no",
+      "topic": "animal_welfare",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Angaben zum Tierwohl / Information on animal welfare",
+      "action": "create"
+    },
+    {
+      "localId": "dsqint",
+      "question": "Compliance with national and European animal welfare laws",
+      "answer": "yes",
+      "topic": "animal_welfare",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Angaben zum Tierwohl / Information on animal welfare",
+      "action": "create"
+    },
+    {
+      "localId": "mgpth0",
+      "question": "Angaben zum Tierwohl / Information on animal welfare: Animal welfare compliance (comments)",
+      "answer": "Wir kaufen nur Käse, der aus Milch aus EU-Ländern hergestell",
+      "topic": "animal_welfare",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Angaben zum Tierwohl / Information on animal welfare",
+      "action": "create"
+    },
+    {
+      "localId": "qjqsod",
+      "question": "Do you have data on the use of soy or/and palm products in feed?",
+      "answer": "no",
+      "topic": "sustainability",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Information on soy and palm products as feed",
+      "action": "create"
+    },
+    {
+      "localId": "r23xde",
+      "question": "Supplier Code of Conduct signed and compliance confirmed",
+      "answer": "yes",
+      "topic": "company",
+      "sources": [
+        "F_S_Supplier_Questionnaire_Cheese_2025_Fude_Serrahn"
+      ],
+      "section": "Lieferantenkodex / Supplier Code of Conduct",
+      "action": "create"
+    }
+  ],
+  "stats": {
+    "totalAnswers": 331,
+    "toCreate": 331,
+    "toUpdate": 0,
+    "toSkip": 0,
+    "byTopic": {
+      "certifications": 74,
+      "food_safety": 49,
+      "allergens": 5,
+      "microbiology": 1,
+      "food_fraud": 3,
+      "environment": 24,
+      "company": 13,
+      "animal_welfare": 17,
+      "financial": 8,
+      "documents": 10,
+      "product": 8,
+      "packaging": 8,
+      "approval": 3,
+      "origin": 5,
+      "quality": 19,
+      "other": 1,
+      "ethical": 10,
+      "audits": 5,
+      "crisis": 4,
+      "contacts": 6,
+      "logistics": 7,
+      "sustainability": 50,
+      "nutrition": 1
+    }
+  }
+}

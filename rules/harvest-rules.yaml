@@ -1,44 +1,4 @@
 version: "1.0"
-# Topics that are never harvested (not reusable across questionnaires)
-excludeTopics:
-  - signature
-  - approval
-exclude:
-  - label: CO₂ reduction goals comment
-    topic: other
-    reason: Merged into another item
-    reviewedAt: 2026-02-08T19:15:30.453Z
-  - label: SBTi commitment comment
-    topic: other
-    reason: Merged into another item
-    reviewedAt: 2026-02-08T19:16:02.428Z
-  - label: SBTi-validated goals comment
-    topic: other
-    reason: Merged into another item
-    reviewedAt: 2026-02-08T19:16:14.362Z
-  - label: SBTi commitment timeline
-    topic: other
-    reason: Merged into another item
-    reviewedAt: 2026-02-08T19:16:25.047Z
-  - label: Countries of origin restrictions comment
-    topic: animal_welfare
-    reason: Merged into another item
-    reviewedAt: 2026-02-08T19:16:38.040Z
-  - label: Animal welfare laws compliance comment
-    topic: animal_welfare
-    reason: Merged into another item
-    reviewedAt: 2026-02-08T19:16:50.092Z
-  - label: Document Code
-    topic: documents
-    reason: Not relevant for library
-    reviewedAt: 2026-02-08T19:17:47.828Z
-  - label: Naam
-    topic: signature
-    reason: only relevant for this document
-    reviewedAt: 2026-02-08T19:36:40.772Z
-  - label: Datum
-    topic: signature
-    reason: only relevant for this document
-    reviewedAt: 2026-02-08T19:36:46.630Z
+exclude: []
 corrections: []
-updatedAt: 2026-02-08
+updatedAt: 2026-02-09

@@ -5,7 +5,6 @@ interface TabBarProps {
   tabs: Tab[];
   currentTab: string | null;
   serverConnected: boolean;
-  feedbackCount: number;
   theme: 'light' | 'dark' | 'system';
   onSidebarToggle: () => void;
   onTabClick: (name: string) => void;
@@ -18,7 +17,6 @@ export function TabBar({
   tabs,
   currentTab,
   serverConnected,
-  feedbackCount,
   theme,
   onSidebarToggle,
   onTabClick,
@@ -84,15 +82,13 @@ export function TabBar({
           }`}
           title={serverConnected ? 'Connected to server' : 'Server disconnected'}
         />
-        {feedbackCount > 0 && (
-          <button
-            className="h-7 px-2.5 text-[11px] font-medium rounded bg-emerald-500/20 text-emerald-400 cursor-pointer hover:bg-emerald-500/30 transition-colors"
-            onClick={onComplete}
-            title="Complete Review"
-          >
-            Complete ({feedbackCount})
-          </button>
-        )}
+        <button
+          className="h-7 px-2.5 text-[11px] font-medium rounded bg-emerald-500/20 text-emerald-400 cursor-pointer hover:bg-emerald-500/30 transition-colors"
+          onClick={onComplete}
+          title="Complete review and export"
+        >
+          Complete
+        </button>
       </div>
     </div>
   );

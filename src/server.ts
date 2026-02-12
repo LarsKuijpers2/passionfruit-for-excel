@@ -14,6 +14,25 @@ import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
 import { exec } from 'child_process';
 import { BedrockRuntimeClient, InvokeModelCommand } from '@aws-sdk/client-bedrock-runtime';
 
+// Helper to get current timestamp in Netherlands timezone
+function getNetherlandsTimestamp(): string {
+  return new Date().toLocaleString('sv-SE', {
+    timeZone: 'Europe/Amsterdam',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  }).replace(' ', 'T') + '+01:00';
+}
+
+function getNetherlandsDate(): string {
+  return new Date().toLocaleDateString('sv-SE', {
+    timeZone: 'Europe/Amsterdam'
+  });
+}
+
 // Types
 export type EntityRole = 'supplier' | 'client' | 'manufacturer' | 'other';
 
@@ -131,8 +150,8 @@ export class ReviewServer {
       meta: {
         source: this.questionnaire,
         questionnaire: this.questionnaire,
-        startedAt: new Date().toISOString(),
-        lastUpdatedAt: new Date().toISOString()
+        startedAt: getNetherlandsTimestamp(),
+        lastUpdatedAt: getNetherlandsTimestamp()
       },
       index: [],
       library: []
@@ -214,7 +233,7 @@ export class ReviewServer {
 
         // Add timestamp if not present
         if (!item.reviewedAt) {
-          item.reviewedAt = new Date().toISOString();
+          item.reviewedAt = getNetherlandsTimestamp();
         }
 
         // Generate ID if not present
@@ -242,8 +261,8 @@ export class ReviewServer {
               meta: {
                 source: targetQuestionnaire,
                 questionnaire: targetQuestionnaire,
-                startedAt: new Date().toISOString(),
-                lastUpdatedAt: new Date().toISOString()
+                startedAt: getNetherlandsTimestamp(),
+                lastUpdatedAt: getNetherlandsTimestamp()
               },
               index: [],
               library: []
@@ -265,7 +284,7 @@ export class ReviewServer {
           }
 
           // Update timestamp
-          feedback.meta.lastUpdatedAt = new Date().toISOString();
+          feedback.meta.lastUpdatedAt = getNetherlandsTimestamp();
 
           // Save to questionnaire-specific path using atomic write
           await mkdir(dirname(feedbackPath), { recursive: true });
@@ -293,7 +312,7 @@ export class ReviewServer {
 
         for (const item of items) {
           if (!item.reviewedAt) {
-            item.reviewedAt = new Date().toISOString();
+            item.reviewedAt = getNetherlandsTimestamp();
           }
           if (!item.id) {
             item.id = `${panel}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
@@ -307,7 +326,7 @@ export class ReviewServer {
           }
         }
 
-        this.feedback.meta.lastUpdatedAt = new Date().toISOString();
+        this.feedback.meta.lastUpdatedAt = getNetherlandsTimestamp();
         await this.saveFeedback();
 
         res.json({ success: true, count: items.length });
@@ -455,7 +474,7 @@ export class ReviewServer {
         // Get customer from indexed file location or questionnaire structure
         let customer = indexedResult.customer || 'default';
         if (customer === 'default') {
-          const structureResult = await findFile('questionnaires', `${safeName}.json`);
+          const structureResult = await findFile('structure', `${safeName}.json`);
           if (structureResult) {
             try {
               const structure = JSON.parse(await readFile(structureResult.path, 'utf-8'));
@@ -471,7 +490,7 @@ export class ReviewServer {
         }
 
         // Create export directory and save
-        const exportDir = join('./customers', customer, 'api-ready');
+        const exportDir = join('./customers', customer, 'approved');
         await mkdir(exportDir, { recursive: true });
 
         const exportPath = join(exportDir, `${safeName}.json`);
@@ -480,7 +499,7 @@ export class ReviewServer {
             questionnaire: questionnaireId,
             source: indexed.source,
             customer,
-            exportedAt: new Date().toISOString()
+            exportedAt: getNetherlandsTimestamp()
           },
           company: grouped.company,
           library: grouped.answer_library,
@@ -656,11 +675,11 @@ export class ReviewServer {
           const { WebReviewGenerator } = await import('./services/review/web-generator.js');
           const generator = new WebReviewGenerator(this.reviewDir);
           // Also search for structure file in customer directories
-          let structurePath = join('./questionnaires', `${safeName}.json`);
+          let structurePath = join('./structure', `${safeName}.json`);
           if (!existsSync(structurePath)) {
             const customers = await readdir('./customers');
             for (const customer of customers) {
-              const customerStructurePath = join('./customers', customer, 'questionnaires', `${safeName}.json`);
+              const customerStructurePath = join('./customers', customer, 'structure', `${safeName}.json`);
               if (existsSync(customerStructurePath)) {
                 structurePath = customerStructurePath;
                 break;
@@ -760,11 +779,11 @@ export class ReviewServer {
           const { WebReviewGenerator } = await import('./services/review/web-generator.js');
           const generator = new WebReviewGenerator(this.reviewDir);
           // Also search for structure file in customer directories
-          let structurePath = join('./questionnaires', `${safeName}.json`);
+          let structurePath = join('./structure', `${safeName}.json`);
           if (!existsSync(structurePath)) {
             const customers = await readdir('./customers');
             for (const customer of customers) {
-              const customerStructurePath = join('./customers', customer, 'questionnaires', `${safeName}.json`);
+              const customerStructurePath = join('./customers', customer, 'structure', `${safeName}.json`);
               if (existsSync(customerStructurePath)) {
                 structurePath = customerStructurePath;
                 break;
@@ -807,14 +826,14 @@ export class ReviewServer {
             section: item.section,
             topic: item.topic,
             reason: `Created via annotation: ${suggestion.description}`,
-            reviewedAt: new Date().toISOString()
+            reviewedAt: getNetherlandsTimestamp()
           };
 
           this.feedback.index.push(feedbackItem);
           appliedItems.push(feedbackItem);
         }
 
-        this.feedback.meta.lastUpdatedAt = new Date().toISOString();
+        this.feedback.meta.lastUpdatedAt = getNetherlandsTimestamp();
         await this.saveFeedback();
 
         res.json({ success: true, applied: appliedItems.length });
@@ -914,7 +933,7 @@ export class ReviewServer {
     // Extraction rules (what to extract, what to exclude)
     const extractionRules = {
       version: '1.0',
-      updatedAt: new Date().toISOString().split('T')[0],
+      updatedAt: getNetherlandsDate(),
       source: this.questionnaire,
       exclude: indexRejected.map(f => ({
         label: f.label,
@@ -963,7 +982,7 @@ export class ReviewServer {
 
     const tagRules = {
       version: '1.0',
-      updatedAt: new Date().toISOString().split('T')[0],
+      updatedAt: getNetherlandsDate(),
       learned_patterns: tagRulePatterns
     };
 
@@ -1007,7 +1026,7 @@ export class ReviewServer {
 
     existingExtractionRules.exclude = mergeRules(existingExtractionRules.exclude || [], rules.extractionRules.exclude, 'cells');
     existingExtractionRules.corrections = mergeRules(existingExtractionRules.corrections || [], rules.extractionRules.corrections, 'cells');
-    existingExtractionRules.updatedAt = new Date().toISOString().split('T')[0];
+    existingExtractionRules.updatedAt = getNetherlandsDate();
 
     // Merge tag rules - add learned patterns to pattern_overrides
     const existingPatterns = existingTagRules.pattern_overrides || [];
@@ -1027,7 +1046,7 @@ export class ReviewServer {
     }
 
     existingTagRules.pattern_overrides = existingPatterns;
-    existingTagRules.updatedAt = new Date().toISOString().split('T')[0];
+    existingTagRules.updatedAt = getNetherlandsDate();
 
     await writeFile(extractionRulesPath, stringifyYaml(existingExtractionRules), 'utf-8');
     await writeFile(tagRulesPath, stringifyYaml(existingTagRules), 'utf-8');
@@ -1157,7 +1176,7 @@ export class ReviewServer {
     const safeName = this.questionnaire.replace(/[^a-zA-Z0-9-_]/g, '_');
 
     try {
-      const structurePath = join('./questionnaires', `${safeName}.json`);
+      const structurePath = join('./structure', `${safeName}.json`);
       if (existsSync(structurePath)) {
         const structure = JSON.parse(await readFile(structurePath, 'utf-8'));
         const filepath = structure?.source?.filepath || '';
@@ -1177,7 +1196,7 @@ export class ReviewServer {
     const questionnaireDir = join(exportDir, customerFolder, 'approved', safeName);
     await mkdir(questionnaireDir, { recursive: true });
 
-    const timestamp = new Date().toISOString();
+    const timestamp = getNetherlandsTimestamp();
 
     // Save Entity DB export (company-level data)
     const entityDbPath = join(questionnaireDir, 'entity-db.json');
@@ -1242,7 +1261,10 @@ export class ReviewServer {
     indexed: boolean;
     feedbackCount?: number;
     customer?: string;
-    lastExported?: string;
+    approvedAt?: string;
+    approvedCount?: number;
+    apiReadyAt?: string;
+    apiReadyCount?: number;
   }>> {
     const questionnaires: Array<{
       name: string;
@@ -1252,7 +1274,10 @@ export class ReviewServer {
       indexed: boolean;
       feedbackCount?: number;
       customer?: string;
-      lastExported?: string;
+      approvedAt?: string;
+      approvedCount?: number;
+      apiReadyAt?: string;
+      apiReadyCount?: number;
     }> = [];
 
     // Also list review HTML files to match against
@@ -1266,14 +1291,14 @@ export class ReviewServer {
       if (!file.endsWith('.json')) return;
 
       const name = file.replace(/\.json$/, '');
-      const safeName = name.replace(/[^a-zA-Z0-9]/g, '_');
+      const safeName = name.replace(/[^a-zA-Z0-9-_]/g, '_');
 
       // If no customer provided, try to get it from questionnaire structure filepath
       if (!customer) {
         // Try both the original name and safeName for looking up structure
         const structurePaths = [
-          join('./questionnaires', `${name}.json`),
-          join('./questionnaires', `${safeName}.json`)
+          join('./structure', `${name}.json`),
+          join('./structure', `${safeName}.json`)
         ];
         for (const structurePath of structurePaths) {
           if (existsSync(structurePath)) {
@@ -1308,16 +1333,35 @@ export class ReviewServer {
         } catch {}
       }
 
-      // Check last exported date
-      let lastExported: string | undefined;
-      const exportDir = customer
-        ? join('./customers', customer, 'approved', safeName)
-        : join('./customers', 'default', 'approved', safeName);
-      const entityDbPath = join(exportDir, 'entity-db.json');
-      if (existsSync(entityDbPath)) {
+      // Check approved status (from approved folder)
+      let approvedAt: string | undefined;
+      let approvedCount: number | undefined;
+      const approvedDir = customer
+        ? join('./customers', customer, 'approved')
+        : join('./customers', 'default', 'approved');
+      const approvedPath = join(approvedDir, `${safeName}.json`);
+      if (existsSync(approvedPath)) {
         try {
-          const exportData = JSON.parse(await readFile(entityDbPath, 'utf-8'));
-          lastExported = exportData.meta?.exportedAt;
+          const approvedData = JSON.parse(await readFile(approvedPath, 'utf-8'));
+          approvedAt = approvedData.meta?.exportedAt;
+          approvedCount = (approvedData.company?.length || 0) +
+                          (approvedData.library?.length || 0) +
+                          (approvedData.product?.length || 0);
+        } catch {}
+      }
+
+      // Check API-ready status (from api-ready folder)
+      let apiReadyAt: string | undefined;
+      let apiReadyCount: number | undefined;
+      const apiReadyDir = customer
+        ? join('./customers', customer, 'api-ready')
+        : join('./customers', 'default', 'api-ready');
+      const apiReadyPath = join(apiReadyDir, `${safeName}.json`);
+      if (existsSync(apiReadyPath)) {
+        try {
+          const apiReadyData = JSON.parse(await readFile(apiReadyPath, 'utf-8'));
+          apiReadyAt = apiReadyData.meta?.exportedAt || apiReadyData.meta?.syncedAt;
+          apiReadyCount = apiReadyData.items?.length || apiReadyData.total || 0;
         } catch {}
       }
 
@@ -1336,7 +1380,10 @@ export class ReviewServer {
         indexed: true,
         feedbackCount,
         customer,
-        lastExported
+        approvedAt,
+        approvedCount,
+        apiReadyAt,
+        apiReadyCount
       });
     };
 
@@ -1417,9 +1464,9 @@ export class ReviewServer {
       return null;
     };
 
-    // Load structure (questionnaires/*.json)
+    // Load structure (structure/*.json)
     let structure = null;
-    const structurePath = await findFile('questionnaires', `${safeName}.json`);
+    const structurePath = await findFile('structure', `${safeName}.json`);
     if (structurePath) {
       structure = JSON.parse(await readFile(structurePath, 'utf-8'));
     }

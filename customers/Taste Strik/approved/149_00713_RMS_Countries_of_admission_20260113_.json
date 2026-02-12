@@ -1,0 +1,515 @@
+{
+  "meta": {
+    "questionnaire": "149_00713_RMS_Countries_of_admission_20260113_",
+    "source": "149.00713_RMS Countries of admission_20260113..pdf",
+    "customer": "Taste Strik",
+    "exportedAt": "2026-02-12T10:27:37+01:00"
+  },
+  "company": [],
+  "library": [],
+  "product": [
+    {
+      "id": "1a1e54d7",
+      "label": "Supplier",
+      "value": "Strik bv",
+      "topic": "company",
+      "lCell": "A1",
+      "vCell": "B1",
+      "section": "Product Information"
+    },
+    {
+      "id": "9b30c500",
+      "label": "Article number Royal Fassin BV",
+      "value": "ANSTRA9",
+      "topic": "product",
+      "lCell": "A2",
+      "vCell": "B2",
+      "section": "Product Information"
+    },
+    {
+      "id": "f7190692",
+      "label": "Name raw material",
+      "value": "149.00713 - Natural Flavour Type Strawberry, Fresh, Fruity, Ripe",
+      "topic": "ingredients",
+      "lCell": "A3",
+      "vCell": "B3",
+      "section": "Product Information"
+    },
+    {
+      "id": "b0946c74",
+      "label": "EU - Admission for confectionary",
+      "value": "Yes",
+      "topic": "approval",
+      "lCell": "A5",
+      "vCell": "B5",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "0ae2e272",
+      "label": "EU - Restriction for confectionary",
+      "value": "Yes",
+      "topic": "approval",
+      "lCell": "A5",
+      "vCell": "C5",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "fe6fed2d",
+      "label": "EU - Applicable highest levels in finished product (confectionary)",
+      "value": "6,47 g/kg",
+      "topic": "approval",
+      "lCell": "A5",
+      "vCell": "D5",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "a9482a7b",
+      "label": "EU - Recommended Declaration",
+      "value": "Natural Flavouring",
+      "topic": "approval",
+      "lCell": "A5",
+      "vCell": "E5",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "1edbef05",
+      "label": "Germany - Admission for confectionary",
+      "value": "Yes",
+      "topic": "approval",
+      "lCell": "A7",
+      "vCell": "B7",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "cc64ce6a",
+      "label": "Germany - Restriction for confectionary",
+      "value": "Yes",
+      "topic": "approval",
+      "lCell": "A7",
+      "vCell": "C7",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "922add79",
+      "label": "Germany - Applicable highest levels in finished product (confectionary)",
+      "value": "6,47 g/kg",
+      "topic": "approval",
+      "lCell": "A7",
+      "vCell": "D7",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "810e109f",
+      "label": "Germany - Recommended Declaration",
+      "value": "Natural Flavouring",
+      "topic": "approval",
+      "lCell": "A7",
+      "vCell": "E7",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "30195da8",
+      "label": "Austria - Admission for confectionary",
+      "value": "Yes",
+      "topic": "approval",
+      "lCell": "A8",
+      "vCell": "B8",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "b19cc2d0",
+      "label": "Austria - Restriction for confectionary",
+      "value": "Yes",
+      "topic": "approval",
+      "lCell": "A8",
+      "vCell": "C8",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "ada980f7",
+      "label": "Austria - Applicable highest levels in finished product (confectionary)",
+      "value": "6,47 g/kg",
+      "topic": "approval",
+      "lCell": "A8",
+      "vCell": "D8",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "5dab68ca",
+      "label": "Austria - Recommended Declaration",
+      "value": "Natural Flavouring",
+      "topic": "approval",
+      "lCell": "A8",
+      "vCell": "E8",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "b4b1066e",
+      "label": "Denmark - Admission for confectionary",
+      "value": "Yes",
+      "topic": "approval",
+      "lCell": "A9",
+      "vCell": "B9",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "d2be572a",
+      "label": "Denmark - Restriction for confectionary",
+      "value": "Yes",
+      "topic": "approval",
+      "lCell": "A9",
+      "vCell": "C9",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "d6e26f99",
+      "label": "Denmark - Applicable highest levels in finished product (confectionary)",
+      "value": "6,47 g/kg",
+      "topic": "approval",
+      "lCell": "A9",
+      "vCell": "D9",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "c0912ae9",
+      "label": "Denmark - Recommended Declaration",
+      "value": "Natural Flavouring",
+      "topic": "approval",
+      "lCell": "A9",
+      "vCell": "E9",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "809dc8f1",
+      "label": "UK - Admission for confectionary",
+      "value": "Yes",
+      "topic": "approval",
+      "lCell": "A10",
+      "vCell": "B10",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "453524c8",
+      "label": "UK - Restriction for confectionary",
+      "value": "Yes",
+      "topic": "approval",
+      "lCell": "A10",
+      "vCell": "C10",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "1a9a3409",
+      "label": "UK - Applicable highest levels in finished product (confectionary)",
+      "value": "6,47 g/kg",
+      "topic": "approval",
+      "lCell": "A10",
+      "vCell": "D10",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "3cff338d",
+      "label": "UK - Recommended Declaration",
+      "value": "Natural Flavouring",
+      "topic": "approval",
+      "lCell": "A10",
+      "vCell": "E10",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "76e8466a",
+      "label": "Australia - Admission for confectionary",
+      "value": "Yes",
+      "topic": "approval",
+      "lCell": "A11",
+      "vCell": "B11",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "4891184f",
+      "label": "Australia - Restriction for confectionary",
+      "value": "No",
+      "topic": "approval",
+      "lCell": "A11",
+      "vCell": "C11",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "729ed14f",
+      "label": "Australia - Recommended Declaration",
+      "value": "Natural Flavouring",
+      "topic": "approval",
+      "lCell": "A11",
+      "vCell": "E11",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "eb8506ca",
+      "label": "Canada - Admission for confectionary",
+      "value": "Yes*",
+      "topic": "approval",
+      "lCell": "A12",
+      "vCell": "B12",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "cd987245",
+      "label": "Canada - Restriction for confectionary",
+      "value": "No",
+      "topic": "approval",
+      "lCell": "A12",
+      "vCell": "C12",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "d97696aa",
+      "label": "Canada - Recommended Declaration",
+      "value": "Natural Flavour",
+      "topic": "approval",
+      "lCell": "A12",
+      "vCell": "E12",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "0b692243",
+      "label": "China - Admission for confectionary",
+      "value": "Yes",
+      "topic": "approval",
+      "lCell": "A13",
+      "vCell": "B13",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "42b70fd8",
+      "label": "China - Restriction for confectionary",
+      "value": "No",
+      "topic": "approval",
+      "lCell": "A13",
+      "vCell": "C13",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "10862f41",
+      "label": "China - Recommended Declaration",
+      "value": "Flavouring",
+      "topic": "approval",
+      "lCell": "A13",
+      "vCell": "E13",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "8f8af5a5",
+      "label": "Israel - Admission for confectionary",
+      "value": "Yes",
+      "topic": "approval",
+      "lCell": "A14",
+      "vCell": "B14",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "8772e5b5",
+      "label": "Israel - Restriction for confectionary",
+      "value": "Yes",
+      "topic": "approval",
+      "lCell": "A14",
+      "vCell": "C14",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "aae972da",
+      "label": "Israel - Applicable highest levels in finished product (confectionary)",
+      "value": "6,47 g/kg",
+      "topic": "approval",
+      "lCell": "A14",
+      "vCell": "D14",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "c303a771",
+      "label": "Israel - Recommended Declaration",
+      "value": "Natural Flavouring",
+      "topic": "approval",
+      "lCell": "A14",
+      "vCell": "E14",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "1a4ac880",
+      "label": "Japan - Admission for confectionary",
+      "value": "Yes",
+      "topic": "approval",
+      "lCell": "A15",
+      "vCell": "B15",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "47c78276",
+      "label": "Japan - Restriction for confectionary",
+      "value": "Yes",
+      "topic": "approval",
+      "lCell": "A15",
+      "vCell": "C15",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "0e3ddb6d",
+      "label": "Japan - Applicable highest levels in finished product (confectionary)",
+      "value": "12,95 g/kg",
+      "topic": "approval",
+      "lCell": "A15",
+      "vCell": "D15",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "ff86a557",
+      "label": "Japan - Recommended Declaration",
+      "value": "Flavor",
+      "topic": "approval",
+      "lCell": "A15",
+      "vCell": "E15",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "16214bd7",
+      "label": "Russia - Admission for confectionary",
+      "value": "Yes **",
+      "topic": "approval",
+      "lCell": "A21",
+      "vCell": "B21",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "7937d26f",
+      "label": "Russia - Restriction for confectionary",
+      "value": "Yes",
+      "topic": "approval",
+      "lCell": "A21",
+      "vCell": "C21",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "e3005467",
+      "label": "Russia - Applicable highest levels in finished product (confectionary)",
+      "value": "6,47 g/kg",
+      "topic": "approval",
+      "lCell": "A21",
+      "vCell": "D21",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "91a5ee79",
+      "label": "Russia - Recommended Declaration",
+      "value": "Natural Flavouring",
+      "topic": "approval",
+      "lCell": "A21",
+      "vCell": "E21",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "901c336a",
+      "label": "South Korea - Admission for confectionary",
+      "value": "Yes",
+      "topic": "approval",
+      "lCell": "A25",
+      "vCell": "B25",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "de931a66",
+      "label": "South Korea - Restriction for confectionary",
+      "value": "Yes",
+      "topic": "approval",
+      "lCell": "A25",
+      "vCell": "C25",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "0ee5e0ff",
+      "label": "South Korea - Applicable highest levels in finished product (confectionary)",
+      "value": "43,17 g/kg",
+      "topic": "approval",
+      "lCell": "A25",
+      "vCell": "D25",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "8e4872f5",
+      "label": "South Korea - Recommended Declaration",
+      "value": "Flavorings",
+      "topic": "approval",
+      "lCell": "A25",
+      "vCell": "E25",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "7f15fe80",
+      "label": "Switzerland - Admission for confectionary",
+      "value": "Yes",
+      "topic": "approval",
+      "lCell": "A26",
+      "vCell": "B26",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "68c928c7",
+      "label": "Switzerland - Restriction for confectionary",
+      "value": "Yes",
+      "topic": "approval",
+      "lCell": "A26",
+      "vCell": "C26",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "bff7689b",
+      "label": "Switzerland - Applicable highest levels in finished product (confectionary)",
+      "value": "6,47 g/kg",
+      "topic": "approval",
+      "lCell": "A26",
+      "vCell": "D26",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "1b890da7",
+      "label": "Switzerland - Recommended Declaration",
+      "value": "Natural Flavouring",
+      "topic": "approval",
+      "lCell": "A26",
+      "vCell": "E26",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "adcf7558",
+      "label": "USA - Admission for confectionary",
+      "value": "Yes",
+      "topic": "approval",
+      "lCell": "A29",
+      "vCell": "B29",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "a5549b82",
+      "label": "USA - Restriction for confectionary",
+      "value": "No",
+      "topic": "approval",
+      "lCell": "A29",
+      "vCell": "C29",
+      "section": "Regulatory Compliance by Country"
+    },
+    {
+      "id": "bf024229",
+      "label": "USA - Recommended Declaration",
+      "value": "Natural Flavor",
+      "topic": "approval",
+      "lCell": "A29",
+      "vCell": "E29",
+      "section": "Regulatory Compliance by Country"
+    }
+  ],
+  "exclude": [],
+  "stats": {
+    "company": 0,
+    "library": 0,
+    "product": 55,
+    "exclude": 0,
+    "total": 55
+  }
+}

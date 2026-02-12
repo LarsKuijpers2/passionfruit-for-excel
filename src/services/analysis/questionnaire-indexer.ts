@@ -411,7 +411,7 @@ export class QuestionnaireIndexer {
   private region: string;
   private topics: TopicDefinition[] = [];
 
-  constructor(storageDir: string = './questionnaires', region: string = 'eu-central-1', rulesDir: string = './rules') {
+  constructor(storageDir: string = './structure', region: string = 'eu-central-1', rulesDir: string = './rules') {
     this.storageDir = storageDir;
     this.analyzer = new VisualAnalyzer(region);
     this.rulesManager = new RulesManager(rulesDir);

@@ -1,0 +1,2803 @@
+{
+  "meta": {
+    "questionnaire": "149_04070_ARO085_Nat_rliches_Aroma_Typ_Vanille_II_fl_REV02_TasteStrik_20260105__1_",
+    "source": "149.04070_ARO085 Natürliches Aroma Typ Vanille II fl REV02_TasteStrik_20260105 (1).pdf",
+    "customer": "Taste Strik",
+    "exportedAt": "2026-02-12T10:30:05+01:00"
+  },
+  "company": [],
+  "library": [
+    {
+      "id": "5a97ec75",
+      "label": "Company name and legal form",
+      "value": "Strik bv",
+      "topic": "company",
+      "lCell": "B2",
+      "vCell": "C2",
+      "section": "Allgemeine Daten / General Information"
+    },
+    {
+      "id": "92555c94",
+      "label": "Corporate group / Parent company",
+      "value": "Barentz bv",
+      "topic": "company",
+      "lCell": "A3",
+      "vCell": "B3",
+      "section": "Allgemeine Daten / General Information"
+    },
+    {
+      "id": "bde4dc68",
+      "label": "Address",
+      "value": "Bramenberg 19, 3755 BV Eemnes, The Netherlands",
+      "topic": "company",
+      "lCell": "A3",
+      "vCell": "A4",
+      "section": "Allgemeine Daten / General Information"
+    },
+    {
+      "id": "abba0a55",
+      "label": "Contact person and position",
+      "value": "Mariska Jansen",
+      "topic": "company",
+      "lCell": "A5",
+      "vCell": "B5",
+      "section": "Allgemeine Daten / General Information"
+    },
+    {
+      "id": "fd1a018c",
+      "label": "Telephone",
+      "value": "+31 (0)355380107",
+      "topic": "company",
+      "lCell": "A6",
+      "vCell": "B6",
+      "section": "Allgemeine Daten / General Information"
+    },
+    {
+      "id": "ccf9e725",
+      "label": "Email address",
+      "value": "sales@tastestrik.nl",
+      "topic": "company",
+      "lCell": "A6",
+      "vCell": "A7",
+      "section": "Allgemeine Daten / General Information"
+    },
+    {
+      "id": "55a45734",
+      "label": "Food Safety supplier certification",
+      "value": "IFS FOOD / IFS Broker",
+      "topic": "company",
+      "lCell": "A8",
+      "vCell": "B8",
+      "section": "Allgemeine Daten / General Information"
+    }
+  ],
+  "product": [
+    {
+      "id": "77793460",
+      "label": "Suppliers product declaration",
+      "value": "Natural Flavour Type Vanilla",
+      "topic": "company",
+      "lCell": "A11",
+      "vCell": "B11",
+      "section": "Allgemeine Daten / General Information"
+    },
+    {
+      "id": "e191588d",
+      "label": "Suppliers product code",
+      "value": "149.04070",
+      "topic": "company",
+      "lCell": "A11",
+      "vCell": "A12",
+      "section": "Allgemeine Daten / General Information"
+    },
+    {
+      "id": "781eabee",
+      "label": "Country of manufacture",
+      "value": "The Netherlands",
+      "topic": "company",
+      "lCell": "A14",
+      "vCell": "B14",
+      "section": "Allgemeine Daten / General Information"
+    },
+    {
+      "id": "91eb3ecf",
+      "label": "Raw material for location (plant)",
+      "value": "Überherrn (40)",
+      "topic": "company",
+      "lCell": "A14",
+      "vCell": "B14",
+      "section": "Allgemeine Daten / General Information"
+    },
+    {
+      "id": "e14ac633",
+      "label": "Name of the food in accordance with Regulation (EU) No. 1169/2011",
+      "value": "Natural Flavouring (according to 1334/2008 EC)",
+      "topic": "company",
+      "lCell": "A14",
+      "vCell": "B14",
+      "section": "Allgemeine Daten / General Information"
+    },
+    {
+      "id": "79533254",
+      "label": "Statement of Identity accod. 21 CFR 131-169, 21 CFR Part 102",
+      "value": "Natural Flavor",
+      "topic": "company",
+      "lCell": "A14",
+      "vCell": "A15",
+      "section": "Allgemeine Daten / General Information"
+    },
+    {
+      "id": "09ee0ec3",
+      "label": "Supplier equals manufacturer",
+      "value": "Yes",
+      "topic": "company",
+      "lCell": "A17",
+      "vCell": "B17",
+      "section": "Allgemeine Daten / General Information"
+    },
+    {
+      "id": "abbff4f7",
+      "label": "Declaration of ingredients in accordance with Regulation (EU) No. 1169/2011",
+      "value": "Natural Flavoring (according to 1334/2008/EC)",
+      "topic": "company",
+      "lCell": "A22",
+      "vCell": "A23",
+      "section": "Allgemeine Daten / General Information"
+    },
+    {
+      "id": "ca0e8bfe",
+      "label": "Natural flavouring substances / Natürliche Aromastoffe - Percentage",
+      "value": "2,65",
+      "topic": "ingredients",
+      "lCell": "A28",
+      "vCell": "B28",
+      "section": "Zutaten / Ingredients"
+    },
+    {
+      "id": "a43e5bb3",
+      "label": "Natural flavouring substances / Natürliche Aromastoffe - Production country",
+      "value": "Global",
+      "topic": "ingredients",
+      "lCell": "A28",
+      "vCell": "C28",
+      "section": "Zutaten / Ingredients"
+    },
+    {
+      "id": "8b743d9d",
+      "label": "Natural flavouring substances / Natürliche Aromastoffe - Country of origin",
+      "value": "Global",
+      "topic": "ingredients",
+      "lCell": "A28",
+      "vCell": "D28",
+      "section": "Zutaten / Ingredients"
+    },
+    {
+      "id": "ac160b1e",
+      "label": "Propylene glycol E1520 / Propylenglykol E1520 - Percentage",
+      "value": "97,35",
+      "topic": "ingredients",
+      "lCell": "A32",
+      "vCell": "B32",
+      "section": "Zutaten / Ingredients"
+    },
+    {
+      "id": "474fbcdf",
+      "label": "Propylene glycol E1520 / Propylenglykol E1520 - Production country",
+      "value": "EU",
+      "topic": "ingredients",
+      "lCell": "A32",
+      "vCell": "C32",
+      "section": "Zutaten / Ingredients"
+    },
+    {
+      "id": "edec24d8",
+      "label": "Propylene glycol E1520 / Propylenglykol E1520 - Country of origin",
+      "value": "EU",
+      "topic": "ingredients",
+      "lCell": "A32",
+      "vCell": "D32",
+      "section": "Zutaten / Ingredients"
+    },
+    {
+      "id": "3bd67c19",
+      "label": "Energy/Calorific value (kJ) / Energie/Brennwert (kJ)",
+      "value": "975",
+      "topic": "ingredients",
+      "lCell": "B35",
+      "vCell": "D35",
+      "section": "Zutaten / Ingredients"
+    },
+    {
+      "id": "0b26a391",
+      "label": "Analyses / Analysen",
+      "value": "No",
+      "topic": "ingredients",
+      "lCell": "D35",
+      "vCell": "D35",
+      "section": "Zutaten / Ingredients"
+    },
+    {
+      "id": "750b6265",
+      "label": "Calculated / berechnet",
+      "value": "No",
+      "topic": "ingredients",
+      "lCell": "E35",
+      "vCell": "E35",
+      "section": "Zutaten / Ingredients"
+    },
+    {
+      "id": "b1987307",
+      "label": "BLS Source / BLS Quelle",
+      "value": "No",
+      "topic": "ingredients",
+      "lCell": "A49",
+      "vCell": "A49",
+      "section": "Zutaten / Ingredients"
+    },
+    {
+      "id": "9b9cfe70",
+      "label": "Literature (others) Supplier information / Fachliteratur (Sonstiges) Lieferanteninformation",
+      "value": "Yes",
+      "topic": "ingredients",
+      "lCell": "A50",
+      "vCell": "A50",
+      "section": "Zutaten / Ingredients"
+    },
+    {
+      "id": "5deafdc4",
+      "label": "Lactose content",
+      "value": "≤ 0,01g/100g - lactose-free",
+      "topic": "product",
+      "lCell": "B62",
+      "vCell": "C62-H62",
+      "section": "Ernährungsformen / Diets"
+    },
+    {
+      "id": "a4c78f2a",
+      "label": "Gluten content - gluten-free",
+      "value": "≤ 20 ppm",
+      "topic": "product",
+      "lCell": "B63",
+      "vCell": "C63-F63",
+      "section": "Ernährungsformen / Diets"
+    },
+    {
+      "id": "93ae79e1",
+      "label": "Gluten content - very low gluten",
+      "value": "≤ 100 ppm",
+      "topic": "product",
+      "lCell": "B63",
+      "vCell": "H63-K63",
+      "section": "Ernährungsformen / Diets"
+    },
+    {
+      "id": "e60da653",
+      "label": "Kosher parve - Product suitable",
+      "value": "Yes",
+      "topic": "product",
+      "lCell": "B65",
+      "vCell": "C65",
+      "section": "Ernährungsformen / Diets"
+    },
+    {
+      "id": "e37b43ed",
+      "label": "Kosher parve - Certificate present",
+      "value": "Yes",
+      "topic": "product",
+      "lCell": "B65",
+      "vCell": "K65",
+      "section": "Ernährungsformen / Diets"
+    },
+    {
+      "id": "3ab595f1",
+      "label": "Kosher dairy - Product suitable",
+      "value": "No",
+      "topic": "product",
+      "lCell": "A66",
+      "vCell": "D66",
+      "section": "Ernährungsformen / Diets"
+    },
+    {
+      "id": "0249c5be",
+      "label": "Kosher dairy - Certificate present",
+      "value": "Yes",
+      "topic": "product",
+      "lCell": "A66",
+      "vCell": "J66",
+      "section": "Ernährungsformen / Diets"
+    },
+    {
+      "id": "c8e09898",
+      "label": "Halal",
+      "value": "Yes",
+      "topic": "product",
+      "lCell": "A67",
+      "vCell": "B67",
+      "section": "Ernährungsformen / Diets"
+    },
+    {
+      "id": "9174c83c",
+      "label": "Vegan",
+      "value": "Yes",
+      "topic": "product",
+      "lCell": "A68",
+      "vCell": "B68",
+      "section": "Ernährungsformen / Diets"
+    },
+    {
+      "id": "6bc0ff4a",
+      "label": "Vegetarian",
+      "value": "Yes",
+      "topic": "product",
+      "lCell": "B69",
+      "vCell": "C69",
+      "section": "Ernährungsformen / Diets"
+    },
+    {
+      "id": "217013c0",
+      "label": "US compliance",
+      "value": "Yes",
+      "topic": "product",
+      "lCell": "B70",
+      "vCell": "C70",
+      "section": "Ernährungsformen / Diets"
+    },
+    {
+      "id": "5f05adb5",
+      "label": "US compliance - Food Grade Statement completion",
+      "value": "If yes, please complete the Food Grade Statement",
+      "topic": "product",
+      "lCell": "I70",
+      "vCell": "I70-M70",
+      "section": "Ernährungsformen / Diets"
+    },
+    {
+      "id": "4eae36d1",
+      "label": "Safety data sheet",
+      "value": "Yes",
+      "topic": "quality_systems",
+      "lCell": "B72",
+      "vCell": "E72",
+      "section": "Qualitätsmanagement / Quality Management"
+    },
+    {
+      "id": "448eebe9",
+      "label": "Metal detection",
+      "value": "No",
+      "topic": "quality_systems",
+      "lCell": "B76",
+      "vCell": "E76",
+      "section": "Qualitätsmanagement / Quality Management"
+    },
+    {
+      "id": "b2da8949",
+      "label": "Magnet",
+      "value": "No",
+      "topic": "quality_systems",
+      "lCell": "A79",
+      "vCell": "D79",
+      "section": "Qualitätsmanagement / Quality Management"
+    },
+    {
+      "id": "c1bfda77",
+      "label": "Sieve",
+      "value": "Yes",
+      "topic": "quality_systems",
+      "lCell": "B82",
+      "vCell": "C82",
+      "section": "Qualitätsmanagement / Quality Management"
+    },
+    {
+      "id": "aa7e54f3",
+      "label": "Sieve classification",
+      "value": "CCP",
+      "topic": "quality_systems",
+      "lCell": "G82",
+      "vCell": "H82",
+      "section": "Qualitätsmanagement / Quality Management"
+    },
+    {
+      "id": "7875fb0a",
+      "label": "Sieve width (mm)",
+      "value": "1.5",
+      "topic": "quality_systems",
+      "lCell": "J82",
+      "vCell": "L82",
+      "section": "Qualitätsmanagement / Quality Management"
+    },
+    {
+      "id": "5c58cd1b",
+      "label": "X-ray detection",
+      "value": "No",
+      "topic": "quality_systems",
+      "lCell": "A85",
+      "vCell": "D85",
+      "section": "Qualitätsmanagement / Quality Management"
+    },
+    {
+      "id": "8908d315",
+      "label": "Laser sorting",
+      "value": "No",
+      "topic": "quality_systems",
+      "lCell": "A90",
+      "vCell": "D90",
+      "section": "Qualitätsmanagement / Quality Management"
+    },
+    {
+      "id": "d94148b5",
+      "label": "Optical sorting",
+      "value": "No",
+      "topic": "quality_systems",
+      "lCell": "A91",
+      "vCell": "D91",
+      "section": "Qualitätsmanagement / Quality Management"
+    },
+    {
+      "id": "4e950097",
+      "label": "Other foreign body control",
+      "value": "No",
+      "topic": "quality_systems",
+      "lCell": "B93",
+      "vCell": "E93",
+      "section": "Qualitätsmanagement / Quality Management"
+    },
+    {
+      "id": "83708575",
+      "label": "Foreign bodies parameter description",
+      "value": "None",
+      "topic": "quality_systems",
+      "lCell": "B97",
+      "vCell": "E97",
+      "section": "Qualitätsmanagement / Quality Management"
+    },
+    {
+      "id": "22af94fa",
+      "label": "Pests parameter description",
+      "value": "Free from live and dead pests and insects, other developmental stages, cocoons and their excrements or any other infestation.",
+      "topic": "quality_systems",
+      "lCell": "A98",
+      "vCell": "E99",
+      "section": "Qualitätsmanagement / Quality Management"
+    },
+    {
+      "id": "6ba56b4a",
+      "label": "Aussehen / Appearance",
+      "value": "Flüssig, gelb, klar/ Liquid, yellow, clear",
+      "topic": "product",
+      "lCell": "A101",
+      "vCell": "B101",
+      "section": "Sensorik / Organoleptic"
+    },
+    {
+      "id": "3083a39b",
+      "label": "Geruch / Odour",
+      "value": "Arteigen, kein Fremdgeruch, nach Vanille / Characteristic, no foreign smell, like vanilla",
+      "topic": "product",
+      "lCell": "A102",
+      "vCell": "B102",
+      "section": "Sensorik / Organoleptic"
+    },
+    {
+      "id": "738bb6cf",
+      "label": "Geschmack / Taste",
+      "value": "Nach Verdünnung: Arteigen, kein Fremdgeschmack, nach Vanille / After dilution: characteristic, no foreign flavour, like vanilla",
+      "topic": "product",
+      "lCell": "A102",
+      "vCell": "B102",
+      "section": "Sensorik / Organoleptic"
+    },
+    {
+      "id": "a505295a",
+      "label": "Konsistenz / Textur / Consistency / Texture",
+      "value": "Keine Ausflockungen, keine Schichtungen / No flocculation, no layering",
+      "topic": "product",
+      "lCell": "A103",
+      "vCell": "B103",
+      "section": "Sensorik / Organoleptic"
+    },
+    {
+      "id": "389d9ae1",
+      "label": "Löslich in /Soluble in",
+      "value": "Wasser / Water",
+      "topic": "product",
+      "lCell": "A104",
+      "vCell": "B104",
+      "section": "Sensorik / Organoleptic"
+    },
+    {
+      "id": "f20867e0",
+      "label": "Anwendungsgebiet",
+      "value": "Cerialien / Cereals",
+      "topic": "product",
+      "lCell": "A104",
+      "vCell": "C104",
+      "section": "Sensorik / Organoleptic"
+    },
+    {
+      "id": "39f45606",
+      "label": "Dosierung Vorschlag Ceralien / Cereals, application concentration, proposal",
+      "value": "Indicative 0,2%",
+      "topic": "product",
+      "lCell": "A105",
+      "vCell": "B105",
+      "section": "Sensorik / Organoleptic"
+    },
+    {
+      "id": "b8c2788a",
+      "label": "Dosierung Vorschlag Snacks/ Cereals Snacks, application concentration, proposal",
+      "value": "Indicative 0,2%",
+      "topic": "product",
+      "lCell": "A106",
+      "vCell": "B106",
+      "section": "Sensorik / Organoleptic"
+    },
+    {
+      "id": "3452a7e3",
+      "label": "Dosierung für sensorische Prüfung / Dosing for sensory testing",
+      "value": "0,00",
+      "topic": "product",
+      "lCell": "A107",
+      "vCell": "B107",
+      "section": "Sensorik / Organoleptic"
+    },
+    {
+      "id": "fc7237be",
+      "label": "Ethanolgehalt (%) / Ethanol content (%)",
+      "value": "0,00",
+      "topic": "product",
+      "lCell": "A108",
+      "vCell": "B108",
+      "section": "Sensorik / Organoleptic"
+    },
+    {
+      "id": "05b577ec",
+      "label": "Bitte bestätigen Sie, dass das in dem Produkt eingesetzte Aroma den Vorgaben der Verordnung (EG) Nr. 1334/2008 über Aromen und bestimmte Lebensmittelzutaten mit Aromaeigenschaften zur Verwendung in und auf Lebensmitteln in der jeweils gültigen Fassung entspricht. / Please confirm that the flavouring used in the product complies with the provisions of Regulation (EC) No. 1334/2008 on flavourings and certain food ingredients with flavouring properties for use in and on foods, as amended.",
+      "value": "Yes",
+      "topic": "product",
+      "lCell": "A109",
+      "vCell": "B109",
+      "section": "Sensorik / Organoleptic"
+    },
+    {
+      "id": "eb181482",
+      "label": "Enthält das Aroma auch Stärke? Wenn ja, welcher Ursprung (z.B. Weizen, Mais, .. ) / Does the flavouring also contain starch? If yes, what is the origin (e.g. wheat, maize, .. )",
+      "value": "No",
+      "topic": "product",
+      "lCell": "A110",
+      "vCell": "B110",
+      "section": "Sensorik / Organoleptic"
+    },
+    {
+      "id": "b9fa9137",
+      "label": "Aroma: Ist Diacetyl enthalten? Wenn ja, mit welchen Gehalt?/ Flavour: Does it contain diacetyl? If so, with what content?",
+      "value": "No",
+      "topic": "product",
+      "lCell": "A111",
+      "vCell": "B111",
+      "section": "Sensorik / Organoleptic"
+    },
+    {
+      "id": "b0a840cf",
+      "label": "Trockenmasse (%) / Dry matter (%)",
+      "value": "99,9",
+      "topic": "product",
+      "lCell": "A115",
+      "vCell": "B115",
+      "section": "Sensorik / Organoleptic"
+    },
+    {
+      "id": "3fd3587b",
+      "label": "Feuchte (%) / Moisture (%)",
+      "value": "0,1",
+      "topic": "product",
+      "lCell": "A116",
+      "vCell": "B116",
+      "section": "Sensorik / Organoleptic"
+    },
+    {
+      "id": "ac7d55bf",
+      "label": "Relative Dichte (D20/20) / Relative density (D20/20)",
+      "value": "1,0373",
+      "topic": "product",
+      "lCell": "A117",
+      "vCell": "B117",
+      "section": "Sensorik / Organoleptic"
+    },
+    {
+      "id": "faf1d9a9",
+      "label": "Brechungsindex (n20/D) / Refractive Index (n20/D)",
+      "value": "1,4245",
+      "topic": "product",
+      "lCell": "A117",
+      "vCell": "B117",
+      "section": "Sensorik / Organoleptic"
+    },
+    {
+      "id": "4b70f0e4",
+      "label": "Flammpunkt ℃ / Flash point ℃",
+      "value": "92",
+      "topic": "product",
+      "lCell": "A117",
+      "vCell": "B117",
+      "section": "Sensorik / Organoleptic"
+    },
+    {
+      "id": "17386eec",
+      "label": "MOSH und Analoga C10-C50 (mg/kg) / MOSH and analogues C10-C50 (mg/kg)",
+      "value": "<2",
+      "topic": "product",
+      "lCell": "A120",
+      "vCell": "C120",
+      "section": "Sensorik / Organoleptic"
+    },
+    {
+      "id": "44d3280a",
+      "label": "MOSH und Analoga C17-C35 (mg/kg) / MOSH and analogues C17-C35 (mg/kg)",
+      "value": "<1",
+      "topic": "product",
+      "lCell": "A120",
+      "vCell": "B121",
+      "section": "Sensorik / Organoleptic"
+    },
+    {
+      "id": "ee6e544a",
+      "label": "Aerobe mesophile Koloniezahl / Total plate count",
+      "topic": "microbiology",
+      "lCell": "B123",
+      "vCell": "C123",
+      "section": "Mikrobiologie / Microbiology"
+    },
+    {
+      "id": "f0fa2bcf",
+      "label": "Aerobe mesophile Koloniezahl / Total plate count - Grenzwert (KBE/g) / Limit (cfu/g)",
+      "value": "≤ 5.000",
+      "topic": "microbiology",
+      "lCell": "B123",
+      "vCell": "D123",
+      "section": "Mikrobiologie / Microbiology"
+    },
+    {
+      "id": "c682a67d",
+      "label": "Aerobe mesophile Koloniezahl / Total plate count - Methode / Method",
+      "value": "DIN EN ISO 4833-2 (2014-05)",
+      "topic": "microbiology",
+      "lCell": "B123",
+      "vCell": "E123",
+      "section": "Mikrobiologie / Microbiology"
+    },
+    {
+      "id": "6e81218e",
+      "label": "Enterobacteriaceae",
+      "topic": "microbiology",
+      "lCell": "B124",
+      "vCell": "C124",
+      "section": "Mikrobiologie / Microbiology"
+    },
+    {
+      "id": "096623db",
+      "label": "Enterobacteriaceae - Grenzwert (KBE/g) / Limit (cfu/g)",
+      "value": "≤ 10",
+      "topic": "microbiology",
+      "lCell": "B124",
+      "vCell": "D124",
+      "section": "Mikrobiologie / Microbiology"
+    },
+    {
+      "id": "46e6ab07",
+      "label": "Enterobacteriaceae - Methode / Method",
+      "value": "DIN EN ISO 21528-2 (2019-05)",
+      "topic": "microbiology",
+      "lCell": "B124",
+      "vCell": "E124",
+      "section": "Mikrobiologie / Microbiology"
+    },
+    {
+      "id": "cdcfffb0",
+      "label": "E. coli",
+      "topic": "microbiology",
+      "lCell": "B125",
+      "vCell": "C125",
+      "section": "Mikrobiologie / Microbiology"
+    },
+    {
+      "id": "6ecb0900",
+      "label": "E. coli - Grenzwert (KBE/g) / Limit (cfu/g)",
+      "value": "n.n. / n.d.",
+      "topic": "microbiology",
+      "lCell": "B125",
+      "vCell": "D125",
+      "section": "Mikrobiologie / Microbiology"
+    },
+    {
+      "id": "4535b0ba",
+      "label": "E. coli - Methode / Method",
+      "value": "DIN EN ISO 16649-2 (2009-12)",
+      "topic": "microbiology",
+      "lCell": "B125",
+      "vCell": "E125",
+      "section": "Mikrobiologie / Microbiology"
+    },
+    {
+      "id": "cc67898d",
+      "label": "Hefen / Yeasts",
+      "topic": "microbiology",
+      "lCell": "B126",
+      "vCell": "C126",
+      "section": "Mikrobiologie / Microbiology"
+    },
+    {
+      "id": "9682b22c",
+      "label": "Hefen / Yeasts - Grenzwert (KBE/g) / Limit (cfu/g)",
+      "value": "≤ 100",
+      "topic": "microbiology",
+      "lCell": "B126",
+      "vCell": "D126",
+      "section": "Mikrobiologie / Microbiology"
+    },
+    {
+      "id": "ccad1769",
+      "label": "Hefen / Yeasts - Methode / Method",
+      "value": "ASU L 01.00-37 (1991-12)",
+      "topic": "microbiology",
+      "lCell": "B126",
+      "vCell": "E126",
+      "section": "Mikrobiologie / Microbiology"
+    },
+    {
+      "id": "bea450fd",
+      "label": "Schimmelpilze / Moulds",
+      "topic": "microbiology",
+      "lCell": "B127",
+      "vCell": "C127",
+      "section": "Mikrobiologie / Microbiology"
+    },
+    {
+      "id": "26d062c7",
+      "label": "Schimmelpilze / Moulds - Grenzwert (KBE/g) / Limit (cfu/g)",
+      "value": "≤ 100",
+      "topic": "microbiology",
+      "lCell": "B127",
+      "vCell": "D127",
+      "section": "Mikrobiologie / Microbiology"
+    },
+    {
+      "id": "d8445f4b",
+      "label": "Schimmelpilze / Moulds - Methode / Method",
+      "value": "ASU L 01.00-37 (1991-12)",
+      "topic": "microbiology",
+      "lCell": "B127",
+      "vCell": "E127",
+      "section": "Mikrobiologie / Microbiology"
+    },
+    {
+      "id": "3254cc47",
+      "label": "Salmonellen / Salmonella",
+      "topic": "microbiology",
+      "lCell": "B128",
+      "vCell": "C128",
+      "section": "Mikrobiologie / Microbiology"
+    },
+    {
+      "id": "9cdfb019",
+      "label": "Salmonellen / Salmonella - Grenzwert (KBE/g) / Limit (cfu/g)",
+      "value": "n.n. in 25 g / n.d. per 25g",
+      "topic": "microbiology",
+      "lCell": "B128",
+      "vCell": "D128",
+      "section": "Mikrobiologie / Microbiology"
+    },
+    {
+      "id": "c4ea1b17",
+      "label": "Salmonellen / Salmonella - Methode / Method",
+      "value": "DIN EN ISO 6579-1 (2017-07)",
+      "topic": "microbiology",
+      "lCell": "B128",
+      "vCell": "E128",
+      "section": "Mikrobiologie / Microbiology"
+    },
+    {
+      "id": "95d07388",
+      "label": "Crustaceans - cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A135",
+      "vCell": "B136",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "3cca19ff",
+      "label": "Crustaceans - not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A135",
+      "vCell": "B137",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "e5375c95",
+      "label": "Eggs and products thereof - included in recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A139",
+      "vCell": "B139",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "fec9cae0",
+      "label": "Eggs - cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A139",
+      "vCell": "B140",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "4f443d15",
+      "label": "Eggs - not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A139",
+      "vCell": "B141",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "a0405927",
+      "label": "Fish and products thereof - included in recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A143",
+      "vCell": "B143",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "d059a494",
+      "label": "Fish - cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A143",
+      "vCell": "B144",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "14357a0e",
+      "label": "Fish - not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A143",
+      "vCell": "B145",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "9df0b57b",
+      "label": "Peanuts and products thereof - included in recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A147",
+      "vCell": "B147",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "63b8dd14",
+      "label": "Peanuts - cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A147",
+      "vCell": "B148",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "532d2c98",
+      "label": "Peanuts - not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A147",
+      "vCell": "B149",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "6069d73f",
+      "label": "Soy and products thereof - included in recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A151",
+      "vCell": "B151",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "84f27b24",
+      "label": "Soy - cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A151",
+      "vCell": "B152",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "4bf43c80",
+      "label": "Soy - not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A151",
+      "vCell": "B153",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "9c211915",
+      "label": "Milk and products thereof (including lactose) - included in recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A155",
+      "vCell": "B155",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "43e9cdcf",
+      "label": "Milk - cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A155",
+      "vCell": "B156",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "084f9abc",
+      "label": "Milk - not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A155",
+      "vCell": "B157",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "5bb3bf8a",
+      "label": "Almonds and products thereof - included in recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A160",
+      "vCell": "B160",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "09b99122",
+      "label": "Almonds - cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A160",
+      "vCell": "B161",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "2198993d",
+      "label": "Almonds - not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A160",
+      "vCell": "B162",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "a122c4df",
+      "label": "Hazelnut and products thereof - included in recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A164",
+      "vCell": "B164",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "cf6f230d",
+      "label": "Hazelnut - cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A164",
+      "vCell": "B165",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "d3a24d42",
+      "label": "Hazelnut - not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A164",
+      "vCell": "B166",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "f216289a",
+      "label": "Walnut and products thereof - included in recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A168",
+      "vCell": "B168",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "d052e4ec",
+      "label": "Walnut - cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A168",
+      "vCell": "B169",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "9acb8d0d",
+      "label": "Walnut - not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A168",
+      "vCell": "B170",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "244b4317",
+      "label": "Cashew and products thereof - included in recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A173",
+      "vCell": "C172",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "40a26bdb",
+      "label": "Cashew - cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A173",
+      "vCell": "B173",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "52028ad4",
+      "label": "Cashew - not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A173",
+      "vCell": "B174",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "afe3290f",
+      "label": "Pecan nut and products thereof - included in recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A176",
+      "vCell": "B176",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "8c11cc4b",
+      "label": "Pecan nut - cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A176",
+      "vCell": "B177",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "1047f6e2",
+      "label": "Pecan nut - not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A176",
+      "vCell": "B178",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "5b47d069",
+      "label": "Brazil nut and products thereof - included in recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A180",
+      "vCell": "B180",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "38fa1d68",
+      "label": "Brazil nut - cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A180",
+      "vCell": "B181",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "ac9f1c42",
+      "label": "Brazil nut - not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A180",
+      "vCell": "B182",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "0e0784fc",
+      "label": "Pistachio and products thereof - included in recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A184",
+      "vCell": "B184",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "561ba986",
+      "label": "Pistachio - cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A184",
+      "vCell": "B185",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "e7172f3a",
+      "label": "Pistachio - not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A184",
+      "vCell": "B186",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "a605a47d",
+      "label": "Macadamia nut and products thereof - included in recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A188",
+      "vCell": "B188",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "a8526fa8",
+      "label": "Macadamia nut - cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A188",
+      "vCell": "B189",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "6efda290",
+      "label": "Macadamia nut - not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A188",
+      "vCell": "B190",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "94706c6b",
+      "label": "Queensland nut and products thereof - included in recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A192",
+      "vCell": "B192",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "1dbdb7c9",
+      "label": "Queensland nut - cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A192",
+      "vCell": "B193",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "5bf74679",
+      "label": "Queensland nut - not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A192",
+      "vCell": "B194",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "0d3d8e36",
+      "label": "Celery and products thereof - included in recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A196",
+      "vCell": "B196",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "f7e0aa5d",
+      "label": "Celery - cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A196",
+      "vCell": "B197",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "0eb4f327",
+      "label": "Celery - not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A196",
+      "vCell": "B198",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "dca7e34e",
+      "label": "Mustard and products thereof - included in recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "B200",
+      "vCell": "C200",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "860ca048",
+      "label": "Mustard - cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "B200",
+      "vCell": "B201",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "719105b3",
+      "label": "Mustard - not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "B200",
+      "vCell": "B202",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "d2c15963",
+      "label": "Sesame seeds and products thereof - included in recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A205",
+      "vCell": "C204",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "1d897570",
+      "label": "Sesame seeds - cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A205",
+      "vCell": "B205",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "1cb689a8",
+      "label": "Sesame seeds - not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A205",
+      "vCell": "B206",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "5dcca245",
+      "label": "Sulphur dioxide and sulphites - included in recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A208",
+      "vCell": "B208",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "452d485a",
+      "label": "Sulphur dioxide and sulphites - cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A208",
+      "vCell": "B209",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "d197ad03",
+      "label": "Sulphur dioxide and sulphites - not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A208",
+      "vCell": "A210",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "7b9577a7",
+      "label": "Lupines and products thereof - included in recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A212",
+      "vCell": "B212",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "fcbea57c",
+      "label": "Lupines - cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A212",
+      "vCell": "B213",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "1d1e6302",
+      "label": "Lupines - not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A212",
+      "vCell": "B214",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "45fcab13",
+      "label": "Molluscs and products thereof - included in recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "B216",
+      "vCell": "C216",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "17975f29",
+      "label": "Molluscs - cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "B216",
+      "vCell": "B217",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "284e2442",
+      "label": "Molluscs - not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "B216",
+      "vCell": "B218",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "cb01e661",
+      "label": "Cocoa - included in recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A221",
+      "vCell": "B221",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "d9c1ac7d",
+      "label": "Cocoa - cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A221",
+      "vCell": "B221",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "43d0e028",
+      "label": "Cocoa - not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A221",
+      "vCell": "A222",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "01236d53",
+      "label": "Glutamate (E620-E625) - included in recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A223",
+      "vCell": "B223",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "b8f928d8",
+      "label": "Glutamate - cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A223",
+      "vCell": "A224",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "2e8f23bf",
+      "label": "Glutamate - not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A223",
+      "vCell": "A225",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "73a35a24",
+      "label": "Chicken - included in recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A226",
+      "vCell": "B226",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "5246735f",
+      "label": "Chicken - cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A226",
+      "vCell": "A227",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "9015cdf0",
+      "label": "Chicken - not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A226",
+      "vCell": "A228",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "64246496",
+      "label": "Coriander - included in recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A229",
+      "vCell": "B229",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "1319ffd1",
+      "label": "Coriander - cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A229",
+      "vCell": "A230",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "995a6601",
+      "label": "Coriander - not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A229",
+      "vCell": "A231",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "47e79e5b",
+      "label": "Corn - included in recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A232",
+      "vCell": "B232",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "5dce2d6f",
+      "label": "Corn - cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A232",
+      "vCell": "B232",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "cd683961",
+      "label": "Corn - not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A232",
+      "vCell": "A234",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "f657ac09",
+      "label": "Hülsenfrüchte / Legumes / Pulses - in Rezeptur enthalten / included in the recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "B235",
+      "vCell": "C235",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "0eefaf71",
+      "label": "Hülsenfrüchte / Legumes / Pulses - Kreuzkontamination / Cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A236",
+      "vCell": "A236",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "7ac1340f",
+      "label": "Hülsenfrüchte / Legumes / Pulses - nicht enthalten / not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A237",
+      "vCell": "A237",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "2f2c5e3f",
+      "label": "Rindfleisch / Beef - in Rezeptur enthalten / included in the recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A238",
+      "vCell": "B238",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "0dc78991",
+      "label": "Rindfleisch / Beef - Kreuzkontamination / Cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A239",
+      "vCell": "A239",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "c4018e89",
+      "label": "Rindfleisch / Beef - nicht enthalten / not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A240",
+      "vCell": "A240",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "92ff662c",
+      "label": "Schweinefleisch / Pork - in Rezeptur enthalten / included in the recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A241",
+      "vCell": "B241",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "2a3eff65",
+      "label": "Schweinefleisch / Pork - Kreuzkontamination / Cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A242",
+      "vCell": "A242",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "25829839",
+      "label": "Schweinefleisch / Pork - nicht enthalten / not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A243",
+      "vCell": "A243",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "e940ce91",
+      "label": "Karotten / Carrots - in Rezeptur enthalten / included in the recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A244",
+      "vCell": "B244",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "9caa452d",
+      "label": "Karotten / Carrots - Kreuzkontamination / Cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A245",
+      "vCell": "A245",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "b9b23254",
+      "label": "Karotten / Carrots - nicht enthalten / not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A246",
+      "vCell": "A246",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "10f9ca35",
+      "label": "Pinienkerne / Pine nuts - in Rezeptur enthalten / included in the recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A248",
+      "vCell": "B248",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "7125daa5",
+      "label": "Pinienkerne / Pine nuts - Kreuzkontamination / Cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A249",
+      "vCell": "A249",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "e87546ce",
+      "label": "Pinienkerne / Pine nuts - nicht enthalten / not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A250",
+      "vCell": "A250",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "31ffb1c3",
+      "label": "Hickory Nuss / Hickory nut - in Rezeptur enthalten / included in the recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A252",
+      "vCell": "B252",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "0bd4b012",
+      "label": "Hickory Nuss / Hickory nut - Kreuzkontamination / Cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A253",
+      "vCell": "A253",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "f606e4f2",
+      "label": "Hickory Nuss / Hickory nut - nicht enthalten / not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A254",
+      "vCell": "A254",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "2bf3f89b",
+      "label": "Shea Nuss / Shea nut - in Rezeptur enthalten / included in the recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A256",
+      "vCell": "B256",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "0fb5d6b1",
+      "label": "Shea Nuss / Shea nut - Kreuzkontamination / Cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A257",
+      "vCell": "A257",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "ba688a8e",
+      "label": "Shea Nuss / Shea nut - nicht enthalten / not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A258",
+      "vCell": "A258",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "0d60119a",
+      "label": "Buchecker / Beechnut - nicht enthalten / not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A261",
+      "vCell": "A261",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "100304f9",
+      "label": "Gingko Nuss / Gingko Nut - in Rezeptur enthalten / included in the recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A263",
+      "vCell": "B263",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "9d40828b",
+      "label": "Gingko Nuss / Gingko Nut - Kreuzkontamination / Cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A264",
+      "vCell": "A264",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "f59e3c52",
+      "label": "Gingko Nuss / Gingko Nut - nicht enthalten / not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A265",
+      "vCell": "A265",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "decbad85",
+      "label": "Kokosnuss / Coconut - in Rezeptur enthalten / included in the recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A267",
+      "vCell": "B267",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "0ab0c358",
+      "label": "Kokosnuss / Coconut - Kreuzkontamination / Cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A268",
+      "vCell": "A268",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "ba2af702",
+      "label": "Kokosnuss / Coconut - nicht enthalten / not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A269",
+      "vCell": "A269",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "cff915ff",
+      "label": "Litschi / Lychee - in Rezeptur enthalten / included in the recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A271",
+      "vCell": "B271",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "39b2a104",
+      "label": "Litschi / Lychee - Kreuzkontamination / Cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A272",
+      "vCell": "A272",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "d36353fb",
+      "label": "Litschi / Lychee - nicht enthalten / not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A273",
+      "vCell": "A273",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "00ba5283",
+      "label": "Pilinuss / Pilinut - in Rezeptur enthalten / included in the recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A275",
+      "vCell": "B275",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "ab0dd9bd",
+      "label": "Pilinuss / Pilinut - Kreuzkontamination / Cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A276",
+      "vCell": "A276",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "9dea9929",
+      "label": "Pilinuss / Pilinut - nicht enthalten / not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A277",
+      "vCell": "A277",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "80da6176",
+      "label": "Zwergkastanie / Chestnut - in Rezeptur enthalten / included in the recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A279",
+      "vCell": "B279",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "e68576b9",
+      "label": "Zwergkastanie / Chestnut - Kreuzkontamination / Cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A280",
+      "vCell": "A280",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "3bd8c33a",
+      "label": "Zwergkastanie / Chestnut - nicht enthalten / not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A281",
+      "vCell": "A281",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "3a4c5b06",
+      "label": "Lieferant / Supplier",
+      "value": "Strik bv",
+      "topic": "company",
+      "lCell": "A531",
+      "vCell": "B531",
+      "section": "Lieferant / Supplier Information"
+    },
+    {
+      "id": "5122c7db",
+      "label": "Lieferantnummer / Supplier number",
+      "value": "149.04070",
+      "topic": "company",
+      "lCell": "A532",
+      "vCell": "B532",
+      "section": "Lieferant / Supplier Information"
+    },
+    {
+      "id": "ca35ce23",
+      "label": "Produzent / Producer",
+      "value": "Strik bv",
+      "topic": "company",
+      "lCell": "A533",
+      "vCell": "B533",
+      "section": "Lieferant / Supplier Information"
+    },
+    {
+      "id": "caf1b414",
+      "label": "Artikel-Bezeichnung Lieferant / Suppliers product declaration",
+      "value": "Natural Flavour Type Vanilla",
+      "topic": "company",
+      "lCell": "A534",
+      "vCell": "B534",
+      "section": "Lieferant / Supplier Information"
+    },
+    {
+      "id": "c556caec",
+      "label": "Artikel-Nr. Lieferant / Suppliers product code",
+      "value": "149.04070",
+      "topic": "company",
+      "lCell": "A535",
+      "vCell": "B535",
+      "section": "Lieferant / Supplier Information"
+    },
+    {
+      "id": "2a1ef735",
+      "label": "Artikel-Nr. Nordgetreide / Nordgetreide product code",
+      "value": "AROO85",
+      "topic": "company",
+      "lCell": "A536",
+      "vCell": "B536",
+      "section": "Lieferant / Supplier Information"
+    },
+    {
+      "id": "03be30d1",
+      "label": "Supplier, name, adress: / Lieferant, Name, Adresse",
+      "value": "Strik bv, Bramenberg 19, 3755 BV Eemnes, The Netherlands",
+      "topic": "company",
+      "lCell": "A538",
+      "vCell": "A539",
+      "section": "Lieferant / Supplier Information"
+    },
+    {
+      "id": "4438b35d",
+      "label": "Material no. (Nordgetreide): / Materialnummer (Nordgetreide):",
+      "value": "ARO0085",
+      "topic": "company",
+      "lCell": "A542",
+      "vCell": "A543",
+      "section": "Lieferant / Supplier Information"
+    }
+  ],
+  "exclude": [
+    {
+      "id": "70c4af7b",
+      "label": "Propylenglycol E1520 - Limited",
+      "topic": "ingredients",
+      "lCell": "A55",
+      "vCell": "B55",
+      "section": "Mengenbegrenzte Bestandteile / Quantity Components"
+    },
+    {
+      "id": "27de66e5",
+      "label": "Propylenglycol E1520 - Max. content (mg/kg) raw material",
+      "topic": "ingredients",
+      "lCell": "A55",
+      "vCell": "C55",
+      "section": "Mengenbegrenzte Bestandteile / Quantity Components"
+    },
+    {
+      "id": "5611fb37",
+      "label": "Propylenglycol E1520 - Max. content cereals (mg/kg)",
+      "topic": "ingredients",
+      "lCell": "A55",
+      "vCell": "D55",
+      "section": "Mengenbegrenzte Bestandteile / Quantity Components"
+    },
+    {
+      "id": "e7352f76",
+      "label": "Propylenglycol E1520 - Max. content snacks (mg/kg)",
+      "topic": "ingredients",
+      "lCell": "A55",
+      "vCell": "E55",
+      "section": "Mengenbegrenzte Bestandteile / Quantity Components"
+    },
+    {
+      "id": "c7808830",
+      "label": "Other certifications",
+      "topic": "quality_systems",
+      "lCell": "B73",
+      "section": "Qualitätsmanagement / Quality Management"
+    },
+    {
+      "id": "bbf57fbe",
+      "label": "Metal detection Fe sensitivity (mm)",
+      "topic": "quality_systems",
+      "lCell": "J76",
+      "vCell": "N76",
+      "section": "Qualitätsmanagement / Quality Management"
+    },
+    {
+      "id": "6fdc2b4d",
+      "label": "Metal detection non Fe sensitivity (mm)",
+      "topic": "quality_systems",
+      "lCell": "J77",
+      "vCell": "N77",
+      "section": "Qualitätsmanagement / Quality Management"
+    },
+    {
+      "id": "54b58d85",
+      "label": "Metal detection SS sensitivity (mm)",
+      "topic": "quality_systems",
+      "lCell": "J78",
+      "vCell": "M78",
+      "section": "Qualitätsmanagement / Quality Management"
+    },
+    {
+      "id": "9030f617",
+      "label": "Magnet strength (Gauss)",
+      "topic": "quality_systems",
+      "lCell": "I79",
+      "vCell": "M79",
+      "section": "Qualitätsmanagement / Quality Management"
+    },
+    {
+      "id": "1fb3930b",
+      "label": "X-ray detection Fe sensitivity (mm)",
+      "topic": "quality_systems",
+      "lCell": "I85",
+      "vCell": "M85",
+      "section": "Qualitätsmanagement / Quality Management"
+    },
+    {
+      "id": "0504b1f4",
+      "label": "X-ray detection non Fe sensitivity (mm)",
+      "topic": "quality_systems",
+      "lCell": "I86",
+      "vCell": "M86",
+      "section": "Qualitätsmanagement / Quality Management"
+    },
+    {
+      "id": "5b5a3a62",
+      "label": "X-ray detection SS sensitivity (mm)",
+      "topic": "quality_systems",
+      "lCell": "J87",
+      "vCell": "M87",
+      "section": "Qualitätsmanagement / Quality Management"
+    },
+    {
+      "id": "e9e8c667",
+      "label": "X-ray detection Glass sensitivity (mm)",
+      "topic": "quality_systems",
+      "lCell": "J88",
+      "vCell": "M88",
+      "section": "Qualitätsmanagement / Quality Management"
+    },
+    {
+      "id": "b0bdeaf7",
+      "label": "X-ray detection Ceramics sensitivity (mm)",
+      "topic": "quality_systems",
+      "lCell": "K89",
+      "vCell": "M89",
+      "section": "Qualitätsmanagement / Quality Management"
+    },
+    {
+      "id": "17c2e3e6",
+      "label": "Which other foreign body control methods",
+      "topic": "quality_systems",
+      "lCell": "K93",
+      "section": "Qualitätsmanagement / Quality Management"
+    },
+    {
+      "id": "2a353f44",
+      "label": "Gluten-containing cereals (wheat, rye, barley, oats, spelt, Kamut, hybrids) and products thereof - included in recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A130",
+      "vCell": "B130",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "764bede8",
+      "label": "Gluten-containing cereals - cross contamination",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A130",
+      "vCell": "B131",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "8f1ec811",
+      "label": "Gluten-containing cereals - not included",
+      "value": "Yes",
+      "topic": "allergens",
+      "lCell": "A130",
+      "vCell": "B132",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "034eaa95",
+      "label": "Gluten-containing cereals - protein content mg/kg",
+      "topic": "allergens",
+      "lCell": "A133",
+      "vCell": "D133",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "d2d0d486",
+      "label": "Crustaceans and products thereof - included in recipe",
+      "value": "No",
+      "topic": "allergens",
+      "lCell": "A135",
+      "vCell": "B135",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "0537b36c",
+      "label": "Crustaceans - protein content mg/kg",
+      "topic": "allergens",
+      "lCell": "A135",
+      "vCell": "D138",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "4b1bc435",
+      "label": "Eggs - protein content mg/kg",
+      "topic": "allergens",
+      "lCell": "A139",
+      "vCell": "C142",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "52762c5f",
+      "label": "Fish - protein content mg/kg",
+      "topic": "allergens",
+      "lCell": "A143",
+      "vCell": "C146",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "50b10426",
+      "label": "Peanuts - protein content mg/kg",
+      "topic": "allergens",
+      "lCell": "A147",
+      "vCell": "C150",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "5eac74e6",
+      "label": "Soy - protein content mg/kg",
+      "topic": "allergens",
+      "lCell": "A151",
+      "vCell": "C154",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "fe47aa55",
+      "label": "Milk - protein content mg/kg",
+      "topic": "allergens",
+      "lCell": "A155",
+      "vCell": "C158",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "7050a6a5",
+      "label": "Almonds - protein content mg/kg",
+      "topic": "allergens",
+      "lCell": "A160",
+      "vCell": "C163",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "82564f16",
+      "label": "Hazelnut - protein content mg/kg",
+      "topic": "allergens",
+      "lCell": "A164",
+      "vCell": "C167",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "db9ce1e4",
+      "label": "Walnut - protein content mg/kg",
+      "topic": "allergens",
+      "lCell": "A168",
+      "vCell": "D171",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "98d42930",
+      "label": "Cashew - protein content mg/kg",
+      "topic": "allergens",
+      "lCell": "A173",
+      "vCell": "C175",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "b296850f",
+      "label": "Pecan nut - protein content mg/kg",
+      "topic": "allergens",
+      "lCell": "A176",
+      "vCell": "B179",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "1492fa97",
+      "label": "Brazil nut - protein content mg/kg",
+      "topic": "allergens",
+      "lCell": "A180",
+      "vCell": "B183",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "fce209dd",
+      "label": "Pistachio - protein content mg/kg",
+      "topic": "allergens",
+      "lCell": "A184",
+      "vCell": "B187",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "2ca9de70",
+      "label": "Macadamia nut - protein content mg/kg",
+      "topic": "allergens",
+      "lCell": "A188",
+      "vCell": "B191",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "30186307",
+      "label": "Queensland nut - protein content mg/kg",
+      "topic": "allergens",
+      "lCell": "A192",
+      "vCell": "B195",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "d60db166",
+      "label": "Celery - protein content mg/kg",
+      "topic": "allergens",
+      "lCell": "A196",
+      "vCell": "B199",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "6a9076b5",
+      "label": "Mustard - protein content mg/kg",
+      "topic": "allergens",
+      "lCell": "B200",
+      "vCell": "B203",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "c0dfa7e0",
+      "label": "Sesame seeds - protein content mg/kg",
+      "topic": "allergens",
+      "lCell": "A205",
+      "vCell": "B207",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "eee2bd2f",
+      "label": "Sulphur dioxide and sulphites - protein content mg/kg",
+      "topic": "allergens",
+      "lCell": "A208",
+      "vCell": "B211",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "39f403d4",
+      "label": "Lupines - protein content mg/kg",
+      "topic": "allergens",
+      "lCell": "A212",
+      "vCell": "B215",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "cff8d614",
+      "label": "Molluscs - protein content mg/kg",
+      "topic": "allergens",
+      "lCell": "B216",
+      "vCell": "B219",
+      "section": "Allergen / Allergen"
+    },
+    {
+      "id": "82fcc628",
+      "label": "Pinienkerne / Pine nuts - Protein content (mg/kg)",
+      "topic": "allergens",
+      "lCell": "B251",
+      "vCell": "B251",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "0b4f94d5",
+      "label": "Hickory Nuss / Hickory nut - Protein content (mg/kg)",
+      "topic": "allergens",
+      "lCell": "B255",
+      "vCell": "B255",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "0e112164",
+      "label": "Shea Nuss / Shea nut - Protein content (mg/kg)",
+      "topic": "allergens",
+      "lCell": "B259",
+      "vCell": "B259",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "83826add",
+      "label": "Buchecker / Beechnut - Protein content (mg/kg)",
+      "topic": "allergens",
+      "lCell": "B262",
+      "vCell": "B262",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "d0fd123a",
+      "label": "Gingko Nuss / Gingko Nut - Protein content (mg/kg)",
+      "topic": "allergens",
+      "lCell": "B266",
+      "vCell": "B266",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "155a5223",
+      "label": "Kokosnuss / Coconut - Protein content (mg/kg)",
+      "topic": "allergens",
+      "lCell": "B270",
+      "vCell": "B270",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "650969ca",
+      "label": "Litschi / Lychee - Protein content (mg/kg)",
+      "topic": "allergens",
+      "lCell": "B274",
+      "vCell": "B274",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "1bcdb959",
+      "label": "Pilinuss / Pilinut - Protein content (mg/kg)",
+      "topic": "allergens",
+      "lCell": "B278",
+      "vCell": "B278",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "8fc0e23c",
+      "label": "Zwergkastanie / Chestnut - Protein content (mg/kg)",
+      "topic": "allergens",
+      "lCell": "B282",
+      "vCell": "B282",
+      "section": "Hülsenfrüchte / Legumes / Pulses"
+    },
+    {
+      "id": "ac2699b8",
+      "label": "Name",
+      "value": "Petrus Lenes",
+      "topic": "signature",
+      "lCell": "A283",
+      "vCell": "B283",
+      "section": "Signature Section"
+    },
+    {
+      "id": "d9fd9df1",
+      "label": "Position",
+      "value": "Quality",
+      "topic": "signature",
+      "lCell": "A284",
+      "vCell": "B284",
+      "section": "Signature Section"
+    },
+    {
+      "id": "264a62e6",
+      "label": "Location / Date",
+      "value": "5-1-2026",
+      "topic": "signature",
+      "lCell": "A285",
+      "vCell": "B285",
+      "section": "Signature Section"
+    },
+    {
+      "id": "388858de",
+      "label": "Afghanistan",
+      "value": "AF",
+      "topic": "other",
+      "lCell": "B287",
+      "vCell": "A287",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "246216b2",
+      "label": "Ägypten",
+      "value": "EG",
+      "topic": "other",
+      "lCell": "B288",
+      "vCell": "A288",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "d5f4722a",
+      "label": "Albanien",
+      "value": "AL",
+      "topic": "other",
+      "lCell": "B289",
+      "vCell": "A289",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "09df51e5",
+      "label": "Algerien",
+      "value": "DZ",
+      "topic": "other",
+      "lCell": "B290",
+      "vCell": "A290",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "0dd5020f",
+      "label": "Amer.Jungferni.",
+      "value": "VI",
+      "topic": "other",
+      "lCell": "B291",
+      "vCell": "A291",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "f1be4db5",
+      "label": "Andorra",
+      "value": "AD",
+      "topic": "other",
+      "lCell": "B292",
+      "vCell": "A292",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "b9c6d251",
+      "label": "Angola",
+      "value": "AO",
+      "topic": "other",
+      "lCell": "B293",
+      "vCell": "A293",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "3d63b79e",
+      "label": "Anguilla",
+      "value": "AI",
+      "topic": "other",
+      "lCell": "B294",
+      "vCell": "A294",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "555d39a3",
+      "label": "Antarktis",
+      "value": "AQ",
+      "topic": "other",
+      "lCell": "B295",
+      "vCell": "A295",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "ff8af3d9",
+      "label": "Antigua/Barbuda",
+      "value": "AG",
+      "topic": "other",
+      "lCell": "B296",
+      "vCell": "A296",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "3f77db62",
+      "label": "Äquatorialguine",
+      "value": "GQ",
+      "topic": "other",
+      "lCell": "B297",
+      "vCell": "A297",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "a8de326b",
+      "label": "Argentinien",
+      "value": "AR",
+      "topic": "other",
+      "lCell": "B298",
+      "vCell": "A298",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "2264af9d",
+      "label": "Armenien",
+      "value": "AM",
+      "topic": "other",
+      "lCell": "B299",
+      "vCell": "A299",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "848e1743",
+      "label": "Aruba",
+      "value": "AW",
+      "topic": "other",
+      "lCell": "B300",
+      "vCell": "A300",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "ca8d3888",
+      "label": "Aserbaidschan",
+      "value": "AZ",
+      "topic": "other",
+      "lCell": "B301",
+      "vCell": "A301",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "72f29d0e",
+      "label": "Äthiopien",
+      "value": "ET",
+      "topic": "other",
+      "lCell": "B302",
+      "vCell": "A302",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "4da87238",
+      "label": "Australien",
+      "value": "AU",
+      "topic": "other",
+      "lCell": "B303",
+      "vCell": "A303",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "92c840e7",
+      "label": "Bahamas",
+      "value": "BS",
+      "topic": "other",
+      "lCell": "B304",
+      "vCell": "A304",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "3e128285",
+      "label": "Bahrain",
+      "value": "BH",
+      "topic": "other",
+      "lCell": "B305",
+      "vCell": "A305",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "c6ffc49e",
+      "label": "Bangladesch",
+      "value": "BD",
+      "topic": "other",
+      "lCell": "B306",
+      "vCell": "A306",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "afca0c12",
+      "label": "Barbados",
+      "value": "BB",
+      "topic": "other",
+      "lCell": "B307",
+      "vCell": "A307",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "d91ae33f",
+      "label": "Belgien",
+      "value": "BE",
+      "topic": "other",
+      "lCell": "B308",
+      "vCell": "A308",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "0e0e806b",
+      "label": "Belize",
+      "value": "BZ",
+      "topic": "other",
+      "lCell": "B309",
+      "vCell": "A309",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "3415f0df",
+      "label": "Benin",
+      "value": "BJ",
+      "topic": "other",
+      "lCell": "B310",
+      "vCell": "A310",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "c7fc8dc8",
+      "label": "Bermuda",
+      "value": "BM",
+      "topic": "other",
+      "lCell": "B311",
+      "vCell": "A311",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "8ca1bee0",
+      "label": "Bhutan",
+      "value": "BT",
+      "topic": "other",
+      "lCell": "B312",
+      "vCell": "A312",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "b940698b",
+      "label": "Bolivien",
+      "value": "BO",
+      "topic": "other",
+      "lCell": "B313",
+      "vCell": "A313",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "6e92f983",
+      "label": "Bosnien-Herz.",
+      "value": "BA",
+      "topic": "other",
+      "lCell": "B314",
+      "vCell": "A314",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "e357338d",
+      "label": "Botswana",
+      "value": "BW",
+      "topic": "other",
+      "lCell": "B315",
+      "vCell": "A315",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "fe3060e8",
+      "label": "Bouvet Inseln",
+      "value": "BV",
+      "topic": "other",
+      "lCell": "B316",
+      "vCell": "A316",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "496d9845",
+      "label": "Brasilien",
+      "value": "BR",
+      "topic": "other",
+      "lCell": "B317",
+      "vCell": "A317",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "2d8d1d76",
+      "label": "Brit.Geb.Ind.Oz",
+      "value": "IO",
+      "topic": "other",
+      "lCell": "B318",
+      "vCell": "A318",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "14ff3ce5",
+      "label": "Brit.Jungferni.",
+      "value": "VG",
+      "topic": "other",
+      "lCell": "B319",
+      "vCell": "A319",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "1e047cf8",
+      "label": "Brunei Drussal.",
+      "value": "BN",
+      "topic": "other",
+      "lCell": "B320",
+      "vCell": "A320",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "1b330e18",
+      "label": "Bulgarien",
+      "value": "BG",
+      "topic": "other",
+      "lCell": "B321",
+      "vCell": "A321",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "67e2ec3a",
+      "label": "Burkina Faso",
+      "value": "BF",
+      "topic": "other",
+      "lCell": "B322",
+      "vCell": "A322",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "0ff0d2ca",
+      "label": "Burundi",
+      "value": "BI",
+      "topic": "other",
+      "lCell": "B323",
+      "vCell": "A323",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "12f489ea",
+      "label": "Chile",
+      "value": "CL",
+      "topic": "other",
+      "lCell": "B324",
+      "vCell": "A324",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "500aea03",
+      "label": "China",
+      "value": "CN",
+      "topic": "other",
+      "lCell": "B325",
+      "vCell": "A325",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "48454fa6",
+      "label": "Cookinseln",
+      "value": "CK",
+      "topic": "other",
+      "lCell": "B326",
+      "vCell": "A326",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "515978dd",
+      "label": "Costa Rica",
+      "value": "CR",
+      "topic": "other",
+      "lCell": "B327",
+      "vCell": "A327",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "e0df9cbe",
+      "label": "Dänemark",
+      "value": "DK",
+      "topic": "other",
+      "lCell": "B328",
+      "vCell": "A328",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "719755e3",
+      "label": "DemRep Kongo",
+      "value": "CD",
+      "topic": "other",
+      "lCell": "B329",
+      "vCell": "A329",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "e03d7f21",
+      "label": "Deutschland",
+      "value": "DE",
+      "topic": "other",
+      "lCell": "B330",
+      "vCell": "A330",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "81230080",
+      "label": "Dominica",
+      "value": "DM",
+      "topic": "other",
+      "lCell": "B331",
+      "vCell": "A331",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "a5e98ecb",
+      "label": "Dominik. Rep.",
+      "value": "DO",
+      "topic": "other",
+      "lCell": "B332",
+      "vCell": "A332",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "a19b9f05",
+      "label": "Dschibuti",
+      "value": "DJ",
+      "topic": "other",
+      "lCell": "B333",
+      "vCell": "A333",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "cc2a23a2",
+      "label": "Ecuador",
+      "value": "EC",
+      "topic": "other",
+      "lCell": "B334",
+      "vCell": "A334",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "a1e70155",
+      "label": "El Salvador",
+      "value": "SV",
+      "topic": "other",
+      "lCell": "B335",
+      "vCell": "A335",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "692842e7",
+      "label": "Elfenbeinküst",
+      "value": "CI",
+      "topic": "other",
+      "lCell": "B336",
+      "vCell": "A336",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "1bce6aa1",
+      "label": "Eritrea",
+      "value": "ER",
+      "topic": "other",
+      "lCell": "B337",
+      "vCell": "A337",
+      "section": "Länderkürzel / Country Codes"
+    },
+    {
+      "id": "65f85124",
+      "label": "Estland",
+      "value": "EE",
+      "topic": "other",
+      "lCell": "B338",
+      "vCell": "A338",
+      "section": "Länderkürzel / Country Codes"
+    }
+  ],
+  "stats": {
+    "company": 0,
+    "library": 7,
+    "product": 203,
+    "exclude": 105,
+    "total": 315
+  }
+}

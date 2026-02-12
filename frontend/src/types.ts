@@ -5,6 +5,10 @@ export interface QuestionnaireListItem {
   completed?: boolean;
   feedbackCount?: number;
   customer?: string;
+  approvedAt?: string;
+  approvedCount?: number;
+  apiReadyAt?: string;
+  apiReadyCount?: number;
 }
 
 // Destination types

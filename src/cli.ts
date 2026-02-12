@@ -65,10 +65,10 @@ program
       let outputDir: string;
       if (customer) {
         const paths = ensureCustomerDirs(customer);
-        outputDir = paths.questionnaires;
+        outputDir = paths.structure;
         console.log(`\n📁 Customer: ${customer}`);
       } else {
-        outputDir = opts.outputDir as string || './questionnaires';
+        outputDir = opts.outputDir as string || './structure';
       }
 
       const docType = getDocumentType(filePath);
@@ -130,7 +130,7 @@ program
   .description('Index questionnaire with Claude AI - extract all evidence pieces organized by section/topic')
   .argument('<file>', 'Questionnaire filename (from stored questionnaires)')
   .option('-c, --customer <name>', 'Customer name (uses customer folder structure)')
-  .option('--dir <dir>', 'Questionnaires directory (legacy mode)')
+  .option('--dir <dir>', 'Structure directory (legacy mode)')
   .option('--output <dir>', 'Output directory for indexed questionnaires (legacy mode)')
   .option('--rules-dir <dir>', 'Rules directory (legacy mode)')
   .action(async (file: string, opts) => {
@@ -144,12 +144,12 @@ program
 
       if (customer) {
         const paths = ensureCustomerDirs(customer);
-        dir = paths.questionnaires;
+        dir = paths.structure;
         outputDir = paths.indexed;
         rulesDir = getRulesDir(customer);
         console.log(`\n📁 Customer: ${customer}`);
       } else {
-        dir = opts.dir as string || './questionnaires';
+        dir = opts.dir as string || './structure';
         outputDir = opts.output as string || './indexed';
         rulesDir = opts.rulesDir as string || './rules';
       }
@@ -317,7 +317,7 @@ program
           return files.filter(f => !f.startsWith('.')).length;
         };
 
-        const questionnaires = countFiles(paths.questionnaires, '.json') + countFiles(paths.questionnaires, '.yaml');
+        const questionnaires = countFiles(paths.structure, '.json') + countFiles(paths.structure, '.yaml');
         const indexed = countFiles(paths.indexed, '.json') + countFiles(paths.indexed, '.yaml');
         const approved = countFiles(paths.approved);
         const hasLibrary = existsSync(paths.answerLibrary);
@@ -345,31 +345,31 @@ program
   .description('Interactive review of indexed questionnaires with visual preview and feedback')
   .option('-c, --customer <name>', 'Customer name (uses customer folder structure)')
   .option('--indexed-dir <dir>', 'Indexed questionnaires directory (legacy mode)')
-  .option('--questionnaires-dir <dir>', 'Raw questionnaires directory (legacy mode)')
+  .option('--structure-dir <dir>', 'Raw structure directory (legacy mode)')
   .option('--review-dir <dir>', 'Review output directory (legacy mode)')
   .action(async (opts) => {
     try {
       const customer = opts.customer as string | undefined;
 
       let indexedDir: string;
-      let questionnairesDir: string;
+      let structureDir: string;
       let reviewDir: string;
 
       if (customer) {
         const paths = ensureCustomerDirs(customer);
         indexedDir = paths.indexed;
-        questionnairesDir = paths.questionnaires;
+        structureDir = paths.structure;
         reviewDir = paths.review;
         console.log(`\n📁 Customer: ${customer}`);
       } else {
         indexedDir = opts.indexedDir as string || './indexed';
-        questionnairesDir = opts.questionnairesDir as string || './questionnaires';
+        structureDir = opts.structureDir as string || './structure';
         reviewDir = opts.reviewDir as string || './review';
       }
 
       const reviewCli = new ReviewCLI(
         indexedDir,
-        questionnairesDir,
+        structureDir,
         reviewDir
       );
 
@@ -388,10 +388,10 @@ program
 program
   .command('list')
   .description('List all stored questionnaires')
-  .option('--dir <dir>', 'Storage directory', './questionnaires')
+  .option('--dir <dir>', 'Storage directory', './structure')
   .action(async (opts) => {
     try {
-      const dir = opts.dir as string || './questionnaires';
+      const dir = opts.dir as string || './structure';
       const storage = new StructureStorage(dir);
 
       const summary = await storage.getSummary();
@@ -419,13 +419,13 @@ program
   .command('web-review')
   .description('Generate browser-based review interface with Original/Indexed/Library panels')
   .argument('<file>', 'Questionnaire filename (without extension)')
-  .option('--questionnaires-dir <dir>', 'Questionnaires directory', './questionnaires')
+  .option('--structure-dir <dir>', 'Structure directory', './structure')
   .option('--indexed-dir <dir>', 'Indexed questionnaires directory', './indexed')
   .option('--library <file>', 'Answer library file', './answer-library.yaml')
   .option('--output <dir>', 'Output directory', './review')
   .action(async (file: string, opts) => {
     try {
-      const questionnairesDir = opts.questionnairesDir as string || './questionnaires';
+      const structureDir = opts.structureDir as string || './structure';
       const indexedDir = opts.indexedDir as string || './indexed';
       const libraryPath = opts.library as string || './answer-library.yaml';
       const outputDir = opts.output as string || './review';
@@ -435,7 +435,7 @@ program
       const safeName = baseName.replace(/[^a-zA-Z0-9-_]/g, '_');
 
       // Find the structure file
-      const structurePath = join(questionnairesDir, `${safeName}.json`);
+      const structurePath = join(structureDir, `${safeName}.json`);
       const indexedPath = join(indexedDir, `${safeName}.json`);
 
       console.log('\n🌐 Generating web review interface\n');
@@ -464,7 +464,7 @@ program
   .command('serve')
   .description('Start review server with auto-save (replaces manual export)')
   .argument('[file]', 'Questionnaire filename (optional - opens welcome screen if not provided)')
-  .option('--questionnaires-dir <dir>', 'Questionnaires directory', './questionnaires')
+  .option('--structure-dir <dir>', 'Structure directory', './structure')
   .option('--indexed-dir <dir>', 'Indexed questionnaires directory', './indexed')
   .option('--library <file>', 'Answer library file', './answer-library.yaml')
   .option('--review-dir <dir>', 'Review output directory', './review')
@@ -599,7 +599,7 @@ program
       // Set up customer directories
       const paths = ensureCustomerDirs(customer);
       const incomingDir = paths.incoming;
-      const questionnairesDir = paths.questionnaires;
+      const structureDir = paths.structure;
       const indexedDir = paths.indexed;
       const rulesDir = getRulesDir(customer);
       console.log(`\n📁 Customer: ${customer}`);
@@ -674,12 +674,12 @@ program
         structure.source.evidenceId = evidence.id;
         structure.source.evidenceName = evidence.name;
 
-        const storage = new StructureStorage(questionnairesDir);
+        const storage = new StructureStorage(structureDir);
         const jsonPath = await storage.save(structure);
         console.log(`  ✅ Stored: ${jsonPath}`);
 
         // Index
-        const indexer = new QuestionnaireIndexer(questionnairesDir, 'eu-central-1', rulesDir);
+        const indexer = new QuestionnaireIndexer(structureDir, 'eu-central-1', rulesDir);
         const indexed = await indexer.index(file.filename);
 
         const indexedPath = await indexer.save(indexed, indexedDir);
@@ -737,7 +737,7 @@ program
       const customer = opts.customer as string;
       const paths = ensureCustomerDirs(customer);
       const incomingDir = paths.incoming;
-      const questionnairesDir = paths.questionnaires;
+      const structureDir = paths.structure;
       const indexedDir = paths.indexed;
       const rulesDir = getRulesDir(customer);
 
@@ -798,11 +798,11 @@ program
             structure.source.evidenceId = evidence.id;
             structure.source.evidenceName = evidence.name;
 
-            const storage = new StructureStorage(questionnairesDir);
+            const storage = new StructureStorage(structureDir);
             await storage.save(structure);
             console.log(`  ✅ Stored`);
 
-            const indexer = new QuestionnaireIndexer(questionnairesDir, 'eu-central-1', rulesDir);
+            const indexer = new QuestionnaireIndexer(structureDir, 'eu-central-1', rulesDir);
             const indexed = await indexer.index(file.filename);
             await indexer.save(indexed, indexedDir);
             console.log(`  ✅ Indexed (${indexed.totalItems} items)`);
@@ -1083,7 +1083,7 @@ program
 ║  CUSTOMER FOLDER STRUCTURE:                                    ║
 ║  customers/<name>/                                             ║
 ║    ├── incoming/         # Drop questionnaire files here       ║
-║    ├── questionnaires/   # Stored raw structures               ║
+║    ├── structure/   # Document structure JSON               ║
 ║    ├── indexed/          # AI-indexed files                    ║
 ║    ├── approved/         # Approved exports                    ║
 ║    ├── answer-library.yaml                                     ║
@@ -1092,7 +1092,7 @@ program
 ║  1. STORE                                                      ║
 ║     npx tsx src/pipeline-v2/cli.ts store <file> -c <customer>  ║
 ║     → Extracts structure, preserves formatting                 ║
-║     → Output: customers/<customer>/questionnaires/*.json       ║
+║     → Output: customers/<customer>/structure/*.json       ║
 ║                                                                ║
 ║  2. INDEX                                                      ║
 ║     npx tsx src/pipeline-v2/cli.ts index <file> -c <customer>  ║

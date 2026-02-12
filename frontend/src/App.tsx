@@ -19,6 +19,22 @@ import { useTabs } from "./hooks/useTabs";
 import { useFeedback } from "./hooks/useFeedback";
 import { useSelection } from "./hooks/useSelection";
 
+// Format relative time (e.g. "2 hours ago", "3 days ago")
+function formatRelativeTime(dateStr: string): string {
+  const date = new Date(dateStr);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffSecs = Math.floor(diffMs / 1000);
+  const diffMins = Math.floor(diffSecs / 60);
+  const diffHours = Math.floor(diffMins / 60);
+  const diffDays = Math.floor(diffHours / 24);
+
+  if (diffDays > 0) return `${diffDays}d ago`;
+  if (diffHours > 0) return `${diffHours}h ago`;
+  if (diffMins > 0) return `${diffMins}m ago`;
+  return "just now";
+}
+
 export default function App() {
   const queryClient = useQueryClient();
   const { theme, setTheme } = useTheme();
@@ -338,21 +354,48 @@ export default function App() {
         <p className="text-muted max-w-[400px] text-center text-[13px]">
           Select a questionnaire to review its indexed structure and harvested library items.
         </p>
-        <div className="flex flex-col gap-1 max-w-[500px] w-full max-h-[400px] overflow-y-auto">
+        <div className="flex flex-col gap-1 max-w-[600px] w-full max-h-[400px] overflow-y-auto">
+          {/* Header row */}
+          <div className="flex items-center h-7 px-3 text-[10px] font-medium text-muted">
+            <span className="flex-1">Document</span>
+            <span className="w-20 text-center">Approved</span>
+            <span className="w-20 text-center">Imported</span>
+          </div>
           {questionnaires.map((q) => (
             <div
               key={q.name}
-              className="flex justify-between items-center h-9 px-3 bg-card border border-default rounded cursor-pointer transition-colors bg-card-hover"
+              className="flex items-center h-10 px-3 bg-card border border-default rounded cursor-pointer transition-colors bg-card-hover"
               onClick={() => openTab(q.name)}
             >
-              <span className="text-[13px] text-primary overflow-hidden text-ellipsis whitespace-nowrap">
+              <span className="flex-1 text-[13px] text-primary overflow-hidden text-ellipsis whitespace-nowrap">
                 {q.displayName}
               </span>
-              {q.feedbackCount ? (
-                <span className="text-[11px] text-muted">
-                  {q.feedbackCount}
-                </span>
-              ) : null}
+              {/* Approved column */}
+              <div className="w-20 flex flex-col items-center text-[10px]">
+                {q.approvedCount ? (
+                  <>
+                    <span className="text-emerald-500 font-medium">{q.approvedCount}</span>
+                    {q.approvedAt && (
+                      <span className="text-muted">{formatRelativeTime(q.approvedAt)}</span>
+                    )}
+                  </>
+                ) : (
+                  <span className="text-muted">-</span>
+                )}
+              </div>
+              {/* Imported column */}
+              <div className="w-20 flex flex-col items-center text-[10px]">
+                {q.apiReadyCount ? (
+                  <>
+                    <span className="text-blue-500 font-medium">{q.apiReadyCount}</span>
+                    {q.apiReadyAt && (
+                      <span className="text-muted">{formatRelativeTime(q.apiReadyAt)}</span>
+                    )}
+                  </>
+                ) : (
+                  <span className="text-muted">-</span>
+                )}
+              </div>
             </div>
           ))}
         </div>
@@ -376,7 +419,6 @@ export default function App() {
         tabs={openTabs}
         currentTab={currentQuestionnaire}
         serverConnected={serverConnected}
-        feedbackCount={pendingFeedback.length}
         theme={theme}
         onSidebarToggle={() => setSidebarOpen((prev) => !prev)}
         onTabClick={switchTab}
@@ -395,12 +437,14 @@ export default function App() {
 
       {/* Sidebar */}
       <div
-        className={`fixed left-0 top-10 bottom-0 w-[260px] bg-app-secondary border-r border-default flex flex-col z-[100] transition-transform duration-200 ${
+        className={`fixed left-0 top-10 bottom-0 w-[440px] bg-app-secondary border-r border-default flex flex-col z-[100] transition-transform duration-200 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="h-10 px-4 flex items-center border-b border-default text-[13px] font-medium text-primary">
-          Questionnaires
+        <div className="h-10 px-4 flex items-center border-b border-default">
+          <span className="flex-1 text-[13px] font-medium text-primary">Documents</span>
+          <span className="w-20 text-[10px] font-medium text-muted text-center">Approved</span>
+          <span className="w-20 text-[10px] font-medium text-muted text-center">Imported</span>
         </div>
         <div className="flex-1 overflow-y-auto">
           {(() => {
@@ -422,7 +466,7 @@ export default function App() {
                 {grouped[customer].map((q) => (
                   <div
                     key={q.name}
-                    className={`flex items-center h-8 px-4 cursor-pointer transition-colors border-b border-subtle gap-2 bg-card-hover ${
+                    className={`flex items-center h-9 px-4 cursor-pointer transition-colors border-b border-subtle gap-2 bg-card-hover ${
                       currentQuestionnaire === q.name
                         ? "bg-selected border-l-2 border-l-accent"
                         : ""
@@ -435,11 +479,32 @@ export default function App() {
                     <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-[13px] text-primary">
                       {q.displayName}
                     </span>
-                    {q.feedbackCount ? (
-                      <span className="text-[10px] text-muted">
-                        {q.feedbackCount}
-                      </span>
-                    ) : null}
+                    {/* Approved column */}
+                    <div className="w-20 flex flex-col items-center text-[10px]">
+                      {q.approvedCount ? (
+                        <>
+                          <span className="text-emerald-500 font-medium">{q.approvedCount}</span>
+                          {q.approvedAt && (
+                            <span className="text-muted">{formatRelativeTime(q.approvedAt)}</span>
+                          )}
+                        </>
+                      ) : (
+                        <span className="text-muted">-</span>
+                      )}
+                    </div>
+                    {/* Imported column */}
+                    <div className="w-20 flex flex-col items-center text-[10px]">
+                      {q.apiReadyCount ? (
+                        <>
+                          <span className="text-blue-500 font-medium">{q.apiReadyCount}</span>
+                          {q.apiReadyAt && (
+                            <span className="text-muted">{formatRelativeTime(q.apiReadyAt)}</span>
+                          )}
+                        </>
+                      ) : (
+                        <span className="text-muted">-</span>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>

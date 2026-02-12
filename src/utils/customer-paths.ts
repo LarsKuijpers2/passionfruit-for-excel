@@ -19,17 +19,17 @@ export interface CustomerPaths {
   root: string;
   /** Incoming questionnaire files */
   incoming: string;
-  /** Stored raw questionnaire structures (YAML) */
-  questionnaires: string;
-  /** AI-indexed questionnaires (YAML) */
+  /** Document structure JSON (cells, rows, sheets) */
+  structure: string;
+  /** AI-indexed questionnaires with Q&A pairs */
   indexed: string;
-  /** Approved exports (YAML) */
+  /** Human-approved items grouped by destination */
   approved: string;
   /** Customer's answer library */
   answerLibrary: string;
   /** Customer-specific rules directory */
   rules: string;
-  /** API-ready export files */
+  /** Final API-ready export files */
   apiReady: string;
   /** Review output directory */
   review: string;
@@ -59,7 +59,7 @@ export function getCustomerPaths(customer: string): CustomerPaths {
     customer,
     root,
     incoming: join(root, 'incoming'),
-    questionnaires: join(root, 'questionnaires'),
+    structure: join(root, 'structure'),
     indexed: join(root, 'indexed'),
     approved: join(root, 'approved'),
     answerLibrary: join(root, 'answer-library.yaml'),
@@ -78,7 +78,7 @@ export function ensureCustomerDirs(customer: string): CustomerPaths {
   // Create all directories
   const dirs = [
     paths.incoming,
-    paths.questionnaires,
+    paths.structure,
     paths.indexed,
     paths.approved,
     paths.rules,
@@ -187,7 +187,7 @@ export function detectCustomerFromPath(filePath: string): string | undefined {
 export function getLegacyPaths() {
   return {
     incoming: './incoming',
-    questionnaires: './questionnaires',
+    structure: './questionnaires',  // Legacy name was "questionnaires"
     indexed: './indexed',
     approved: './approved-exports',
     answerLibrary: './answer-library.yaml',

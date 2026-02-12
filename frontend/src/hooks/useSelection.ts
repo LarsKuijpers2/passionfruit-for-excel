@@ -62,9 +62,9 @@ export function useSelection(): UseSelectionReturn {
   }, [selectedItems, commandPaletteOpen]);
 
   const handleItemSelect = useCallback(
-    (panel: 'indexed' | 'library', itemId: string, multiSelect: boolean, _shiftSelect?: boolean) => {
+    (panel: 'indexed' | 'library', itemId: string, _multiSelect: boolean, _shiftSelect?: boolean) => {
       if (selectedPanel && selectedPanel !== panel) {
-        // Switching panels - clear selection
+        // Switching panels - clear selection and start fresh
         setSelectedPanel(panel);
         setSelectedItems(new Set([itemId]));
         setLastSelectedId(itemId);
@@ -72,21 +72,13 @@ export function useSelection(): UseSelectionReturn {
       }
 
       setSelectedPanel(panel);
+      // Always toggle selection (add if not selected, remove if selected)
       setSelectedItems((prev) => {
         const next = new Set(prev);
-        if (multiSelect) {
-          if (next.has(itemId)) {
-            next.delete(itemId);
-          } else {
-            next.add(itemId);
-          }
+        if (next.has(itemId)) {
+          next.delete(itemId);
         } else {
-          if (next.has(itemId) && next.size === 1) {
-            next.clear();
-          } else {
-            next.clear();
-            next.add(itemId);
-          }
+          next.add(itemId);
         }
         return next;
       });

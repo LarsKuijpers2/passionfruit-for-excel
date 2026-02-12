@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import type { IndexedItem, LibraryItem, Destination } from '../types';
 
 interface CommandPaletteProps {
@@ -53,17 +53,7 @@ export function CommandPalette({
     }
   }, [visible, isSingleSelect, selectedItems]);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && visible) {
-        onClose();
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [visible, onClose]);
-
-  const handleApply = () => {
+  const handleApply = useCallback(() => {
     const updates: Parameters<typeof onApply>[0] = {};
 
     if (action === 'accept') {
@@ -91,7 +81,42 @@ export function CommandPalette({
     }
 
     onApply(updates);
-  };
+  }, [action, rejectReason, isSingleSelect, label, value, destination, selectedItems, onApply]);
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!visible) return;
+
+      // Don't capture keys when typing in input/textarea
+      const target = e.target as HTMLElement;
+      const isTyping = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA';
+
+      if (e.key === 'Escape') {
+        onClose();
+        return;
+      }
+
+      // Number keys 1-4 for destinations (only when not typing)
+      if (!isTyping && ['1', '2', '3', '4'].includes(e.key)) {
+        e.preventDefault();
+        const index = parseInt(e.key) - 1;
+        if (destinations[index]) {
+          const destId = destinations[index].id;
+          setDestination(destId === destination ? '' : destId);
+        }
+        return;
+      }
+
+      // Enter to apply (only when not in textarea)
+      if (e.key === 'Enter' && target.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        handleApply();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [visible, onClose, destination, handleApply]);
 
   if (!visible) return null;
 
@@ -149,16 +174,21 @@ export function CommandPalette({
               Destination
             </label>
             <div className="flex gap-1.5">
-              {destinations.map((dest) => (
+              {destinations.map((dest, index) => (
                 <button
                   key={dest.id}
                   onClick={() => setDestination(dest.id === destination ? '' : dest.id)}
-                  className={`h-8 px-3 rounded text-[12px] font-medium transition-colors ${
+                  className={`h-8 px-3 rounded text-[12px] font-medium transition-colors flex items-center gap-1.5 ${
                     destination === dest.id
                       ? 'bg-accent text-white'
                       : `bg-app-secondary hover:bg-card-hover ${dest.color}`
                   }`}
                 >
+                  <kbd className={`text-[10px] px-1 rounded ${
+                    destination === dest.id
+                      ? 'bg-white/20'
+                      : 'bg-app'
+                  }`}>{index + 1}</kbd>
                   {dest.label}
                 </button>
               ))}

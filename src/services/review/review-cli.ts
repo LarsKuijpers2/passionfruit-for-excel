@@ -43,18 +43,18 @@ function c(color: keyof typeof colors, text: string): string {
 
 export class ReviewCLI {
   private indexedDir: string;
-  private questionnairesDir: string;
+  private structureDir: string;
   private reviewDir: string;
   private feedback: FeedbackManager;
   private rl: readline.Interface;
 
   constructor(
     indexedDir: string = './indexed',
-    questionnairesDir: string = './questionnaires',
+    structureDir: string = './structure',
     reviewDir: string = './review'
   ) {
     this.indexedDir = indexedDir;
-    this.questionnairesDir = questionnairesDir;
+    this.structureDir = structureDir;
     this.reviewDir = reviewDir;
     this.feedback = new FeedbackManager('./feedback/feedback.yaml');
     this.rl = readline.createInterface({
@@ -122,7 +122,7 @@ export class ReviewCLI {
 
     // Load original structure for visual preview
     const jsonName = filename.replace('.yaml', '.json');
-    const structurePath = join(this.questionnairesDir, jsonName);
+    const structurePath = join(this.structureDir, jsonName);
     let structure: QuestionnaireStructure | null = null;
 
     try {

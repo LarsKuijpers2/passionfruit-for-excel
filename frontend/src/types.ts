@@ -12,7 +12,7 @@ export interface QuestionnaireListItem {
 }
 
 // Destination types
-export type Destination = 'company' | 'answer_library' | 'product' | 'exclude';
+export type Destination = 'company' | 'answer_library' | 'product' | 'questionnaire' | 'exclude';
 
 // Indexed item from extraction
 export interface IndexedItem {
@@ -30,6 +30,8 @@ export interface IndexedItem {
   destination?: Destination | null;
   needs_review?: boolean;
   tag_source?: string;
+  // Item-level notes
+  note?: string;
 }
 
 // Indexed section
@@ -109,6 +111,10 @@ export interface QuestionnaireData {
     stats?: {
       total: number;
       answered: number;
+    };
+    meta?: {
+      notes?: string;
+      notesUpdatedAt?: string;
     };
   };
   library: {

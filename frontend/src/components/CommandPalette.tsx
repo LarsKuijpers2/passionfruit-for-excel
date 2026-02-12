@@ -12,6 +12,7 @@ interface CommandPaletteProps {
     label?: string;
     value?: string;
     destination?: Destination;
+    note?: string;
   }) => void;
 }
 
@@ -19,6 +20,7 @@ const destinations: { id: Destination; label: string; color: string }[] = [
   { id: 'company', label: 'Company', color: 'text-blue-400' },
   { id: 'answer_library', label: 'Library', color: 'text-emerald-400' },
   { id: 'product', label: 'Product', color: 'text-orange-400' },
+  { id: 'questionnaire', label: 'Questionnaire', color: 'text-purple-400' },
   { id: 'exclude', label: 'Exclude', color: 'text-muted' },
 ];
 
@@ -34,6 +36,7 @@ export function CommandPalette({
   const [label, setLabel] = useState('');
   const [value, setValue] = useState('');
   const [destination, setDestination] = useState<string>('');
+  const [note, setNote] = useState('');
 
   const isSingleSelect = selectedCount === 1;
 
@@ -42,10 +45,13 @@ export function CommandPalette({
       setAction('');
       setRejectReason('');
       setDestination('');
+      setNote('');
       if (isSingleSelect && selectedItems.length === 1) {
-        setLabel(selectedItems[0].label);
-        setValue(selectedItems[0].value || '');
-        setDestination(selectedItems[0].destination || '');
+        const item = selectedItems[0] as IndexedItem;
+        setLabel(item.label);
+        setValue(item.value || '');
+        setDestination(item.destination || '');
+        setNote(item.note || '');
       } else {
         setLabel('');
         setValue('');
@@ -80,8 +86,14 @@ export function CommandPalette({
       updates.destination = destination as Destination;
     }
 
+    // Include note if it changed (for single select) or if provided (for multi select)
+    const originalNote = (selectedItems[0] as IndexedItem)?.note || '';
+    if (note.trim() !== originalNote) {
+      updates.note = note.trim();
+    }
+
     onApply(updates);
-  }, [action, rejectReason, isSingleSelect, label, value, destination, selectedItems, onApply]);
+  }, [action, rejectReason, isSingleSelect, label, value, destination, note, selectedItems, onApply]);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -97,8 +109,8 @@ export function CommandPalette({
         return;
       }
 
-      // Number keys 1-4 for destinations (only when not typing)
-      if (!isTyping && ['1', '2', '3', '4'].includes(e.key)) {
+      // Number keys 1-5 for destinations (only when not typing)
+      if (!isTyping && ['1', '2', '3', '4', '5'].includes(e.key)) {
         e.preventDefault();
         const index = parseInt(e.key) - 1;
         if (destinations[index]) {
@@ -193,6 +205,20 @@ export function CommandPalette({
                 </button>
               ))}
             </div>
+          </div>
+
+          {/* Note */}
+          <div>
+            <label className="block text-[11px] font-medium text-muted uppercase tracking-wide mb-1.5">
+              Note
+            </label>
+            <input
+              type="text"
+              className="w-full h-8 px-3 bg-app border border-default rounded text-[13px] text-primary focus:outline-none focus:border-accent"
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              placeholder="Add a note about this item..."
+            />
           </div>
 
           {/* Review Action */}

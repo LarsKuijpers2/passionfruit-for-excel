@@ -1,4 +1,4 @@
-import { List, Sun, Moon, Desktop, X, Check } from '@phosphor-icons/react';
+import { List, Sun, Moon, Desktop, X, Check, Notepad } from '@phosphor-icons/react';
 import type { Tab } from '../types';
 
 interface TabBarProps {
@@ -6,10 +6,12 @@ interface TabBarProps {
   currentTab: string | null;
   serverConnected: boolean;
   theme: 'light' | 'dark' | 'system';
+  hasNotes?: boolean;
   onSidebarToggle: () => void;
   onTabClick: (name: string) => void;
   onTabClose: (index: number) => void;
   onComplete: () => void;
+  onNotesClick: () => void;
   onThemeChange: (theme: 'light' | 'dark' | 'system') => void;
 }
 
@@ -18,10 +20,12 @@ export function TabBar({
   currentTab,
   serverConnected,
   theme,
+  hasNotes,
   onSidebarToggle,
   onTabClick,
   onTabClose,
   onComplete,
+  onNotesClick,
   onThemeChange,
 }: TabBarProps) {
   const cycleTheme = () => {
@@ -82,6 +86,17 @@ export function TabBar({
           }`}
           title={serverConnected ? 'Connected to server' : 'Server disconnected'}
         />
+        <button
+          className={`flex items-center justify-center w-7 h-7 rounded cursor-pointer transition-colors ${
+            hasNotes
+              ? 'bg-amber-500/20 text-amber-400 hover:bg-amber-500/30'
+              : 'text-muted bg-card-hover hover:text-primary'
+          }`}
+          onClick={onNotesClick}
+          title="Notes (N)"
+        >
+          <Notepad size={16} />
+        </button>
         <button
           className="h-7 px-2.5 text-[11px] font-medium rounded bg-emerald-500/20 text-emerald-400 cursor-pointer hover:bg-emerald-500/30 transition-colors"
           onClick={onComplete}

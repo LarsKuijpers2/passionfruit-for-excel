@@ -6,6 +6,7 @@ import {
   fetchQuestionnaire,
   bulkUpdateItems,
   exportGrouped,
+  saveNotes,
 } from "./api";
 import type { PanelType, IndexedItem, Destination } from "./types";
 import { Toaster, toast } from "sonner";
@@ -14,6 +15,7 @@ import { OriginalPanel, type OriginalPanelHandle } from "./components/OriginalPa
 import { IndexedPanel, type IndexedPanelHandle } from "./components/IndexedPanel";
 import { LibraryPanel, type LibraryPanelHandle } from "./components/LibraryPanel";
 import { CommandPalette } from "./components/CommandPalette";
+import { NotesPanel } from "./components/NotesPanel";
 import { useTheme } from "./hooks/useTheme";
 import { useTabs } from "./hooks/useTabs";
 import { useFeedback } from "./hooks/useFeedback";
@@ -91,6 +93,7 @@ export default function App() {
   // UI State
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [reviewMode, setReviewMode] = useState(false);
+  const [notesPanelOpen, setNotesPanelOpen] = useState(false);
   const [visiblePanels] = useState<Set<PanelType>>(
     new Set(["original", "indexed", "library"])
   );
@@ -129,6 +132,9 @@ export default function App() {
       }
       if (e.key === "b" && !e.metaKey && !e.ctrlKey) {
         setSidebarOpen((prev) => !prev);
+      }
+      if (e.key === "n" && !e.metaKey && !e.ctrlKey) {
+        setNotesPanelOpen((prev) => !prev);
       }
       // Cmd+A to select all items in the active panel (or indexed panel by default)
       if ((e.metaKey || e.ctrlKey) && e.key === "a") {
@@ -200,6 +206,35 @@ export default function App() {
     },
   });
 
+  // Notes save mutation
+  const notesMutation = useMutation({
+    mutationFn: (notes: string) => {
+      if (!currentQuestionnaire) throw new Error("No questionnaire selected");
+      return saveNotes(currentQuestionnaire, notes);
+    },
+    onSuccess: () => {
+      if (currentQuestionnaire) {
+        queryClient.invalidateQueries({
+          queryKey: ["questionnaire", currentQuestionnaire],
+        });
+      }
+      toast.success("Notes saved");
+    },
+    onError: (error) => {
+      toast.error("Failed to save notes", {
+        description: error instanceof Error ? error.message : "Unknown error",
+      });
+    },
+  });
+
+  // Handle notes save
+  const handleSaveNotes = useCallback(
+    (notes: string) => {
+      notesMutation.mutate(notes);
+    },
+    [notesMutation]
+  );
+
   // Handle cell click in original panel - select and scroll to matching items
   const handleCellClick = useCallback(
     (cellRef: string) => {
@@ -264,20 +299,38 @@ export default function App() {
       action?: "accept" | "reject" | "reset";
       reason?: string;
       destination?: Destination;
+      note?: string;
     }) => {
       if (!selectedPanel) return;
 
       const itemIds = Array.from(selectedItems);
 
-      // Handle destination change - persist to server
+      // Build server update payload
+      const serverUpdates: Record<string, unknown> = {};
+
       if (updates.destination) {
+        serverUpdates.destination = updates.destination;
+        serverUpdates.needs_review = false;
+        serverUpdates.tag_source = "manual";
+      }
+
+      if (updates.note !== undefined) {
+        serverUpdates.note = updates.note;
+      }
+
+      // Handle destination and/or note change - persist to server
+      if (Object.keys(serverUpdates).length > 0) {
         // Optimistically update local state with immutable update
         if (questionnaireData?.indexed?.sections) {
           const updatedSections = questionnaireData.indexed.sections.map(section => ({
             ...section,
             items: section.items.map(item =>
               selectedItems.has(item.id || "")
-                ? { ...item, destination: updates.destination, needs_review: false, tag_source: "manual" }
+                ? {
+                    ...item,
+                    ...(updates.destination && { destination: updates.destination, needs_review: false, tag_source: "manual" }),
+                    ...(updates.note !== undefined && { note: updates.note })
+                  }
                 : item
             ),
           }));
@@ -295,11 +348,7 @@ export default function App() {
         bulkUpdateMutation.mutate({
           panel: "indexed",
           itemIds,
-          updates: {
-            destination: updates.destination,
-            needs_review: false,
-            tag_source: "manual",
-          },
+          updates: serverUpdates,
         });
       }
 
@@ -420,10 +469,12 @@ export default function App() {
         currentTab={currentQuestionnaire}
         serverConnected={serverConnected}
         theme={theme}
+        hasNotes={!!(questionnaireData?.indexed?.meta?.notes)}
         onSidebarToggle={() => setSidebarOpen((prev) => !prev)}
         onTabClick={switchTab}
         onTabClose={closeTab}
         onComplete={handleCompleteReview}
+        onNotesClick={() => setNotesPanelOpen((prev) => !prev)}
         onThemeChange={setTheme}
       />
 
@@ -645,6 +696,34 @@ export default function App() {
         selectedItems={getSelectedItemsData}
         onClose={closeCommandPalette}
         onApply={handleCommandPaletteApply}
+      />
+
+      {/* Notes panel */}
+      <NotesPanel
+        visible={notesPanelOpen}
+        questionnaireId={currentQuestionnaire}
+        initialNotes={questionnaireData?.indexed?.meta?.notes || ""}
+        itemNotes={
+          questionnaireData?.indexed?.sections?.flatMap(section =>
+            section.items
+              .filter(item => item.note)
+              .map(item => ({
+                id: item.id || "",
+                label: item.label,
+                note: item.note || "",
+                lCell: item.lCell,
+              }))
+          ) || []
+        }
+        onClose={() => setNotesPanelOpen(false)}
+        onSave={handleSaveNotes}
+        onItemClick={(itemId) => {
+          // Select the item and scroll to it
+          selectMultiple("indexed", [itemId]);
+          if (indexedPanelRef.current) {
+            indexedPanelRef.current.scrollToItem(itemId);
+          }
+        }}
       />
 
       {/* Toast notifications - Sonner */}

@@ -451,6 +451,7 @@ export class ReviewServer {
           company: [],
           answer_library: [],
           product: [],
+          questionnaire: [],
           exclude: []
         };
 
@@ -504,13 +505,15 @@ export class ReviewServer {
           company: grouped.company,
           library: grouped.answer_library,
           product: grouped.product,
+          questionnaire: grouped.questionnaire,
           exclude: grouped.exclude,
           stats: {
             company: grouped.company.length,
             library: grouped.answer_library.length,
             product: grouped.product.length,
+            questionnaire: grouped.questionnaire.length,
             exclude: grouped.exclude.length,
-            total: grouped.company.length + grouped.answer_library.length + grouped.product.length + grouped.exclude.length
+            total: grouped.company.length + grouped.answer_library.length + grouped.product.length + grouped.questionnaire.length + grouped.exclude.length
           }
         };
 
@@ -802,6 +805,124 @@ export class ReviewServer {
       } catch (error) {
         console.error('Error bulk updating items:', error);
         res.status(500).json({ error: 'Failed to bulk update items' });
+      }
+    });
+
+    // Save notes for a questionnaire
+    this.app.post('/api/questionnaire/:questionnaireId/notes', async (req, res) => {
+      try {
+        const { questionnaireId } = req.params;
+        const { notes } = req.body;
+
+        if (typeof notes !== 'string') {
+          return res.status(400).json({ error: 'Notes must be a string' });
+        }
+
+        // Helper to find indexed file
+        const findIndexedFile = async (filename: string): Promise<string | null> => {
+          const rootPath = join('./indexed', filename);
+          if (existsSync(rootPath)) return rootPath;
+          try {
+            const customers = await readdir('./customers');
+            for (const customer of customers) {
+              const customerPath = join('./customers', customer, 'indexed', filename);
+              if (existsSync(customerPath)) return customerPath;
+            }
+          } catch {}
+          return null;
+        };
+
+        const safeName = questionnaireId.replace(/[^a-zA-Z0-9-_]/g, '_');
+        const indexedPath = await findIndexedFile(`${safeName}.json`);
+
+        if (!indexedPath) {
+          return res.status(404).json({ error: 'Questionnaire not found' });
+        }
+
+        const indexed = JSON.parse(await readFile(indexedPath, 'utf-8'));
+
+        // Initialize meta if needed and save notes
+        if (!indexed.meta) indexed.meta = {};
+        indexed.meta.notes = notes;
+        indexed.meta.notesUpdatedAt = getNetherlandsTimestamp();
+
+        await writeFile(indexedPath, JSON.stringify(indexed, null, 2), 'utf-8');
+        console.log(`Saved notes for ${questionnaireId}`);
+
+        res.json({ success: true });
+      } catch (error) {
+        console.error('Error saving notes:', error);
+        res.status(500).json({ error: 'Failed to save notes' });
+      }
+    });
+
+    // Get feedback summary for a questionnaire (destination corrections)
+    this.app.get('/api/questionnaire/:questionnaireId/feedback-summary', async (req, res) => {
+      try {
+        const { questionnaireId } = req.params;
+        const safeName = questionnaireId.replace(/[^a-zA-Z0-9-_]/g, '_');
+
+        // Find feedback file
+        const feedbackPaths = [
+          join(this.reviewDir, safeName, 'feedback.json'),
+        ];
+
+        // Also check customer directories
+        try {
+          const customers = await readdir('./customers');
+          for (const customer of customers) {
+            feedbackPaths.push(join('./customers', customer, 'review', safeName, 'feedback.json'));
+          }
+        } catch {}
+
+        let feedback = null;
+        for (const path of feedbackPaths) {
+          if (existsSync(path)) {
+            feedback = JSON.parse(await readFile(path, 'utf-8'));
+            break;
+          }
+        }
+
+        if (!feedback) {
+          return res.json({ corrections: [], stats: { total: 0 } });
+        }
+
+        // Extract destination corrections (where aiDestination !== destination)
+        const corrections: Array<{
+          label: string;
+          aiDestination: string;
+          correctedTo: string;
+          topic: string;
+          section: string;
+        }> = [];
+
+        for (const item of [...(feedback.index || []), ...(feedback.library || [])]) {
+          if (item.aiDestination && item.destination && item.aiDestination !== item.destination) {
+            corrections.push({
+              label: item.label,
+              aiDestination: item.aiDestination,
+              correctedTo: item.destination,
+              topic: item.topic || 'unknown',
+              section: item.section || 'unknown'
+            });
+          }
+        }
+
+        // Calculate stats
+        const stats = {
+          total: corrections.length,
+          byCorrection: {} as Record<string, number>
+        };
+
+        for (const c of corrections) {
+          const key = `${c.aiDestination} → ${c.correctedTo}`;
+          stats.byCorrection[key] = (stats.byCorrection[key] || 0) + 1;
+        }
+
+        res.json({ corrections, stats });
+      } catch (error) {
+        console.error('Error getting feedback summary:', error);
+        res.status(500).json({ error: 'Failed to get feedback summary' });
       }
     });
 

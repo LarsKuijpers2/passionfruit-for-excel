@@ -88,11 +88,27 @@ export async function bulkUpdateItems(
 // Export items grouped by destination
 export async function exportGrouped(
   questionnaireId: string
-): Promise<{ success: boolean; path: string; stats: { company: number; library: number; product: number; exclude: number; total: number } }> {
+): Promise<{ success: boolean; path: string; stats: { company: number; library: number; product: number; questionnaire: number; exclude: number; total: number } }> {
   const res = await fetch(
     `${API_BASE}/api/export-grouped/${encodeURIComponent(questionnaireId)}`,
     { method: 'POST' }
   );
   if (!res.ok) throw new Error('Failed to export grouped data');
   return res.json();
+}
+
+// Save notes for a questionnaire
+export async function saveNotes(
+  questionnaireId: string,
+  notes: string
+): Promise<void> {
+  const res = await fetch(
+    `${API_BASE}/api/questionnaire/${encodeURIComponent(questionnaireId)}/notes`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ notes }),
+    }
+  );
+  if (!res.ok) throw new Error('Failed to save notes');
 }

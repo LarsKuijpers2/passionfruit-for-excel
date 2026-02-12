@@ -26,6 +26,7 @@ const destinationConfig: Record<string, { label: string; color: string }> = {
   company: { label: "Company", color: "text-blue-400" },
   answer_library: { label: "Library", color: "text-emerald-400" },
   product: { label: "Product", color: "text-orange-400" },
+  questionnaire: { label: "Questionnaire", color: "text-purple-400" },
   exclude: { label: "Exclude", color: "text-muted" },
 };
 

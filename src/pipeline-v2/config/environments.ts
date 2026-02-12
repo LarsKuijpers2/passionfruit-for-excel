@@ -89,6 +89,20 @@ export function hasApiKey(): boolean {
 }
 
 /**
+ * Get the refresh token from environment
+ */
+export function getRefreshToken(): string | undefined {
+  return process.env.PASSIONFRUIT_REFRESH_TOKEN;
+}
+
+/**
+ * Check if refresh token is configured
+ */
+export function hasRefreshToken(): boolean {
+  return Boolean(process.env.PASSIONFRUIT_REFRESH_TOKEN);
+}
+
+/**
  * Validate that all required configuration is present
  */
 export function validateConfig(): { valid: boolean; errors: string[] } {

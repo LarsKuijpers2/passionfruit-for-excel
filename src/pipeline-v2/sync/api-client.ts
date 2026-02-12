@@ -6,6 +6,7 @@
  */
 
 import { getApiBaseUrl, getApiKey, getEnvironment, validateConfig } from '../config/environments.js';
+import { getValidAccessToken, hasRefreshToken } from '../config/token-manager.js';
 import type {
   APIEntity,
   APIAnswer,
@@ -120,8 +121,15 @@ export class PassionfruitAPIClient {
   ): Promise<T> {
     const url = `${this.baseUrl}${path}`;
 
+    // Get a valid token (auto-refreshes if expired and refresh token available)
+    let token = this.apiKey;
+    if (hasRefreshToken()) {
+      token = await getValidAccessToken();
+      this.apiKey = token; // Update cached token
+    }
+
     const headers: Record<string, string> = {
-      'Authorization': `Bearer ${this.apiKey}`,
+      'Authorization': `Bearer ${token}`,
     };
 
     if (body && method !== 'GET') {

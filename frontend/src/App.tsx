@@ -8,6 +8,7 @@ import {
   exportGrouped,
 } from "./api";
 import type { PanelType, IndexedItem, Destination } from "./types";
+import { Toaster, toast } from "sonner";
 import { TabBar } from "./components/TabBar";
 import { OriginalPanel, type OriginalPanelHandle } from "./components/OriginalPanel";
 import { IndexedPanel, type IndexedPanelHandle } from "./components/IndexedPanel";
@@ -137,8 +138,14 @@ export default function App() {
       if (currentQuestionnaire) {
         markCompleted(currentQuestionnaire);
       }
-      // Show export stats
-      alert(`Exported to ${data.path}\n\nCompany: ${data.stats.company}\nLibrary: ${data.stats.library}\nProduct: ${data.stats.product}\nExclude: ${data.stats.exclude}\nTotal: ${data.stats.total}`);
+      toast.success("Export completed", {
+        description: `Company: ${data.stats.company}, Library: ${data.stats.library}, Product: ${data.stats.product}`,
+      });
+    },
+    onError: (error) => {
+      toast.error("Export failed", {
+        description: error instanceof Error ? error.message : "Unknown error",
+      });
     },
   });
 
@@ -157,6 +164,18 @@ export default function App() {
       return bulkUpdateItems(currentQuestionnaire, panel, itemIds, updates);
     },
     onSuccess: () => {
+      if (currentQuestionnaire) {
+        queryClient.invalidateQueries({
+          queryKey: ["questionnaire", currentQuestionnaire],
+        });
+      }
+      toast.success("Changes saved");
+    },
+    onError: (error) => {
+      toast.error("Failed to save changes", {
+        description: error instanceof Error ? error.message : "Unknown error",
+      });
+      // Refetch to restore original state
       if (currentQuestionnaire) {
         queryClient.invalidateQueries({
           queryKey: ["questionnaire", currentQuestionnaire],
@@ -314,23 +333,23 @@ export default function App() {
   // Welcome screen if no questionnaire selected
   if (!currentQuestionnaire) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen gap-6 p-10 bg-neutral-950">
-        <h1 className="text-xl font-medium text-neutral-100">Passionfruit Review</h1>
-        <p className="text-neutral-500 max-w-[400px] text-center text-[13px]">
+      <div className="flex flex-col items-center justify-center h-screen gap-6 p-10 bg-app">
+        <h1 className="text-xl font-medium text-primary">Passionfruit Review</h1>
+        <p className="text-muted max-w-[400px] text-center text-[13px]">
           Select a questionnaire to review its indexed structure and harvested library items.
         </p>
         <div className="flex flex-col gap-1 max-w-[500px] w-full max-h-[400px] overflow-y-auto">
           {questionnaires.map((q) => (
             <div
               key={q.name}
-              className="flex justify-between items-center h-9 px-3 bg-neutral-900 border border-neutral-800 rounded cursor-pointer transition-colors hover:bg-neutral-800"
+              className="flex justify-between items-center h-9 px-3 bg-card border border-default rounded cursor-pointer transition-colors bg-card-hover"
               onClick={() => openTab(q.name)}
             >
-              <span className="text-[13px] text-neutral-200 overflow-hidden text-ellipsis whitespace-nowrap">
+              <span className="text-[13px] text-primary overflow-hidden text-ellipsis whitespace-nowrap">
                 {q.displayName}
               </span>
               {q.feedbackCount ? (
-                <span className="text-[11px] text-neutral-500">
+                <span className="text-[11px] text-muted">
                   {q.feedbackCount}
                 </span>
               ) : null}
@@ -344,15 +363,15 @@ export default function App() {
   // Loading state
   if (questionnaireLoading) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen gap-4 bg-neutral-950">
-        <div className="w-5 h-5 border-2 border-neutral-700 border-t-blue-500 rounded-full animate-spin" />
-        <div className="text-neutral-500 text-[13px]">Loading...</div>
+      <div className="flex flex-col items-center justify-center h-screen gap-4 bg-app">
+        <div className="w-5 h-5 border-2 border-default border-t-accent rounded-full animate-spin" />
+        <div className="text-muted text-[13px]">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col h-screen bg-neutral-950">
+    <div className="flex flex-col h-screen bg-app">
       <TabBar
         tabs={openTabs}
         currentTab={currentQuestionnaire}
@@ -369,18 +388,18 @@ export default function App() {
       {/* Sidebar overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-[99]"
+          className="fixed inset-0 bg-black/30 dark:bg-black/50 z-[99]"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <div
-        className={`fixed left-0 top-10 bottom-0 w-[260px] bg-neutral-900 border-r border-neutral-800 flex flex-col z-[100] transition-transform duration-200 ${
+        className={`fixed left-0 top-10 bottom-0 w-[260px] bg-app-secondary border-r border-default flex flex-col z-[100] transition-transform duration-200 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="h-10 px-4 flex items-center border-b border-neutral-800 text-[13px] font-medium text-neutral-200">
+        <div className="h-10 px-4 flex items-center border-b border-default text-[13px] font-medium text-primary">
           Questionnaires
         </div>
         <div className="flex-1 overflow-y-auto">
@@ -397,15 +416,15 @@ export default function App() {
 
             return customers.map((customer) => (
               <div key={customer}>
-                <div className="h-7 px-4 flex items-center text-[10px] font-semibold text-neutral-500 uppercase tracking-wide bg-neutral-950 border-b border-neutral-800">
+                <div className="h-7 px-4 flex items-center text-[10px] font-semibold text-muted uppercase tracking-wide bg-app border-b border-default">
                   {customer}
                 </div>
                 {grouped[customer].map((q) => (
                   <div
                     key={q.name}
-                    className={`flex items-center h-8 px-4 cursor-pointer transition-colors border-b border-neutral-800/50 gap-2 hover:bg-neutral-800 ${
+                    className={`flex items-center h-8 px-4 cursor-pointer transition-colors border-b border-subtle gap-2 bg-card-hover ${
                       currentQuestionnaire === q.name
-                        ? "bg-blue-500/10 border-l-2 border-l-blue-500"
+                        ? "bg-selected border-l-2 border-l-accent"
                         : ""
                     }`}
                     onClick={() => openTab(q.name)}
@@ -413,11 +432,11 @@ export default function App() {
                     {q.completed && (
                       <span className="text-emerald-500 text-[11px]">✓</span>
                     )}
-                    <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-[13px] text-neutral-300">
+                    <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-[13px] text-primary">
                       {q.displayName}
                     </span>
                     {q.feedbackCount ? (
-                      <span className="text-[10px] text-neutral-600">
+                      <span className="text-[10px] text-muted">
                         {q.feedbackCount}
                       </span>
                     ) : null}
@@ -430,14 +449,14 @@ export default function App() {
       </div>
 
       {/* Sheet tabs */}
-      <div className="flex items-center gap-0 px-3 bg-neutral-900 border-b border-neutral-800 h-9 overflow-x-auto scrollbar-none">
+      <div className="flex items-center gap-0 px-3 bg-app-secondary border-b border-default h-9 overflow-x-auto scrollbar-none">
         {questionnaireData?.structure?.sheets?.map((sheet) => (
           <button
             key={sheet.name}
             className={`px-3 h-full border-b-2 text-[12px] cursor-pointer transition-colors whitespace-nowrap ${
               activeSheet === sheet.name
-                ? "text-neutral-100 border-b-blue-500"
-                : "text-neutral-500 border-transparent hover:text-neutral-300"
+                ? "text-primary border-b-accent"
+                : "text-muted border-transparent hover:text-primary"
             }`}
             onClick={() => setActiveSheet(sheet.name)}
           >
@@ -524,7 +543,7 @@ export default function App() {
       </div>
 
       {/* Stats bar */}
-      <div className="flex justify-between items-center h-7 px-4 bg-neutral-900 border-t border-neutral-800 text-[11px] text-neutral-500">
+      <div className="flex justify-between items-center h-7 px-4 bg-app-secondary border-t border-default text-[11px] text-muted">
         <div className="flex gap-4">
           {questionnaireData?.indexed?.sections && (
             <span>
@@ -544,11 +563,11 @@ export default function App() {
 
       {/* Selection badge */}
       {selectedItems.size > 0 && (
-        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-neutral-800 border border-neutral-700 text-neutral-200 h-9 px-4 rounded-lg text-[13px] font-medium flex items-center gap-3 shadow-2xl z-[1000]">
+        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-card border border-default text-primary h-9 px-4 rounded-lg text-[13px] font-medium flex items-center gap-3 shadow-lg z-[1000]">
           <span>
             {selectedItems.size} selected
           </span>
-          <kbd className="bg-neutral-700 px-1.5 py-0.5 rounded text-[11px] text-neutral-400">
+          <kbd className="bg-app-secondary px-1.5 py-0.5 rounded text-[11px] text-muted">
             ⌘K
           </kbd>
         </div>
@@ -561,6 +580,15 @@ export default function App() {
         selectedItems={getSelectedItemsData}
         onClose={closeCommandPalette}
         onApply={handleCommandPaletteApply}
+      />
+
+      {/* Toast notifications - Sonner */}
+      <Toaster
+        position="bottom-right"
+        theme={theme === "system" ? undefined : theme}
+        toastOptions={{
+          className: "bg-card border-default text-primary",
+        }}
       />
     </div>
   );

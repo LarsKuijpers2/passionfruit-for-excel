@@ -596,12 +596,34 @@ export class ReviewServer {
           return res.status(400).json({ error: 'Missing questionnaireId, itemId, or destination' });
         }
 
+        // Helper to find file in root or customer directories
+        const findIndexedFile = async (filename: string): Promise<string | null> => {
+          // First check root directory
+          const rootPath = join('./indexed', filename);
+          if (existsSync(rootPath)) {
+            return rootPath;
+          }
+
+          // Then check all customer directories
+          try {
+            const customers = await readdir('./customers');
+            for (const customer of customers) {
+              const customerPath = join('./customers', customer, 'indexed', filename);
+              if (existsSync(customerPath)) {
+                return customerPath;
+              }
+            }
+          } catch {}
+
+          return null;
+        };
+
         // Load the indexed file (JSON only)
         const safeName = questionnaireId.replace(/[^a-zA-Z0-9-_]/g, '_');
-        const indexedPath = join('./indexed', `${safeName}.json`);
+        const indexedPath = await findIndexedFile(`${safeName}.json`);
 
-        if (!existsSync(indexedPath)) {
-          return res.status(404).json({ error: 'Indexed file not found' });
+        if (!indexedPath) {
+          return res.status(404).json({ error: `Indexed file not found: ${safeName}.json` });
         }
 
         const indexed = JSON.parse(await readFile(indexedPath, 'utf-8'));
@@ -633,7 +655,18 @@ export class ReviewServer {
         try {
           const { WebReviewGenerator } = await import('./services/review/web-generator.js');
           const generator = new WebReviewGenerator(this.reviewDir);
-          const structurePath = join('./questionnaires', `${safeName}.json`);
+          // Also search for structure file in customer directories
+          let structurePath = join('./questionnaires', `${safeName}.json`);
+          if (!existsSync(structurePath)) {
+            const customers = await readdir('./customers');
+            for (const customer of customers) {
+              const customerStructurePath = join('./customers', customer, 'questionnaires', `${safeName}.json`);
+              if (existsSync(customerStructurePath)) {
+                structurePath = customerStructurePath;
+                break;
+              }
+            }
+          }
           const libraryPath = './answer-library.yaml';
           await generator.generate(structurePath, indexedPath, libraryPath);
           console.log(`Regenerated HTML for ${questionnaireId}`);
@@ -669,12 +702,34 @@ export class ReviewServer {
           return res.status(501).json({ error: 'Library updates not yet implemented' });
         }
 
+        // Helper to find file in root or customer directories
+        const findIndexedFile = async (filename: string): Promise<string | null> => {
+          // First check root directory
+          const rootPath = join('./indexed', filename);
+          if (existsSync(rootPath)) {
+            return rootPath;
+          }
+
+          // Then check all customer directories
+          try {
+            const customers = await readdir('./customers');
+            for (const customer of customers) {
+              const customerPath = join('./customers', customer, 'indexed', filename);
+              if (existsSync(customerPath)) {
+                return customerPath;
+              }
+            }
+          } catch {}
+
+          return null;
+        };
+
         // Load the indexed file (JSON only)
         const safeName = questionnaireId.replace(/[^a-zA-Z0-9-_]/g, '_');
-        const indexedPath = join('./indexed', `${safeName}.json`);
+        const indexedPath = await findIndexedFile(`${safeName}.json`);
 
-        if (!existsSync(indexedPath)) {
-          return res.status(404).json({ error: 'Indexed file not found' });
+        if (!indexedPath) {
+          return res.status(404).json({ error: `Indexed file not found: ${safeName}.json` });
         }
 
         const indexed = JSON.parse(await readFile(indexedPath, 'utf-8'));
@@ -704,7 +759,18 @@ export class ReviewServer {
         try {
           const { WebReviewGenerator } = await import('./services/review/web-generator.js');
           const generator = new WebReviewGenerator(this.reviewDir);
-          const structurePath = join('./questionnaires', `${safeName}.json`);
+          // Also search for structure file in customer directories
+          let structurePath = join('./questionnaires', `${safeName}.json`);
+          if (!existsSync(structurePath)) {
+            const customers = await readdir('./customers');
+            for (const customer of customers) {
+              const customerStructurePath = join('./customers', customer, 'questionnaires', `${safeName}.json`);
+              if (existsSync(customerStructurePath)) {
+                structurePath = customerStructurePath;
+                break;
+              }
+            }
+          }
           const libraryPath = './answer-library.yaml';
           await generator.generate(structurePath, indexedPath, libraryPath);
           console.log(`Regenerated HTML for ${questionnaireId}`);

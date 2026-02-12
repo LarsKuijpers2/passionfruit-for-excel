@@ -34,9 +34,9 @@ export function TabBar({
   };
 
   return (
-    <div className="flex items-center bg-neutral-900 border-b border-neutral-800 px-2 h-10 gap-0.5 overflow-x-auto scrollbar-none">
+    <div className="flex items-center bg-app-secondary border-b border-default px-2 h-10 gap-0.5 overflow-x-auto scrollbar-none">
       <button
-        className="flex items-center justify-center w-8 h-8 rounded text-neutral-500 cursor-pointer mr-2 hover:bg-neutral-800 hover:text-neutral-300 transition-colors"
+        className="flex items-center justify-center w-8 h-8 rounded text-muted cursor-pointer mr-2 bg-card-hover transition-colors hover:text-primary"
         onClick={onSidebarToggle}
         title="Open questionnaire list (B)"
       >
@@ -48,15 +48,15 @@ export function TabBar({
           key={tab.name}
           className={`flex items-center gap-2 h-8 px-3 rounded text-[12px] font-medium cursor-pointer whitespace-nowrap max-w-[200px] transition-colors group ${
             tab.name === currentTab
-              ? 'bg-neutral-800 text-neutral-100'
-              : 'text-neutral-500 hover:bg-neutral-800/50 hover:text-neutral-300'
+              ? 'bg-selected text-primary'
+              : 'text-muted bg-card-hover hover:text-primary'
           }`}
           onClick={() => onTabClick(tab.name)}
         >
           <span className="overflow-hidden text-ellipsis">{tab.displayName}</span>
           {tab.completed && <Check size={14} className="text-emerald-500" />}
           <span
-            className="opacity-0 w-4 h-4 flex items-center justify-center rounded text-sm leading-none group-hover:opacity-50 hover:!opacity-100 hover:bg-neutral-700"
+            className="opacity-0 w-4 h-4 flex items-center justify-center rounded text-sm leading-none group-hover:opacity-50 hover:!opacity-100 hover:bg-card-hover"
             title="Close tab"
             onClick={(e) => {
               e.stopPropagation();
@@ -70,7 +70,7 @@ export function TabBar({
 
       <div className="flex items-center gap-2 ml-auto pr-2">
         <button
-          className="flex items-center justify-center w-7 h-7 rounded text-neutral-500 cursor-pointer hover:bg-neutral-800 hover:text-neutral-300 transition-colors"
+          className="flex items-center justify-center w-7 h-7 rounded text-muted cursor-pointer bg-card-hover transition-colors hover:text-primary"
           onClick={cycleTheme}
           title={`Theme: ${theme} (click to cycle)`}
         >

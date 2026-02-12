@@ -53,40 +53,40 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
 
   const getCellStyle = (cell: ExcelCell | undefined, isActive: boolean): string => {
     if (isActive) {
-      return 'bg-blue-500/20 text-blue-200 ring-1 ring-blue-500 ring-inset';
+      return 'bg-accent/20 text-accent ring-1 ring-accent ring-inset';
     }
 
-    if (!cell) return 'bg-neutral-900';
+    if (!cell) return 'bg-app';
 
-    const classes: string[] = ['text-neutral-200'];
+    const classes: string[] = ['text-primary'];
 
     if (cell.format?.bold) classes.push('font-medium');
 
     // Role-based styling - subtle colors
     switch (cell.role) {
       case 'header':
-        classes.push('bg-blue-500/10 text-blue-300 font-medium');
+        classes.push('bg-blue-500/10 dark:bg-blue-500/10 text-blue-600 dark:text-blue-300 font-medium');
         break;
       case 'section':
-        classes.push('bg-purple-500/10 text-purple-300 font-medium');
+        classes.push('bg-purple-500/10 dark:bg-purple-500/10 text-purple-600 dark:text-purple-300 font-medium');
         break;
       case 'label':
-        classes.push('bg-neutral-800/50 text-neutral-400');
+        classes.push('bg-app-secondary text-muted');
         break;
       case 'value':
-        classes.push('bg-emerald-500/5 text-neutral-200');
+        classes.push('bg-emerald-500/5 dark:bg-emerald-500/5 text-primary');
         break;
       case 'input':
-        classes.push('bg-amber-500/5 text-neutral-200');
+        classes.push('bg-amber-500/5 dark:bg-amber-500/5 text-primary');
         break;
       case 'empty':
-        classes.push('bg-neutral-900');
+        classes.push('bg-app');
         break;
       default:
         if (cell.value) {
-          classes.push('bg-neutral-900');
+          classes.push('bg-app');
         } else {
-          classes.push('bg-neutral-900/50');
+          classes.push('bg-app-secondary/50');
         }
     }
 
@@ -100,17 +100,17 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
   };
 
   return (
-    <div className="flex-1 flex flex-col border-r border-neutral-800 overflow-hidden min-w-0 bg-neutral-950">
+    <div className="flex-1 flex flex-col border-r border-default overflow-hidden min-w-0 bg-app">
       {/* Header */}
-      <div className="h-10 px-4 flex items-center justify-between border-b border-neutral-800 bg-neutral-900/50">
-        <span className="text-[13px] font-medium text-neutral-200">Original</span>
+      <div className="h-10 px-4 flex items-center justify-between border-b border-default bg-app-secondary">
+        <span className="text-[13px] font-medium text-primary">Original</span>
         <div className="flex items-center gap-3">
           {activeCell && (
-            <span className="text-[11px] text-blue-400 font-mono">
+            <span className="text-[11px] text-accent font-mono">
               {activeCell}
             </span>
           )}
-          <span className="text-[11px] text-neutral-500">
+          <span className="text-[11px] text-muted">
             {sheet ? `${rows.length} rows` : 'No sheet'}
           </span>
         </div>
@@ -121,13 +121,13 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
           <table className="border-collapse text-[11px] w-full">
             <thead>
               <tr>
-                <th className="border border-neutral-800 p-1.5 bg-neutral-900 text-neutral-600 font-medium sticky top-0 left-0 z-20 w-10 text-center text-[10px]">
+                <th className="border border-default p-1.5 bg-app-secondary text-muted font-medium sticky top-0 left-0 z-20 w-10 text-center text-[10px]">
                   #
                 </th>
                 {columns.map((col) => (
                   <th
                     key={col}
-                    className="border border-neutral-800 p-1.5 bg-neutral-900 text-neutral-500 font-medium sticky top-0 z-10 min-w-[60px]"
+                    className="border border-default p-1.5 bg-app-secondary text-muted font-medium sticky top-0 z-10 min-w-[60px]"
                   >
                     {col}
                   </th>
@@ -137,7 +137,7 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
             <tbody>
               {rows.map((row) => (
                 <tr key={row.row}>
-                  <td className="border border-neutral-800 p-1.5 bg-neutral-900 text-neutral-600 text-center sticky left-0 z-10 text-[10px]">
+                  <td className="border border-default p-1.5 bg-app-secondary text-muted text-center sticky left-0 z-10 text-[10px]">
                     {row.row}
                   </td>
                   {columns.map((col) => {
@@ -150,7 +150,7 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
                       <td
                         key={col}
                         ref={(el) => { if (el) cellRefs.current.set(cellKey, el); }}
-                        className={`border border-neutral-800/50 p-2 max-w-[250px] overflow-hidden text-ellipsis whitespace-nowrap transition-colors cursor-pointer ${getCellStyle(cell, isActive)} ${isHovered && !isActive ? 'bg-blue-500/10' : ''}`}
+                        className={`border border-subtle p-2 max-w-[250px] overflow-hidden text-ellipsis whitespace-nowrap transition-colors cursor-pointer ${getCellStyle(cell, isActive)} ${isHovered && !isActive ? 'bg-accent/10' : ''}`}
                         onMouseEnter={() => setHoveredCell(cellKey)}
                         onMouseLeave={() => setHoveredCell(null)}
                         onClick={() => handleCellClick(cellKey, row.row, col)}
@@ -165,7 +165,7 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
             </tbody>
           </table>
         ) : (
-          <div className="text-neutral-600 text-center py-12 text-[13px]">
+          <div className="text-muted text-center py-12 text-[13px]">
             {sheet ? 'No data in sheet' : 'No sheet selected'}
           </div>
         )}

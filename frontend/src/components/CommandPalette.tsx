@@ -19,7 +19,7 @@ const destinations: { id: Destination; label: string; color: string }[] = [
   { id: 'company', label: 'Company', color: 'text-blue-400' },
   { id: 'answer_library', label: 'Library', color: 'text-emerald-400' },
   { id: 'product', label: 'Product', color: 'text-orange-400' },
-  { id: 'exclude', label: 'Exclude', color: 'text-neutral-500' },
+  { id: 'exclude', label: 'Exclude', color: 'text-muted' },
 ];
 
 export function CommandPalette({
@@ -97,15 +97,15 @@ export function CommandPalette({
 
   return (
     <div className="fixed inset-0 z-[2000] flex items-center justify-center">
-      <div className="fixed inset-0 bg-black/70" onClick={onClose} />
+      <div className="fixed inset-0 bg-black/70 dark:bg-black/70" onClick={onClose} />
 
-      <div className="relative z-10 bg-neutral-900 border border-neutral-700 rounded-lg w-[480px] max-w-[90vw] shadow-2xl">
+      <div className="relative z-10 bg-card border border-default rounded-lg w-[480px] max-w-[90vw] shadow-2xl">
         {/* Header */}
-        <div className="flex justify-between items-center h-12 px-4 border-b border-neutral-800">
-          <span className="text-[13px] font-medium text-neutral-200">
+        <div className="flex justify-between items-center h-12 px-4 border-b border-default">
+          <span className="text-[13px] font-medium text-primary">
             {selectedCount} item{selectedCount !== 1 ? 's' : ''} selected
           </span>
-          <kbd className="bg-neutral-800 px-1.5 py-0.5 rounded text-[10px] text-neutral-500">
+          <kbd className="bg-app-secondary px-1.5 py-0.5 rounded text-[10px] text-muted">
             Esc
           </kbd>
         </div>
@@ -115,12 +115,12 @@ export function CommandPalette({
           {/* Label */}
           {isSingleSelect && (
             <div>
-              <label className="block text-[11px] font-medium text-neutral-500 uppercase tracking-wide mb-1.5">
+              <label className="block text-[11px] font-medium text-muted uppercase tracking-wide mb-1.5">
                 Label
               </label>
               <input
                 type="text"
-                className="w-full h-8 px-3 bg-neutral-950 border border-neutral-800 rounded text-[13px] text-neutral-200 focus:outline-none focus:border-neutral-700"
+                className="w-full h-8 px-3 bg-app border border-default rounded text-[13px] text-primary focus:outline-none focus:border-accent"
                 value={label}
                 onChange={(e) => setLabel(e.target.value)}
                 placeholder="Item label"
@@ -131,11 +131,11 @@ export function CommandPalette({
           {/* Value */}
           {isSingleSelect && (
             <div>
-              <label className="block text-[11px] font-medium text-neutral-500 uppercase tracking-wide mb-1.5">
+              <label className="block text-[11px] font-medium text-muted uppercase tracking-wide mb-1.5">
                 Value
               </label>
               <textarea
-                className="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded text-[13px] text-neutral-200 min-h-[80px] resize-y focus:outline-none focus:border-neutral-700"
+                className="w-full px-3 py-2 bg-app border border-default rounded text-[13px] text-primary min-h-[80px] resize-y focus:outline-none focus:border-accent"
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 placeholder="Item value"
@@ -145,7 +145,7 @@ export function CommandPalette({
 
           {/* Destination */}
           <div>
-            <label className="block text-[11px] font-medium text-neutral-500 uppercase tracking-wide mb-1.5">
+            <label className="block text-[11px] font-medium text-muted uppercase tracking-wide mb-1.5">
               Destination
             </label>
             <div className="flex gap-1.5">
@@ -155,8 +155,8 @@ export function CommandPalette({
                   onClick={() => setDestination(dest.id === destination ? '' : dest.id)}
                   className={`h-8 px-3 rounded text-[12px] font-medium transition-colors ${
                     destination === dest.id
-                      ? 'bg-blue-500 text-white'
-                      : `bg-neutral-800 hover:bg-neutral-700 ${dest.color}`
+                      ? 'bg-accent text-white'
+                      : `bg-app-secondary hover:bg-card-hover ${dest.color}`
                   }`}
                 >
                   {dest.label}
@@ -167,11 +167,11 @@ export function CommandPalette({
 
           {/* Review Action */}
           <div>
-            <label className="block text-[11px] font-medium text-neutral-500 uppercase tracking-wide mb-1.5">
+            <label className="block text-[11px] font-medium text-muted uppercase tracking-wide mb-1.5">
               Review Action
             </label>
             <select
-              className="w-full h-8 px-3 bg-neutral-950 border border-neutral-800 rounded text-[13px] text-neutral-200 focus:outline-none focus:border-neutral-700"
+              className="w-full h-8 px-3 bg-app border border-default rounded text-[13px] text-primary focus:outline-none focus:border-accent"
               value={action}
               onChange={(e) => setAction(e.target.value)}
             >
@@ -185,12 +185,12 @@ export function CommandPalette({
           {/* Reject Reason */}
           {action === 'reject' && (
             <div>
-              <label className="block text-[11px] font-medium text-neutral-500 uppercase tracking-wide mb-1.5">
+              <label className="block text-[11px] font-medium text-muted uppercase tracking-wide mb-1.5">
                 Reject Reason
               </label>
               <input
                 type="text"
-                className="w-full h-8 px-3 bg-neutral-950 border border-neutral-800 rounded text-[13px] text-neutral-200 focus:outline-none focus:border-neutral-700"
+                className="w-full h-8 px-3 bg-app border border-default rounded text-[13px] text-primary focus:outline-none focus:border-accent"
                 value={rejectReason}
                 onChange={(e) => setRejectReason(e.target.value)}
                 placeholder="Optional reason"
@@ -200,16 +200,16 @@ export function CommandPalette({
         </div>
 
         {/* Footer */}
-        <div className="flex justify-end gap-2 h-14 px-4 items-center border-t border-neutral-800">
+        <div className="flex justify-end gap-2 h-14 px-4 items-center border-t border-default">
           <button
             onClick={onClose}
-            className="h-8 px-4 rounded text-[12px] font-medium bg-neutral-800 text-neutral-300 hover:bg-neutral-700 transition-colors"
+            className="h-8 px-4 rounded text-[12px] font-medium bg-app-secondary text-primary hover:bg-card-hover transition-colors"
           >
             Cancel
           </button>
           <button
             onClick={handleApply}
-            className="h-8 px-4 rounded text-[12px] font-medium bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+            className="h-8 px-4 rounded text-[12px] font-medium bg-accent text-white hover:bg-accent-hover transition-colors"
           >
             Apply
           </button>

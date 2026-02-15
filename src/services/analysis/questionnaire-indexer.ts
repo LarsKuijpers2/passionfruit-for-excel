@@ -15,6 +15,8 @@ import { BedrockRuntimeClient, InvokeModelCommand } from '@aws-sdk/client-bedroc
 import { VisualAnalyzer, type SheetAnalysis, type DetectedItem, type ItemType, type ItemLevel } from './visual-analyzer.js';
 import type { QuestionnaireStructure } from '../extractors/excel.js';
 import { RulesManager } from '../../utils/rules-manager.js';
+import { DocumentRenderer, checkRenderingTools, type PageImage } from '../extractors/document-renderer.js';
+import { getDocumentType, type DocumentType } from '../extractors/index.js';
 
 // =============================================================================
 // TOPIC DEFINITION (loaded from rules/topics.yaml)
@@ -420,9 +422,14 @@ export class QuestionnaireIndexer {
   }
 
   /**
-   * Index a questionnaire - extract ALL items organized by section
+   * Index a questionnaire - extract ALL items organized by section.
+   *
+   * @param filename - Questionnaire filename (from stored questionnaires)
+   * @param sourceFilePath - Optional path to the original document file.
+   *   When provided, the document is rendered to images and analyzed
+   *   visually with Claude Vision for higher extraction quality.
    */
-  async index(filename: string): Promise<IndexedQuestionnaire> {
+  async index(filename: string, sourceFilePath?: string): Promise<IndexedQuestionnaire> {
     // Load stored structure
     const jsonName = filename.replace(/\.(xlsx?|docx?|pdf|json)$/i, '').replace(/[^a-zA-Z0-9-_]/g, '_');
     const filepath = join(this.storageDir, `${jsonName}.json`);
@@ -443,10 +450,24 @@ export class QuestionnaireIndexer {
     }
 
     const docType = structure.source.documentType || 'excel';
-    console.log(`  Analyzing ${structure.sheets.length} sheets with Claude... (${docType})`);
 
-    // Analyze all sheets
-    const analyses = await this.analyzer.analyzeQuestionnaire(structure.sheets, docType);
+    // Choose analysis method: visual (image-based) or text-based
+    let analyses: SheetAnalysis[];
+
+    if (sourceFilePath) {
+      analyses = await this.tryVisualAnalysis(sourceFilePath, docType, filename);
+    } else {
+      analyses = [];
+    }
+
+    // Fall back to text-based analysis if visual analysis didn't produce results
+    if (analyses.length === 0 || analyses.every(a => a.items.length === 0)) {
+      if (sourceFilePath) {
+        console.log('  Visual analysis produced no results, falling back to text-based analysis...');
+      }
+      console.log(`  Analyzing ${structure.sheets.length} sheets with Claude text analysis... (${docType})`);
+      analyses = await this.analyzer.analyzeQuestionnaire(structure.sheets, docType);
+    }
 
     // Build indexed structure
     const sections: IndexedSection[] = [];
@@ -787,5 +808,47 @@ export class QuestionnaireIndexer {
     await writeFile(filepath, JSON.stringify(indexed, null, 2), 'utf-8');
 
     return filepath;
+  }
+
+  /**
+   * Try visual (image-based) analysis using Claude Vision.
+   * Renders the source document to page images and sends them to Claude.
+   * Returns empty array on failure (caller falls back to text-based).
+   */
+  private async tryVisualAnalysis(
+    sourceFilePath: string,
+    docType: DocumentType,
+    filename: string,
+  ): Promise<SheetAnalysis[]> {
+    try {
+      // Check if rendering tools are available
+      const tools = await checkRenderingTools();
+
+      if (!tools.pdftoppm) {
+        console.log('  Visual analysis unavailable: pdftoppm not installed');
+        return [];
+      }
+
+      // For Excel/Word, we also need LibreOffice
+      if ((docType === 'excel' || docType === 'word') && !tools.libreoffice) {
+        console.log(`  Visual analysis unavailable for ${docType}: LibreOffice not installed`);
+        return [];
+      }
+
+      console.log(`  Rendering ${docType} document to page images...`);
+      const renderer = new DocumentRenderer({ dpi: 200, maxPages: 20 });
+      const images = await renderer.render(sourceFilePath);
+      console.log(`  Rendered ${images.length} page(s)`);
+
+      if (images.length === 0) {
+        return [];
+      }
+
+      // Use Claude Vision to analyze the page images
+      return this.analyzer.analyzeDocumentVisually(images, docType, filename);
+    } catch (error) {
+      console.error(`  Visual analysis failed: ${error instanceof Error ? error.message : error}`);
+      return [];
+    }
   }
 }

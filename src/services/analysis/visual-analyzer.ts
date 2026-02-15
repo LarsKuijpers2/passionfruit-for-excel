@@ -12,6 +12,7 @@ import { BedrockRuntimeClient, InvokeModelCommand } from '@aws-sdk/client-bedroc
 import { readFile, writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 import type { SheetData, CellData, RowData, MergedRange, CellRole, DocumentType } from '../extractors/excel.js';
+import type { PageImage } from '../extractors/document-renderer.js';
 
 // =============================================================================
 // TYPES
@@ -557,7 +558,7 @@ Important:
   }
 
   /**
-   * Invoke Bedrock Claude model
+   * Invoke Bedrock Claude model (text-only)
    */
   private async invokeModel(prompt: string): Promise<string> {
     const body = {
@@ -582,6 +583,60 @@ Important:
     const responseBody = JSON.parse(new TextDecoder().decode(response.body));
 
     // Log if response was truncated
+    if (responseBody.stop_reason === 'max_tokens') {
+      console.warn(`    Warning: Claude response truncated (max_tokens reached)`);
+    }
+
+    return responseBody.content[0].text;
+  }
+
+  /**
+   * Invoke Bedrock Claude model with images (multimodal)
+   */
+  private async invokeModelWithImages(
+    images: PageImage[],
+    prompt: string,
+  ): Promise<string> {
+    // Build content blocks: images first, then text prompt
+    const content: Array<Record<string, unknown>> = [];
+
+    for (const image of images) {
+      content.push({
+        type: 'image',
+        source: {
+          type: 'base64',
+          media_type: 'image/png',
+          data: image.data.toString('base64'),
+        },
+      });
+    }
+
+    content.push({
+      type: 'text',
+      text: prompt,
+    });
+
+    const body = {
+      anthropic_version: 'bedrock-2023-05-31',
+      max_tokens: 32768,
+      messages: [
+        {
+          role: 'user',
+          content,
+        },
+      ],
+    };
+
+    const command = new InvokeModelCommand({
+      modelId: this.modelId,
+      body: JSON.stringify(body),
+      contentType: 'application/json',
+      accept: 'application/json',
+    });
+
+    const response = await this.client.send(command);
+    const responseBody = JSON.parse(new TextDecoder().decode(response.body));
+
     if (responseBody.stop_reason === 'max_tokens') {
       console.warn(`    Warning: Claude response truncated (max_tokens reached)`);
     }
@@ -618,6 +673,168 @@ Important:
     }
 
     return results;
+  }
+
+  // ===========================================================================
+  // VISUAL (IMAGE-BASED) ANALYSIS
+  // ===========================================================================
+
+  /**
+   * Analyze a document using page images with Claude Vision.
+   * This sees the exact visual layout — no fields are missed,
+   * and positioning/formatting is preserved exactly as a human sees it.
+   *
+   * Images are processed in batches to stay within API limits.
+   */
+  async analyzeDocumentVisually(
+    images: PageImage[],
+    documentType: DocumentType = 'pdf',
+    filename?: string,
+  ): Promise<SheetAnalysis[]> {
+    if (images.length === 0) {
+      return [];
+    }
+
+    console.log(`  Visual analysis: ${images.length} page(s) with Claude Vision...`);
+
+    // Process pages in batches of up to 5 images per call
+    // (keeps each request manageable and avoids context limits)
+    const batchSize = 5;
+    const allItems: DetectedItem[] = [];
+    const allSections: SheetAnalysis['sections'] = [];
+
+    for (let i = 0; i < images.length; i += batchSize) {
+      const batch = images.slice(i, i + batchSize);
+      const startPage = batch[0].page;
+      const endPage = batch[batch.length - 1].page;
+      const pageRange = startPage === endPage ? `page ${startPage}` : `pages ${startPage}-${endPage}`;
+
+      console.log(`    Analyzing ${pageRange}...`);
+
+      const analysis = await this.analyzeImageBatch(batch, documentType, filename);
+      allItems.push(...analysis.items);
+      allSections.push(...analysis.sections);
+
+      console.log(`      Found ${analysis.items.length} items`);
+    }
+
+    return [{
+      sheetName: filename || 'Document',
+      sections: allSections,
+      items: allItems,
+      layoutType: 'mixed',
+      notes: `Visual analysis of ${images.length} page(s)`,
+    }];
+  }
+
+  /**
+   * Analyze a batch of page images with Claude Vision
+   */
+  private async analyzeImageBatch(
+    images: PageImage[],
+    documentType: DocumentType,
+    filename?: string,
+  ): Promise<SheetAnalysis> {
+    const pageNumbers = images.map(i => i.page);
+    const pageRange = pageNumbers.length === 1
+      ? `page ${pageNumbers[0]}`
+      : `pages ${pageNumbers[0]}-${pageNumbers[pageNumbers.length - 1]}`;
+
+    const docTypeLabel = documentType === 'excel' ? 'spreadsheet' :
+                         documentType === 'word' ? 'Word document' :
+                         documentType === 'html' ? 'HTML form' : 'PDF document';
+
+    const prompt = `You are looking at ${pageRange} of a ${docTypeLabel} questionnaire${filename ? ` ("${filename}")` : ''}.
+
+## Task:
+Analyze the visual layout carefully and extract ALL data items you can see. You are looking at the EXACT document as a human would see it. Extract every question, field, checkbox, table row, and answer visible on the page(s).
+
+## Item Types:
+- "field" = Simple label/value pair (Company name, Address, Phone)
+- "text" = Longer text response
+- "yesno" = Yes/No, Ja/Nee, Oui/Non choice (including checkboxes)
+- "choice" = Dropdown or multiple-choice selection
+- "table" = Tabular reference data with NO individual answers. AVOID this — prefer extracting individual items.
+- "signature" = Signature field
+- "date" = Date field
+
+## Extraction Rules:
+1. Extract EVERY question/answer pair visible. Do not skip any.
+2. For checkbox tables (Yes/No/N/A columns with checkmarks), extract EACH ROW as a separate "yesno" item. A checked box (☒, ✓, x) indicates the selected answer.
+3. For multi-column answer layouts (e.g., "Contact Person 1" and "Contact Person 2" in separate columns), create separate items for each column. Add the column header to the label.
+4. For strikethrough text: if YES is struck through, the answer is "No" (and vice versa).
+5. If a field is empty/blank, set value to "EMPTY".
+6. Use cell references based on what you see: use "PG{page}R{row}" format for the row position on the page.
+
+## Levels:
+- "standard" = Factual company data, reusable across questionnaires (name, address, cert numbers)
+- "narrative" = Descriptive info, needs human review (policies, procedures, descriptions)
+- "product" = Product-specific, changes per product (ingredients, allergens, specifications)
+
+## Topics (choose the most specific one):
+company, contacts, certifications, allergens, food_safety, quality, quality_systems,
+premises, hygiene, training, cleaning, pest_control, equipment, monitoring, waste,
+sustainability, environment, packaging, logistics, origin, traceability, raw_materials,
+food_fraud, food_defense, nutrition, crisis, financial, animal_welfare, audits,
+product, ingredients, microbiology, documents, signature, approval, other
+
+## Response Format:
+Return ONLY valid JSON:
+{
+  "sections": [
+    {"title": "Section Name", "startRow": 1, "endRow": 25, "topic": "company"}
+  ],
+  "items": [
+    {
+      "type": "field",
+      "label": "Company Name",
+      "value": "ACME Corp",
+      "lCell": "PG1R5",
+      "vCell": "PG1R5V",
+      "section": "General Information",
+      "topic": "company",
+      "level": "standard",
+      "lang": "en",
+      "confidence": 0.95
+    }
+  ]
+}
+
+Important:
+- Be thorough — extract EVERY visible item. This is critical.
+- Detect language: "en", "de", "fr", "nl" or omit if uncertain
+- For tables with checkmarks, extract each row individually as yesno items
+- Confidence should be lower for ambiguous pairings`;
+
+    const response = await this.invokeModelWithImages(images, prompt);
+
+    try {
+      const jsonMatch = response.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const parsed = JSON.parse(jsonMatch[0]);
+        return {
+          sheetName: filename || 'Document',
+          sections: parsed.sections || [],
+          items: (parsed.items || []).map((item: DetectedItem) => ({
+            ...item,
+            // Ensure page context is in the section
+            section: item.section || `Page ${pageNumbers[0]}`,
+          })),
+          layoutType: parsed.layoutType || 'mixed',
+          notes: parsed.notes,
+        };
+      }
+    } catch (e) {
+      console.error('    Failed to parse visual analysis response:', e);
+    }
+
+    return {
+      sheetName: filename || 'Document',
+      sections: [],
+      items: [],
+      layoutType: 'mixed',
+      notes: 'Failed to parse visual analysis response',
+    };
   }
 }
 

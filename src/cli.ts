@@ -133,6 +133,8 @@ program
   .option('--dir <dir>', 'Structure directory (legacy mode)')
   .option('--output <dir>', 'Output directory for indexed questionnaires (legacy mode)')
   .option('--rules-dir <dir>', 'Rules directory (legacy mode)')
+  .option('--no-visual', 'Disable visual (image-based) analysis, use text-only')
+  .option('--source <path>', 'Path to the original document file (for visual analysis)')
   .action(async (file: string, opts) => {
     try {
       const customer = opts.customer as string | undefined;
@@ -141,12 +143,14 @@ program
       let dir: string;
       let outputDir: string;
       let rulesDir: string;
+      let incomingDir: string | undefined;
 
       if (customer) {
         const paths = ensureCustomerDirs(customer);
         dir = paths.structure;
         outputDir = paths.indexed;
         rulesDir = getRulesDir(customer);
+        incomingDir = paths.incoming;
         console.log(`\n📁 Customer: ${customer}`);
       } else {
         dir = opts.dir as string || './structure';
@@ -154,10 +158,27 @@ program
         rulesDir = opts.rulesDir as string || './rules';
       }
 
+      // Find the source file for visual analysis
+      let sourceFilePath: string | undefined;
+
+      if (opts.visual !== false) {
+        if (opts.source) {
+          // Explicit source path provided
+          sourceFilePath = resolve(opts.source as string);
+        } else if (incomingDir) {
+          // Try to find the source file in the incoming directory
+          sourceFilePath = await findSourceFile(file, incomingDir);
+        }
+
+        if (sourceFilePath) {
+          console.log('  Visual analysis: ' + sourceFilePath);
+        }
+      }
+
       console.log('\n📇 Indexing: ' + file + '\n');
 
       const indexer = new QuestionnaireIndexer(dir, 'eu-central-1', rulesDir);
-      const indexed = await indexer.index(file);
+      const indexed = await indexer.index(file, sourceFilePath);
 
       console.log('\n📊 Index Summary:');
       console.log('   Language: ' + indexed.language.toUpperCase());
@@ -678,9 +699,9 @@ program
         const jsonPath = await storage.save(structure);
         console.log(`  ✅ Stored: ${jsonPath}`);
 
-        // Index
+        // Index (with visual analysis using the downloaded source file)
         const indexer = new QuestionnaireIndexer(structureDir, 'eu-central-1', rulesDir);
-        const indexed = await indexer.index(file.filename);
+        const indexed = await indexer.index(file.filename, filepath);
 
         const indexedPath = await indexer.save(indexed, indexedDir);
         console.log(`  ✅ Indexed: ${indexedPath}`);
@@ -803,9 +824,9 @@ program
             console.log(`  ✅ Stored`);
 
             const indexer = new QuestionnaireIndexer(structureDir, 'eu-central-1', rulesDir);
-            const indexed = await indexer.index(file.filename);
+            const indexed = await indexer.index(file.filename, filepath);
             await indexer.save(indexed, indexedDir);
-            console.log(`  ✅ Indexed (${indexed.totalItems} items)`);
+            console.log(`  ✅ Indexed (${indexed.stats.total} items)`);
           }
 
           results.push({ id, status: 'success', name: evidence.name });
@@ -1147,5 +1168,50 @@ program
 ╚═══════════════════════════════════════════════════════════════╝
 `);
   });
+
+// =============================================================================
+// HELPERS
+// =============================================================================
+
+/**
+ * Find the original source document file in the incoming directory.
+ * Matches by base filename (ignoring extension differences).
+ */
+async function findSourceFile(filename: string, incomingDir: string): Promise<string | undefined> {
+  const { existsSync } = await import('fs');
+
+  if (!existsSync(incomingDir)) return undefined;
+
+  // Strip extension from the filename to match against
+  const baseName = filename.replace(/\.(xlsx?|docx?|pdf|json|yaml)$/i, '');
+  const safeName = baseName.replace(/[^a-zA-Z0-9-_]/g, '_');
+
+  try {
+    const files = await readdir(incomingDir);
+    const supportedExtensions = ['.xlsx', '.xls', '.docx', '.pdf'];
+
+    // Try exact match first, then safe-name match
+    for (const ext of supportedExtensions) {
+      // Try original name
+      const exactMatch = files.find(f => f === baseName + ext);
+      if (exactMatch) return join(incomingDir, exactMatch);
+
+      // Try safe name
+      const safeMatch = files.find(f => f.replace(/[^a-zA-Z0-9-_.]/g, '_').startsWith(safeName) && f.endsWith(ext));
+      if (safeMatch) return join(incomingDir, safeMatch);
+    }
+
+    // Try any file that starts with the base name
+    for (const f of files) {
+      if (f.startsWith(baseName) && supportedExtensions.some(ext => f.endsWith(ext))) {
+        return join(incomingDir, f);
+      }
+    }
+  } catch {
+    // Directory not readable
+  }
+
+  return undefined;
+}
 
 program.parse();

@@ -1,4 +1,5 @@
 import { useState, useMemo, forwardRef, useImperativeHandle, useRef } from "react";
+import { CaretDown, CaretRight } from '@phosphor-icons/react';
 import type { LibraryItem } from "../types";
 
 interface LibraryPanelProps {
@@ -114,6 +115,20 @@ export const LibraryPanel = forwardRef<LibraryPanelHandle, LibraryPanelProps>(fu
     });
   };
 
+  const toggleAllGroups = () => {
+    const allGroupNames = groupedItems.map(([dest]) => dest);
+    const allCollapsed = allGroupNames.every(g => collapsedGroups.has(g));
+    if (allCollapsed) {
+      // Expand all
+      setCollapsedGroups(new Set());
+    } else {
+      // Collapse all
+      setCollapsedGroups(new Set(allGroupNames));
+    }
+  };
+
+  const allGroupsCollapsed = groupedItems.length > 0 && groupedItems.every(([dest]) => collapsedGroups.has(dest));
+
   const handleItemClick = (e: React.MouseEvent, itemId: string) => {
     e.stopPropagation();
     if (e.shiftKey && lastSelectedId) {
@@ -145,7 +160,16 @@ export const LibraryPanel = forwardRef<LibraryPanelHandle, LibraryPanelProps>(fu
     <div className="flex-1 flex flex-col overflow-hidden min-w-0 bg-app">
       {/* Header */}
       <div className="h-10 px-4 flex items-center justify-between border-b border-default bg-app-secondary">
-        <span className="text-[13px] font-medium text-primary">Save as</span>
+        <div className="flex items-center gap-2">
+          <span className="text-[13px] font-medium text-primary">Save as</span>
+          <button
+            onClick={toggleAllGroups}
+            className="p-1 rounded text-muted hover:text-primary hover:bg-card-hover transition-colors"
+            title={allGroupsCollapsed ? "Expand all" : "Collapse all"}
+          >
+            {allGroupsCollapsed ? <CaretRight size={14} /> : <CaretDown size={14} />}
+          </button>
+        </div>
         <span className="text-[11px] text-muted">
           {totalItems}
         </span>

@@ -72,7 +72,23 @@ export interface ExcelCell {
     italic?: boolean;
     fontSize?: number;
     fontColor?: string;
+    // Merge info
+    isMerged?: boolean;
+    mergeRange?: string;
+    isMergeOrigin?: boolean;
   };
+}
+
+// Merged cell range
+export interface MergedRange {
+  range: string;
+  start: string;
+  end: string;
+  startRow: number;
+  endRow: number;
+  startCol: string;
+  endCol: string;
+  value?: string;
 }
 
 // Excel row from API
@@ -88,6 +104,7 @@ export interface ExcelSheet {
   name: string;
   index: number;
   rows: ExcelSheetRow[];
+  mergedRanges?: MergedRange[];
   headers?: string[];
   rowCount: number;
   columnCount: number;
@@ -187,4 +204,148 @@ export interface CellFeedback {
   topic?: string;
   reason?: string;
   timestamp: string;
+}
+
+// =============================================================================
+// AGGREGATED LIBRARY TYPES
+// =============================================================================
+
+/** An item in the aggregated answer library */
+export interface AggregatedLibraryItem {
+  id: string;
+  label: string;
+  /** AI-rephrased human-readable question */
+  rephrasedQuestion?: string;
+  fullLabel?: string;
+  normalizedLabel?: string;
+  value: string;
+  topic: string;
+  section: string;
+  destination: Destination;
+  /** Questionnaires this item appears in */
+  sources: string[];
+  firstApprovedAt?: string;
+  lastApprovedAt?: string;
+  /** Cell references per questionnaire */
+  cellRefs: Record<string, string>;
+}
+
+/** A group of similar/related items */
+export interface RelatedItemGroup {
+  items: AggregatedLibraryItem[];
+  similarity: number;
+  suggestedMerge: boolean;
+}
+
+/** Items grouped by topic with similarity detection */
+export interface GroupedByTopic {
+  topic: string;
+  /** Standalone items (no similar matches) */
+  items: AggregatedLibraryItem[];
+  /** Groups of similar items that might be duplicates */
+  relatedGroups: RelatedItemGroup[];
+}
+
+/** Full aggregated library response from API */
+export interface AggregatedLibraryData {
+  customer: string;
+  aggregatedAt: string;
+  questionnaires: string[];
+  totalItems: number;
+  uniqueItems: number;
+  /** Library items grouped by topic */
+  groups: GroupedByTopic[];
+  /** Company-level items */
+  company: {
+    count: number;
+    items: AggregatedLibraryItem[];
+  };
+  /** Product-level items */
+  product: {
+    count: number;
+    items: AggregatedLibraryItem[];
+  };
+  /** Questionnaire metadata items */
+  questionnaire: {
+    count: number;
+    items: AggregatedLibraryItem[];
+  };
+  /** Excluded items */
+  excluded: {
+    count: number;
+    items: AggregatedLibraryItem[];
+  };
+  /** Statistics */
+  stats: {
+    totalTopics: number;
+    standaloneItems: number;
+    relatedGroups: number;
+    itemsInGroups: number;
+    suggestedMerges: number;
+    company: number;
+    product: number;
+    questionnaire: number;
+    excluded: number;
+  };
+}
+
+// =============================================================================
+// STANDARD QUESTIONS
+// =============================================================================
+
+/** A library match for a standard question */
+export interface StandardQuestionMatch {
+  label: string;
+  value: string;
+  sources: string[];
+}
+
+/** A standard question with its answer and sources */
+export interface StandardQuestion {
+  id: string;
+  question: string;
+  suggestedAnswer: string | null;
+  sources: string[];
+  libraryMatches: StandardQuestionMatch[];
+}
+
+/** A section of standard questions */
+export interface StandardQuestionSection {
+  section: string;
+  questions: StandardQuestion[];
+}
+
+/** Full standard questions response from API */
+export interface StandardQuestionsData {
+  customer: string;
+  generatedAt: string;
+  totalQuestions: number;
+  sections: StandardQuestionSection[];
+}
+
+// =============================================================================
+// CURATED LIBRARY TYPES
+// =============================================================================
+
+/** A curated question with grouped answers */
+export interface CuratedQuestion {
+  question: string;
+  answer: string;
+  originalLabels: string[];
+  sources: string[];
+}
+
+/** A topic with curated questions */
+export interface CuratedTopic {
+  topic: string;
+  topicLabel: string;
+  questions: CuratedQuestion[];
+}
+
+/** Full curated library response from API */
+export interface CuratedLibraryData {
+  customer: string;
+  generatedAt: string;
+  company: CuratedTopic[];
+  answer_library: CuratedTopic[];
 }

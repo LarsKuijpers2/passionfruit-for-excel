@@ -16,6 +16,7 @@ import { IndexedPanel, type IndexedPanelHandle } from "./components/IndexedPanel
 import { LibraryPanel, type LibraryPanelHandle } from "./components/LibraryPanel";
 import { CommandPalette } from "./components/CommandPalette";
 import { NotesPanel } from "./components/NotesPanel";
+import { AggregatedLibraryPanel } from "./components/AggregatedLibraryPanel";
 import { useTheme } from "./hooks/useTheme";
 import { useTabs } from "./hooks/useTabs";
 import { useFeedback } from "./hooks/useFeedback";
@@ -94,11 +95,31 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [reviewMode, setReviewMode] = useState(false);
   const [notesPanelOpen, setNotesPanelOpen] = useState(false);
-  const [visiblePanels] = useState<Set<PanelType>>(
+  const [visiblePanels, setVisiblePanels] = useState<Set<PanelType>>(
     new Set(["original", "indexed", "library"])
   );
+
+  // Toggle panel visibility
+  const togglePanel = useCallback((panel: PanelType) => {
+    setVisiblePanels((prev) => {
+      const next = new Set(prev);
+      if (next.has(panel)) {
+        // Don't allow hiding all panels
+        if (next.size > 1) {
+          next.delete(panel);
+        }
+      } else {
+        next.add(panel);
+      }
+      return next;
+    });
+  }, []);
   const [activeSheet, setActiveSheet] = useState<string | null>(null);
   const [activeCell, setActiveCell] = useState<string | null>(null);
+
+  // Library view state
+  const [currentView, setCurrentView] = useState<'questionnaire' | 'library'>('questionnaire');
+  const [libraryCustomer, setLibraryCustomer] = useState<string | null>(null);
 
   // Current questionnaire data
   const { data: questionnaireData, isLoading: questionnaireLoading } = useQuery({
@@ -136,6 +157,16 @@ export default function App() {
       if (e.key === "n" && !e.metaKey && !e.ctrlKey) {
         setNotesPanelOpen((prev) => !prev);
       }
+      // Panel toggle shortcuts: 1=Original, 2=Indexed, 3=Library
+      if (e.key === "1" && !e.metaKey && !e.ctrlKey) {
+        togglePanel("original");
+      }
+      if (e.key === "2" && !e.metaKey && !e.ctrlKey) {
+        togglePanel("indexed");
+      }
+      if (e.key === "3" && !e.metaKey && !e.ctrlKey) {
+        togglePanel("library");
+      }
       // Cmd+A to select all items in the active panel (or indexed panel by default)
       if ((e.metaKey || e.ctrlKey) && e.key === "a") {
         e.preventDefault();
@@ -150,7 +181,7 @@ export default function App() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [commandPaletteOpen, selectedPanel, selectAll]);
+  }, [commandPaletteOpen, selectedPanel, selectAll, togglePanel]);
 
   // Mutations
   const completeMutation = useMutation({
@@ -305,7 +336,11 @@ export default function App() {
     }) => {
       if (!selectedPanel) return;
 
-      const itemIds = Array.from(selectedItems);
+      // Capture selection immediately to avoid race conditions
+      const selectedItemsSnapshot = new Set(selectedItems);
+      const itemIds = Array.from(selectedItemsSnapshot);
+
+      console.log(`Command palette apply: ${itemIds.length} items`, updates);
 
       // Build server update payload
       const serverUpdates: Record<string, unknown> = {};
@@ -335,7 +370,7 @@ export default function App() {
           const updatedSections = questionnaireData.indexed.sections.map(section => ({
             ...section,
             items: section.items.map(item =>
-              selectedItems.has(item.id || "")
+              selectedItemsSnapshot.has(item.id || "")
                 ? {
                     ...item,
                     ...(updates.label && { label: updates.label }),
@@ -365,7 +400,7 @@ export default function App() {
       }
 
       // Handle review actions (these still use pending feedback)
-      selectedItems.forEach((itemId) => {
+      selectedItemsSnapshot.forEach((itemId) => {
         if (updates.action === "accept") {
           handleAccept(selectedPanel, itemId);
         } else if (updates.action === "reject") {
@@ -427,6 +462,7 @@ export default function App() {
               key={q.name}
               className="flex items-center h-10 px-3 bg-card border border-default rounded cursor-pointer transition-colors bg-card-hover"
               onClick={() => openTab(q.name)}
+              title={q.displayName}
             >
               <span className="flex-1 text-[13px] text-primary overflow-hidden text-ellipsis whitespace-nowrap">
                 {q.displayName}
@@ -482,12 +518,14 @@ export default function App() {
         serverConnected={serverConnected}
         theme={theme}
         hasNotes={!!(questionnaireData?.indexed?.meta?.notes)}
+        visiblePanels={visiblePanels}
         onSidebarToggle={() => setSidebarOpen((prev) => !prev)}
         onTabClick={switchTab}
         onTabClose={closeTab}
         onComplete={handleCompleteReview}
         onNotesClick={() => setNotesPanelOpen((prev) => !prev)}
         onThemeChange={setTheme}
+        onTogglePanel={togglePanel}
       />
 
       {/* Sidebar overlay */}
@@ -500,7 +538,7 @@ export default function App() {
 
       {/* Sidebar */}
       <div
-        className={`fixed left-0 top-10 bottom-0 w-[440px] bg-app-secondary border-r border-default flex flex-col z-[100] transition-transform duration-200 ${
+        className={`fixed left-0 top-10 bottom-0 w-[560px] bg-app-secondary border-r border-default flex flex-col z-[100] transition-transform duration-200 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -530,11 +568,15 @@ export default function App() {
                   <div
                     key={q.name}
                     className={`flex items-center h-9 px-4 cursor-pointer transition-colors border-b border-subtle gap-2 bg-card-hover ${
-                      currentQuestionnaire === q.name
+                      currentQuestionnaire === q.name && currentView === 'questionnaire'
                         ? "bg-selected border-l-2 border-l-accent"
                         : ""
                     }`}
-                    onClick={() => openTab(q.name)}
+                    onClick={() => {
+                      setCurrentView('questionnaire');
+                      openTab(q.name);
+                    }}
+                    title={q.displayName}
                   >
                     {q.completed && (
                       <span className="text-emerald-500 text-[11px]">✓</span>
@@ -570,31 +612,56 @@ export default function App() {
                     </div>
                   </div>
                 ))}
+                {/* Answer Library button for this customer */}
+                <div
+                  className={`flex items-center h-8 px-4 cursor-pointer transition-colors border-b border-default gap-2 ${
+                    currentView === 'library' && libraryCustomer === customer
+                      ? "bg-accent/10 border-l-2 border-l-accent"
+                      : "hover:bg-card-hover"
+                  }`}
+                  onClick={() => {
+                    setCurrentView('library');
+                    setLibraryCustomer(customer);
+                    setSidebarOpen(false);
+                  }}
+                >
+                  <span className="text-[12px] text-accent font-medium">
+                    Answer Library
+                  </span>
+                </div>
               </div>
             ));
           })()}
         </div>
       </div>
 
-      {/* Sheet tabs */}
-      <div className="flex items-center gap-0 px-3 bg-app-secondary border-b border-default h-9 overflow-x-auto scrollbar-none">
-        {questionnaireData?.structure?.sheets?.map((sheet) => (
-          <button
-            key={sheet.name}
-            className={`px-3 h-full border-b-2 text-[12px] cursor-pointer transition-colors whitespace-nowrap ${
-              activeSheet === sheet.name
-                ? "text-primary border-b-accent"
-                : "text-muted border-transparent hover:text-primary"
-            }`}
-            onClick={() => setActiveSheet(sheet.name)}
-          >
-            {sheet.name}
-          </button>
-        ))}
-      </div>
+      {/* Content area - either questionnaire view or library view */}
+      {currentView === 'library' && libraryCustomer ? (
+        <AggregatedLibraryPanel
+          customer={libraryCustomer}
+          onBack={() => setCurrentView('questionnaire')}
+        />
+      ) : (
+        <>
+          {/* Sheet tabs */}
+          <div className="flex items-center gap-0 px-3 bg-app-secondary border-b border-default h-9 overflow-x-auto scrollbar-none">
+            {questionnaireData?.structure?.sheets?.map((sheet) => (
+              <button
+                key={sheet.name}
+                className={`px-3 h-full border-b-2 text-[12px] cursor-pointer transition-colors whitespace-nowrap ${
+                  activeSheet === sheet.name
+                    ? "text-primary border-b-accent"
+                    : "text-muted border-transparent hover:text-primary"
+                }`}
+                onClick={() => setActiveSheet(sheet.name)}
+              >
+                {sheet.name}
+              </button>
+            ))}
+          </div>
 
-      {/* Main panels */}
-      <div className="flex flex-1 overflow-hidden">
+          {/* Main panels */}
+          <div className="flex flex-1 overflow-hidden">
         <OriginalPanel
           ref={originalPanelRef}
           visible={visiblePanels.has("original")}
@@ -670,24 +737,26 @@ export default function App() {
         />
       </div>
 
-      {/* Stats bar */}
-      <div className="flex justify-between items-center h-7 px-4 bg-app-secondary border-t border-default text-[11px] text-muted">
-        <div className="flex gap-4">
-          {questionnaireData?.indexed?.sections && (
-            <span>
-              {questionnaireData.indexed.sections.reduce(
-                (acc, s) => acc + s.items.length,
-                0
-              )} items
-            </span>
-          )}
-        </div>
-        <div className="flex gap-4">
-          {pendingFeedback.length > 0 && (
-            <span className="text-amber-500">{pendingFeedback.length} pending</span>
-          )}
-        </div>
-      </div>
+          {/* Stats bar */}
+          <div className="flex justify-between items-center h-7 px-4 bg-app-secondary border-t border-default text-[11px] text-muted">
+            <div className="flex gap-4">
+              {questionnaireData?.indexed?.sections && (
+                <span>
+                  {questionnaireData.indexed.sections.reduce(
+                    (acc, s) => acc + s.items.length,
+                    0
+                  )} items
+                </span>
+              )}
+            </div>
+            <div className="flex gap-4">
+              {pendingFeedback.length > 0 && (
+                <span className="text-amber-500">{pendingFeedback.length} pending</span>
+              )}
+            </div>
+          </div>
+        </>
+      )}
 
       {/* Selection badge */}
       {selectedItems.size > 0 && (

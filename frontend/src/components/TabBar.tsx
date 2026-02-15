@@ -1,5 +1,5 @@
 import { List, Sun, Moon, Desktop, X, Check, Notepad } from '@phosphor-icons/react';
-import type { Tab } from '../types';
+import type { Tab, PanelType } from '../types';
 
 interface TabBarProps {
   tabs: Tab[];
@@ -7,12 +7,14 @@ interface TabBarProps {
   serverConnected: boolean;
   theme: 'light' | 'dark' | 'system';
   hasNotes?: boolean;
+  visiblePanels: Set<PanelType>;
   onSidebarToggle: () => void;
   onTabClick: (name: string) => void;
   onTabClose: (index: number) => void;
   onComplete: () => void;
   onNotesClick: () => void;
   onThemeChange: (theme: 'light' | 'dark' | 'system') => void;
+  onTogglePanel: (panel: PanelType) => void;
 }
 
 export function TabBar({
@@ -21,12 +23,14 @@ export function TabBar({
   serverConnected,
   theme,
   hasNotes,
+  visiblePanels,
   onSidebarToggle,
   onTabClick,
   onTabClose,
   onComplete,
   onNotesClick,
   onThemeChange,
+  onTogglePanel,
 }: TabBarProps) {
   const cycleTheme = () => {
     const themes: Array<'light' | 'dark' | 'system'> = ['light', 'dark', 'system'];
@@ -48,12 +52,13 @@ export function TabBar({
       {tabs.map((tab, index) => (
         <button
           key={tab.name}
-          className={`flex items-center gap-2 h-8 px-3 rounded text-[12px] font-medium cursor-pointer whitespace-nowrap max-w-[200px] transition-colors group ${
+          className={`flex items-center gap-2 h-8 px-3 rounded text-[12px] font-medium cursor-pointer whitespace-nowrap max-w-[320px] transition-colors group ${
             tab.name === currentTab
               ? 'bg-selected text-primary'
               : 'text-muted bg-card-hover hover:text-primary'
           }`}
           onClick={() => onTabClick(tab.name)}
+          title={tab.displayName}
         >
           <span className="overflow-hidden text-ellipsis">{tab.displayName}</span>
           {tab.completed && <Check size={14} className="text-emerald-500" />}
@@ -71,6 +76,26 @@ export function TabBar({
       ))}
 
       <div className="flex items-center gap-2 ml-auto pr-2">
+        {/* Panel toggles - connected number buttons */}
+        <div className="flex items-center border border-default rounded overflow-hidden mr-2">
+          {(['original', 'indexed', 'library'] as PanelType[]).map((panel, idx) => {
+            const isVisible = visiblePanels.has(panel);
+            return (
+              <button
+                key={panel}
+                className={`w-6 h-6 flex items-center justify-center text-[11px] font-medium cursor-pointer transition-colors border-r border-default last:border-r-0 ${
+                  isVisible
+                    ? 'bg-accent/20 text-accent'
+                    : 'text-muted hover:bg-card-hover'
+                }`}
+                onClick={() => onTogglePanel(panel)}
+                title={`${isVisible ? 'Hide' : 'Show'} ${panel} panel (${idx + 1})`}
+              >
+                {idx + 1}
+              </button>
+            );
+          })}
+        </div>
         <button
           className="flex items-center justify-center w-7 h-7 rounded text-muted cursor-pointer bg-card-hover transition-colors hover:text-primary"
           onClick={cycleTheme}

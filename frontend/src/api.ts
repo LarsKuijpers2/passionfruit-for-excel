@@ -3,6 +3,9 @@ import type {
   QuestionnaireData,
   HealthResponse,
   FeedbackEntry,
+  AggregatedLibraryData,
+  StandardQuestionsData,
+  CuratedLibraryData,
 } from './types';
 
 const API_BASE = '';
@@ -111,4 +114,60 @@ export async function saveNotes(
     }
   );
   if (!res.ok) throw new Error('Failed to save notes');
+}
+
+// =============================================================================
+// AGGREGATED LIBRARY API
+// =============================================================================
+
+// Get aggregated answer library for a customer
+export async function fetchAggregatedLibrary(
+  customer: string
+): Promise<AggregatedLibraryData> {
+  const res = await fetch(
+    `${API_BASE}/api/aggregated-library/${encodeURIComponent(customer)}`
+  );
+  if (!res.ok) throw new Error('Failed to fetch aggregated library');
+  return res.json();
+}
+
+// Merge similar items in the aggregated library
+export async function mergeLibraryItems(
+  customer: string,
+  itemIds: string[],
+  keepId: string,
+  mergedLabel?: string
+): Promise<{ success: boolean; merged: number; result: any }> {
+  const res = await fetch(
+    `${API_BASE}/api/aggregated-library/${encodeURIComponent(customer)}/merge`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ itemIds, keepId, mergedLabel }),
+    }
+  );
+  if (!res.ok) throw new Error('Failed to merge library items');
+  return res.json();
+}
+
+// Get standard questions for a customer
+export async function fetchStandardQuestions(
+  customer: string
+): Promise<StandardQuestionsData> {
+  const res = await fetch(
+    `${API_BASE}/api/standard-questions/${encodeURIComponent(customer)}`
+  );
+  if (!res.ok) throw new Error('Failed to fetch standard questions');
+  return res.json();
+}
+
+// Get curated library for a customer
+export async function fetchCuratedLibrary(
+  customer: string
+): Promise<CuratedLibraryData> {
+  const res = await fetch(
+    `${API_BASE}/api/curated-library/${encodeURIComponent(customer)}`
+  );
+  if (!res.ok) throw new Error('Failed to fetch curated library');
+  return res.json();
 }

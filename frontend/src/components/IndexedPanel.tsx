@@ -1,4 +1,5 @@
 import { useState, useMemo, forwardRef, useImperativeHandle, useRef } from "react";
+import { CaretDown, CaretRight } from '@phosphor-icons/react';
 import type { IndexedSection } from "../types";
 
 interface IndexedPanelProps {
@@ -121,6 +122,20 @@ export const IndexedPanel = forwardRef<IndexedPanelHandle, IndexedPanelProps>(fu
     });
   };
 
+  const toggleAllSections = () => {
+    const allIndices = sections.map((_, i) => i);
+    const allCollapsed = allIndices.every(i => collapsedSections.has(i));
+    if (allCollapsed) {
+      // Expand all
+      setCollapsedSections(new Set());
+    } else {
+      // Collapse all
+      setCollapsedSections(new Set(allIndices));
+    }
+  };
+
+  const allSectionsCollapsed = sections.length > 0 && sections.every((_, i) => collapsedSections.has(i));
+
   const handleItemClick = (e: React.MouseEvent, itemId: string) => {
     e.stopPropagation();
     if (e.shiftKey && lastSelectedId) {
@@ -152,7 +167,16 @@ export const IndexedPanel = forwardRef<IndexedPanelHandle, IndexedPanelProps>(fu
     <div className="flex-1 flex flex-col border-r border-default overflow-hidden min-w-0 bg-app">
       {/* Header */}
       <div className="h-10 px-4 flex items-center justify-between border-b border-default bg-app-secondary">
-        <span className="text-[13px] font-medium text-primary">Extraction</span>
+        <div className="flex items-center gap-2">
+          <span className="text-[13px] font-medium text-primary">Extraction</span>
+          <button
+            onClick={toggleAllSections}
+            className="p-1 rounded text-muted hover:text-primary hover:bg-card-hover transition-colors"
+            title={allSectionsCollapsed ? "Expand all" : "Collapse all"}
+          >
+            {allSectionsCollapsed ? <CaretRight size={14} /> : <CaretDown size={14} />}
+          </button>
+        </div>
         <div className="flex items-center gap-3">
           {needsReviewCount > 0 && (
             <button

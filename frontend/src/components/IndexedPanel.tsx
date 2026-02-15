@@ -1,4 +1,4 @@
-import { useState, useMemo, forwardRef, useImperativeHandle, useRef } from "react";
+import { useState, useMemo, forwardRef, useImperativeHandle, useRef, useCallback } from "react";
 import { CaretDown, CaretRight } from '@phosphor-icons/react';
 import type { IndexedSection } from "../types";
 
@@ -20,6 +20,7 @@ interface IndexedPanelProps {
 export interface IndexedPanelHandle {
   scrollToItem: (itemId: string) => void;
   getAllItemIds: () => string[];
+  toggleAllGroups: () => void;
 }
 
 // Linear-style destination colors (subtle)
@@ -66,6 +67,8 @@ export const IndexedPanel = forwardRef<IndexedPanelHandle, IndexedPanelProps>(fu
     return ids;
   }, [sections]);
 
+  const toggleAllSectionsRef = useRef<() => void>(() => {});
+
   useImperativeHandle(ref, () => ({
     scrollToItem: (itemId: string) => {
       const element = itemRefs.current.get(itemId);
@@ -76,6 +79,7 @@ export const IndexedPanel = forwardRef<IndexedPanelHandle, IndexedPanelProps>(fu
       }
     },
     getAllItemIds: () => allItemIds,
+    toggleAllGroups: () => toggleAllSectionsRef.current(),
   }));
 
   const filteredSections = useMemo(() => {
@@ -122,17 +126,20 @@ export const IndexedPanel = forwardRef<IndexedPanelHandle, IndexedPanelProps>(fu
     });
   };
 
-  const toggleAllSections = () => {
+  const toggleAllSections = useCallback(() => {
     const allIndices = sections.map((_, i) => i);
-    const allCollapsed = allIndices.every(i => collapsedSections.has(i));
-    if (allCollapsed) {
-      // Expand all
-      setCollapsedSections(new Set());
-    } else {
-      // Collapse all
-      setCollapsedSections(new Set(allIndices));
-    }
-  };
+    setCollapsedSections(prev => {
+      const allCollapsed = allIndices.every(i => prev.has(i));
+      if (allCollapsed) {
+        return new Set();
+      } else {
+        return new Set(allIndices);
+      }
+    });
+  }, [sections]);
+
+  // Keep ref updated for imperative handle
+  toggleAllSectionsRef.current = toggleAllSections;
 
   const allSectionsCollapsed = sections.length > 0 && sections.every((_, i) => collapsedSections.has(i));
 

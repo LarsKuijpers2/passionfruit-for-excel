@@ -1,4 +1,4 @@
-import { useState, useMemo, forwardRef, useImperativeHandle, useRef } from "react";
+import { useState, useMemo, forwardRef, useImperativeHandle, useRef, useCallback } from "react";
 import { CaretDown, CaretRight } from '@phosphor-icons/react';
 import type { LibraryItem } from "../types";
 
@@ -20,6 +20,7 @@ interface LibraryPanelProps {
 export interface LibraryPanelHandle {
   scrollToItem: (itemId: string) => void;
   getAllItemIds: () => string[];
+  toggleAllGroups: () => void;
 }
 
 // Linear-style destination colors (subtle)
@@ -62,6 +63,8 @@ export const LibraryPanel = forwardRef<LibraryPanelHandle, LibraryPanelProps>(fu
     });
   }, [items]);
 
+  const toggleAllGroupsRef = useRef<() => void>(() => {});
+
   useImperativeHandle(ref, () => ({
     scrollToItem: (itemId: string) => {
       const element = itemRefs.current.get(itemId);
@@ -72,6 +75,7 @@ export const LibraryPanel = forwardRef<LibraryPanelHandle, LibraryPanelProps>(fu
       }
     },
     getAllItemIds: () => allItemIds,
+    toggleAllGroups: () => toggleAllGroupsRef.current(),
   }));
 
   // Group items by destination
@@ -115,17 +119,20 @@ export const LibraryPanel = forwardRef<LibraryPanelHandle, LibraryPanelProps>(fu
     });
   };
 
-  const toggleAllGroups = () => {
+  const toggleAllGroups = useCallback(() => {
     const allGroupNames = groupedItems.map(([dest]) => dest);
-    const allCollapsed = allGroupNames.every(g => collapsedGroups.has(g));
-    if (allCollapsed) {
-      // Expand all
-      setCollapsedGroups(new Set());
-    } else {
-      // Collapse all
-      setCollapsedGroups(new Set(allGroupNames));
-    }
-  };
+    setCollapsedGroups(prev => {
+      const allCollapsed = allGroupNames.every(g => prev.has(g));
+      if (allCollapsed) {
+        return new Set();
+      } else {
+        return new Set(allGroupNames);
+      }
+    });
+  }, [groupedItems]);
+
+  // Keep ref updated for imperative handle
+  toggleAllGroupsRef.current = toggleAllGroups;
 
   const allGroupsCollapsed = groupedItems.length > 0 && groupedItems.every(([dest]) => collapsedGroups.has(dest));
 

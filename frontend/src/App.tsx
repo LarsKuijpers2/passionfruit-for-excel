@@ -167,6 +167,11 @@ export default function App() {
       if (e.key === "3" && !e.metaKey && !e.ctrlKey) {
         togglePanel("library");
       }
+      // Toggle all groups in panels
+      if (e.key === "c" && !e.metaKey && !e.ctrlKey) {
+        indexedPanelRef.current?.toggleAllGroups();
+        libraryPanelRef.current?.toggleAllGroups();
+      }
       // Cmd+A to select all items in the active panel (or indexed panel by default)
       if ((e.metaKey || e.ctrlKey) && e.key === "a") {
         e.preventDefault();

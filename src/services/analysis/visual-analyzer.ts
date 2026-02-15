@@ -273,6 +273,14 @@ Return JSON:
   ]
 }
 
+CRITICAL RULES FOR COMMENTS:
+- When a row has a Yes/No answer AND a COMMENTS column with text, extract TWO items:
+  1. The Yes/No item: "Is there an effective pest control program?" → "Yes"
+  2. The Comments item: "Is there an effective pest control program? - Comments" → "A documented pest control system..."
+- NEVER rephrase the label for comments. Keep the EXACT original question and append " - Comments"
+- DO NOT create labels like "Effective pest control program details" or "Pest control records details"
+- ALWAYS use the pattern: "[Original Question] - Comments"
+
 Important:
 - Extract EVERY question/answer pair
 - For PDF yes/no tables, "x" typically means "Yes"
@@ -357,6 +365,12 @@ IMPORTANT EXTRACTION RULES:
    - If "NO" has strikethrough → answer is "Yes"
    - If "YES" has strikethrough → answer is "No"
    - Strikethrough may appear as text with a horizontal line through it, or as visually different (lighter/greyed) compared to the selected option
+
+6. QUESTIONNAIRE METADATA: Do NOT extract these as answer library items:
+   - Document headers, page numbers, form version numbers
+   - Instructions to the filler ("Please complete", "Insert by supplier")
+   - Attachment/document references ("Certificate attached", "See appendix", "Bijgevoegd")
+   - These should be tagged with destination: "questionnaire" or "exclude"
 
 And a level for reusability:
 - "standard" = Factual company data, can be auto-filled (name, address, cert numbers)
@@ -466,7 +480,15 @@ Important:
 - Detect language: "en", "de", "fr", "nl" or omit if unknown
 - Confidence should be lower if the pairing is ambiguous
 - CRITICAL: Extract certification checklists (rows with numbered items and yes/no) as individual "yesno" items, NOT as tables
-- CRITICAL: For multi-column contact tables, create separate items for each column`;
+- CRITICAL: For multi-column contact tables, create separate items for each column
+
+CRITICAL RULES FOR COMMENTS:
+- When a row has a Yes/No answer AND a COMMENTS column with text, extract TWO items:
+  1. The Yes/No item: "Is there an effective pest control program?" → "Yes"
+  2. The Comments item: "Is there an effective pest control program? - Comments" → "A documented pest control system..."
+- NEVER rephrase the label for comments. Keep the EXACT original question and append " - Comments"
+- DO NOT create labels like "Effective pest control program details" or "Pest control records details"
+- ALWAYS use the pattern: "[Original Question] - Comments"`;
 
     const response = await this.invokeModel(prompt);
 

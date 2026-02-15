@@ -133,20 +133,24 @@ program
   .option('--dir <dir>', 'Structure directory (legacy mode)')
   .option('--output <dir>', 'Output directory for indexed questionnaires (legacy mode)')
   .option('--rules-dir <dir>', 'Rules directory (legacy mode)')
+  .option('--no-vision', 'Skip Claude Vision enhancement for PDFs')
   .action(async (file: string, opts) => {
     try {
       const customer = opts.customer as string | undefined;
+      const useVision = opts.vision !== false;
 
       // Determine directories based on customer or legacy mode
       let dir: string;
       let outputDir: string;
       let rulesDir: string;
+      let incomingDir: string | undefined;
 
       if (customer) {
         const paths = ensureCustomerDirs(customer);
         dir = paths.structure;
         outputDir = paths.indexed;
         rulesDir = getRulesDir(customer);
+        incomingDir = paths.incoming;
         console.log(`\n📁 Customer: ${customer}`);
       } else {
         dir = opts.dir as string || './structure';
@@ -180,6 +184,61 @@ program
       // Save
       const outputPath = await indexer.save(indexed, outputDir);
       console.log('\n💾 Saved to: ' + outputPath);
+
+      // Enhance PDFs with Claude Vision for strikethrough detection
+      if (useVision && incomingDir) {
+        const { existsSync } = await import('fs');
+        const { enhanceWithVision } = await import('./services/extractors/vision-enhancer.js');
+
+        // Find the original PDF
+        const sourceName = indexed.source.replace(/\.json$/, '');
+        const possiblePdfNames = [
+          sourceName,
+          sourceName.replace(/_/g, ' '),
+          sourceName.replace(/__/g, ' (').replace(/_(\d)_/g, ')$1(') // Handle encoded parentheses
+        ];
+
+        let pdfPath: string | null = null;
+        for (const name of possiblePdfNames) {
+          const testPath = join(incomingDir, name);
+          if (existsSync(testPath) && testPath.toLowerCase().endsWith('.pdf')) {
+            pdfPath = testPath;
+            break;
+          }
+          if (existsSync(testPath + '.pdf')) {
+            pdfPath = testPath + '.pdf';
+            break;
+          }
+        }
+
+        // Also try to find any PDF with similar name
+        if (!pdfPath) {
+          const { readdir } = await import('fs/promises');
+          const files = await readdir(incomingDir);
+          const baseWords = sourceName.toLowerCase().split('_').filter(w => w.length > 3).slice(0, 3);
+          for (const f of files) {
+            if (f.toLowerCase().endsWith('.pdf')) {
+              const matches = baseWords.filter(w => f.toLowerCase().includes(w));
+              if (matches.length >= 2) {
+                pdfPath = join(incomingDir, f);
+                break;
+              }
+            }
+          }
+        }
+
+        if (pdfPath && existsSync(pdfPath)) {
+          console.log('\n👁️  Enhancing with Claude Vision...');
+          console.log('   (detects: strikethrough, checkboxes, handwriting, faint text, complex tables)');
+          const enhanced = await enhanceWithVision(outputPath, pdfPath);
+          if (enhanced.updatedCount > 0) {
+            console.log(`   ✅ Updated ${enhanced.updatedCount} items with Vision results`);
+            console.log(`   📊 Answered: ${enhanced.newAnswered}/${indexed.stats.total}`);
+          } else {
+            console.log('   ℹ️  No additional values found');
+          }
+        }
+      }
 
     } catch (error) {
       console.error('\n❌ Error: ' + (error instanceof Error ? error.message : error));
@@ -1058,6 +1117,54 @@ program
 
       console.log(`\nAdding ${customer} data to answer library...`);
       addToAnswerLibrary(groupedPath, libraryPath);
+
+    } catch (error) {
+      console.error('\n❌ Error: ' + (error instanceof Error ? error.message : error));
+      process.exit(1);
+    }
+  });
+
+// =============================================================================
+// LEARN - Self-learning system for extraction quality
+// =============================================================================
+
+program
+  .command('learn')
+  .description('Run extraction learning cycle - analyze feedback notes and generate improvements')
+  .option('--report', 'Generate detailed markdown report')
+  .option('--export', 'Export prompt improvements to file')
+  .action(async (opts) => {
+    try {
+      const { runLearningCycle, ExtractionLearner } = await import('./services/learning/extraction-learner.js');
+      const { writeFile } = await import('fs/promises');
+
+      await runLearningCycle('./customers');
+
+      if (opts.report || opts.export) {
+        const learner = new ExtractionLearner();
+        await learner.load();
+
+        if (opts.export) {
+          const additions = learner.exportPromptAdditions();
+          const exportPath = './knowledge/prompt-improvements.txt';
+          await writeFile(exportPath, additions);
+          console.log(`\n📄 Exported prompt additions to ${exportPath}`);
+        }
+
+        if (opts.report) {
+          const summary = learner.getSummary();
+          let report = `# Extraction Learning Report\n\nGenerated: ${new Date().toISOString()}\n\n`;
+          report += `## Summary\n\n- Total Issues: ${summary.totalIssues}\n`;
+          report += `- Pending Improvements: ${summary.pendingImprovements.length}\n\n`;
+          report += `## Issues by Category\n\n`;
+          for (const [cat, count] of Object.entries(summary.byCategory)) {
+            report += `- ${cat}: ${count}\n`;
+          }
+          const reportPath = './knowledge/extraction-learning-report.md';
+          await writeFile(reportPath, report);
+          console.log(`\n📊 Generated report at ${reportPath}`);
+        }
+      }
 
     } catch (error) {
       console.error('\n❌ Error: ' + (error instanceof Error ? error.message : error));

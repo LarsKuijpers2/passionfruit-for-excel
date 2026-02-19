@@ -58,6 +58,10 @@ export interface CellData {
   format?: CellFormat;
   /** Detected role based on formatting */
   role?: CellRole;
+  /** Bounding box polygon [x1,y1, x2,y2, x3,y3, x4,y4] in inches (PDF only) */
+  polygon?: number[];
+  /** Page number for PDF documents (1-indexed) */
+  pageNumber?: number;
 }
 
 /** A row with all its cells */
@@ -127,6 +131,14 @@ export interface SheetData {
 export type DocumentType = 'excel' | 'word' | 'pdf';
 
 /** Complete questionnaire structure */
+/** Page dimensions for PDF documents */
+export interface PageInfo {
+  pageNumber: number;
+  width: number;   // in inches
+  height: number;  // in inches
+  unit: string;    // typically "inch"
+}
+
 export interface QuestionnaireStructure {
   /** Source file info */
   source: {
@@ -143,12 +155,30 @@ export interface QuestionnaireStructure {
   };
   /** All sheets */
   sheets: SheetData[];
+  /** Page dimensions for PDF overlay rendering */
+  pages?: PageInfo[];
   /** Overall stats */
   stats: {
     totalSheets: number;
     totalRows: number;
     totalCells: number;
     filledCells: number;
+  };
+  /** Additional metadata from extraction process */
+  metadata?: {
+    /** Document classification results */
+    classification?: {
+      documentType: string;
+      recommendedMethod: string;
+      sections: string[];
+      language: string;
+    };
+    /** Text Q&A extraction results (for text-based documents) */
+    textQA?: {
+      itemCount: number;
+      sections: string[];
+      pageCount: number;
+    };
   };
 }
 

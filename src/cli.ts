@@ -37,6 +37,7 @@ import {
   getRulesDir,
   getLegacyPaths,
 } from './utils/customer-paths.js';
+import { classifyDocument } from './services/analysis/document-classifier.js';
 
 const program = new Command();
 
@@ -133,7 +134,7 @@ program
   .option('--dir <dir>', 'Structure directory (legacy mode)')
   .option('--output <dir>', 'Output directory for indexed questionnaires (legacy mode)')
   .option('--rules-dir <dir>', 'Rules directory (legacy mode)')
-  .option('--no-vision', 'Skip Claude Vision enhancement for PDFs')
+  .option('--no-vision', 'Skip Claude Vision validation for PDFs')
   .action(async (file: string, opts) => {
     try {
       const customer = opts.customer as string | undefined;
@@ -228,14 +229,27 @@ program
         }
 
         if (pdfPath && existsSync(pdfPath)) {
-          console.log('\n👁️  Enhancing with Claude Vision...');
-          console.log('   (detects: strikethrough, checkboxes, handwriting, faint text, complex tables)');
-          const enhanced = await enhanceWithVision(outputPath, pdfPath);
-          if (enhanced.updatedCount > 0) {
-            console.log(`   ✅ Updated ${enhanced.updatedCount} items with Vision results`);
-            console.log(`   📊 Answered: ${enhanced.newAnswered}/${indexed.stats.total}`);
+          // Vision validation - flags discrepancies for human review, never auto-corrects
+          console.log('\n👁️  Validating with Claude Vision...');
+          console.log('   (compares extraction against what Vision sees in the PDF)');
+          const validation = await enhanceWithVision(outputPath, pdfPath);
+
+          const accuracy = validation.totalItems > 0
+            ? ((validation.matchedCorrectly / validation.totalItems) * 100).toFixed(0)
+            : '0';
+
+          if (validation.discrepancies.length === 0) {
+            console.log(`   ✅ Vision confirms extraction (${accuracy}% match, ${validation.matchedCorrectly}/${validation.totalItems} items)`);
           } else {
-            console.log('   ℹ️  No additional values found');
+            console.log(`   ⚠️  Found ${validation.discrepancies.length} discrepancies to review`);
+            console.log(`   📊 Matched: ${validation.matchedCorrectly}/${validation.totalItems} (${accuracy}%)`);
+            // Show first few discrepancies
+            for (const d of validation.discrepancies.slice(0, 3)) {
+              console.log(`      - "${d.label.slice(0, 40)}..." Base: ${d.baseValue || '(empty)'} → Vision: ${d.visionValue}`);
+            }
+            if (validation.discrepancies.length > 3) {
+              console.log(`      ... and ${validation.discrepancies.length - 3} more`);
+            }
           }
         }
       }
@@ -1117,6 +1131,197 @@ program
 
       console.log(`\nAdding ${customer} data to answer library...`);
       addToAnswerLibrary(groupedPath, libraryPath);
+
+    } catch (error) {
+      console.error('\n❌ Error: ' + (error instanceof Error ? error.message : error));
+      process.exit(1);
+    }
+  });
+
+// =============================================================================
+// COMPARE-API - Compare indexed questionnaire with existing API answers
+// =============================================================================
+
+program
+  .command('compare-api')
+  .description('Compare indexed questionnaire with existing NS library answers, export duplicates to Excel')
+  .argument('<questionnaire>', 'Indexed questionnaire filename')
+  .option('-c, --customer <name>', 'Customer name', 'Doehler Oosterhout')
+  .option('-t, --threshold <number>', 'Similarity threshold (0-1)', '0.4')
+  .option('-o, --output <file>', 'Output TSV file name', 'duplicates-comparison.tsv')
+  .action(async (questionnaire: string, opts) => {
+    try {
+      const { readFile, writeFile } = await import('fs/promises');
+      const { join } = await import('path');
+
+      const customer = opts.customer as string;
+      const threshold = parseFloat(opts.threshold as string);
+      const outputFile = opts.output as string;
+
+      console.log(`\n📊 Comparing ${questionnaire} with API answers`);
+      console.log(`   Customer: ${customer}`);
+      console.log(`   Threshold: ${(threshold * 100).toFixed(0)}%`);
+
+      // Load indexed questionnaire
+      const paths = getCustomerPaths(customer);
+      const indexedPath = join(paths.indexed, questionnaire);
+
+      let data;
+      try {
+        data = JSON.parse(await readFile(indexedPath, 'utf-8'));
+      } catch {
+        console.error(`\n❌ Could not read: ${indexedPath}`);
+        process.exit(1);
+      }
+
+      // Extract items from indexed questionnaire
+      interface LocalItem {
+        id: string;
+        label: string;
+        value: string;
+        section: string;
+      }
+
+      const localItems: LocalItem[] = [];
+      for (const section of data.sections || []) {
+        for (const item of section.items || []) {
+          if (item.label && item.value) {
+            localItems.push({
+              id: item.id,
+              label: item.label,
+              value: item.value,
+              section: section.title,
+            });
+          }
+        }
+      }
+
+      console.log(`   Local items: ${localItems.length}`);
+
+      // Fetch API answers
+      const client = new PassionfruitAPIClient();
+      const apiAnswers = await client.listAnswers();
+
+      // Deduplicate (API pagination bug returns duplicates)
+      const uniqueAnswers = new Map<number, typeof apiAnswers[0]>();
+      for (const a of apiAnswers) {
+        uniqueAnswers.set(a.id, a);
+      }
+      const existingAnswers = Array.from(uniqueAnswers.values());
+
+      console.log(`   API answers: ${existingAnswers.length}`);
+
+      // Similarity function
+      const calculateSimilarity = (q1: string, q2: string): number => {
+        const normalize = (s: string) => s.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 2);
+        const words1 = new Set(normalize(q1));
+        const words2 = new Set(normalize(q2));
+        if (words1.size === 0 || words2.size === 0) return 0;
+        const intersection = [...words1].filter(w => words2.has(w)).length;
+        const union = new Set([...words1, ...words2]).size;
+        return intersection / union;
+      };
+
+      // Find matches
+      const matches: Array<{
+        existing: typeof existingAnswers[0];
+        local: LocalItem;
+        similarity: number;
+      }> = [];
+
+      for (const existing of existingAnswers) {
+        for (const local of localItems) {
+          const similarity = calculateSimilarity(existing.question, local.label);
+          if (similarity >= threshold) {
+            matches.push({ existing, local, similarity });
+          }
+        }
+      }
+
+      matches.sort((a, b) => b.similarity - a.similarity);
+
+      console.log(`\n   Matches found: ${matches.length}`);
+
+      // Show top matches
+      if (matches.length > 0) {
+        console.log('\n   Top matches:');
+        for (const m of matches.slice(0, 5)) {
+          const sameAnswer = m.existing.answer.toLowerCase().trim() === m.local.value.toLowerCase().trim();
+          console.log(`     [${(m.similarity * 100).toFixed(0)}%] ${sameAnswer ? '✓' : '≠'} ${m.existing.question.slice(0, 50)}...`);
+        }
+        if (matches.length > 5) {
+          console.log(`     ... and ${matches.length - 5} more`);
+        }
+      }
+
+      // Export to TSV
+      const tsvRows: string[] = [];
+      tsvRows.push([
+        'Similarity',
+        'API ID',
+        'API Question',
+        'API Answer',
+        'Local Section',
+        'Local Question',
+        'Local Answer',
+        'Same Answer?',
+        'Action',
+      ].join('\t'));
+
+      for (const m of matches) {
+        const sameAnswer = m.existing.answer.toLowerCase().trim() === m.local.value.toLowerCase().trim();
+        tsvRows.push([
+          (m.similarity * 100).toFixed(0) + '%',
+          m.existing.id.toString(),
+          m.existing.question.replace(/\t/g, ' ').replace(/\n/g, ' '),
+          m.existing.answer.replace(/\t/g, ' ').replace(/\n/g, ' '),
+          m.local.section,
+          m.local.label.replace(/\t/g, ' ').replace(/\n/g, ' '),
+          m.local.value.replace(/\t/g, ' ').replace(/\n/g, ' '),
+          sameAnswer ? 'YES' : 'NO',
+          '',
+        ].join('\t'));
+      }
+
+      // Add unmatched API answers
+      const matchedApiIds = new Set(matches.map(m => m.existing.id));
+      const unmatchedApi = existingAnswers.filter(a => !matchedApiIds.has(a.id));
+
+      if (unmatchedApi.length > 0) {
+        tsvRows.push('');
+        tsvRows.push('--- API ANSWERS NOT IN LOCAL QUESTIONNAIRE ---');
+        for (const a of unmatchedApi) {
+          tsvRows.push([
+            'no match',
+            a.id.toString(),
+            a.question.replace(/\t/g, ' ').replace(/\n/g, ' '),
+            a.answer.replace(/\t/g, ' ').replace(/\n/g, ' '),
+            '',
+            '',
+            '',
+            '',
+            '',
+          ].join('\t'));
+        }
+      }
+
+      const outputPath = join(`./customers/${customer}`, outputFile);
+      await writeFile(outputPath, tsvRows.join('\n'));
+
+      console.log(`\n✅ Exported to: ${outputPath}`);
+      console.log('   (Tab-separated file - open in Excel)\n');
+
+      // Summary
+      const sameAnswerCount = matches.filter(m =>
+        m.existing.answer.toLowerCase().trim() === m.local.value.toLowerCase().trim()
+      ).length;
+
+      console.log('Summary:');
+      console.log(`  Local items: ${localItems.length}`);
+      console.log(`  API answers: ${existingAnswers.length}`);
+      console.log(`  Matches: ${matches.length}`);
+      console.log(`  Same answer content: ${sameAnswerCount}`);
+      console.log(`  Unmatched API: ${unmatchedApi.length}`);
 
     } catch (error) {
       console.error('\n❌ Error: ' + (error instanceof Error ? error.message : error));

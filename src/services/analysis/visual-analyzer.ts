@@ -47,6 +47,8 @@ export interface DetectedItem {
   level: ItemLevel;
   /** Detected language */
   lang?: string;
+  /** Suggested destination (company, answer_library, product) */
+  destination?: string;
 }
 
 /** Sheet analysis result */
@@ -66,6 +68,17 @@ export interface SheetAnalysis {
   layoutType: 'vertical' | 'horizontal' | 'matrix' | 'mixed';
   /** Analysis notes */
   notes?: string;
+}
+
+/** Detected Q&A pair (legacy, maps to DetectedItem) */
+interface DetectedQAPair {
+  question: string;
+  questionCell: string;
+  answer?: string;
+  answerCell: string;
+  section: string;
+  confidence: number;
+  level: ItemLevel;
 }
 
 // =============================================================================
@@ -202,7 +215,11 @@ Important:
       const jsonMatch = response.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         const parsed = JSON.parse(jsonMatch[0]);
-        return parsed.sections || [];
+        let sections = parsed.sections || [];
+
+        // CRITICAL: Fill gaps to ensure no content is lost
+        sections = this.fillSectionGaps(sections, sheet.rows.length);
+        return sections;
       }
     } catch (e) {
       console.error('Failed to parse outline:', e);
@@ -215,6 +232,55 @@ Important:
       endRow: sheet.rows.length,
       topic: 'other',
     }];
+  }
+
+  /**
+   * Fill gaps between sections to ensure no content is lost
+   */
+  private fillSectionGaps(sections: any[], totalRows: number): any[] {
+    if (sections.length === 0) {
+      return [{
+        title: "Complete Document",
+        startRow: 1,
+        endRow: totalRows,
+        topic: 'other'
+      }];
+    }
+
+    // Sort sections by startRow
+    sections.sort((a, b) => a.startRow - b.startRow);
+
+    const filledSections: any[] = [];
+    let currentRow = 1;
+
+    for (const section of sections) {
+      // Fill gap before this section if needed
+      if (currentRow < section.startRow) {
+        filledSections.push({
+          title: `Content (rows ${currentRow}-${section.startRow - 1})`,
+          startRow: currentRow,
+          endRow: section.startRow - 1,
+          topic: 'other'
+        });
+      }
+
+      // Add the original section
+      filledSections.push(section);
+      currentRow = Math.max(currentRow, section.endRow + 1);
+    }
+
+    // Fill gap after last section if needed
+    if (currentRow <= totalRows) {
+      filledSections.push({
+        title: `Content (rows ${currentRow}-${totalRows})`,
+        startRow: currentRow,
+        endRow: totalRows,
+        topic: 'other'
+      });
+    }
+
+    console.log(`    Gap filling: ${sections.length} original → ${filledSections.length} complete sections`);
+    return filledSections;
   }
 
   /**
@@ -280,6 +346,23 @@ CRITICAL RULES FOR COMMENTS:
 - NEVER rephrase the label for comments. Keep the EXACT original question and append " - Comments"
 - DO NOT create labels like "Effective pest control program details" or "Pest control records details"
 - ALWAYS use the pattern: "[Original Question] - Comments"
+
+CRITICAL RULES FOR CONDITIONAL FOLLOW-UP QUESTIONS:
+- When you see "If yes", "If no", "If applicable", etc., make the label self-explanatory
+- Find the parent question and incorporate its context into the label
+- Use natural phrasing - "against" for preventive/protective measures, "for" when describing something
+- Example:
+  Parent: "Are there physical hazards?" → Yes
+  Follow-up: "If yes; which preventive measures are in place?" → "Sieve control..."
+  WRONG label: "If yes; which preventive measures are in place?"
+  WRONG label: "Which preventive measures are in place?"
+  CORRECT label: "Which preventive measures are in place against physical hazards?"
+- Another example:
+  Parent: "Is transportation outsourced?" → Yes
+  Follow-up: "If yes; are there contracts in place?" → "Yes"
+  CORRECT label: "Are there contracts in place for outsourced transportation?"
+- The label should make sense WITHOUT needing to see the parent question
+- Remove "If yes/no" prefixes and add context naturally
 
 Important:
 - Extract EVERY question/answer pair
@@ -378,41 +461,58 @@ And a level for reusability:
 - "product" = Product-specific, changes per product (ingredients, allergens)
 
 And a topic describing what the item is about (choose the most specific one):
-- "company" = Company name, address, legal info
-- "contacts" = Contact persons, phone, email
-- "certifications" = Certifications (BRC, IFS, FSSC, halal, kosher, etc.)
-- "allergens" = Allergen information
-- "food_safety" = HACCP, food safety procedures
-- "quality" = Quality management systems
-- "premises" = Building, facilities, zoning, utilities, infrastructure
-- "hygiene" = Personal hygiene, handwashing, protective clothing
-- "training" = Staff training, competency, awareness
-- "cleaning" = Cleaning procedures, sanitation, disinfection
-- "pest_control" = Pest management, pest prevention
+
+ENTITY topics (for company/organization data):
+- "entity_info" = Company name, address, legal info, registration
+- "entity_contacts" = Contact persons, phone, email
+- "entity_certifications" = Company-level certifications
+
+PRODUCT topics (for product-specific data):
+- "product_identification" = Product name, code, reference, article number
+- "product_attributes" = Appearance, taste, smell, color, texture
+- "product_composition" = Ingredients list, recipe, formula
+- "product_allergens" = Allergen declarations, cross-contamination
+- "product_nutrition" = Nutritional values, calories
+- "product_certifications" = Halal, kosher, organic, vegan
+- "product_specifications" = Shelf life, storage conditions
+- "product_packaging" = Packaging materials, dimensions, labeling
+
+OPERATIONS topics (for processes):
+- "quality_systems" = QMS, HACCP, food safety systems
+- "premises" = Building, facilities, zoning, infrastructure
 - "equipment" = Production equipment, maintenance, calibration
-- "monitoring" = Environmental monitoring, air/water testing, sampling
-- "waste" = Waste handling, disposal
-- "sustainability" = Sustainability, CSR
-- "environment" = Environmental policies
-- "packaging" = Packaging information
-- "logistics" = Transport, shipping, delivery
-- "origin" = Origin, provenance
-- "traceability" = Traceability systems, batch tracking
+- "hygiene" = Personal hygiene, handwashing, protective clothing
+- "cleaning" = Cleaning procedures, sanitation, disinfection
+- "pest_control" = Pest management
+- "monitoring" = Environmental monitoring, testing, sampling
 - "raw_materials" = Raw material sourcing, suppliers
-- "food_fraud" = Food fraud prevention
-- "food_defense" = Food defense, security
-- "nutrition" = Nutritional values
-- "crisis" = Crisis management, recall
-- "financial" = Financial, banking info
-- "animal_welfare" = Animal welfare
-- "audits" = Audits, inspections
-- "product" = Product identification, specifications
-- "ingredients" = Ingredients, composition
-- "microbiology" = Microbiological specs
-- "documents" = Document references
+- "traceability" = Batch tracking, lot numbers
+- "logistics" = Transport, storage, shipping
+- "waste" = Waste handling, disposal
+- "microbiology" = Microbiological testing
+
+COMPLIANCE topics:
+- "certifications" = BRC, IFS, FSSC, ISO standards
+- "audits" = Internal/external audits, inspections
+- "food_safety" = Food safety procedures, hazard analysis
+- "food_defense" = Security, tampering prevention
+- "food_fraud" = Authenticity, adulteration prevention
+- "crisis" = Recall procedures, complaints
+- "origin" = Country of origin, provenance
+
+SUSTAINABILITY topics:
+- "sustainability" = CSR, carbon footprint
+- "environment" = Environmental policies
+- "animal_welfare" = Animal welfare policies
+
+ADMIN topics:
+- "training" = Staff training, competency
+- "documents" = Document references, attachments
 - "signature" = Signatures (NOT reusable)
 - "approval" = Approvals, authorizations
-- "other" = Anything else (use only when no other topic fits)
+- "financial" = Financial info, banking
+
+- "other" = Only when no other topic fits
 
 Respond in this JSON format:
 {
@@ -481,6 +581,14 @@ Important:
 - Confidence should be lower if the pairing is ambiguous
 - CRITICAL: Extract certification checklists (rows with numbered items and yes/no) as individual "yesno" items, NOT as tables
 - CRITICAL: For multi-column contact tables, create separate items for each column
+- CRITICAL: For specification/quality parameter tables with 3+ columns, create separate items for EACH column:
+  * Example: Row 186 with "Dextrose Equivalent (ISO 5377)", "", "CoA" → create 3 items:
+    - Item 1: lCell="A186", label="Dextrose Equivalent (ISO 5377)", value="(parameter name)"
+    - Item 2: lCell="B186", label="Dextrose Equivalent - Standard Value", value="EMPTY"
+    - Item 3: lCell="C186", label="Dextrose Equivalent - Monitoring Method", value="CoA"
+  * DO NOT combine columns A186+C186 into a single item
+  * Each column = separate item, even if empty
+  * Pattern: Parameter/Standard/Method or Name/Value/Analysis columns
 
 CRITICAL RULES FOR COMMENTS:
 - When a row has a Yes/No answer AND a COMMENTS column with text, extract TWO items:
@@ -488,7 +596,24 @@ CRITICAL RULES FOR COMMENTS:
   2. The Comments item: "Is there an effective pest control program? - Comments" → "A documented pest control system..."
 - NEVER rephrase the label for comments. Keep the EXACT original question and append " - Comments"
 - DO NOT create labels like "Effective pest control program details" or "Pest control records details"
-- ALWAYS use the pattern: "[Original Question] - Comments"`;
+- ALWAYS use the pattern: "[Original Question] - Comments"
+
+CRITICAL RULES FOR CONDITIONAL FOLLOW-UP QUESTIONS:
+- When you see "If yes", "If no", "If applicable", etc., make the label self-explanatory
+- Find the parent question and incorporate its context into the label
+- Use natural phrasing - "against" for preventive/protective measures, "for" when describing something
+- Example:
+  Parent: "Are there physical hazards?" → Yes
+  Follow-up: "If yes; which preventive measures are in place?" → "Sieve control..."
+  WRONG label: "If yes; which preventive measures are in place?"
+  WRONG label: "Which preventive measures are in place?"
+  CORRECT label: "Which preventive measures are in place against physical hazards?"
+- Another example:
+  Parent: "Is transportation outsourced?" → Yes
+  Follow-up: "If yes; are there contracts in place?" → "Yes"
+  CORRECT label: "Are there contracts in place for outsourced transportation?"
+- The label should make sense WITHOUT needing to see the parent question
+- Remove "If yes/no" prefixes and add context naturally`;
 
     const response = await this.invokeModel(prompt);
 
@@ -653,7 +778,7 @@ export class RuleBasedAnalyzer {
    */
   analyzeSheet(sheet: SheetData): SheetAnalysis {
     const sections: SheetAnalysis['sections'] = [];
-    const qaPairs: DetectedQAPair[] = [];
+    const items: DetectedItem[] = [];
 
     let currentSection = '';
     let sectionStartRow = 0;
@@ -677,7 +802,17 @@ export class RuleBasedAnalyzer {
       // Detect question-answer pairs
       const pair = this.detectQAPair(row, sheet.rows, currentSection);
       if (pair) {
-        qaPairs.push(pair);
+        // Convert DetectedQAPair to DetectedItem
+        items.push({
+          type: 'field',
+          label: pair.question,
+          value: pair.answer,
+          lCell: pair.questionCell,
+          vCell: pair.answerCell,
+          section: pair.section,
+          confidence: pair.confidence,
+          level: pair.level,
+        });
       }
     }
 
@@ -693,7 +828,7 @@ export class RuleBasedAnalyzer {
     return {
       sheetName: sheet.name,
       sections,
-      qaPairs,
+      items,
       layoutType: this.detectLayoutType(sheet),
     };
   }
@@ -798,9 +933,9 @@ export class RuleBasedAnalyzer {
   }
 
   /**
-   * Detect if answer is entity or product level
+   * Detect if answer is standard or product level
    */
-  private detectLevel(section: string, question: string): 'entity' | 'product' {
+  private detectLevel(section: string, question: string): ItemLevel {
     const lower = (section + ' ' + question).toLowerCase();
 
     // Product-level indicators
@@ -808,8 +943,8 @@ export class RuleBasedAnalyzer {
       return 'product';
     }
 
-    // Entity-level indicators (default for most)
-    return 'entity';
+    // Standard (entity-level) for most items
+    return 'standard';
   }
 
   /**

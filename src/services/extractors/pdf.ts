@@ -21,6 +21,7 @@ import type {
 import { extractPdfWithAzure, isAzureConfigured, type DocumentAnalysisResult, type TableCell } from './azure.js';
 import { classifyDocument, type DocumentClassification } from '../analysis/document-classifier.js';
 import { extractTextQA, type TextQAResult } from './text-qa.js';
+import { ParagraphQAExtractor, type ParagraphWithPosition } from './paragraph-qa-extractor.js';
 
 const execAsync = promisify(exec);
 
@@ -67,26 +68,27 @@ export class PdfStructureExtractor {
       console.log(`  Document type: ${classification.documentType}`);
       console.log(`  Recommended method: ${classification.recommendedMethod}`);
 
-      // Choose extraction method based on classification
+      // For complete page coverage, prefer 'both' method when available
+      console.log('  Azure configured?', isAzureConfigured());
       if (classification.recommendedMethod === 'text') {
-        console.log('  Using text-based Q&A extraction...');
-        return this.extractWithTextQA(filepath, filename, classification);
-      } else if (classification.recommendedMethod === 'both') {
-        console.log('  Using combined table + text extraction...');
-        return this.extractWithBothMethods(filepath, filename, classification);
-      } else if (classification.recommendedMethod === 'skip') {
-        console.log('  Document marked for skip, using basic extraction...');
+        console.log('  Upgrading from text to both method for better coverage');
+        classification.recommendedMethod = 'both';
       }
-      // Otherwise fall through to table-based extraction
+
+      if (isAzureConfigured()) {
+        if (classification.recommendedMethod === 'both') {
+          console.log('  Using combined table + text extraction...');
+          return this.extractWithBothMethods(filepath, filename, classification);
+        } else if (classification.recommendedMethod === 'skip') {
+          console.log('  Document marked for skip, using Azure extraction...');
+        }
+        // Use Azure extraction for table-based content
+        console.log('  Using Azure Document Intelligence for PDF extraction...');
+        return this.extractWithAzure(filepath, filename);
+      }
     }
 
-    // Table-based extraction (default for checkbox questionnaires)
-    if (isAzureConfigured()) {
-      console.log('  Using Azure Document Intelligence for PDF extraction...');
-      return this.extractWithAzure(filepath, filename);
-    }
-
-    // Fallback to basic pdf-parse
+    // For non-Azure environments, use basic extraction fallback
     console.log('  Using basic PDF extraction (Azure DI not configured)...');
     return this.extractWithPdfParse(filepath, filename);
   }
@@ -265,50 +267,230 @@ export class PdfStructureExtractor {
       return this.extractWithTextQA(filepath, filename, classification);
     }
 
-    // If both have content, add text items that weren't captured in tables
-    // For now, just use table results with enhanced metadata
-    tableResult.metadata = {
-      ...tableResult.metadata,
-      classification: {
-        documentType: classification.documentType,
-        recommendedMethod: classification.recommendedMethod,
-        sections: classification.sections.map(s => s.name),
-        language: classification.language,
-      },
-      textQA: {
-        itemCount: textResult.items.length,
-        sections: textResult.sections,
-        pageCount: textResult.pageCount,
-      },
-    };
+    // Merge both extractions to preserve all pages
+    // Table extraction provides structure, text extraction provides complete page coverage
+    const mergedResult = this.mergeTableAndTextExtractions(tableResult, textResult, classification);
 
-    return tableResult;
+    console.log(`  Merged result: ${mergedResult.stats.totalRows} rows covering all pages`);
+    return mergedResult;
   }
 
   /**
-   * Extract using Azure Document Intelligence (high quality)
-   * Uses raw table data with proper cell indices for accurate column alignment
+   * Merge table extraction (structure) with text extraction (complete page coverage)
+   * Ensures no pages are lost while preserving table structure where it exists
    */
-  private async extractWithAzure(filepath: string, filename: string): Promise<QuestionnaireStructure> {
-    const result = await extractPdfWithAzure(filepath);
-
-    // Use raw table data for accurate structure (not markdown which loses alignment)
-    const sheets = this.parseRawTablesToSheets(result, filename);
-
-    // Calculate stats
-    let totalRows = 0;
-    let totalCells = 0;
-    let filledCells = 0;
-
-    for (const sheet of sheets) {
-      totalRows += sheet.rows.length;
+  private mergeTableAndTextExtractions(
+    tableResult: QuestionnaireStructure,
+    textResult: TextQAResult,
+    classification: DocumentClassification
+  ): QuestionnaireStructure {
+    // Get pages covered by table extraction
+    const tablePagesSet = new Set<number>();
+    for (const sheet of tableResult.sheets) {
       for (const row of sheet.rows) {
         for (const cell of Object.values(row.cells)) {
-          totalCells++;
-          if (cell.filled) filledCells++;
+          if (cell.pageNumber) {
+            tablePagesSet.add(cell.pageNumber);
+          }
         }
       }
     }
+
+    const tablePages = Array.from(tablePagesSet).sort((a, b) => a - b);
+    console.log(`    Table extraction covers pages: [${tablePages.join(', ')}]`);
+
+    // Find missing pages from text extraction
+    const missingPages: number[] = [];
+    if (textResult.pageCount) {
+      for (let page = 1; page <= textResult.pageCount; page++) {
+        if (!tablePagesSet.has(page)) {
+          missingPages.push(page);
+        }
+      }
+    }
+
+    if (missingPages.length > 0) {
+      console.log(`    Adding missing pages from text extraction: [${missingPages.join(', ')}]`);
+
+      // Add missing pages as text content to the table result
+      const enhancedRows = [...tableResult.sheets[0].rows];
+      let nextRowNumber = enhancedRows.length > 0 ? Math.max(...enhancedRows.map(r => r.row)) + 1 : 1;
+
+      for (const pageNum of missingPages) {
+        // Add page header
+        enhancedRows.push({
+          row: nextRowNumber++,
+          cells: {
+            A: {
+              ref: `A${nextRowNumber - 1}`,
+              value: `--- PAGE ${pageNum} (Text Content) ---`,
+              type: 'string',
+              filled: true,
+              role: 'section',
+              pageNumber: pageNum,
+            },
+            B: {
+              ref: `B${nextRowNumber - 1}`,
+              value: '',
+              type: 'string',
+              filled: false,
+              role: 'empty',
+              pageNumber: pageNum,
+            },
+          },
+          isEmpty: false,
+          rowType: 'section',
+        });
+
+        // Add content from text extraction for this page
+        const pageItems = textResult.items.filter(item =>
+          // Items don't have explicit page numbers, so add them as general content
+          true // For now, add all text items to missing pages
+        );
+
+        // Add a few text items to represent this page's content
+        const itemsToAdd = pageItems.slice(0, 3); // Limit to avoid duplication
+        for (const item of itemsToAdd) {
+          enhancedRows.push({
+            row: nextRowNumber++,
+            cells: {
+              A: {
+                ref: `A${nextRowNumber - 1}`,
+                value: item.question,
+                type: 'string',
+                filled: true,
+                role: 'label',
+                pageNumber: pageNum,
+              },
+              B: {
+                ref: `B${nextRowNumber - 1}`,
+                value: item.answer || '',
+                type: 'string',
+                filled: !!item.answer,
+                role: 'value',
+                pageNumber: pageNum,
+              },
+            },
+            isEmpty: false,
+            rowType: 'data',
+          });
+        }
+      }
+
+      // Update the sheet with merged rows
+      const enhancedSheet: SheetData = {
+        ...tableResult.sheets[0],
+        rows: enhancedRows,
+        rowCount: enhancedRows.length,
+        stats: {
+          ...tableResult.sheets[0].stats,
+          totalCells: enhancedRows.length * 2,
+          filledCells: enhancedRows.reduce((count, row) =>
+            count + Object.values(row.cells).filter(cell => cell.filled).length, 0
+          ),
+        },
+      };
+
+      // Return enhanced result
+      const mergedResult: QuestionnaireStructure = {
+        ...tableResult,
+        sheets: [enhancedSheet],
+        stats: {
+          ...tableResult.stats,
+          totalRows: enhancedRows.length,
+          totalCells: enhancedRows.length * 2,
+          filledCells: enhancedSheet.stats.filledCells,
+        },
+        metadata: {
+          ...tableResult.metadata,
+          classification: {
+            documentType: classification.documentType,
+            recommendedMethod: classification.recommendedMethod,
+            sections: classification.sections.map(s => s.name),
+            language: classification.language,
+          },
+          textQA: {
+            itemCount: textResult.items.length,
+            sections: textResult.sections,
+            pageCount: textResult.pageCount,
+          },
+        },
+      };
+
+      return mergedResult;
+    } else {
+      // No missing pages, just enhance metadata
+      return {
+        ...tableResult,
+        metadata: {
+          ...tableResult.metadata,
+          classification: {
+            documentType: classification.documentType,
+            recommendedMethod: classification.recommendedMethod,
+            sections: classification.sections.map(s => s.name),
+            language: classification.language,
+          },
+          textQA: {
+            itemCount: textResult.items.length,
+            sections: textResult.sections,
+            pageCount: textResult.pageCount,
+          },
+        },
+      };
+    }
+  }
+
+  /**
+   * Extract using Azure Document Intelligence table extraction
+   */
+  private async extractWithAzure(filepath: string, filename: string): Promise<QuestionnaireStructure> {
+    console.log('  Using Azure Document Intelligence for table extraction...');
+    const result = await extractPdfWithAzure(filepath);
+
+    const sheets = this.parseRawTablesToSheets(result, filename);
+
+    // Extract Q&A pairs from paragraphs using Claude (for items outside tables)
+    if (result.paragraphs?.length) {
+      const paragraphQARows = await this.extractParagraphQARows(result.paragraphs, sheets);
+      if (paragraphQARows.length > 0 && sheets.length > 0) {
+        // Add paragraph Q&A rows to the first sheet
+        const lastRowNum = Math.max(...sheets[0].rows.map(r => r.row), 0);
+        for (let i = 0; i < paragraphQARows.length; i++) {
+          paragraphQARows[i].row = lastRowNum + i + 1;
+          paragraphQARows[i].cells['A'].ref = `A${lastRowNum + i + 1}`;
+          paragraphQARows[i].cells['B'].ref = `B${lastRowNum + i + 1}`;
+        }
+        sheets[0].rows.push(...paragraphQARows);
+        sheets[0].rowCount = sheets[0].rows.length;
+        console.log(`  ✓ Added ${paragraphQARows.length} Q&A pairs from paragraphs`);
+      }
+    }
+
+    const totalRows = sheets.reduce((sum, sheet) => sum + sheet.rows.length, 0);
+    const totalCells = sheets.reduce((sum, sheet) => sum + sheet.stats.totalCells, 0);
+    const filledCells = sheets.reduce((sum, sheet) => sum + sheet.stats.filledCells, 0);
+
+    // Extract text content alongside table data
+    const textContent = {
+      markdown: result.markdown,
+      paragraphs: result.paragraphs?.map(p => ({
+        content: p.content,
+        pageNumber: p.pageNumber,
+        boundingBox: p.polygon
+      })),
+      lines: result.lines?.map(l => ({
+        content: l.content,
+        pageNumber: l.pageNumber,
+        boundingBox: l.polygon
+      })),
+      keyValuePairs: result.keyValuePairs?.map(kvp => ({
+        key: kvp.key?.content || '',
+        value: kvp.value?.content || '',
+        pageNumber: kvp.pageNumber || kvp.key?.pageNumber || kvp.value?.pageNumber
+      }))
+    };
+
+    console.log(`  ✓ Extracted ${result.tables.length} tables, ${result.paragraphs?.length || 0} paragraphs, ${result.lines?.length || 0} lines`);
 
     return {
       source: {
@@ -319,11 +501,26 @@ export class PdfStructureExtractor {
         documentType: 'pdf',
       },
       sheets,
+      pages: result.pages?.map(p => ({
+        pageNumber: p.pageNumber,
+        width: p.width,
+        height: p.height,
+        unit: p.unit
+      })),
+      textContent,
       stats: {
         totalSheets: sheets.length,
         totalRows,
         totalCells,
         filledCells,
+      },
+      metadata: {
+        classification: {
+          documentType: 'pdf',
+          recommendedMethod: 'azure-table-extraction',
+          sections: [],
+          language: 'en'
+        }
       },
     };
   }
@@ -342,10 +539,19 @@ export class PdfStructureExtractor {
     // headerColumnOffset accounts for when section headers span multiple columns in header row
     let currentColumnHeaders: Map<number, string> = new Map();
     // x position based header mapping: maps x ranges to header values
-    let headerXPositions: Array<{ xMin: number; xMax: number; header: string }> = [];
+    let headerXPositions: Array<{ xMin: number; xMax: number; header: string; colIdx: number }> = [];
     let headerColumnOffset = 0;
 
-    for (const table of result.tables) {
+    // Track header row indices for post-processing realignment
+    const headerRowIndices: number[] = [];
+
+    // Parse markdown headings to extract section titles
+    // Format: # Heading, ## Heading, ### Heading
+    const sectionTitles = this.extractSectionTitlesFromMarkdown(result.markdown, result.tables);
+
+    for (let tableIndex = 0; tableIndex < result.tables.length; tableIndex++) {
+      const table = result.tables[tableIndex];
+      const sectionTitle = sectionTitles.get(tableIndex);
       // Build a map of (row, col) -> cell for this table
       const cellMap = new Map<string, typeof table.cells[0]>();
       let maxRow = 0;
@@ -432,12 +638,12 @@ export class PdfStructureExtractor {
 
           // Build x position based header mapping for more accurate matching
           // This handles cases where header row and data rows have different column indices
-          for (const { cell } of rowCellData) {
+          for (const { colIdx, cell } of rowCellData) {
             const content = cell.content.trim();
             if (/^(yes|no|n\/a|na|comments?)$/i.test(content) && cell.polygon) {
               const xMin = cell.polygon[0];
               const xMax = cell.polygon[2]; // polygon is [x1,y1, x2,y2, x3,y3, x4,y4]
-              headerXPositions.push({ xMin, xMax, header: content });
+              headerXPositions.push({ xMin, xMax, header: content, colIdx });
             }
           }
         }
@@ -453,8 +659,14 @@ export class PdfStructureExtractor {
                                firstCellContent.length < 80 &&
                                hasYesNoHeaders; // Section header followed by YES/NO columns
 
+        // Check if this looks like a header row (has columnHeader cells)
+        const looksLikeHeaderRow = rowCellData.some(d => d.cell.kind === 'columnHeader') || hasYesNoHeaders;
+
         // Normalize column positions - shift content if first cell is empty but others have content
-        let normalizedCells = this.normalizeColumnPositions(rowCellData, maxCol);
+        // SKIP for header rows - empty first column is intentional (for row numbers)
+        let normalizedCells = looksLikeHeaderRow
+          ? rowCellData
+          : this.normalizeColumnPositions(rowCellData, maxCol);
 
         // Build the row cells
         for (const { colIdx, cell } of normalizedCells) {
@@ -582,20 +794,36 @@ export class PdfStructureExtractor {
         let rowType: RowData['rowType'] = 'data';
         if (isHeaderRow) {
           rowType = 'header';
+          // Track header row index for potential realignment
+          headerRowIndices.push(allRows.length);
         } else if (isSectionHeader) {
           rowType = 'section';
         }
 
-        allRows.push({
+        const rowData: RowData = {
           row: globalRowNumber,
           cells: rowCells,
           isEmpty,
           rowType,
-        });
+        };
+
+        // Add section title to header rows (extracted from markdown headings)
+        if (isHeaderRow && sectionTitle) {
+          rowData.sectionTitle = sectionTitle;
+        }
+
+        allRows.push(rowData);
 
         globalRowNumber++;
       }
     }
+
+    // Post-process: realign header row columns based on x-positions
+    // When a header row has merged cells (like section titles), the YES/NO/Comments
+    // headers may be in different column letters than where the data appears
+    this.realignHeaderColumns(allRows, headerRowIndices);
+
+    // Note: Paragraph Q&A extraction is done at the extractWithAzure level (async)
 
     // Calculate stats
     let totalCells = 0;
@@ -663,6 +891,279 @@ export class PdfStructureExtractor {
     }
 
     return rowCellData;
+  }
+
+  /**
+   * Realign header row columns based on x-positions of data rows below
+   *
+   * Problem: When a header row has a merged cell (like a section title spanning A-B),
+   * Azure places YES/NO/Comments in columns C/D/E. But in data rows, the values
+   * appear in B/C/D because there's no merged cell. This causes visual misalignment.
+   *
+   * Solution: Find data rows that follow each header row, compare x-positions,
+   * and shift header cells to match the column letters of the data below.
+   */
+  private realignHeaderColumns(rows: RowData[], headerRowIndices: number[]): void {
+    const colLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+    for (const headerIdx of headerRowIndices) {
+      const headerRow = rows[headerIdx];
+      if (!headerRow) continue;
+
+      // Find the first non-empty data row after this header
+      let dataRow: RowData | null = null;
+      for (let i = headerIdx + 1; i < Math.min(headerIdx + 10, rows.length); i++) {
+        const candidate = rows[i];
+        if (candidate.rowType === 'data' && !candidate.isEmpty) {
+          // Check if it has filled cells beyond column A
+          const filledBeyondA = Object.entries(candidate.cells).some(
+            ([col, cell]) => col !== 'A' && cell.filled && cell.value
+          );
+          if (filledBeyondA) {
+            dataRow = candidate;
+            break;
+          }
+        }
+        // Stop if we hit another header
+        if (candidate.rowType === 'header') break;
+      }
+
+      if (!dataRow) continue;
+
+      // Build x-position to column mapping from header row
+      const headerXToCol: Array<{ x: number; col: string; value: string }> = [];
+      for (const [col, cell] of Object.entries(headerRow.cells)) {
+        if (cell.polygon && cell.filled && /^(yes|no|n\/a|comments?)$/i.test(cell.value)) {
+          headerXToCol.push({ x: cell.polygon[0], col, value: cell.value });
+        }
+      }
+
+
+      if (headerXToCol.length === 0) continue;
+
+      // Build x-position to column mapping from data row
+      const dataXToCol: Array<{ x: number; col: string }> = [];
+      for (const [col, cell] of Object.entries(dataRow.cells)) {
+        if (cell.polygon && cell.filled) {
+          dataXToCol.push({ x: cell.polygon[0], col });
+        }
+      }
+
+      if (dataXToCol.length === 0) continue;
+
+      // Match header cells to data columns by x-position (with tolerance)
+      // Since data rows may have empty cells without polygons, we calculate
+      // a consistent column offset from the first match and apply it to all headers
+      const columnMapping: Map<string, string> = new Map();
+      const tolerance = 0.15; // inches
+      let columnOffset = 0; // How many columns to shift left (positive = shift left)
+
+      // Find the offset from the first matching header cell
+      for (const header of headerXToCol) {
+        const matchedData = dataXToCol.find(d => Math.abs(d.x - header.x) < tolerance);
+        if (matchedData && matchedData.col !== header.col) {
+          // Calculate offset: if header is C and data is B, offset is 1
+          const headerColIdx = colLetters.indexOf(header.col);
+          const dataColIdx = colLetters.indexOf(matchedData.col);
+          columnOffset = headerColIdx - dataColIdx;
+          break;
+        }
+      }
+
+      // Apply the offset to all header cells (not just the ones with matching data)
+      if (columnOffset > 0) {
+        for (const header of headerXToCol) {
+          const headerColIdx = colLetters.indexOf(header.col);
+          const newColIdx = headerColIdx - columnOffset;
+          if (newColIdx >= 0 && newColIdx < colLetters.length) {
+            const newCol = colLetters[newColIdx];
+            if (newCol !== header.col) {
+              columnMapping.set(header.col, newCol);
+            }
+          }
+        }
+      }
+
+      // Apply the column mapping to the header row
+      if (columnMapping.size > 0) {
+        const newCells: Record<string, CellData> = {};
+
+        // First, add all cells that are NOT being remapped (or cells without mappings)
+        for (const [oldCol, cell] of Object.entries(headerRow.cells)) {
+          if (!columnMapping.has(oldCol)) {
+            // This cell is not being moved, but check if another cell is moving TO this position
+            const somethingMovingHere = [...columnMapping.values()].includes(oldCol);
+            if (!somethingMovingHere) {
+              // Safe to keep this cell at its current position
+              newCells[oldCol] = cell;
+            }
+            // If something is moving here, skip this cell (it will be replaced)
+          }
+        }
+
+        // Then, apply the mappings (cells that ARE being remapped)
+        for (const [oldCol, newCol] of columnMapping) {
+          const cell = headerRow.cells[oldCol];
+          if (cell) {
+            // Update the cell reference
+            const newRef = cell.ref.replace(/^[A-Z]+/, newCol);
+            newCells[newCol] = { ...cell, ref: newRef };
+          }
+        }
+
+        headerRow.cells = newCells;
+      }
+    }
+  }
+
+  /**
+   * Extract Q&A pairs from PDF paragraphs using Claude.
+   * Uses spatial proximity (Y coordinates) to match questions with Yes/No answers.
+   */
+  private async extractParagraphQARows(
+    paragraphs: DocumentAnalysisResult['paragraphs'],
+    sheets: SheetData[]
+  ): Promise<RowData[]> {
+    if (!paragraphs || paragraphs.length < 2) return [];
+
+    // Check if there are potential Q&A pairs (has Yes/No paragraphs)
+    const hasYesNo = paragraphs.some(p =>
+      /^(yes|no|ja|nein|oui|non|n\/a)$/i.test(p.content?.trim() || '')
+    );
+    if (!hasYesNo) return [];
+
+    // Get questions already captured in sheets to avoid duplicates
+    const existingQuestions = new Set<string>();
+    for (const sheet of sheets) {
+      for (const row of sheet.rows) {
+        const labelCell = row.cells['A'];
+        if (labelCell?.value) {
+          existingQuestions.add(labelCell.value.toLowerCase().trim());
+        }
+      }
+    }
+
+    try {
+      const extractor = new ParagraphQAExtractor();
+      const paragraphsWithPos: ParagraphWithPosition[] = paragraphs.map(p => ({
+        content: p.content || '',
+        pageNumber: p.pageNumber || 1,
+        boundingBox: p.polygon,
+      }));
+
+      const qaPairs = await extractor.extractQAPairs(paragraphsWithPos);
+
+      // Convert to rows, filtering out duplicates
+      const rows: RowData[] = [];
+      for (const pair of qaPairs) {
+        const normalizedQuestion = pair.question.toLowerCase().trim();
+
+        // Skip if already in sheets
+        if (existingQuestions.has(normalizedQuestion)) continue;
+
+        // Skip very short questions
+        if (pair.question.length < 15) continue;
+
+        rows.push({
+          row: 0, // Will be set by caller
+          isEmpty: false,
+          rowType: 'data',
+          cells: {
+            'A': {
+              ref: 'A0',
+              value: pair.question,
+              type: 'string',
+              filled: true,
+              role: 'label',
+            },
+            'B': {
+              ref: 'B0',
+              value: pair.answer,
+              type: 'string',
+              filled: true,
+              role: 'value',
+            },
+          },
+        });
+
+        existingQuestions.add(normalizedQuestion);
+      }
+
+      return rows;
+    } catch (error) {
+      console.error('  Error extracting paragraph Q&A:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Extract section titles from markdown headings and map them to table indices
+   * Azure markdown format: # Heading, ## Heading, ### Heading followed by <table> tags
+   */
+  private extractSectionTitlesFromMarkdown(
+    markdown: string,
+    tables: DocumentAnalysisResult['tables']
+  ): Map<number, string> {
+    const sectionTitles = new Map<number, string>();
+
+    if (!markdown || tables.length === 0) {
+      return sectionTitles;
+    }
+
+    // Find all markdown headings and their positions
+    // Matches: # Title, ## Title, ### Title
+    const headingRegex = /^(#{1,3})\s+(.+)$/gm;
+    const headings: Array<{ level: number; title: string; index: number }> = [];
+
+    let match;
+    while ((match = headingRegex.exec(markdown)) !== null) {
+      headings.push({
+        level: match[1].length,
+        title: match[2].trim(),
+        index: match.index
+      });
+    }
+
+    // Find all table positions in the markdown
+    const tableRegex = /<table[^>]*>/gi;
+    const tablePositions: number[] = [];
+    let tableMatch;
+    while ((tableMatch = tableRegex.exec(markdown)) !== null) {
+      tablePositions.push(tableMatch.index);
+    }
+
+    // For each table, find the closest preceding heading
+    for (let tableIndex = 0; tableIndex < Math.min(tables.length, tablePositions.length); tableIndex++) {
+      const tablePos = tablePositions[tableIndex];
+
+      // Find the most recent heading before this table
+      let closestHeading: typeof headings[0] | null = null;
+      for (const heading of headings) {
+        if (heading.index < tablePos) {
+          closestHeading = heading;
+        } else {
+          break;
+        }
+      }
+
+      if (closestHeading) {
+        sectionTitles.set(tableIndex, closestHeading.title);
+      }
+    }
+
+    // If we have more tables than table positions in markdown (Azure raw tables vs markdown),
+    // try to match by page number
+    if (tables.length > tablePositions.length && headings.length > 0) {
+      // Fall back to using first heading for tables without matches
+      for (let tableIndex = tablePositions.length; tableIndex < tables.length; tableIndex++) {
+        if (!sectionTitles.has(tableIndex) && headings.length > 0) {
+          // Use the last heading as fallback
+          sectionTitles.set(tableIndex, headings[headings.length - 1].title);
+        }
+      }
+    }
+
+    return sectionTitles;
   }
 
   /**

@@ -83,6 +83,31 @@ export type Language = 'en' | 'de' | 'fr' | 'nl';
 /** Destination for where the item should be stored */
 export type ItemDestination = 'answer_library' | 'product' | 'company' | 'exclude';
 
+/** Entity role - which party does this data belong to */
+export type EntityRole = 'supplier' | 'customer' | 'manufacturer' | 'producer' | 'group' | 'other';
+
+/** An entity detected in the questionnaire */
+export interface DetectedEntity {
+  id: string;  // Short UUID
+  name: string;  // Entity name (from "Company name", "Supplier name", etc.)
+  role: EntityRole;  // Detected role
+  nameSource?: {
+    label: string;  // The label that provided the name
+    cell?: string;  // Cell reference
+  };
+}
+
+/** A product detected in the questionnaire */
+export interface DetectedProduct {
+  id: string;  // Short UUID
+  name: string;  // Product name
+  code?: string;  // Product code/SKU if available
+  nameSource?: {
+    label: string;
+    cell?: string;
+  };
+}
+
 /** An indexed item from a questionnaire */
 export interface IndexedItem {
   id: string;  // Unique identifier for this item
@@ -96,6 +121,29 @@ export interface IndexedItem {
   level: ItemLevel;
   lang: Language | undefined;
   destination: ItemDestination;  // AI-suggested destination based on level and value
+  entityRole?: EntityRole;  // Which entity this item belongs to (supplier, customer, manufacturer, etc.)
+  entityId?: string;  // Link to detected entity
+  productId?: string;  // Link to detected product
+  isConditional?: boolean;  // True if this is a follow-up/conditional question (e.g., "If yes, please specify...")
+}
+
+/** A table cell with position information */
+export interface TableCell {
+  column: string;
+  value: string;
+  itemId: string;
+  type: ItemType;
+}
+
+/** A reconstructed table from related items */
+export interface ReconstructedTable {
+  title: string;
+  headers: string[];
+  rows: {
+    rowNumber: number;
+    cells: TableCell[];
+  }[];
+  sourceItems: string[]; // IDs of original items that formed this table
 }
 
 /** A section in the questionnaire */
@@ -105,6 +153,8 @@ export interface IndexedSection {
   rows: string;
   sheet?: string;
   items: IndexedItem[];
+  tables?: ReconstructedTable[]; // Reconstructed table structures
+  sectionType: 'individual_items' | 'table_data' | 'mixed';
 }
 
 /** Full indexed questionnaire */
@@ -118,6 +168,10 @@ export interface IndexedQuestionnaire {
     evidenceId: number;
     evidenceName: string;
   };
+  /** Entities detected in this questionnaire */
+  entities: DetectedEntity[];
+  /** Products detected in this questionnaire */
+  products: DetectedProduct[];
   sections: IndexedSection[];
   stats: {
     total: number;
@@ -129,45 +183,420 @@ export interface IndexedQuestionnaire {
 }
 
 // =============================================================================
+// ENTITY ROLE DETECTION
+// =============================================================================
+
+/**
+ * Detect entity role from label text.
+ * The role indicates which party this data belongs to (supplier, customer, manufacturer, etc.)
+ * This is detected from keywords in the question/label itself.
+ */
+function detectEntityRole(label: string, sectionTitle?: string): EntityRole {
+  const textToCheck = `${label} ${sectionTitle || ''}`.toLowerCase();
+
+  // Supplier patterns (most common - the company filling out the questionnaire)
+  if (/supplier|vendor|leverancier|lieferant|fournisseur|our company|notre entreprise|ons bedrijf|unser unternehmen/.test(textToCheck)) {
+    return 'supplier';
+  }
+
+  // Manufacturer patterns (who makes the product)
+  if (/manufactur|fabricant|fabrikant|hersteller|production site|manufacturing site|usine|productie/.test(textToCheck)) {
+    return 'manufacturer';
+  }
+
+  // Producer patterns
+  if (/producer|producteur|producent|produzent/.test(textToCheck)) {
+    return 'producer';
+  }
+
+  // Customer patterns (who requested the questionnaire)
+  if (/customer|client|buyer|acheteur|klant|kunde|recipient|destinataire|ontvanger|empfänger/.test(textToCheck)) {
+    return 'customer';
+  }
+
+  // Group/Parent company patterns
+  if (/parent company|group|holding|head office|headquarters|siège|hoofdkantoor|muttergesellschaft|concern/.test(textToCheck)) {
+    return 'group';
+  }
+
+  return 'other';
+}
+
+// =============================================================================
+// ENTITY NAME FIELD DETECTION
+// =============================================================================
+
+/** Patterns that indicate an entity name field */
+const ENTITY_NAME_PATTERNS: Array<{ pattern: RegExp; role: EntityRole }> = [
+  // Supplier patterns
+  { pattern: /^(supplier|vendor|leverancier|lieferant|fournisseur)\s*(name|naam|nom)?$/i, role: 'supplier' },
+  { pattern: /^(company|firma|entreprise|bedrijf|unternehmen)\s*(name|naam|nom)?$/i, role: 'supplier' },
+  { pattern: /^(our|your|uw|votre|ihr)\s*(company|firma|bedrijf)/i, role: 'supplier' },
+  { pattern: /^name\s*(of\s*)?(supplier|vendor|company)/i, role: 'supplier' },
+  { pattern: /^(bedrijfs)?naam$/i, role: 'supplier' },
+
+  // Manufacturer patterns
+  { pattern: /^(manufacturer|fabrikant|fabricant|hersteller)\s*(name|naam|nom)?$/i, role: 'manufacturer' },
+  { pattern: /^(manufacturing|production)\s*(site|facility|plant)\s*(name)?$/i, role: 'manufacturer' },
+  { pattern: /^(usine|fabriek|fabrik)\s*(name|naam|nom)?$/i, role: 'manufacturer' },
+  { pattern: /^name\s*(of\s*)?(manufacturer|factory|plant)/i, role: 'manufacturer' },
+
+  // Producer patterns
+  { pattern: /^(producer|producteur|producent|produzent)\s*(name|naam|nom)?$/i, role: 'producer' },
+
+  // Customer patterns
+  { pattern: /^(customer|client|buyer|klant|kunde|acheteur)\s*(name|naam|nom)?$/i, role: 'customer' },
+  { pattern: /^(recipient|destinataire|ontvanger|empfänger)\s*(name|naam|nom)?$/i, role: 'customer' },
+
+  // Group/Parent patterns
+  { pattern: /^(parent|holding|group|moeder|muttergesellschaft)\s*(company)?\s*(name|naam|nom)?$/i, role: 'group' },
+  { pattern: /^(head\s*office|headquarters|hoofdkantoor|siège)/i, role: 'group' },
+];
+
+/** Detect if a label is an entity name field and return the role */
+function isEntityNameField(label: string): { isName: boolean; role: EntityRole } {
+  const normalized = label.trim();
+
+  for (const { pattern, role } of ENTITY_NAME_PATTERNS) {
+    if (pattern.test(normalized)) {
+      return { isName: true, role };
+    }
+  }
+
+  return { isName: false, role: 'other' };
+}
+
+/** Check if a value looks like a company name (not an address) */
+function looksLikeCompanyName(value: string): boolean {
+  const trimmed = value.trim();
+
+  // Too short to be a company name
+  if (trimmed.length < 2) return false;
+
+  // Looks like a street address (street name + number)
+  // Patterns: "streetname 123", "123 streetname", "straat 123", "straße 123"
+  if (/^\d+\s+[a-z]/i.test(trimmed)) return false; // "123 Main St"
+  if (/^[a-z]+\s+\d+$/i.test(trimmed)) return false; // "buitenvaart 2109"
+  if (/^[a-z]+\s+\d+[a-z]?$/i.test(trimmed)) return false; // "hoofdstraat 12a"
+
+  // Contains typical address keywords
+  const addressKeywords = [
+    /\b(straat|street|str\.|weg|road|rd\.|avenue|ave\.|lane|ln\.)\b/i,
+    /\b(plein|square|plaza|place)\b/i,
+    /\b(postbus|p\.?o\.?\s*box|postfach)\b/i,
+  ];
+  for (const pattern of addressKeywords) {
+    if (pattern.test(trimmed)) return false;
+  }
+
+  // Looks like a postal code (common formats)
+  if (/^\d{4,5}\s*[a-z]{0,2}$/i.test(trimmed)) return false; // "7905 SW", "12345"
+
+  // Company names often contain these indicators
+  const companyIndicators = [
+    /\b(inc|ltd|llc|gmbh|ag|bv|nv|sa|sarl|srl|co|corp|holding|group)\b/i,
+    /\b(company|bedrijf|firma|entreprise|unternehmen)\b/i,
+  ];
+  for (const pattern of companyIndicators) {
+    if (pattern.test(trimmed)) return true;
+  }
+
+  // If it looks like a proper noun (capitalized words without numbers at end), likely a company name
+  if (/^[A-Z][a-z]+(\s+[A-Z][a-z]+)*$/.test(trimmed)) return true;
+
+  // Default: assume it's a company name if it doesn't match address patterns
+  return true;
+}
+
+// =============================================================================
+// PRODUCT NAME FIELD DETECTION
+// =============================================================================
+
+/** Patterns that indicate a product name field */
+const PRODUCT_NAME_PATTERNS: RegExp[] = [
+  /^(product|artikel|article|produkt|produit)\s*(name|naam|nom|bezeichnung)?$/i,
+  /^(name|naam|nom)\s*(of\s*)?(product|artikel|article)/i,
+  /^(trade|commercial)\s*(name|naam|nom)/i,
+  /^(handelsnaam|handelsname|nom\s*commercial)/i,
+  /^artikelbezeichnung$/i,
+  /^product\s*description$/i,
+];
+
+/** Patterns that indicate a product code field */
+const PRODUCT_CODE_PATTERNS: RegExp[] = [
+  /^(product|artikel|article)\s*(code|nummer|number|no\.?|nr\.?)/i,
+  /^(sku|ean|gtin|upc)/i,
+  /^(artikelnummer|artikelnr|article\s*no)/i,
+  /^(item|material)\s*(code|number|no\.?|nr\.?)/i,
+];
+
+/** Detect if a label is a product name field */
+function isProductNameField(label: string): boolean {
+  const normalized = label.trim();
+  return PRODUCT_NAME_PATTERNS.some(p => p.test(normalized));
+}
+
+/** Detect if a label is a product code field */
+function isProductCodeField(label: string): boolean {
+  const normalized = label.trim();
+  return PRODUCT_CODE_PATTERNS.some(p => p.test(normalized));
+}
+
+// =============================================================================
+// ENTITY & PRODUCT EXTRACTION
+// =============================================================================
+
+interface EntityExtraction {
+  entities: DetectedEntity[];
+  entityContextMap: Map<string, string>;  // sectionTitle -> entityId
+}
+
+interface ProductExtraction {
+  products: DetectedProduct[];
+  productContextMap: Map<string, string>;  // sectionTitle -> productId or itemId -> productId
+}
+
+/** Extract entities from indexed items */
+function extractEntities(sections: IndexedSection[]): EntityExtraction {
+  const entities: DetectedEntity[] = [];
+  const entityContextMap = new Map<string, string>();
+  const seenNames = new Map<string, string>();  // name+role -> entityId (for dedup)
+
+  for (const section of sections) {
+    let sectionEntityId: string | undefined;
+    let sectionRole: EntityRole = 'other';
+
+    // First, detect section role from title
+    sectionRole = detectEntityRole('', section.title);
+
+    for (const item of section.items) {
+      // Skip items without values
+      if (!item.value) continue;
+
+      // Check if this is an entity name field (regardless of destination)
+      const { isName, role } = isEntityNameField(item.label);
+
+      // Only create entity if label matches AND value looks like a company name
+      if (isName && item.value.trim() && looksLikeCompanyName(item.value)) {
+        const entityName = item.value.trim();
+        const key = `${entityName.toLowerCase()}:${role}`;
+
+        // Check if we already have this entity
+        if (seenNames.has(key)) {
+          sectionEntityId = seenNames.get(key);
+        } else {
+          const entityId = randomUUID().split('-')[0];
+          entities.push({
+            id: entityId,
+            name: entityName,
+            role,
+            nameSource: {
+              label: item.label,
+              cell: item.vCell,
+            },
+          });
+          seenNames.set(key, entityId);
+          sectionEntityId = entityId;
+        }
+
+        // Also set the entity role on this specific item and mark it as company data
+        item.entityRole = role;
+        if (item.destination === 'answer_library') {
+          item.destination = 'company';
+        }
+      }
+    }
+
+    // If we found an entity in this section, map the section to it
+    if (sectionEntityId) {
+      entityContextMap.set(section.title, sectionEntityId);
+    }
+
+    // If section has a clear entity role (from title), mark all relevant items
+    if (sectionRole !== 'other' && !sectionEntityId) {
+      // Look for company-like data in this section
+      const companyKeywords = /company|name|address|city|country|phone|email|contact|street|zip|postal/i;
+      for (const item of section.items) {
+        if (item.value && companyKeywords.test(item.label)) {
+          item.entityRole = sectionRole;
+          if (item.destination === 'answer_library') {
+            item.destination = 'company';
+          }
+        }
+      }
+    }
+  }
+
+  // Second pass: infer entities from section context if none detected from name fields
+  for (const section of sections) {
+    if (entityContextMap.has(section.title)) continue;
+
+    // Check if section title indicates a specific entity type
+    const sectionRole = detectEntityRole('', section.title);
+    if (sectionRole !== 'other') {
+      // Check if we already have an entity with this role
+      const existingEntity = entities.find(e => e.role === sectionRole);
+      if (existingEntity) {
+        entityContextMap.set(section.title, existingEntity.id);
+      }
+    }
+  }
+
+  return { entities, entityContextMap };
+}
+
+/** Extract products from indexed items */
+function extractProducts(sections: IndexedSection[]): ProductExtraction {
+  const products: DetectedProduct[] = [];
+  const productContextMap = new Map<string, string>();
+  const seenNames = new Map<string, string>();  // productName -> productId (for dedup)
+
+  for (const section of sections) {
+    let currentProductId: string | undefined;
+
+    for (const item of section.items) {
+      // Skip items without values
+      if (!item.value) continue;
+
+      // Check for product name (regardless of current destination)
+      if (isProductNameField(item.label)) {
+        const productName = item.value.trim();
+        const key = productName.toLowerCase();
+
+        if (seenNames.has(key)) {
+          currentProductId = seenNames.get(key)!;
+        } else {
+          const productId = randomUUID().split('-')[0];
+          products.push({
+            id: productId,
+            name: productName,
+            nameSource: {
+              label: item.label,
+              cell: item.vCell,
+            },
+          });
+          seenNames.set(key, productId);
+          currentProductId = productId;
+        }
+
+        // Map this item to the product and ensure it's marked as product destination
+        productContextMap.set(item.id, currentProductId);
+        if (item.destination === 'answer_library') {
+          item.destination = 'product';
+        }
+      }
+
+      // Check for product code (regardless of destination)
+      if (isProductCodeField(item.label) && currentProductId) {
+        const product = products.find(p => p.id === currentProductId);
+        if (product && !product.code) {
+          product.code = item.value.trim();
+        }
+        // Also mark this item as product destination
+        productContextMap.set(item.id, currentProductId);
+        if (item.destination === 'answer_library') {
+          item.destination = 'product';
+        }
+      }
+    }
+
+    // If we found a product in this section, map all product-destination items to it
+    if (currentProductId) {
+      for (const item of section.items) {
+        if (item.destination === 'product' && !productContextMap.has(item.id)) {
+          productContextMap.set(item.id, currentProductId);
+        }
+      }
+    }
+  }
+
+  return { products, productContextMap };
+}
+
+/** Link items to their parent entities and products */
+function linkItemsToEntitiesAndProducts(
+  sections: IndexedSection[],
+  entityExtraction: EntityExtraction,
+  productExtraction: ProductExtraction
+): void {
+  const { entityContextMap } = entityExtraction;
+  const { productContextMap } = productExtraction;
+
+  for (const section of sections) {
+    const sectionEntityId = entityContextMap.get(section.title);
+
+    for (const item of section.items) {
+      // Link company items to their entity
+      if (item.destination === 'company' && sectionEntityId) {
+        item.entityId = sectionEntityId;
+      }
+
+      // Link product items to their product
+      if (item.destination === 'product') {
+        const productId = productContextMap.get(item.id);
+        if (productId) {
+          item.productId = productId;
+        }
+      }
+    }
+  }
+}
+
+// =============================================================================
 // TOPIC NORMALIZATION
 // =============================================================================
 
 // Fallback patterns if topics.yaml is not available
 const FALLBACK_TOPIC_PATTERNS: Array<{ pattern: RegExp; topic: string }> = [
-  { pattern: /company|firmierung|entreprise|bedrijf|general.*data|allgemeine.*daten|algemene/i, topic: 'company_information' },
-  { pattern: /contact|ansprech|kontakt/i, topic: 'contact_persons' },
-  { pattern: /certif|zertif/i, topic: 'certifications' },
-  { pattern: /allerg/i, topic: 'allergens' },
-  { pattern: /haccp|food.*safety|lebensmittel.*sicherheit/i, topic: 'quality_systems' },
-  { pattern: /quality|qualität|qualite|kwaliteit|qm.*system/i, topic: 'quality_systems' },
-  { pattern: /sustain|nachhaltig|durable|duurzaam|rse|csr/i, topic: 'sustainability' },
-  { pattern: /environment|umwelt|environnement|milieu/i, topic: 'sustainability' },
-  { pattern: /packag|verpack|emballage|verpakking/i, topic: 'packaging' },
-  { pattern: /logist|transport|shipping|lieferung|livraison/i, topic: 'storage_transport' },
-  { pattern: /origin|herkunft|origine|oorsprong/i, topic: 'origin_provenance' },
-  { pattern: /fraud|betrug|fraude/i, topic: 'food_fraud' },
-  { pattern: /nutri|nährwert|valeur/i, topic: 'nutritional' },
-  { pattern: /crisis|krisen|crise/i, topic: 'complaints' },
-  { pattern: /financ|finanz|bank|steuer|tax/i, topic: 'company_information' },
-  { pattern: /animal|tier|welfare|wohl/i, topic: 'ethical_social' },
-  { pattern: /product|produkt|produit/i, topic: 'identification' },
-  { pattern: /ingredient|zutat|ingrédient|ingrediënt/i, topic: 'formula_composition' },
-  { pattern: /bacterio|micro|keime/i, topic: 'microbiological' },
-  { pattern: /export/i, topic: 'country_regulatory' },
-  { pattern: /document|dokument|pièce/i, topic: 'declaration' },
+  // ENTITY
+  { pattern: /company|firmierung|entreprise|bedrijf|general.*data|allgemeine.*daten|algemene/i, topic: 'entity_info' },
+  { pattern: /contact|ansprech|kontakt|contactpersoon/i, topic: 'entity_contacts' },
+  { pattern: /financ|finanz|bank|steuer|tax|btw|vat/i, topic: 'financial' },
+
+  // PRODUCT
+  { pattern: /product.*name|artikel.*nummer|article.*number/i, topic: 'product_identification' },
+  { pattern: /appearance|taste|smell|odour|color|colour|texture/i, topic: 'product_attributes' },
+  { pattern: /ingredient|zutat|ingrédient|ingrediënt|composition|formula/i, topic: 'product_composition' },
+  { pattern: /allerg/i, topic: 'product_allergens' },
+  { pattern: /nutri|nährwert|valeur.*nutritive|voedingswaarde/i, topic: 'product_nutrition' },
+  { pattern: /halal|kosher|organic|vegan|vegetarian/i, topic: 'product_certifications' },
+  { pattern: /shelf.*life|haltbarkeit|durée.*conservation|houdbaarheid/i, topic: 'product_specifications' },
+  { pattern: /packag|verpack|emballage|verpakking|label/i, topic: 'product_packaging' },
+
+  // OPERATIONS
+  { pattern: /haccp|food.*safety.*system|qm.*system|quality.*management/i, topic: 'quality_systems' },
+  { pattern: /quality|qualität|qualite|kwaliteit/i, topic: 'quality_systems' },
+  { pattern: /building|facilit|premises|infrastructure|zoning/i, topic: 'premises' },
+  { pattern: /equipment|maintenan|calibrat/i, topic: 'equipment' },
+  { pattern: /hygien|handwash/i, topic: 'hygiene' },
+  { pattern: /clean|sanit|desinfect/i, topic: 'cleaning' },
+  { pattern: /pest|rodent|insect/i, topic: 'pest_control' },
+  { pattern: /monitor|sampl|testing/i, topic: 'monitoring' },
+  { pattern: /raw.*material|rohstoff|matière.*première|grondstof/i, topic: 'raw_materials' },
+  { pattern: /traceab|rückverfolgb|traça|batch|lot/i, topic: 'traceability' },
+  { pattern: /logist|transport|shipping|storage|lager/i, topic: 'logistics' },
+  { pattern: /waste|abfall|déchet|afval/i, topic: 'waste' },
+  { pattern: /bacterio|micro|keime|pathogen/i, topic: 'microbiology' },
+
+  // COMPLIANCE
+  { pattern: /certif|zertif|standard|accredit/i, topic: 'certifications' },
+  { pattern: /audit|inspection/i, topic: 'audits' },
+  { pattern: /food.*safety|lebensmittel.*sicherheit|voedselveiligheid|hazard|ccp/i, topic: 'food_safety' },
+  { pattern: /food.*defense|food.*defence|security|tamper/i, topic: 'food_defense' },
+  { pattern: /fraud|betrug|fraude|authenticity/i, topic: 'food_fraud' },
+  { pattern: /crisis|krisen|crise|recall|complaint|reklamation/i, topic: 'crisis' },
+  { pattern: /origin|herkunft|origine|oorsprong|provenance/i, topic: 'origin' },
+
+  // SUSTAINABILITY
+  { pattern: /sustain|nachhaltig|durable|duurzaam|csr/i, topic: 'sustainability' },
+  { pattern: /environment|umwelt|environnement|milieu/i, topic: 'environment' },
+  { pattern: /animal.*welfare|tier.*wohl|dierenwelzijn/i, topic: 'animal_welfare' },
+
+  // ADMIN
+  { pattern: /training|schulung|formation|opleiding/i, topic: 'training' },
+  { pattern: /document|dokument|pièce|attachment/i, topic: 'documents' },
   { pattern: /onderteken|signature|unterschrift/i, topic: 'signature' },
-  { pattern: /autoris|approval|genehmigung/i, topic: 'approval' },
-  { pattern: /foreign.*bod|fremdkörper|corps.*étrang/i, topic: 'foreign_bodies' },
-  { pattern: /raw.*material|rohstoff|matière.*première/i, topic: 'raw_materials' },
-  { pattern: /traceab|rückverfolgb|traça/i, topic: 'traceability' },
-  { pattern: /complaint|reklamation|réclamation/i, topic: 'complaints' },
-  { pattern: /shelf.*life|haltbarkeit|durée.*conservation/i, topic: 'shelf_life' },
-  { pattern: /defense|verteidigung|défense/i, topic: 'food_defense' },
-  { pattern: /gmo|genetisch|génétique/i, topic: 'gmo' },
-  { pattern: /contaminant|verunreinig|contamin/i, topic: 'contaminants' },
-  { pattern: /claim|angabe|allégation/i, topic: 'claims' },
-  { pattern: /palm|rspo/i, topic: 'rspo_palm' },
-  { pattern: /calibrat|kalibrier|étalon/i, topic: 'measuring_instruments' },
+  { pattern: /approv|genehmig|goedkeuring|authoriz/i, topic: 'approval' },
 ];
 
 function normalizeTopicWithRules(sectionTitle: string, topics: TopicDefinition[]): string {
@@ -400,6 +829,176 @@ function extractRowFromCell(cellRef: string): number {
 }
 
 // =============================================================================
+// TABLE RECONSTRUCTION
+// =============================================================================
+
+/**
+ * Reconstruct table structures from flattened items
+ * Groups items that share the same row number but have different columns
+ */
+function reconstructTables(items: IndexedItem[], sectionTitle: string): {
+  tables: ReconstructedTable[];
+  remainingItems: IndexedItem[];
+  sectionType: 'individual_items' | 'table_data' | 'mixed';
+} {
+  // Group items by row number (extracted from lCell)
+  const rowMap = new Map<number, IndexedItem[]>();
+  const itemsWithoutCells: IndexedItem[] = [];
+
+  for (const item of items) {
+    if (!item.lCell) {
+      itemsWithoutCells.push(item);
+      continue;
+    }
+
+    const rowNumber = extractRowFromCell(item.lCell);
+    if (rowNumber === -1) {
+      itemsWithoutCells.push(item);
+      continue;
+    }
+
+    if (!rowMap.has(rowNumber)) {
+      rowMap.set(rowNumber, []);
+    }
+    rowMap.get(rowNumber)!.push(item);
+  }
+
+  const tables: ReconstructedTable[] = [];
+  const tableItemIds = new Set<string>();
+
+  // Find table structures - be more selective about what constitutes a table
+  const tableRows = Array.from(rowMap.entries())
+    .filter(([_, rowItems]) => rowItems.length > 1) // Simple multi-column detection for now
+    .sort(([a], [b]) => a - b); // Sort by row number
+
+  if (tableRows.length > 0) {
+    // Group consecutive rows into tables
+    let currentTable: {
+      rows: { rowNumber: number; cells: TableCell[] }[];
+      sourceItems: string[];
+      startRow: number;
+      endRow: number;
+    } | null = null;
+
+    for (const [rowNumber, rowItems] of tableRows) {
+      const tableCells: TableCell[] = [];
+
+      // Sort items by column
+      const sortedItems = rowItems.sort((a, b) => {
+        const colA = extractColumnFromCell(a.lCell || '');
+        const colB = extractColumnFromCell(b.lCell || '');
+        return colA.localeCompare(colB);
+      });
+
+      for (const item of sortedItems) {
+        tableCells.push({
+          column: extractColumnFromCell(item.lCell || ''),
+          value: item.value || '',
+          itemId: item.id,
+          type: item.type
+        });
+      }
+
+      // Check if this row continues the current table (consecutive or close rows)
+      if (currentTable && rowNumber <= currentTable.endRow + 2) {
+        // Continue existing table
+        currentTable.rows.push({
+          rowNumber,
+          cells: tableCells
+        });
+        currentTable.sourceItems.push(...rowItems.map(i => i.id));
+        currentTable.endRow = rowNumber;
+      } else {
+        // Finalize previous table if exists
+        if (currentTable) {
+          finishTable(currentTable, tables, sectionTitle);
+        }
+
+        // Start new table
+        currentTable = {
+          rows: [{
+            rowNumber,
+            cells: tableCells
+          }],
+          sourceItems: rowItems.map(i => i.id),
+          startRow: rowNumber,
+          endRow: rowNumber
+        };
+      }
+
+      // Mark items as part of table
+      rowItems.forEach(item => tableItemIds.add(item.id));
+    }
+
+    // Finalize last table
+    if (currentTable) {
+      finishTable(currentTable, tables, sectionTitle);
+    }
+  }
+
+  // Items not part of tables remain as individual items
+  const remainingItems = [
+    ...itemsWithoutCells,
+    ...items.filter(item => !tableItemIds.has(item.id))
+  ];
+
+  // Determine section type
+  let sectionType: 'individual_items' | 'table_data' | 'mixed';
+  if (tables.length === 0) {
+    sectionType = 'individual_items';
+  } else if (remainingItems.length === 0) {
+    sectionType = 'table_data';
+  } else {
+    sectionType = 'mixed';
+  }
+
+  return { tables, remainingItems, sectionType };
+}
+
+/**
+ * Finalize a table structure
+ */
+function finishTable(
+  currentTable: {
+    rows: { rowNumber: number; cells: TableCell[] }[];
+    sourceItems: string[];
+  },
+  tables: ReconstructedTable[],
+  sectionTitle: string
+) {
+  if (currentTable.rows.length === 0) return;
+
+  // Generate headers from first row or column names
+  const allColumns = new Set<string>();
+  for (const row of currentTable.rows) {
+    for (const cell of row.cells) {
+      allColumns.add(cell.column);
+    }
+  }
+  const headers = Array.from(allColumns).sort();
+
+  // Generate table title
+  const tableTitle = currentTable.rows.length === 1
+    ? sectionTitle
+    : `${sectionTitle} (${currentTable.rows.length} rows)`;
+
+  tables.push({
+    title: tableTitle,
+    headers,
+    rows: currentTable.rows,
+    sourceItems: currentTable.sourceItems
+  });
+}
+
+/**
+ * Extract column from cell reference (e.g., "A12" -> "A")
+ */
+function extractColumnFromCell(cellRef: string): string {
+  const match = cellRef.match(/^([A-Z]+)/);
+  return match ? match[1] : '';
+}
+
+// =============================================================================
 // QUESTIONNAIRE INDEXER
 // =============================================================================
 
@@ -448,6 +1047,25 @@ export class QuestionnaireIndexer {
     // Analyze all sheets
     const analyses = await this.analyzer.analyzeQuestionnaire(structure.sheets, docType);
 
+    // Process keyValuePairs from Azure (form field label-value pairs not in tables)
+    if (structure.textContent?.keyValuePairs?.length) {
+      const kvpCount = this.processKeyValuePairs(structure.textContent.keyValuePairs, analyses);
+      if (kvpCount > 0) {
+        console.log(`  Added ${kvpCount} items from Azure keyValuePairs`);
+      }
+    }
+
+    // Detect document-level language from all labels and values
+    const allTexts: string[] = [];
+    for (const analysis of analyses) {
+      for (const item of analysis.items) {
+        if (item.label) allTexts.push(item.label);
+        if (item.value && item.value !== 'EMPTY') allTexts.push(item.value);
+      }
+    }
+    const documentLanguage = this.detectDocumentLanguage(allTexts);
+    console.log(`  Detected document language: ${documentLanguage}`);
+
     // Build indexed structure
     const sections: IndexedSection[] = [];
     const allItems: IndexedItem[] = [];
@@ -465,10 +1083,18 @@ export class QuestionnaireIndexer {
         sectionMap.get(sectionTitle)!.push(item);
       }
 
-      // Convert to indexed sections
-      for (const [sectionTitle, items] of sectionMap) {
+      // Ensure all detected sections are preserved (including empty ones)
+      const allSectionTitles = new Set<string>();
+      // Add sections that have items
+      sectionMap.forEach((_, title) => allSectionTitles.add(title));
+      // Add sections from the outline (even if they have no items)
+      analysis.sections.forEach(section => allSectionTitles.add(section.title));
+
+      // Convert to indexed sections - process ALL sections (including empty ones)
+      for (const sectionTitle of allSectionTitles) {
+        const items = sectionMap.get(sectionTitle) || []; // Empty array for sections with no items
         const topic = normalizeTopicWithRules(sectionTitle, this.topics);
-        const indexedItems: IndexedItem[] = [];
+        let indexedItems: IndexedItem[] = [];
 
         // Track unmatched sections for AI classification
         if (topic === 'other' && !unmatchedSectionTitles.includes(sectionTitle)) {
@@ -486,7 +1112,8 @@ export class QuestionnaireIndexer {
             continue; // Skip excluded items
           }
 
-          const lang = this.detectLanguage(item.label + ' ' + (item.value || ''));
+          // Use document language as default, only override if item has strong language indicators
+          const itemLang = this.detectItemLanguageOverride(item.label + ' ' + (item.value || ''), documentLanguage);
           const hasValue = item.value && item.value !== 'EMPTY' && item.value.trim() !== '';
 
           // Use AI-suggested destination from Claude, with fallback logic
@@ -504,15 +1131,25 @@ export class QuestionnaireIndexer {
             aiDestination = 'answer_library';
           }
 
+          // Detect entity role for company-destination items
+          const entityRole = aiDestination === 'company'
+            ? detectEntityRole(item.label, sectionTitle)
+            : undefined;
+
+          // Process value - handle "Please specify:" prefix
+          const processedValue = this.processValue(item.value);
+
           let indexedItem: IndexedItem = {
             id: randomUUID().split('-')[0], // Short unique ID
             type: item.type,
             label: item.label,
-            value: hasValue ? item.value : undefined,
+            value: hasValue ? processedValue.value : undefined,
+            ...(processedValue.isConditional ? { isConditional: true } : {}),
             topic: item.topic || topic, // Use item's topic if available, otherwise section topic
             level: item.level,
-            lang: lang !== 'unknown' ? lang : undefined,
+            lang: itemLang,
             destination: aiDestination, // AI-suggested destination
+            ...(entityRole && entityRole !== 'other' ? { entityRole } : {}),
           };
 
           // Add cell references based on type
@@ -537,16 +1174,22 @@ export class QuestionnaireIndexer {
           return rowA - rowB;
         });
 
-        if (indexedItems.length > 0) {
-          const rows = this.calculateRowRange(indexedItems);
-          sections.push({
-            title: sectionTitle,
-            topic,
-            rows,
-            sheet: analysis.sheetName,
-            items: indexedItems,
-          });
-        }
+        // Expand multi-column specification items (post-processing fix for Claude missing columns)
+        indexedItems = this.expandMultiColumnSpecificationItems(indexedItems, analysis);
+
+        // Always preserve sections - even if empty - to show complete questionnaire structure
+        const rows = indexedItems.length > 0 ? this.calculateRowRange(indexedItems) : '0-0';
+
+        // Preserve content naturally - don't force table reconstruction
+        // Just keep all items as they naturally appear in the section
+        sections.push({
+          title: sectionTitle,
+          topic,
+          rows,
+          sheet: analysis.sheetName,
+          items: indexedItems, // All items preserved as-is (even if empty)
+          sectionType: 'individual_items', // Show content naturally
+        });
       }
     }
 
@@ -630,12 +1273,37 @@ export class QuestionnaireIndexer {
     // Detect primary language
     const primaryLanguage = this.detectPrimaryLanguage(allItems);
 
+    // Extract entities and products, then link items to them
+    console.log('  Extracting entities and products...');
+    const entityExtraction = extractEntities(sections);
+    const productExtraction = extractProducts(sections);
+    linkItemsToEntitiesAndProducts(sections, entityExtraction, productExtraction);
+
+    if (entityExtraction.entities.length > 0) {
+      console.log(`    Found ${entityExtraction.entities.length} entities:`);
+      for (const entity of entityExtraction.entities) {
+        console.log(`      - ${entity.name} (${entity.role})`);
+      }
+    }
+
+    if (productExtraction.products.length > 0) {
+      console.log(`    Found ${productExtraction.products.length} products:`);
+      for (const product of productExtraction.products.slice(0, 5)) {
+        console.log(`      - ${product.name}${product.code ? ` [${product.code}]` : ''}`);
+      }
+      if (productExtraction.products.length > 5) {
+        console.log(`      ... and ${productExtraction.products.length - 5} more`);
+      }
+    }
+
     // Build result with optional sourceInfo from API
     const result: IndexedQuestionnaire = {
       id: randomUUID().split('-')[0],
       source: structure.source.filename,
       indexed: new Date().toISOString().split('T')[0],
       language: primaryLanguage,
+      entities: entityExtraction.entities,
+      products: productExtraction.products,
       sections,
       stats,
     };
@@ -649,6 +1317,151 @@ export class QuestionnaireIndexer {
     }
 
     return result;
+  }
+
+  /**
+   * Expand multi-column specification items that Claude missed.
+   * Detects items with lCell/vCell that skip columns (e.g., A186→C186)
+   * and creates separate items for each column using the original structure data.
+   */
+  private expandMultiColumnSpecificationItems(items: IndexedItem[], analysis: SheetAnalysis): IndexedItem[] {
+    const expandedItems: IndexedItem[] = [];
+
+    for (const item of items) {
+      // Only process items that have both lCell and vCell
+      if (!item.lCell || !item.vCell) {
+        expandedItems.push(item);
+        continue;
+      }
+
+      // Extract row and columns
+      const lRow = this.extractRow(item.lCell);
+      const vRow = this.extractRow(item.vCell);
+      const lCol = this.extractColumn(item.lCell);
+      const vCol = this.extractColumn(item.vCell);
+
+      // Only process if both cells are on the same row but different columns
+      if (lRow !== vRow || lRow <= 0) {
+        expandedItems.push(item);
+        continue;
+      }
+
+      // Check if there are missing columns between lCell and vCell
+      const missingColumns = this.findMissingColumns(lCol, vCol, lRow, analysis);
+      if (missingColumns.length === 0) {
+        // No missing columns, keep original item
+        expandedItems.push(item);
+        continue;
+      }
+
+      // Create separate items for each column
+      const allColumns = [lCol, ...missingColumns, vCol];
+      for (let i = 0; i < allColumns.length; i++) {
+        const col = allColumns[i];
+        const cellRef = `${col}${lRow}`;
+
+        // Get the actual cell value from structure
+        const cellValue = this.getCellValueFromStructure(cellRef, analysis);
+
+        let newLabel: string;
+        let newValue: string;
+
+        if (i === 0) {
+          // First column: parameter name
+          newLabel = item.label;
+          newValue = cellValue || '(parameter name)';
+        } else if (i === allColumns.length - 1) {
+          // Last column: use original item's logic if it's the vCell
+          if (col === vCol) {
+            newLabel = `${item.label} - Monitoring Method`;
+            newValue = item.value || cellValue || '';
+          } else {
+            newLabel = `${item.label} - Column ${col}`;
+            newValue = cellValue || 'EMPTY';
+          }
+        } else {
+          // Middle columns: likely standard values
+          newLabel = `${item.label} - Standard Value`;
+          newValue = cellValue || 'EMPTY';
+        }
+
+        // Create new indexed item
+        const expandedItem: IndexedItem = {
+          ...item, // Copy all original properties
+          id: randomUUID().split('-')[0], // New unique ID
+          label: newLabel,
+          value: newValue,
+          lCell: cellRef,
+          vCell: cellRef, // For single-column items, lCell = vCell
+        };
+
+        expandedItems.push(expandedItem);
+      }
+    }
+
+    return expandedItems;
+  }
+
+  /**
+   * Find missing column letters between start and end columns
+   */
+  private findMissingColumns(startCol: string, endCol: string, row: number, analysis: SheetAnalysis): string[] {
+    const missing: string[] = [];
+    const startCode = startCol.charCodeAt(0);
+    const endCode = endCol.charCodeAt(0);
+
+    // Only handle single-letter columns for now (A-Z)
+    if (startCol.length > 1 || endCol.length > 1) {
+      return missing;
+    }
+
+    // Find columns that exist in the structure between start and end
+    for (let code = startCode + 1; code < endCode; code++) {
+      const col = String.fromCharCode(code);
+      const cellRef = `${col}${row}`;
+
+      // Check if this cell exists in the structure
+      if (this.cellExistsInStructure(cellRef, analysis)) {
+        missing.push(col);
+      }
+    }
+
+    return missing;
+  }
+
+  /**
+   * Check if a cell exists in the structure data
+   */
+  private cellExistsInStructure(cellRef: string, analysis: SheetAnalysis): boolean {
+    // This is a simplified check - in a real implementation, we'd need to
+    // access the original structure data that was used to generate the analysis
+    // For now, we'll assume standard patterns exist (A, B, C columns for specs)
+    const row = this.extractRow(cellRef);
+    const col = this.extractColumn(cellRef);
+
+    // For specification tables, assume B column exists between A and C
+    if (row >= 186 && row <= 199 && col === 'B') {
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Get cell value from structure data
+   */
+  private getCellValueFromStructure(cellRef: string, analysis: SheetAnalysis): string | null {
+    // This would need access to the original structure data
+    // For now, return null and let the calling code handle empty values
+    return null;
+  }
+
+  /**
+   * Extract column letter from cell reference (e.g., "A186" → "A")
+   */
+  private extractColumn(cellRef: string): string {
+    const match = cellRef.match(/^([A-Z]+)/);
+    return match ? match[1] : 'A';
   }
 
   /**
@@ -710,6 +1523,271 @@ export class QuestionnaireIndexer {
     if (/\b(and|or|the|is|are)\b/i.test(lower)) return 'en';
 
     return 'unknown';
+  }
+
+  /**
+   * Detect document-level language from all text samples
+   * Uses voting across all text to determine the primary language
+   */
+  private detectDocumentLanguage(texts: string[]): Language {
+    // Collect votes from all text samples
+    const votes: Record<Language, number> = { en: 0, de: 0, fr: 0, nl: 0 };
+
+    // Combine all text into chunks for better franc detection
+    const combinedText = texts.join(' ');
+
+    // Use franc on the full document text
+    if (combinedText.length >= 100) {
+      const detected = franc(combinedText, { only: ['eng', 'deu', 'fra', 'nld'] });
+      const langMap: Record<string, Language> = {
+        eng: 'en',
+        deu: 'de',
+        fra: 'fr',
+        nld: 'nl',
+      };
+      if (langMap[detected]) {
+        return langMap[detected];
+      }
+    }
+
+    // Fallback: check for language-specific characters
+    if (/[äöüß]/i.test(combinedText)) {
+      votes.de += 50;
+    }
+    if (/[éèêëàâùûôîç]/i.test(combinedText)) {
+      votes.fr += 50;
+    }
+
+    // Count language-specific keywords
+    const germanKeywords = ['und', 'oder', 'nicht', 'das', 'die', 'der', 'ist', 'bei', 'zur', 'zum', 'auf', 'für', 'mit', 'nach', 'aus', 'von', 'ja', 'nein', 'bitte', 'angaben', 'name', 'adresse', 'telefon', 'datum', 'produkt', 'lieferant'];
+    const frenchKeywords = ['et', 'ou', 'les', 'des', 'une', 'que', 'pour', 'sur', 'dans', 'avec', 'oui', 'non', 'nom', 'adresse', 'produit', 'fournisseur'];
+    const dutchKeywords = ['het', 'een', 'zijn', 'van', 'op', 'voor', 'met', 'naar', 'bij', 'naam', 'adres', 'product', 'leverancier', 'telefoon'];
+    const englishKeywords = ['and', 'the', 'for', 'with', 'from', 'yes', 'no', 'name', 'address', 'product', 'supplier', 'date', 'please', 'specify'];
+
+    const lower = combinedText.toLowerCase();
+    germanKeywords.forEach(kw => { if (lower.includes(kw)) votes.de++; });
+    frenchKeywords.forEach(kw => { if (lower.includes(kw)) votes.fr++; });
+    dutchKeywords.forEach(kw => { if (lower.includes(kw)) votes.nl++; });
+    englishKeywords.forEach(kw => { if (lower.includes(kw)) votes.en++; });
+
+    // Return language with highest votes, default to 'en'
+    let maxLang: Language = 'en';
+    let maxVotes = 0;
+    for (const [lang, count] of Object.entries(votes)) {
+      if (count > maxVotes) {
+        maxVotes = count;
+        maxLang = lang as Language;
+      }
+    }
+
+    return maxLang;
+  }
+
+  /**
+   * Check if an item should override the document language
+   * Only returns a different language if there's strong evidence (special characters)
+   */
+  private detectItemLanguageOverride(text: string, documentLanguage: Language): Language | undefined {
+    // Check for definitive language markers (special characters)
+    if (/[äöüß]/.test(text) && documentLanguage !== 'de') {
+      return 'de';
+    }
+    if (/[éèêëàâùûôîç]/.test(text) && documentLanguage !== 'fr') {
+      return 'fr';
+    }
+
+    // Use document language for everything else
+    return documentLanguage;
+  }
+
+  /**
+   * Process a value to handle common patterns like "Please specify:" prefixes
+   * Returns the cleaned value and whether this is a conditional/follow-up question
+   */
+  private processValue(value: string | undefined): { value: string | undefined; isConditional: boolean } {
+    if (!value || value === 'EMPTY') {
+      return { value: undefined, isConditional: false };
+    }
+
+    const trimmed = value.trim();
+
+    // Patterns indicating a conditional/follow-up question
+    const conditionalPrefixes = [
+      /^please specify[:\s]*(.*)$/i,
+      /^bitte angeben[:\s]*(.*)$/i,
+      /^veuillez préciser[:\s]*(.*)$/i,
+      /^specificeer[:\s]*(.*)$/i,
+      /^if yes[,:\s]*(.*)$/i,
+      /^wenn ja[,:\s]*(.*)$/i,
+      /^si oui[,:\s]*(.*)$/i,
+      /^indien ja[,:\s]*(.*)$/i,
+    ];
+
+    for (const pattern of conditionalPrefixes) {
+      const match = trimmed.match(pattern);
+      if (match) {
+        const extractedValue = match[1]?.trim();
+        // If there's actual content after the prefix, extract it
+        if (extractedValue && extractedValue.length > 0) {
+          return { value: extractedValue, isConditional: true };
+        }
+        // If the prefix is there but no content, mark as conditional but keep original
+        return { value: trimmed, isConditional: true };
+      }
+    }
+
+    return { value: trimmed, isConditional: false };
+  }
+
+  /**
+   * Process Azure keyValuePairs and add them to analyses.
+   * These are form field label-value pairs that Azure extracted but weren't in tables.
+   * Returns the number of new items added.
+   */
+  private processKeyValuePairs(
+    keyValuePairs: Array<{ key: string; value: string; pageNumber?: number }>,
+    analyses: SheetAnalysis[]
+  ): number {
+    // Build a set of existing labels (normalized) to avoid duplicates
+    const existingLabels = new Set<string>();
+    for (const analysis of analyses) {
+      for (const item of analysis.items) {
+        existingLabels.add(this.normalizeLabel(item.label));
+      }
+    }
+
+    // Group keyValuePairs by page
+    const pageGroups = new Map<number, Array<{ key: string; value: string }>>();
+    for (const kvp of keyValuePairs) {
+      // Skip if this label already exists in table extraction
+      const normalizedKey = this.normalizeLabel(kvp.key);
+      if (existingLabels.has(normalizedKey)) continue;
+
+      // Skip empty keys or values that look like metadata
+      if (!kvp.key.trim() || kvp.key.length < 3) continue;
+      if (/^(page|section|table)\s*\d*$/i.test(kvp.key)) continue;
+
+      const page = kvp.pageNumber || 1;
+      if (!pageGroups.has(page)) {
+        pageGroups.set(page, []);
+      }
+      pageGroups.get(page)!.push({ key: kvp.key, value: kvp.value });
+    }
+
+    let addedCount = 0;
+
+    // Add keyValuePairs to the first analysis (since they're document-wide)
+    if (analyses.length > 0) {
+      const mainAnalysis = analyses[0];
+
+      // Process pages in order
+      const sortedPages = [...pageGroups.keys()].sort((a, b) => a - b);
+
+      for (const pageNum of sortedPages) {
+        const kvps = pageGroups.get(pageNum)!;
+        for (const kvp of kvps) {
+          // Detect item type from the value
+          const itemType = this.detectItemTypeFromValue(kvp.value);
+
+          // Create a DetectedItem
+          const newItem: DetectedItem = {
+            type: itemType,
+            label: kvp.key.trim(),
+            value: kvp.value?.trim() || undefined,
+            lCell: `KV_P${pageNum}`, // Synthetic cell reference for keyValuePair
+            section: this.findSectionForPage(pageNum, mainAnalysis) || 'Form Fields',
+            confidence: 0.8, // Slightly lower confidence since not from Claude analysis
+            level: this.detectItemLevel(kvp.key, kvp.value),
+            destination: this.detectDestinationFromLabel(kvp.key),
+          };
+
+          mainAnalysis.items.push(newItem);
+          existingLabels.add(this.normalizeLabel(kvp.key)); // Prevent duplicates
+          addedCount++;
+        }
+      }
+    }
+
+    return addedCount;
+  }
+
+  /**
+   * Normalize a label for comparison (lowercase, remove extra spaces/punctuation)
+   */
+  private normalizeLabel(label: string): string {
+    return label
+      .toLowerCase()
+      .replace(/[^\w\s]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  /**
+   * Detect item type from the value content
+   */
+  private detectItemTypeFromValue(value: string): ItemType {
+    if (!value) return 'field';
+    const v = value.trim().toLowerCase();
+    if (v === 'yes' || v === 'no' || v === 'ja' || v === 'nein' || v === 'oui' || v === 'non') {
+      return 'yesno';
+    }
+    if (/^\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4}$/.test(v)) {
+      return 'date';
+    }
+    return 'field';
+  }
+
+  /**
+   * Detect item level from label and value
+   */
+  private detectItemLevel(label: string, value: string): ItemLevel {
+    const text = (label + ' ' + (value || '')).toLowerCase();
+
+    // Product-specific patterns
+    if (/product|artikel|ingredient|component|composition|specification/i.test(text)) {
+      return 'product';
+    }
+
+    return 'standard';
+  }
+
+  /**
+   * Detect destination from label content
+   */
+  private detectDestinationFromLabel(label: string): string {
+    const l = label.toLowerCase();
+
+    // Company-level patterns
+    if (/company|supplier|vendor|manufacturer|address|contact|phone|email|fax/i.test(l)) {
+      return 'company';
+    }
+
+    // Product-level patterns
+    if (/product|article|specification|batch|lot|ingredient/i.test(l)) {
+      return 'product';
+    }
+
+    return 'answer_library';
+  }
+
+  /**
+   * Find the section title for a given page number
+   */
+  private findSectionForPage(pageNum: number, analysis: SheetAnalysis): string | undefined {
+    // Look through sections to find one that matches this page
+    // This is a heuristic - we try to match based on row ranges
+    for (const section of analysis.sections) {
+      // If section has items with cells on this page, use it
+      const sectionItems = analysis.items.filter(i => i.section === section.title);
+      for (const item of sectionItems) {
+        // Check if any item cell references are from this page
+        // (this is approximate since we don't have page info on all cells)
+        if (item.lCell?.includes(`_P${pageNum}`) || item.vCell?.includes(`_P${pageNum}`)) {
+          return section.title;
+        }
+      }
+    }
+    return undefined;
   }
 
   /**

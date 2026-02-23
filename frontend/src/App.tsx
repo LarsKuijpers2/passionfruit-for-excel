@@ -283,19 +283,39 @@ export default function App() {
 
   // Handle cell click in original panel - select and scroll to matching items
   const handleCellClick = useCallback(
-    (cellRef: string) => {
+    (cellRef: string, _row?: number, _col?: string, pageNumber?: number) => {
       // Set active cell for highlighting
       setActiveCell(cellRef);
 
-      if (!questionnaireData?.indexed?.sections) return;
+      if (!questionnaireData?.indexed?.sections || !questionnaireData?.structure?.sheets) return;
+
+      // Build a map of cell ref -> page number from structure
+      const cellPageMap = new Map<string, number>();
+      for (const sheet of questionnaireData.structure.sheets) {
+        for (const row of sheet.rows || []) {
+          for (const cell of Object.values(row.cells || {})) {
+            const c = cell as { ref?: string; pageNumber?: number };
+            if (c.ref && c.pageNumber !== undefined) {
+              cellPageMap.set(c.ref, c.pageNumber);
+            }
+          }
+        }
+      }
 
       // Find all items that reference this cell (lCell or vCell)
+      // If pageNumber is provided (from PDF click), filter to items on that page
       const matchingItemIds: string[] = [];
       let firstMatchId: string | null = null;
 
       for (const section of questionnaireData.indexed.sections) {
         for (const item of section.items) {
           if (item.lCell === cellRef || item.vCell === cellRef) {
+            // If we have a page number from the click, verify the item's cell is on that page
+            if (pageNumber !== undefined) {
+              const itemCellRef = item.lCell || item.vCell;
+              const itemPage = itemCellRef ? cellPageMap.get(itemCellRef) : undefined;
+              if (itemPage !== pageNumber) continue;
+            }
             if (item.id) {
               matchingItemIds.push(item.id);
               if (!firstMatchId) firstMatchId = item.id;
@@ -455,10 +475,15 @@ export default function App() {
     return allItems.filter((item) => selectedItems.has(item.id || ""));
   }, [questionnaireData, selectedPanel, selectedItems]);
 
-  // Build set of item IDs that have Vision discrepancies (for highlighting)
+  // Build set of item IDs that have unreviewed Vision discrepancies (for highlighting)
   const visionDiscrepancyIds = useMemo(() => {
     const ids = new Set<string>();
-    questionnaireData?.indexed?.visionValidation?.discrepancies?.forEach(d => ids.add(d.itemId));
+    questionnaireData?.indexed?.visionValidation?.discrepancies?.forEach(d => {
+      // Only show indicator for unreviewed discrepancies
+      if (!d.reviewed) {
+        ids.add(d.itemId);
+      }
+    });
     return ids;
   }, [questionnaireData?.indexed?.visionValidation?.discrepancies]);
 
@@ -466,57 +491,63 @@ export default function App() {
 
   // Welcome screen if no questionnaire selected and not in library/pipeline view
   if (!currentQuestionnaire && currentView === 'questionnaire') {
+    // Group questionnaires by customer
+    const groupedByCustomer: Record<string, typeof questionnaires> = {};
+    questionnaires.forEach((q) => {
+      const customer = q.customer || "default";
+      if (!groupedByCustomer[customer]) groupedByCustomer[customer] = [];
+      groupedByCustomer[customer].push(q);
+    });
+    const customers = Object.keys(groupedByCustomer).sort((a, b) =>
+      a === "default" ? 1 : b === "default" ? -1 : a.localeCompare(b)
+    );
+
     return (
-      <div className="flex flex-col items-center justify-center h-screen gap-6 p-10 bg-app">
-        <h1 className="text-xl font-medium text-primary">Passionfruit Review</h1>
-        <p className="text-muted max-w-[400px] text-center text-[13px]">
-          Select a questionnaire to review its indexed structure and harvested library items.
-        </p>
-        <div className="flex flex-col gap-1 max-w-[600px] w-full max-h-[400px] overflow-y-auto">
-          {/* Header row */}
-          <div className="flex items-center h-7 px-3 text-[10px] font-medium text-muted">
-            <span className="flex-1">Document</span>
-            <span className="w-20 text-center">Approved</span>
-            <span className="w-20 text-center">Imported</span>
+      <div className="flex flex-col h-screen bg-app">
+        <div className="flex-1 overflow-y-auto p-6">
+          <div className="max-w-[800px] mx-auto">
+            <h1 className="text-xl font-medium text-primary mb-2">Passionfruit Review</h1>
+            <p className="text-muted text-[13px] mb-6">
+              Select a questionnaire to review its indexed structure and harvested library items.
+            </p>
+
+            {customers.map((customer) => (
+              <div key={customer} className="mb-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <h2 className="text-[12px] font-semibold text-muted uppercase tracking-wide">
+                    {customer}
+                  </h2>
+                  <span className="text-[11px] text-muted">
+                    {groupedByCustomer[customer].length} documents
+                  </span>
+                </div>
+                <div className="bg-card rounded-lg border border-subtle overflow-hidden">
+                  {groupedByCustomer[customer].map((q, idx) => (
+                    <div
+                      key={q.name}
+                      className={`flex items-center h-10 px-4 cursor-pointer transition-colors hover:bg-card-hover ${
+                        idx > 0 ? 'border-t border-subtle' : ''
+                      }`}
+                      onClick={() => openTab(q.name)}
+                      title={q.displayName}
+                    >
+                      <span className="flex-1 text-[13px] text-primary overflow-hidden text-ellipsis whitespace-nowrap">
+                        {q.displayName}
+                      </span>
+                      <div className="flex items-center gap-4">
+                        {q.approvedCount ? (
+                          <span className="text-[11px] text-emerald-500">{q.approvedCount} approved</span>
+                        ) : null}
+                        {q.apiReadyCount ? (
+                          <span className="text-[11px] text-blue-500">{q.apiReadyCount} imported</span>
+                        ) : null}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
-          {questionnaires.map((q) => (
-            <div
-              key={q.name}
-              className="flex items-center h-10 px-3 bg-card border border-default rounded cursor-pointer transition-colors bg-card-hover"
-              onClick={() => openTab(q.name)}
-              title={q.displayName}
-            >
-              <span className="flex-1 text-[13px] text-primary overflow-hidden text-ellipsis whitespace-nowrap">
-                {q.displayName}
-              </span>
-              {/* Approved column */}
-              <div className="w-20 flex flex-col items-center text-[10px]">
-                {q.approvedCount ? (
-                  <>
-                    <span className="text-emerald-500 font-medium">{q.approvedCount}</span>
-                    {q.approvedAt && (
-                      <span className="text-muted">{formatRelativeTime(q.approvedAt)}</span>
-                    )}
-                  </>
-                ) : (
-                  <span className="text-muted">-</span>
-                )}
-              </div>
-              {/* Imported column */}
-              <div className="w-20 flex flex-col items-center text-[10px]">
-                {q.apiReadyCount ? (
-                  <>
-                    <span className="text-blue-500 font-medium">{q.apiReadyCount}</span>
-                    {q.apiReadyAt && (
-                      <span className="text-muted">{formatRelativeTime(q.apiReadyAt)}</span>
-                    )}
-                  </>
-                ) : (
-                  <span className="text-muted">-</span>
-                )}
-              </div>
-            </div>
-          ))}
         </div>
       </div>
     );
@@ -729,10 +760,10 @@ export default function App() {
             {questionnaireData?.structure?.sheets?.map((sheet) => (
               <button
                 key={sheet.name}
-                className={`px-3 h-full border-b-2 text-[12px] cursor-pointer transition-colors whitespace-nowrap ${
+                className={`px-3 h-full text-[12px] cursor-pointer transition-colors whitespace-nowrap rounded-t ${
                   activeSheet === sheet.name
-                    ? "text-primary border-b-accent"
-                    : "text-muted border-transparent hover:text-primary"
+                    ? "text-primary bg-app"
+                    : "text-muted hover:text-primary hover:bg-app/50"
                 }`}
                 onClick={() => setActiveSheet(sheet.name)}
               >

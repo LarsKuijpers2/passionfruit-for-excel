@@ -39,7 +39,7 @@ interface OriginalPanelProps {
     }>;
   };
   activeCell?: string | null;
-  onCellClick?: (cellRef: string, row: number, col: string) => void;
+  onCellClick?: (cellRef: string, row: number, col: string, pageNumber?: number) => void;
   questionnaireId?: string;
   pages?: PageInfo[];
 }
@@ -458,7 +458,7 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
               // Parse cell ref to get row and column
               const match = ref.match(/^([A-Z]+)(\d+)$/);
               if (match) {
-                onCellClick(ref, parseInt(match[2], 10), match[1]);
+                onCellClick(ref, parseInt(match[2], 10), match[1], currentPage);
               }
             }
           };
@@ -868,7 +868,7 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
                     </button>
 
                     {expandedSections.has(sectionIndex) && (
-                      <div className="mt-2 pl-4 space-y-2 border-l-2 border-gray-200 dark:border-gray-700">
+                      <div className="mt-2 pl-4 space-y-2 border-l-2 border-subtle">
                         {(section as any).textContent.paragraphs.map((paragraph: any, pIndex: number) => (
                           <p key={pIndex} className="text-[12px] text-muted leading-relaxed">
                             {paragraph.content}
@@ -883,8 +883,8 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
                 {section.type === 'raw_structure' && (() => {
                   if (!section.rows || section.rows.length === 0) {
                     return (
-                      <div className="bg-white dark:bg-gray-800/50 rounded-lg border border-gray-300 dark:border-gray-700 overflow-hidden">
-                        <div className="p-4 text-center text-gray-500 dark:text-gray-400">
+                      <div className="bg-card rounded-lg border border-subtle overflow-hidden">
+                        <div className="p-4 text-center text-muted">
                           <p>No table data available</p>
                         </div>
                       </div>
@@ -910,14 +910,14 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
                   const displayColumns = Array.from(allColumns).sort();
 
                   return (
-                    <div className="bg-white dark:bg-gray-800/50 rounded-lg border border-gray-300 dark:border-gray-700 overflow-hidden">
+                    <div className="bg-card rounded-lg border border-subtle overflow-hidden">
                       <div className="overflow-x-auto">
                         <table className="w-full border-collapse">
                           {/* Render header rows */}
                           {headerRows.length > 0 && (
                             <thead>
                               {headerRows.map((headerRow, rowIndex) => (
-                                <tr key={`header-${rowIndex}`} className="bg-gray-100 dark:bg-gray-700">
+                                <tr key={`header-${rowIndex}`} className="bg-app-secondary">
                                   {displayColumns.map(col => {
                                     const cell = headerRow.cells?.[col];
                                     const isActiveCell = activeCell && cell?.ref === activeCell;
@@ -929,13 +929,13 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
                                         ref={(el) => {
                                           if (el && cell?.ref) cellRefs.current.set(cell.ref, el);
                                         }}
-                                        className={`px-3 py-2 text-[13px] border-r border-gray-200 dark:border-gray-600 last:border-r-0 font-semibold text-gray-900 dark:text-gray-200 text-left cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 ${
+                                        className={`px-3 py-2 text-[13px] border-r border-subtle last:border-r-0 font-medium text-muted text-left cursor-pointer hover:bg-card-hover ${
                                           isCurrentSearchMatch
                                             ? 'bg-yellow-500/30 ring-2 ring-yellow-500 ring-inset'
                                             : isSearchMatch
                                               ? 'bg-yellow-400/20'
                                               : isActiveCell
-                                                ? 'bg-accent/20 ring-2 ring-accent ring-inset'
+                                                ? 'bg-selected ring-1 ring-accent/50 ring-inset'
                                                 : ''
                                         }`}
                                         onClick={() => handleCellClick(cell?.ref || `${col}${headerRow.row}`, headerRow.row, col)}
@@ -944,7 +944,7 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
                                           {cell?.value && cell.value.length > 0 ? (
                                             <span>{cell.value}</span>
                                           ) : (
-                                            <span className="text-gray-400 dark:text-gray-500">—</span>
+                                            <span className="text-muted/50">—</span>
                                           )}
                                         </div>
                                       </th>
@@ -960,7 +960,7 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
                             {dataRows.map((dataRow, rowIndex) => (
                               <tr
                                 key={`data-${rowIndex}`}
-                                className="border-b border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+                                className="border-b border-subtle hover:bg-card-hover transition-colors"
                               >
                                 {displayColumns.map(col => {
                                   const cell = dataRow.cells?.[col];
@@ -975,26 +975,26 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
                                       ref={(el) => {
                                         if (el && cell?.ref) cellRefs.current.set(cell.ref, el);
                                       }}
-                                      className={`px-3 py-2 text-[13px] border-r border-gray-200 dark:border-gray-600 last:border-r-0 ${
-                                        isLabelCell ? 'font-medium text-gray-800 dark:text-gray-200' : ''
+                                      className={`px-3 py-2 text-[13px] border-r border-subtle last:border-r-0 ${
+                                        isLabelCell ? 'font-medium text-muted' : 'text-primary'
                                       } ${
                                         isCurrentSearchMatch
                                           ? 'bg-yellow-500/30 ring-2 ring-yellow-500 ring-inset'
                                           : isSearchMatch
                                             ? 'bg-yellow-400/20'
                                             : isActiveCell
-                                              ? 'bg-accent/20 ring-2 ring-accent ring-inset'
+                                              ? 'bg-selected ring-1 ring-accent/50 ring-inset'
                                               : ''
-                                      } transition-colors cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600/50`}
+                                      } transition-colors cursor-pointer hover:bg-card-hover`}
                                       onClick={() => handleCellClick(cell?.ref || `${col}${dataRow.row}`, dataRow.row, col)}
                                     >
                                       <div className="min-h-[18px] flex items-start">
                                         {cell?.value && cell.value.length > 0 ? (
-                                          <span className="text-gray-900 dark:text-gray-100">
+                                          <span>
                                             {cell.value}
                                           </span>
                                         ) : (
-                                          <span className="text-gray-400 dark:text-gray-500">—</span>
+                                          <span className="text-muted/50">—</span>
                                         )}
                                       </div>
                                     </td>

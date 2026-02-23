@@ -8,6 +8,7 @@ interface IndexedPanelProps {
   selectedItems: Set<string>;
   lastSelectedId: string | null;
   reviewMode: boolean;
+  visionCorrectedIds?: Set<string>;
   getReviewStatus: (itemId: string) => "accepted" | "rejected" | undefined;
   onItemSelect: (itemId: string, multiSelect: boolean, shiftSelect: boolean) => void;
   onSelectGroup: (itemIds: string[]) => void;
@@ -15,6 +16,7 @@ interface IndexedPanelProps {
   onAccept: (itemId: string) => void;
   onReject: (itemId: string, reason?: string) => void;
   onCellRefClick?: (cellRef: string) => void;
+  onItemClick?: (item: { lCell?: string; vCell?: string; label: string }) => void;
 }
 
 export interface IndexedPanelHandle {
@@ -23,12 +25,12 @@ export interface IndexedPanelHandle {
   toggleAllGroups: () => void;
 }
 
-// Linear-style destination colors (subtle)
+// Linear-style destination colors (theme-aware for better contrast)
 const destinationConfig: Record<string, { label: string; color: string }> = {
-  company: { label: "Company", color: "text-blue-400" },
-  answer_library: { label: "Library", color: "text-emerald-400" },
-  product: { label: "Product", color: "text-orange-400" },
-  questionnaire: { label: "Questionnaire", color: "text-purple-400" },
+  company: { label: "Company", color: "tag-blue" },
+  answer_library: { label: "Library", color: "tag-emerald" },
+  product: { label: "Product", color: "tag-orange" },
+  questionnaire: { label: "Questionnaire", color: "tag-purple" },
   exclude: { label: "Exclude", color: "text-muted" },
 };
 
@@ -39,6 +41,7 @@ export const IndexedPanel = forwardRef<IndexedPanelHandle, IndexedPanelProps>(fu
     selectedItems,
     lastSelectedId,
     reviewMode,
+    visionCorrectedIds,
     getReviewStatus,
     onItemSelect,
     onSelectGroup,
@@ -46,6 +49,7 @@ export const IndexedPanel = forwardRef<IndexedPanelHandle, IndexedPanelProps>(fu
     onAccept: _onAccept,
     onReject: _onReject,
     onCellRefClick,
+    onItemClick,
   },
   ref
 ) {
@@ -272,25 +276,34 @@ export const IndexedPanel = forwardRef<IndexedPanelHandle, IndexedPanelProps>(fu
                     </div>
                   </div>
 
-                  {/* Items */}
+                  {/* Section Content - Natural Display */}
                   {!isCollapsed && (
                     <div>
-                      {section.items.map((item) => {
+                      {/* Show all content naturally as it appears in the questionnaire */}
+                      {section.items.length > 0 && (
+                        <div>
+                          {section.items.map((item) => {
                         const isSelected = selectedItems.has(item.itemId);
                         const reviewStatus = getReviewStatus(item.itemId);
                         const destination = item.destination || "answer_library";
                         const destConfig = destinationConfig[destination] || destinationConfig.answer_library;
+                        const isVisionCorrected = visionCorrectedIds?.has(item.itemId);
 
                         return (
                           <div
                             key={item.itemId}
                             ref={(el) => { if (el) itemRefs.current.set(item.itemId, el); }}
-                            onClick={(e) => handleItemClick(e, item.itemId)}
+                            onClick={(e) => {
+                              handleItemClick(e, item.itemId);
+                              if (onItemClick) {
+                                onItemClick({ lCell: item.lCell, vCell: item.vCell, label: item.label });
+                              }
+                            }}
                             className={`group flex items-start gap-2 py-1.5 px-3 border-b border-subtle cursor-pointer transition-colors ${
                               isSelected
                                 ? "bg-selected"
                                 : "hover:bg-[var(--color-card-hover)]"
-                            } ${item.needs_review ? "border-l-2 border-l-amber-500/60" : ""}`}
+                            }`}
                           >
                             {/* Checkbox */}
                             <div className="pt-0.5">
@@ -314,12 +327,15 @@ export const IndexedPanel = forwardRef<IndexedPanelHandle, IndexedPanelProps>(fu
                                   {item.label}
                                 </span>
                               </div>
-                              <div className={`text-[13px] truncate ${
+                              <div className={`text-[13px] truncate flex items-center gap-1.5 ${
                                 item.value
                                   ? "text-primary"
                                   : "text-muted italic"
                               }`}>
                                 {item.value || "(empty)"}
+                                {isVisionCorrected && (
+                                  <span className="inline-block w-1.5 h-1.5 bg-orange-500 rounded-full shrink-0" title="Corrected by Vision" />
+                                )}
                               </div>
                             </div>
 
@@ -353,7 +369,9 @@ export const IndexedPanel = forwardRef<IndexedPanelHandle, IndexedPanelProps>(fu
                             </div>
                           </div>
                         );
-                      })}
+                          })}
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>

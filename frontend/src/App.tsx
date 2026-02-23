@@ -7,9 +7,12 @@ import {
   bulkUpdateItems,
   exportGrouped,
   saveNotes,
+  submitDiscrepancyVerdict,
+  undoDiscrepancyVerdict,
 } from "./api";
 import type { PanelType, IndexedItem, Destination } from "./types";
 import { Toaster, toast } from "sonner";
+import { Database, GitBranch, Table } from "@phosphor-icons/react";
 import { TabBar } from "./components/TabBar";
 import { OriginalPanel, type OriginalPanelHandle } from "./components/OriginalPanel";
 import { IndexedPanel, type IndexedPanelHandle } from "./components/IndexedPanel";
@@ -17,6 +20,8 @@ import { LibraryPanel, type LibraryPanelHandle } from "./components/LibraryPanel
 import { CommandPalette } from "./components/CommandPalette";
 import { NotesPanel } from "./components/NotesPanel";
 import { AggregatedLibraryPanel } from "./components/AggregatedLibraryPanel";
+import { PipelinePanel } from "./components/PipelinePanel";
+import { StructureAnalyzerPanel } from "./components/StructureAnalyzerPanel";
 import { useTheme } from "./hooks/useTheme";
 import { useTabs } from "./hooks/useTabs";
 import { useFeedback } from "./hooks/useFeedback";
@@ -117,9 +122,14 @@ export default function App() {
   const [activeSheet, setActiveSheet] = useState<string | null>(null);
   const [activeCell, setActiveCell] = useState<string | null>(null);
 
-  // Library view state
-  const [currentView, setCurrentView] = useState<'questionnaire' | 'library'>('questionnaire');
+  // View state: questionnaire (detail), library (database), pipeline (status), structure (analyzer)
+  const [currentView, setCurrentView] = useState<'questionnaire' | 'library' | 'pipeline' | 'structure'>('questionnaire');
   const [libraryCustomer, setLibraryCustomer] = useState<string | null>(null);
+  const [pipelineCustomer, setPipelineCustomer] = useState<string | null>(null);
+  const [structureCustomer, setStructureCustomer] = useState<string | null>(null);
+
+  // Vision corrections panel
+  const [visionPanelOpen, setVisionPanelOpen] = useState(false);
 
   // Current questionnaire data
   const { data: questionnaireData, isLoading: questionnaireLoading } = useQuery({
@@ -445,10 +455,17 @@ export default function App() {
     return allItems.filter((item) => selectedItems.has(item.id || ""));
   }, [questionnaireData, selectedPanel, selectedItems]);
 
+  // Build set of item IDs that have Vision discrepancies (for highlighting)
+  const visionDiscrepancyIds = useMemo(() => {
+    const ids = new Set<string>();
+    questionnaireData?.indexed?.visionValidation?.discrepancies?.forEach(d => ids.add(d.itemId));
+    return ids;
+  }, [questionnaireData?.indexed?.visionValidation?.discrepancies]);
+
   const serverConnected = !!healthData;
 
-  // Welcome screen if no questionnaire selected
-  if (!currentQuestionnaire) {
+  // Welcome screen if no questionnaire selected and not in library/pipeline view
+  if (!currentQuestionnaire && currentView === 'questionnaire') {
     return (
       <div className="flex flex-col items-center justify-center h-screen gap-6 p-10 bg-app">
         <h1 className="text-xl font-medium text-primary">Passionfruit Review</h1>
@@ -505,8 +522,8 @@ export default function App() {
     );
   }
 
-  // Loading state
-  if (questionnaireLoading) {
+  // Loading state (only for questionnaire view)
+  if (questionnaireLoading && currentView === 'questionnaire') {
     return (
       <div className="flex flex-col items-center justify-center h-screen gap-4 bg-app">
         <div className="w-5 h-5 border-2 border-default border-t-accent rounded-full animate-spin" />
@@ -517,21 +534,24 @@ export default function App() {
 
   return (
     <div className="flex flex-col h-screen bg-app">
-      <TabBar
-        tabs={openTabs}
-        currentTab={currentQuestionnaire}
-        serverConnected={serverConnected}
-        theme={theme}
-        hasNotes={!!(questionnaireData?.indexed?.meta?.notes)}
-        visiblePanels={visiblePanels}
-        onSidebarToggle={() => setSidebarOpen((prev) => !prev)}
-        onTabClick={switchTab}
-        onTabClose={closeTab}
-        onComplete={handleCompleteReview}
-        onNotesClick={() => setNotesPanelOpen((prev) => !prev)}
-        onThemeChange={setTheme}
-        onTogglePanel={togglePanel}
-      />
+      {/* Only show TabBar when in questionnaire view */}
+      {currentView === 'questionnaire' && (
+        <TabBar
+          tabs={openTabs}
+          currentTab={currentQuestionnaire}
+          serverConnected={serverConnected}
+          theme={theme}
+          hasNotes={!!(questionnaireData?.indexed?.meta?.notes)}
+          visiblePanels={visiblePanels}
+          onSidebarToggle={() => setSidebarOpen((prev) => !prev)}
+          onTabClick={switchTab}
+          onTabClose={closeTab}
+          onComplete={handleCompleteReview}
+          onNotesClick={() => setNotesPanelOpen((prev) => !prev)}
+          onThemeChange={setTheme}
+          onTogglePanel={togglePanel}
+        />
+      )}
 
       {/* Sidebar overlay */}
       {sidebarOpen && (
@@ -543,7 +563,7 @@ export default function App() {
 
       {/* Sidebar */}
       <div
-        className={`fixed left-0 top-10 bottom-0 w-[560px] bg-app-secondary border-r border-default flex flex-col z-[100] transition-transform duration-200 ${
+        className={`fixed left-0 ${currentView === 'questionnaire' ? 'top-10' : 'top-0'} bottom-0 w-[560px] bg-app-secondary border-r border-default flex flex-col z-[100] transition-transform duration-200 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -566,8 +586,58 @@ export default function App() {
 
             return customers.map((customer) => (
               <div key={customer}>
-                <div className="h-7 px-4 flex items-center text-[10px] font-semibold text-muted uppercase tracking-wide bg-app border-b border-default">
-                  {customer}
+                <div className="h-7 px-4 flex items-center justify-between text-[10px] font-semibold text-muted uppercase tracking-wide bg-app border-b border-default">
+                  <span>{customer}</span>
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCurrentView('pipeline');
+                        setPipelineCustomer(customer);
+                        setSidebarOpen(false);
+                      }}
+                      className={`p-1 rounded transition-colors ${
+                        currentView === 'pipeline' && pipelineCustomer === customer
+                          ? 'text-accent bg-accent/20'
+                          : 'text-muted hover:text-primary hover:bg-card-hover'
+                      }`}
+                      title={`View ${customer} pipeline`}
+                    >
+                      <GitBranch size={14} />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCurrentView('library');
+                        setLibraryCustomer(customer);
+                        setSidebarOpen(false);
+                      }}
+                      className={`p-1 rounded transition-colors ${
+                        currentView === 'library' && libraryCustomer === customer
+                          ? 'text-accent bg-accent/20'
+                          : 'text-muted hover:text-primary hover:bg-card-hover'
+                      }`}
+                      title={`View ${customer} database`}
+                    >
+                      <Database size={14} />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCurrentView('structure');
+                        setStructureCustomer(customer);
+                        setSidebarOpen(false);
+                      }}
+                      className={`p-1 rounded transition-colors ${
+                        currentView === 'structure' && structureCustomer === customer
+                          ? 'text-accent bg-accent/20'
+                          : 'text-muted hover:text-primary hover:bg-card-hover'
+                      }`}
+                      title={`Analyze ${customer} structure`}
+                    >
+                      <Table size={14} />
+                    </button>
+                  </div>
                 </div>
                 {grouped[customer].map((q) => (
                   <div
@@ -617,34 +687,40 @@ export default function App() {
                     </div>
                   </div>
                 ))}
-                {/* Answer Library button for this customer */}
-                <div
-                  className={`flex items-center h-8 px-4 cursor-pointer transition-colors border-b border-default gap-2 ${
-                    currentView === 'library' && libraryCustomer === customer
-                      ? "bg-accent/10 border-l-2 border-l-accent"
-                      : "hover:bg-card-hover"
-                  }`}
-                  onClick={() => {
-                    setCurrentView('library');
-                    setLibraryCustomer(customer);
-                    setSidebarOpen(false);
-                  }}
-                >
-                  <span className="text-[12px] text-accent font-medium">
-                    Answer Library
-                  </span>
-                </div>
               </div>
             ));
           })()}
         </div>
       </div>
 
-      {/* Content area - either questionnaire view or library view */}
-      {currentView === 'library' && libraryCustomer ? (
+      {/* Content area - questionnaire, library, or pipeline view */}
+      {currentView === 'pipeline' && pipelineCustomer ? (
+        <PipelinePanel
+          customer={pipelineCustomer}
+          onBack={() => setCurrentView('questionnaire')}
+          onSidebarToggle={() => setSidebarOpen((prev) => !prev)}
+          onQuestionnaireClick={(filename) => {
+            // Find matching questionnaire and open it
+            const match = questionnaires.find(q =>
+              q.name.includes(filename.substring(0, 30).replace(/[^a-zA-Z0-9]/g, '_'))
+            );
+            if (match) {
+              setCurrentView('questionnaire');
+              openTab(match.name);
+            }
+          }}
+        />
+      ) : currentView === 'library' && libraryCustomer ? (
         <AggregatedLibraryPanel
           customer={libraryCustomer}
           onBack={() => setCurrentView('questionnaire')}
+          onSidebarToggle={() => setSidebarOpen((prev) => !prev)}
+        />
+      ) : currentView === 'structure' && structureCustomer ? (
+        <StructureAnalyzerPanel
+          customer={structureCustomer}
+          onBack={() => setCurrentView('questionnaire')}
+          onSidebarToggle={() => setSidebarOpen((prev) => !prev)}
         />
       ) : (
         <>
@@ -673,8 +749,12 @@ export default function App() {
           sheet={questionnaireData?.structure?.sheets?.find(
             (s) => s.name === activeSheet
           )}
+          sections={questionnaireData?.indexed?.sections || []}
+          textContent={questionnaireData?.structure?.textContent}
           activeCell={activeCell}
           onCellClick={handleCellClick}
+          questionnaireId={currentQuestionnaire || undefined}
+          pages={questionnaireData?.structure?.pages}
         />
         <IndexedPanel
           ref={indexedPanelRef}
@@ -683,6 +763,7 @@ export default function App() {
           selectedItems={selectedPanel === "indexed" ? selectedItems : new Set()}
           lastSelectedId={selectedPanel === "indexed" ? lastSelectedId : null}
           reviewMode={reviewMode}
+          visionCorrectedIds={visionDiscrepancyIds}
           getReviewStatus={getReviewStatus}
           onItemSelect={(id, multi, shift) => handleItemSelect("indexed", id, multi, shift)}
           onSelectGroup={(itemIds) => {
@@ -701,6 +782,14 @@ export default function App() {
           onAccept={(id) => handleAccept("indexed", id)}
           onCellRefClick={handleCellRefClick}
           onReject={(id, reason) => handleReject("indexed", id, reason)}
+          onItemClick={(item) => {
+            if (item.lCell) {
+              setActiveCell(item.lCell);
+              if (originalPanelRef.current) {
+                originalPanelRef.current.scrollToCell(item.lCell);
+              }
+            }
+          }}
         />
         <LibraryPanel
           ref={libraryPanelRef}
@@ -752,6 +841,32 @@ export default function App() {
                     0
                   )} items
                 </span>
+              )}
+              {(questionnaireData?.indexed?.visionValidation || questionnaireData?.indexed?.visionCorrection) && (
+                <button
+                  className={`cursor-pointer flex items-center gap-1 ${
+                    questionnaireData?.indexed?.visionCorrection
+                      ? "text-blue-500 hover:text-blue-400"
+                      : (questionnaireData?.indexed?.visionValidation?.discrepancies?.length ?? 0) > 0
+                        ? "text-orange-500 hover:text-orange-400"
+                        : "text-emerald-500 hover:text-emerald-400"
+                  }`}
+                  onClick={() => setVisionPanelOpen(prev => !prev)}
+                >
+                  <span className={`inline-block w-2 h-2 rounded-full ${
+                    questionnaireData?.indexed?.visionCorrection
+                      ? "bg-blue-500"
+                      : (questionnaireData?.indexed?.visionValidation?.discrepancies?.length ?? 0) > 0
+                        ? "bg-orange-500"
+                        : "bg-emerald-500"
+                  }`} />
+                  {questionnaireData?.indexed?.visionCorrection
+                    ? `${questionnaireData.indexed.visionCorrection.correctedCount} corrected, ${Math.round((questionnaireData.indexed.visionCorrection.matchedCorrectly / questionnaireData.indexed.visionCorrection.totalItems) * 100)}% accuracy`
+                    : (questionnaireData?.indexed?.visionValidation?.discrepancies?.length ?? 0) > 0
+                      ? `${questionnaireData?.indexed?.visionValidation?.discrepancies?.length} to review`
+                      : `${questionnaireData?.indexed?.visionValidation?.matchedCorrectly} validated`
+                  }
+                </button>
               )}
             </div>
             <div className="flex gap-4">
@@ -811,6 +926,297 @@ export default function App() {
           }
         }}
       />
+
+      {/* Vision validation/correction panel */}
+      {visionPanelOpen && (questionnaireData?.indexed?.visionValidation || questionnaireData?.indexed?.visionCorrection) && (
+        <div className="fixed bottom-7 left-0 right-0 bg-card border-t border-default z-[50] flex flex-col max-h-[300px]">
+          {/* Fixed header - not scrollable */}
+          <div className="flex items-center justify-between px-4 py-2 border-b border-default bg-app-secondary shrink-0">
+            <div className="flex items-center gap-2">
+              {/* Show correction info if available, otherwise validation info */}
+              {questionnaireData.indexed.visionCorrection ? (
+                <>
+                  <span className="inline-block w-2 h-2 bg-blue-500 rounded-full" />
+                  <span className="text-[13px] font-medium text-primary">
+                    Vision Correction - {questionnaireData.indexed.visionCorrection.correctedCount} auto-corrected
+                  </span>
+                  <span className="text-[11px] text-muted">
+                    {questionnaireData.indexed.visionCorrection.matchedCorrectly}/{questionnaireData.indexed.visionCorrection.totalItems} accuracy
+                  </span>
+                  {questionnaireData.indexed.visionCorrection.remainingDiscrepancies?.length > 0 && (
+                    <span className="text-[11px] text-orange-400">
+                      ({questionnaireData.indexed.visionCorrection.remainingDiscrepancies.length} text discrepancies)
+                    </span>
+                  )}
+                </>
+              ) : (questionnaireData?.indexed?.visionValidation?.discrepancies?.length ?? 0) > 0 ? (
+                <>
+                  <span className="inline-block w-2 h-2 bg-orange-500 rounded-full" />
+                  <span className="text-[13px] font-medium text-primary">
+                    Vision Validation - {questionnaireData?.indexed?.visionValidation?.discrepancies?.length} discrepancies
+                  </span>
+                  <span className="text-[11px] text-muted">
+                    {questionnaireData?.indexed?.visionValidation?.matchedCorrectly}/{questionnaireData?.indexed?.visionValidation?.totalItems} confirmed correct
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span className="inline-block w-2 h-2 bg-emerald-500 rounded-full" />
+                  <span className="text-[13px] font-medium text-primary">
+                    Vision Validation - All matched
+                  </span>
+                  <span className="text-[11px] text-muted">
+                    {questionnaireData.indexed.visionValidation?.matchedCorrectly}/{questionnaireData.indexed.visionValidation?.totalItems} confirmed correct
+                  </span>
+                </>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                className="text-muted hover:text-primary text-[18px] leading-none cursor-pointer"
+                onClick={() => setVisionPanelOpen(false)}
+              >
+                ×
+              </button>
+            </div>
+          </div>
+          {/* Scrollable content */}
+          {questionnaireData.indexed.visionCorrection ? (
+            // Show correction results
+            <div className="overflow-y-auto flex-1">
+              {/* Corrections section */}
+              {questionnaireData.indexed.visionCorrection.corrections?.length > 0 && (
+                <>
+                  <div className="px-4 py-2 bg-blue-500/10 text-blue-400 text-[11px] font-medium sticky top-0">
+                    Auto-corrected Yes/No values ({questionnaireData.indexed.visionCorrection.corrections.length})
+                  </div>
+                  <table className="w-full text-[12px]">
+                    <thead className="bg-app-secondary sticky top-7">
+                      <tr className="text-left text-muted">
+                        <th className="px-4 py-2 font-medium">Item</th>
+                        <th className="px-4 py-2 font-medium w-24">Was</th>
+                        <th className="px-4 py-2 font-medium w-24">Now</th>
+                        <th className="px-4 py-2 font-medium w-20">Match</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {questionnaireData.indexed.visionCorrection.corrections.map((c: any, idx: number) => {
+                        // Find the item to get its label
+                        const item = questionnaireData.indexed?.sections?.flatMap((s: any) => s.items).find((i: any) => i.id === c.itemId);
+                        return (
+                          <tr
+                            key={idx}
+                            className="border-t border-default hover:bg-card-hover cursor-pointer"
+                            onClick={() => {
+                              selectMultiple("indexed", [c.itemId]);
+                              indexedPanelRef.current?.scrollToItem(c.itemId);
+                            }}
+                          >
+                            <td className="px-4 py-2 text-primary">
+                              <div className="truncate max-w-[400px]" title={item?.label || c.itemId}>
+                                {item?.label || c.itemId}
+                              </div>
+                            </td>
+                            <td className="px-4 py-2 text-red-400 line-through">
+                              {c.oldValue || <span className="italic">empty</span>}
+                            </td>
+                            <td className="px-4 py-2 text-emerald-400 font-medium">
+                              {c.newValue}
+                            </td>
+                            <td className="px-4 py-2 text-muted">
+                              {Math.round(c.matchScore * 100)}%
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </>
+              )}
+
+              {/* Remaining discrepancies section */}
+              {questionnaireData.indexed.visionCorrection.remainingDiscrepancies?.length > 0 && (
+                <>
+                  <div className="px-4 py-2 bg-orange-500/10 text-orange-400 text-[11px] font-medium sticky top-0">
+                    Text field discrepancies (not auto-corrected) ({questionnaireData.indexed.visionCorrection.remainingDiscrepancies.length})
+                  </div>
+                  <table className="w-full text-[12px]">
+                    <thead className="bg-app-secondary sticky top-7">
+                      <tr className="text-left text-muted">
+                        <th className="px-4 py-2 font-medium">Label</th>
+                        <th className="px-4 py-2 font-medium">Base extracted</th>
+                        <th className="px-4 py-2 font-medium">Vision sees</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {questionnaireData.indexed.visionCorrection.remainingDiscrepancies.map((d: any, idx: number) => (
+                        <tr
+                          key={idx}
+                          className="border-t border-default hover:bg-card-hover cursor-pointer"
+                          onClick={() => {
+                            selectMultiple("indexed", [d.itemId]);
+                            indexedPanelRef.current?.scrollToItem(d.itemId);
+                          }}
+                        >
+                          <td className="px-4 py-2 text-primary">
+                            <div className="truncate max-w-[250px]" title={d.label}>
+                              {d.label}
+                            </div>
+                          </td>
+                          <td className="px-4 py-2 text-primary">
+                            <div className="truncate max-w-[250px]" title={d.baseValue}>
+                              {d.baseValue || <span className="text-muted italic">empty</span>}
+                            </div>
+                          </td>
+                          <td className="px-4 py-2 text-orange-400">
+                            <div className="truncate max-w-[250px]" title={d.visionValue}>
+                              {d.visionValue}
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </>
+              )}
+
+              {/* All good message */}
+              {(!questionnaireData.indexed.visionCorrection.corrections?.length &&
+                !questionnaireData.indexed.visionCorrection.remainingDiscrepancies?.length) && (
+                <div className="p-8 text-center text-muted">
+                  <div className="text-emerald-500 text-2xl mb-2">✓</div>
+                  <div>Vision confirms the base extraction is correct</div>
+                </div>
+              )}
+            </div>
+          ) : (questionnaireData?.indexed?.visionValidation?.discrepancies?.length ?? 0) > 0 ? (
+            <div className="overflow-y-auto flex-1">
+              <table className="w-full text-[12px]">
+                <thead className="bg-app-secondary sticky top-0">
+                  <tr className="text-left text-muted">
+                    <th className="px-4 py-2 font-medium">Label</th>
+                    <th className="px-4 py-2 font-medium w-24">Type</th>
+                    <th className="px-4 py-2 font-medium w-28">Base extracted</th>
+                    <th className="px-4 py-2 font-medium w-28">Vision sees</th>
+                    <th className="px-4 py-2 font-medium w-36">Verdict</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {questionnaireData?.indexed?.visionValidation?.discrepancies?.map((d, idx) => (
+                  <tr
+                    key={idx}
+                    className={`border-t border-default hover:bg-card-hover ${d.reviewed ? 'opacity-50' : ''}`}
+                  >
+                    <td
+                      className="px-4 py-2 text-primary cursor-pointer"
+                      onClick={() => {
+                        selectMultiple("indexed", [d.itemId]);
+                        indexedPanelRef.current?.scrollToItem(d.itemId);
+                      }}
+                    >
+                      <div className="truncate max-w-[300px]" title={d.label}>
+                        {d.label}
+                      </div>
+                      {d.visionQuestion !== d.label && (
+                        <div className="text-[10px] text-muted truncate max-w-[300px]" title={d.visionQuestion}>
+                          Vision: {d.visionQuestion}
+                        </div>
+                      )}
+                    </td>
+                    <td className="px-4 py-2">
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded ${
+                        d.type === 'mismatch' ? 'bg-orange-500/20 text-orange-400' :
+                        d.type === 'missing_in_base' ? 'bg-blue-500/20 text-blue-400' :
+                        'bg-muted/20 text-muted'
+                      }`}>
+                        {d.type === 'mismatch' ? 'Mismatch' :
+                         d.type === 'missing_in_base' ? 'Base empty' : 'Vision empty'}
+                      </span>
+                    </td>
+                    <td className={`px-4 py-2 ${d.verdict === 'base_correct' ? 'text-emerald-400 font-medium' : 'text-primary'}`}>
+                      {d.baseValue || <span className="text-muted italic">empty</span>}
+                    </td>
+                    <td className={`px-4 py-2 ${d.verdict === 'vision_correct' ? 'text-emerald-400 font-medium' : 'text-orange-400'}`}>
+                      {d.visionValue}
+                    </td>
+                    <td className="px-4 py-2">
+                      {d.reviewed ? (
+                        <div className="flex items-center gap-2">
+                          <span className={`text-[10px] px-1.5 py-0.5 rounded ${
+                            d.verdict === 'base_correct' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-blue-500/20 text-blue-400'
+                          }`}>
+                            {d.verdict === 'base_correct' ? '✓ Base correct' : '✓ Used Vision'}
+                          </span>
+                          <button
+                            className="px-1.5 py-0.5 text-[10px] text-muted hover:text-primary hover:bg-card-hover rounded cursor-pointer"
+                            onClick={async (e) => {
+                              e.stopPropagation();
+                              if (!currentQuestionnaire) return;
+                              try {
+                                await undoDiscrepancyVerdict(currentQuestionnaire, idx);
+                                toast.success("Verdict undone");
+                                queryClient.invalidateQueries({ queryKey: ["questionnaire", currentQuestionnaire] });
+                              } catch {
+                                toast.error("Failed to undo verdict");
+                              }
+                            }}
+                            title="Undo this verdict"
+                          >
+                            Undo
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="flex gap-1">
+                          <button
+                            className="px-2 py-0.5 text-[10px] bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 rounded cursor-pointer"
+                            onClick={async (e) => {
+                              e.stopPropagation();
+                              if (!currentQuestionnaire) return;
+                              try {
+                                await submitDiscrepancyVerdict(currentQuestionnaire, idx, 'base_correct');
+                                toast.success("Marked base as correct");
+                                queryClient.invalidateQueries({ queryKey: ["questionnaire", currentQuestionnaire] });
+                              } catch {
+                                toast.error("Failed to submit verdict");
+                              }
+                            }}
+                            title="Base extraction is correct"
+                          >
+                            Base ✓
+                          </button>
+                          <button
+                            className="px-2 py-0.5 text-[10px] bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 rounded cursor-pointer"
+                            onClick={async (e) => {
+                              e.stopPropagation();
+                              if (!currentQuestionnaire) return;
+                              try {
+                                await submitDiscrepancyVerdict(currentQuestionnaire, idx, 'vision_correct');
+                                toast.success("Updated to Vision value");
+                                queryClient.invalidateQueries({ queryKey: ["questionnaire", currentQuestionnaire] });
+                              } catch {
+                                toast.error("Failed to submit verdict");
+                              }
+                            }}
+                            title="Vision is correct - use this value"
+                          >
+                            Vision ✓
+                          </button>
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="p-8 text-center text-muted">
+              <div className="text-emerald-500 text-2xl mb-2">✓</div>
+              <div>Vision confirms the base extraction is correct</div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Toast notifications - Sonner */}
       <Toaster

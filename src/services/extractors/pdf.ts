@@ -21,7 +21,7 @@ import type {
 import { extractPdfWithAzure, isAzureConfigured, type DocumentAnalysisResult, type TableCell } from './azure.js';
 import { classifyDocument, type DocumentClassification } from '../analysis/document-classifier.js';
 import { extractTextQA, type TextQAResult } from './text-qa.js';
-import { ParagraphQAExtractor, type ParagraphWithPosition } from './paragraph-qa-extractor.js';
+import { VisualQAExtractor, type TextElementWithPosition, type PageInfo } from './visual-qa-extractor.js';
 
 const execAsync = promisify(exec);
 
@@ -449,20 +449,20 @@ export class PdfStructureExtractor {
 
     const sheets = this.parseRawTablesToSheets(result, filename);
 
-    // Extract Q&A pairs from paragraphs using Claude (for items outside tables)
-    if (result.paragraphs?.length) {
-      const paragraphQARows = await this.extractParagraphQARows(result.paragraphs, sheets);
-      if (paragraphQARows.length > 0 && sheets.length > 0) {
-        // Add paragraph Q&A rows to the first sheet
+    // Extract Q&A pairs from all text elements using Claude Vision (for items outside tables)
+    if (result.paragraphs?.length || result.keyValuePairs?.length) {
+      const visualQARows = await this.extractVisualQARows(result, sheets, filepath);
+      if (visualQARows.length > 0 && sheets.length > 0) {
+        // Add visual Q&A rows to the first sheet
         const lastRowNum = Math.max(...sheets[0].rows.map(r => r.row), 0);
-        for (let i = 0; i < paragraphQARows.length; i++) {
-          paragraphQARows[i].row = lastRowNum + i + 1;
-          paragraphQARows[i].cells['A'].ref = `A${lastRowNum + i + 1}`;
-          paragraphQARows[i].cells['B'].ref = `B${lastRowNum + i + 1}`;
+        for (let i = 0; i < visualQARows.length; i++) {
+          visualQARows[i].row = lastRowNum + i + 1;
+          visualQARows[i].cells['A'].ref = `A${lastRowNum + i + 1}`;
+          visualQARows[i].cells['B'].ref = `B${lastRowNum + i + 1}`;
         }
-        sheets[0].rows.push(...paragraphQARows);
+        sheets[0].rows.push(...visualQARows);
         sheets[0].rowCount = sheets[0].rows.length;
-        console.log(`  ✓ Added ${paragraphQARows.length} Q&A pairs from paragraphs`);
+        console.log(`  ✓ Added ${visualQARows.length} Q&A pairs from visual analysis`);
       }
     }
 
@@ -1017,20 +1017,60 @@ export class PdfStructureExtractor {
   }
 
   /**
-   * Extract Q&A pairs from PDF paragraphs using Claude.
-   * Uses spatial proximity (Y coordinates) to match questions with Yes/No answers.
+   * Extract Q&A pairs from PDF text elements using Claude Vision.
+   * Uses visual layout with bounding boxes to identify key-value pairs.
+   * Checks ALL text elements, not just paragraphs.
    */
-  private async extractParagraphQARows(
-    paragraphs: DocumentAnalysisResult['paragraphs'],
-    sheets: SheetData[]
+  private async extractVisualQARows(
+    result: DocumentAnalysisResult,
+    sheets: SheetData[],
+    pdfPath?: string
   ): Promise<RowData[]> {
-    if (!paragraphs || paragraphs.length < 2) return [];
+    // Collect ALL text elements from Azure (paragraphs, keyValuePairs, etc.)
+    const allElements: TextElementWithPosition[] = [];
 
-    // Check if there are potential Q&A pairs (has Yes/No paragraphs)
-    const hasYesNo = paragraphs.some(p =>
-      /^(yes|no|ja|nein|oui|non|n\/a)$/i.test(p.content?.trim() || '')
-    );
-    if (!hasYesNo) return [];
+    // Add paragraphs
+    if (result.paragraphs) {
+      for (const p of result.paragraphs) {
+        if (p.content?.trim()) {
+          allElements.push({
+            content: p.content,
+            pageNumber: p.pageNumber || 1,
+            boundingBox: p.polygon,
+          });
+        }
+      }
+    }
+
+    // Add key-value pairs (both keys and values as separate elements)
+    // Note: KeyValuePairs from Azure don't have bounding boxes on key/value
+    if (result.keyValuePairs) {
+      for (const kvp of result.keyValuePairs) {
+        if (kvp.key?.content?.trim()) {
+          allElements.push({
+            content: kvp.key.content,
+            pageNumber: kvp.key.pageNumber || kvp.pageNumber || 1,
+            // keyValuePairs don't have polygons in our type
+          });
+        }
+        if (kvp.value?.content?.trim()) {
+          allElements.push({
+            content: kvp.value.content,
+            pageNumber: kvp.value.pageNumber || kvp.pageNumber || 1,
+            // keyValuePairs don't have polygons in our type
+          });
+        }
+      }
+    }
+
+    if (allElements.length < 2) return [];
+
+    // Get page info
+    const pages: PageInfo[] = (result.pages || []).map(p => ({
+      pageNumber: p.pageNumber,
+      width: p.width,
+      height: p.height,
+    }));
 
     // Get questions already captured in sheets to avoid duplicates
     const existingQuestions = new Set<string>();
@@ -1044,14 +1084,8 @@ export class PdfStructureExtractor {
     }
 
     try {
-      const extractor = new ParagraphQAExtractor();
-      const paragraphsWithPos: ParagraphWithPosition[] = paragraphs.map(p => ({
-        content: p.content || '',
-        pageNumber: p.pageNumber || 1,
-        boundingBox: p.polygon,
-      }));
-
-      const qaPairs = await extractor.extractQAPairs(paragraphsWithPos);
+      const extractor = new VisualQAExtractor();
+      const qaPairs = await extractor.extractQAPairs(allElements, pages, pdfPath);
 
       // Convert to rows, filtering out duplicates
       const rows: RowData[] = [];
@@ -1068,6 +1102,7 @@ export class PdfStructureExtractor {
           row: 0, // Will be set by caller
           isEmpty: false,
           rowType: 'data',
+          extractionSource: 'visualQA', // Mark as extracted by visual Q&A
           cells: {
             'A': {
               ref: 'A0',
@@ -1075,6 +1110,7 @@ export class PdfStructureExtractor {
               type: 'string',
               filled: true,
               role: 'label',
+              pageNumber: pair.pageNumber,
             },
             'B': {
               ref: 'B0',
@@ -1082,6 +1118,14 @@ export class PdfStructureExtractor {
               type: 'string',
               filled: true,
               role: 'value',
+              pageNumber: pair.pageNumber,
+              // Store visual Q&A metadata for review
+              visualQAMetadata: {
+                confidence: pair.confidence,
+                visualReason: pair.visualReason,
+                questionIdx: pair.questionIdx,
+                answerIdx: pair.answerIdx,
+              },
             },
           },
         });
@@ -1091,7 +1135,7 @@ export class PdfStructureExtractor {
 
       return rows;
     } catch (error) {
-      console.error('  Error extracting paragraph Q&A:', error);
+      console.error('  Error extracting visual Q&A:', error);
       return [];
     }
   }

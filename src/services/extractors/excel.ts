@@ -44,6 +44,18 @@ export interface CellFormat {
 /** Detected cell role based on formatting */
 export type CellRole = 'header' | 'section' | 'label' | 'input' | 'value' | 'empty' | 'unknown';
 
+/** Visual Q&A extraction metadata */
+export interface VisualQAMetadata {
+  /** Confidence score from Claude */
+  confidence?: number;
+  /** Reason for pairing from Claude */
+  visualReason?: string;
+  /** Index of question element */
+  questionIdx?: number;
+  /** Index of answer element */
+  answerIdx?: number;
+}
+
 /** A single cell with its value and metadata */
 export interface CellData {
   /** Cell reference (e.g., "A5") */
@@ -62,6 +74,8 @@ export interface CellData {
   polygon?: number[];
   /** Page number for PDF documents (1-indexed) */
   pageNumber?: number;
+  /** Visual Q&A extraction metadata */
+  visualQAMetadata?: VisualQAMetadata;
 }
 
 /** A row with all its cells */
@@ -74,6 +88,10 @@ export interface RowData {
   isEmpty: boolean;
   /** Detected row type */
   rowType: 'header' | 'data' | 'section' | 'empty' | 'unknown';
+  /** Section title extracted from markdown headings (for header rows) */
+  sectionTitle?: string;
+  /** Extraction source (e.g., 'table', 'visualQA', 'text') */
+  extractionSource?: 'table' | 'visualQA' | 'text';
 }
 
 /** Merged cell range */
@@ -120,6 +138,7 @@ export interface SheetData {
   inputCells?: string[];
   /** Stats */
   stats: {
+    totalRows?: number;
     totalCells: number;
     filledCells: number;
     emptyRows: number;
@@ -128,7 +147,7 @@ export interface SheetData {
 }
 
 /** Supported document types */
-export type DocumentType = 'excel' | 'word' | 'pdf';
+export type DocumentType = 'excel' | 'word' | 'pdf' | 'html';
 
 /** Complete questionnaire structure */
 /** Page dimensions for PDF documents */
@@ -157,6 +176,29 @@ export interface QuestionnaireStructure {
   sheets: SheetData[];
   /** Page dimensions for PDF overlay rendering */
   pages?: PageInfo[];
+  /** Raw text content from document (for PDFs) */
+  textContent?: {
+    /** Full document markdown from Azure Document Intelligence */
+    markdown: string;
+    /** Structured paragraphs with positioning */
+    paragraphs?: Array<{
+      content: string;
+      pageNumber?: number;
+      boundingBox?: number[];
+    }>;
+    /** Individual text lines with positioning */
+    lines?: Array<{
+      content: string;
+      pageNumber?: number;
+      boundingBox?: number[];
+    }>;
+    /** Form key-value pairs */
+    keyValuePairs?: Array<{
+      key: string;
+      value: string;
+      pageNumber?: number;
+    }>;
+  };
   /** Overall stats */
   stats: {
     totalSheets: number;

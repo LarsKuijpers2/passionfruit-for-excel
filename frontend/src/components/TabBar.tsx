@@ -78,20 +78,22 @@ export function TabBar({
       <div className="flex items-center gap-2 ml-auto pr-2">
         {/* Panel toggles - connected number buttons */}
         <div className="flex items-center border border-default rounded overflow-hidden mr-2">
-          {(['original', 'indexed', 'library'] as PanelType[]).map((panel, idx) => {
+          {(['original', 'indexed', 'library', 'visualqa'] as PanelType[]).map((panel, idx) => {
             const isVisible = visiblePanels.has(panel);
+            const label = panel === 'visualqa' ? 'V' : String(idx + 1);
+            const title = panel === 'visualqa' ? 'Visual Q&A' : panel;
             return (
               <button
                 key={panel}
                 className={`w-6 h-6 flex items-center justify-center text-[11px] font-medium cursor-pointer transition-colors border-r border-default last:border-r-0 ${
                   isVisible
-                    ? 'bg-accent/20 text-accent'
+                    ? panel === 'visualqa' ? 'bg-purple-500/20 text-purple-400' : 'bg-accent/20 text-accent'
                     : 'text-muted hover:bg-card-hover'
                 }`}
                 onClick={() => onTogglePanel(panel)}
-                title={`${isVisible ? 'Hide' : 'Show'} ${panel} panel (${idx + 1})`}
+                title={`${isVisible ? 'Hide' : 'Show'} ${title} panel`}
               >
-                {idx + 1}
+                {label}
               </button>
             );
           })}

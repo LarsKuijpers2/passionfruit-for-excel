@@ -22,6 +22,7 @@ import { NotesPanel } from "./components/NotesPanel";
 import { AggregatedLibraryPanel } from "./components/AggregatedLibraryPanel";
 import { PipelinePanel } from "./components/PipelinePanel";
 import { StructureAnalyzerPanel } from "./components/StructureAnalyzerPanel";
+import { VisualQAPanel } from "./components/VisualQAPanel";
 import { useTheme } from "./hooks/useTheme";
 import { useTabs } from "./hooks/useTabs";
 import { useFeedback } from "./hooks/useFeedback";
@@ -860,6 +861,11 @@ export default function App() {
           onReject={(id, reason) => handleReject("library", id, reason)}
           onCellRefClick={handleCellRefClick}
         />
+        {visiblePanels.has("visualqa") && currentQuestionnaire && (
+          <div className="flex-1 min-w-0 overflow-hidden border-l border-default">
+            <VisualQAPanel questionnaireId={currentQuestionnaire} />
+          </div>
+        )}
       </div>
 
           {/* Stats bar */}

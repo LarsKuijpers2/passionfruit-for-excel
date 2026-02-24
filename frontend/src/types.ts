@@ -14,6 +14,31 @@ export interface QuestionnaireListItem {
 // Destination types
 export type Destination = 'company' | 'answer_library' | 'product' | 'questionnaire' | 'exclude';
 
+// Entity role - which party does this data belong to
+export type EntityRole = 'supplier' | 'customer' | 'manufacturer' | 'producer' | 'group' | 'other';
+
+// An entity detected in the questionnaire
+export interface DetectedEntity {
+  id: string;  // Short UUID
+  name: string;  // Entity name
+  role: EntityRole;  // Detected role
+  nameSource?: {
+    label: string;
+    cell?: string;
+  };
+}
+
+// A product detected in the questionnaire
+export interface DetectedProduct {
+  id: string;  // Short UUID
+  name: string;  // Product name
+  code?: string;  // Product code/SKU if available
+  nameSource?: {
+    label: string;
+    cell?: string;
+  };
+}
+
 // Indexed item from extraction
 export interface IndexedItem {
   id?: string;
@@ -32,6 +57,32 @@ export interface IndexedItem {
   tag_source?: string;
   // Item-level notes
   note?: string;
+  // Entity role (supplier, customer, manufacturer, etc.)
+  entityRole?: EntityRole;
+  // Link to parent entity
+  entityId?: string;
+  // Link to parent product
+  productId?: string;
+}
+
+// Table cell with position information
+export interface TableCell {
+  column: string;
+  value: string;
+  itemId: string;
+  type: string;
+  cellRef?: string;
+}
+
+// Reconstructed table from related items
+export interface ReconstructedTable {
+  title: string;
+  headers: string[];
+  rows: {
+    rowNumber: number;
+    cells: TableCell[];
+  }[];
+  sourceItems: string[]; // IDs of original items that formed this table
 }
 
 // Indexed section
@@ -41,6 +92,8 @@ export interface IndexedSection {
   rows: string;
   sheet: string;
   items: IndexedItem[];
+  tables?: ReconstructedTable[]; // Reconstructed table structures
+  sectionType?: 'individual_items' | 'table_data' | 'mixed';
 }
 
 // Library item (answer library entry)
@@ -97,6 +150,8 @@ export interface ExcelSheetRow {
   cells: Record<string, ExcelCell>;
   isEmpty?: boolean;
   rowType?: string;
+  /** Section title extracted from markdown headings (for header rows) */
+  sectionTitle?: string;
 }
 
 // Excel sheet data (from structure)
@@ -110,6 +165,34 @@ export interface ExcelSheet {
   columnCount: number;
 }
 
+// Page dimensions for PDF documents
+export interface PageInfo {
+  pageNumber: number;
+  width: number;
+  height: number;
+  unit: string;
+}
+
+// Text content from Azure Document Intelligence
+export interface TextContent {
+  markdown?: string;
+  paragraphs?: Array<{
+    content: string;
+    pageNumber?: number;
+    boundingBox?: number[];
+  }>;
+  lines?: Array<{
+    content: string;
+    pageNumber?: number;
+    boundingBox?: number[];
+  }>;
+  keyValuePairs?: Array<{
+    key: string;
+    value: string;
+    pageNumber?: number;
+  }>;
+}
+
 // Full questionnaire data (from /api/questionnaire/:id)
 export interface QuestionnaireData {
   id: string;
@@ -119,11 +202,17 @@ export interface QuestionnaireData {
       documentType: string;
     };
     sheets: ExcelSheet[];
+    pages?: PageInfo[];
+    textContent?: TextContent;
   };
   indexed: {
     id: string;
     source: string;
     language: string;
+    /** Entities detected in this questionnaire */
+    entities?: DetectedEntity[];
+    /** Products detected in this questionnaire */
+    products?: DetectedProduct[];
     sections: IndexedSection[];
     stats?: {
       total: number;
@@ -133,6 +222,8 @@ export interface QuestionnaireData {
       notes?: string;
       notesUpdatedAt?: string;
     };
+    visionValidation?: VisionValidation;
+    visionCorrection?: VisionCorrection;
   };
   library: {
     id?: string;
@@ -140,6 +231,46 @@ export interface QuestionnaireData {
     byTopic?: Record<string, LibraryItem[]>;
   } | LibraryItem[];
   feedback?: FeedbackData | null;
+}
+
+// Vision discrepancy (difference between base extraction and what Vision sees)
+export interface VisionDiscrepancy {
+  itemId: string;
+  label: string;
+  baseValue: string | null;      // What base extraction found
+  visionValue: string;           // What Vision sees
+  matchScore: number;
+  visionQuestion: string;
+  type: 'mismatch' | 'missing_in_base' | 'missing_in_vision';
+  reviewed?: boolean;
+  verdict?: 'base_correct' | 'vision_correct' | 'both_wrong';
+}
+
+// Vision validation results
+export interface VisionValidation {
+  validatedAt: string;
+  totalItems: number;
+  matchedCorrectly: number;
+  discrepancies: VisionDiscrepancy[];
+  missingInVision: number;
+}
+
+// Vision correction (auto-applied corrections)
+export interface VisionCorrectionItem {
+  itemId: string;
+  oldValue: string;
+  newValue: string;
+  matchScore: number;
+}
+
+export interface VisionCorrection {
+  correctedAt: string;
+  totalItems: number;
+  matchedCorrectly: number;
+  correctedCount: number;
+  corrections: VisionCorrectionItem[];
+  remainingDiscrepancies: VisionDiscrepancy[];
+  missingInVision: number;
 }
 
 // Feedback entry
@@ -177,7 +308,7 @@ export interface Tab {
   completed?: boolean;
 }
 
-export type PanelType = 'original' | 'indexed' | 'library';
+export type PanelType = 'original' | 'indexed' | 'library' | 'visualqa';
 
 // Cell selection for feedback on original panel
 export interface CellSelection {
@@ -228,6 +359,12 @@ export interface AggregatedLibraryItem {
   lastApprovedAt?: string;
   /** Cell references per questionnaire */
   cellRefs: Record<string, string>;
+  /** Entity role (supplier, customer, manufacturer, etc.) */
+  entityRole?: EntityRole;
+  /** Link to parent entity */
+  entityId?: string;
+  /** Link to parent product */
+  productId?: string;
 }
 
 /** A group of similar/related items */

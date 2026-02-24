@@ -13,6 +13,8 @@ import { existsSync, writeFileSync, renameSync } from 'fs';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
 import { exec } from 'child_process';
 import { BedrockRuntimeClient, InvokeModelCommand } from '@aws-sdk/client-bedrock-runtime';
+import { groupByTopicWithSimilarity, getSimilarityStats } from './services/sync/similarity-detector.js';
+import { correctionTracker, type ErrorType } from './services/learning/correction-tracker.js';
 
 // Helper to get current timestamp in Netherlands timezone
 function getNetherlandsTimestamp(): string {
@@ -113,6 +115,7 @@ export class ReviewServer {
   private port: number;
   private questionnaire: string;
   private reviewDir: string;
+  private customersDir: string;
   private feedbackPath: string;
   private feedback: FeedbackData;
   private bedrockClient: BedrockRuntimeClient;
@@ -124,6 +127,7 @@ export class ReviewServer {
     this.questionnaire = questionnaire || '';
     this.port = options.port || 3456;
     this.reviewDir = options.reviewDir || './review';
+    this.customersDir = './customers';
 
     // Initialize Bedrock client for Claude annotations
     this.bedrockClient = new BedrockRuntimeClient({ region: process.env.AWS_REGION || 'eu-central-1' });
@@ -186,6 +190,150 @@ export class ReviewServer {
       } catch (error) {
         console.error('Error listing questionnaires:', error);
         res.status(500).json({ error: 'Failed to list questionnaires' });
+      }
+    });
+
+    // Get pipeline data for a customer
+    this.app.get('/api/pipeline/:customer', async (req, res) => {
+      try {
+        const { customer } = req.params;
+        const customerDir = join(this.customersDir, customer);
+        const pipelinePath = join(customerDir, 'pipeline.json');
+
+        // Check if pipeline.json exists
+        if (existsSync(pipelinePath)) {
+          const pipeline = JSON.parse(await readFile(pipelinePath, 'utf-8'));
+
+          // Update status from actual files
+          const incomingDir = join(customerDir, 'incoming');
+          const structureDir = join(customerDir, 'structure');
+          const indexedDir = join(customerDir, 'indexed');
+          const approvedDir = join(customerDir, 'approved');
+
+          const incomingFiles = existsSync(incomingDir)
+            ? (await readdir(incomingDir)).filter(f => !f.startsWith('.'))
+            : [];
+          const structureFiles = existsSync(structureDir)
+            ? (await readdir(structureDir)).filter(f => f.endsWith('.json'))
+            : [];
+          const indexedFiles = existsSync(indexedDir)
+            ? (await readdir(indexedDir)).filter(f => f.endsWith('.json'))
+            : [];
+          const approvedFiles = existsSync(approvedDir)
+            ? (await readdir(approvedDir)).filter(f => f.endsWith('.json'))
+            : [];
+
+          // Update questionnaire statuses
+          if (pipeline.questionnaires) {
+            for (const q of pipeline.questionnaires) {
+              const baseName = q.file.replace(/\.[^.]+$/, '').replace(/[^a-zA-Z0-9]/g, '_').substring(0, 30).toLowerCase();
+              const isStored = structureFiles.some(f => f.toLowerCase().includes(baseName));
+              const isIndexed = indexedFiles.some(f => f.toLowerCase().includes(baseName));
+              const isApproved = approvedFiles.some(f => f.toLowerCase().includes(baseName));
+
+              if (isApproved) q.status = 'approved';
+              else if (isIndexed) q.status = 'indexed';
+              else if (isStored) q.status = 'stored';
+              else q.status = 'incoming';
+            }
+          }
+
+          // Add counts
+          pipeline.counts = {
+            incoming: pipeline.questionnaires?.filter((q: any) => q.status === 'incoming').length || 0,
+            stored: pipeline.questionnaires?.filter((q: any) => q.status === 'stored').length || 0,
+            indexed: pipeline.questionnaires?.filter((q: any) => q.status === 'indexed').length || 0,
+            reviewed: pipeline.questionnaires?.filter((q: any) => q.status === 'reviewed').length || 0,
+            approved: pipeline.questionnaires?.filter((q: any) => q.status === 'approved').length || 0,
+          };
+
+          res.json(pipeline);
+        } else {
+          // No pipeline.json - return basic structure from folders
+          const incomingDir = join(customerDir, 'incoming');
+          const structureDir = join(customerDir, 'structure');
+          const indexedDir = join(customerDir, 'indexed');
+
+          const incomingFiles = existsSync(incomingDir)
+            ? (await readdir(incomingDir)).filter(f => !f.startsWith('.'))
+            : [];
+          const structureFiles = existsSync(structureDir)
+            ? (await readdir(structureDir)).filter(f => f.endsWith('.json'))
+            : [];
+          const indexedFiles = existsSync(indexedDir)
+            ? (await readdir(indexedDir)).filter(f => f.endsWith('.json'))
+            : [];
+
+          res.json({
+            customer,
+            questionnaires: incomingFiles.map(f => ({
+              file: f,
+              status: indexedFiles.some(idx => idx.includes(f.substring(0, 20).replace(/[^a-zA-Z0-9]/g, '_')))
+                ? 'indexed'
+                : structureFiles.some(str => str.includes(f.substring(0, 20).replace(/[^a-zA-Z0-9]/g, '_')))
+                  ? 'stored'
+                  : 'incoming'
+            })),
+            counts: {
+              incoming: incomingFiles.length,
+              stored: structureFiles.length,
+              indexed: indexedFiles.length,
+              reviewed: 0,
+              approved: 0
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching pipeline:', error);
+        res.status(500).json({ error: 'Failed to fetch pipeline data' });
+      }
+    });
+
+    // List structure files for structure analyzer tool
+    this.app.get('/api/structure-files', async (req, res) => {
+      try {
+        const files: Array<{ customer: string; file: string; path: string }> = [];
+
+        if (existsSync(this.customersDir)) {
+          const customers = await readdir(this.customersDir);
+
+          for (const customer of customers) {
+            const structureDir = join(this.customersDir, customer, 'structure');
+            if (existsSync(structureDir)) {
+              const structureFiles = (await readdir(structureDir)).filter(f => f.endsWith('.json'));
+              for (const file of structureFiles) {
+                files.push({
+                  customer,
+                  file,
+                  path: `/api/structure-files/${encodeURIComponent(customer)}/${encodeURIComponent(file)}`
+                });
+              }
+            }
+          }
+        }
+
+        res.json({ files });
+      } catch (error) {
+        console.error('Error listing structure files:', error);
+        res.status(500).json({ error: 'Failed to list structure files' });
+      }
+    });
+
+    // Get a specific structure file
+    this.app.get('/api/structure-files/:customer/:file', async (req, res) => {
+      try {
+        const { customer, file } = req.params;
+        const filePath = join(this.customersDir, customer, 'structure', file);
+
+        if (!existsSync(filePath)) {
+          return res.status(404).json({ error: 'Structure file not found' });
+        }
+
+        const content = await readFile(filePath, 'utf-8');
+        res.json(JSON.parse(content));
+      } catch (error) {
+        console.error('Error fetching structure file:', error);
+        res.status(500).json({ error: 'Failed to fetch structure file' });
       }
     });
 
@@ -531,6 +679,231 @@ export class ReviewServer {
       }
     });
 
+    // Get aggregated answer library for a customer
+    this.app.get('/api/aggregated-library/:customer', async (req, res) => {
+      try {
+        const { customer } = req.params;
+        // Use original customer name for path (folder names may have spaces)
+        const customerPath = customer;
+        const safeCustomer = customer.replace(/[^a-zA-Z0-9-_]/g, '-');
+
+        // Try to load aggregated data
+        const aggregatedPath = join('./customers', customerPath, 'api-ready', `${safeCustomer}-aggregated.json`);
+
+        if (!existsSync(aggregatedPath)) {
+          // Try to find any aggregated file in api-ready
+          const apiReadyDir = join('./customers', customerPath, 'api-ready');
+          if (existsSync(apiReadyDir)) {
+            const files = await readdir(apiReadyDir);
+            const aggFile = files.find(f => f.endsWith('-aggregated.json'));
+            if (aggFile) {
+              const data = JSON.parse(await readFile(join(apiReadyDir, aggFile), 'utf-8'));
+              return res.json(this.processAggregatedLibrary(data, customerPath));
+            }
+          }
+
+          // If no aggregated data, aggregate from approved exports
+          const approvedDir = join('./customers', customerPath, 'approved');
+          if (!existsSync(approvedDir)) {
+            // Return empty result when no approved data yet
+            return res.json({
+              customer: customerPath,
+              questionnaires: [],
+              totalItems: 0,
+              uniqueItems: 0,
+              aggregatedAt: new Date().toISOString(),
+              groups: [],
+              company: { count: 0, items: [] },
+              product: { count: 0, items: [] },
+              questionnaire: { count: 0, items: [] },
+              excluded: { count: 0, items: [] },
+              stats: { totalTopics: 0, standaloneItems: 0, relatedGroups: 0, suggestedMerges: 0 }
+            });
+          }
+
+          // Build aggregated data from approved files
+          const approvedFiles = await readdir(approvedDir);
+          const jsonFiles = approvedFiles.filter(f => f.endsWith('.json'));
+
+          if (jsonFiles.length === 0) {
+            // Return empty result instead of error when no approved exports yet
+            return res.json({
+              customer: customerPath,
+              questionnaires: [],
+              totalItems: 0,
+              uniqueItems: 0,
+              aggregatedAt: new Date().toISOString(),
+              groups: [],
+              company: { count: 0, items: [] },
+              product: { count: 0, items: [] },
+              questionnaire: { count: 0, items: [] },
+              excluded: { count: 0, items: [] },
+              stats: { totalTopics: 0, standaloneItems: 0, relatedGroups: 0, suggestedMerges: 0 }
+            });
+          }
+
+          // Simple aggregation from approved files
+          const items: any[] = [];
+          const questionnaires: string[] = [];
+
+          for (const file of jsonFiles) {
+            const filePath = join(approvedDir, file);
+            const data = JSON.parse(await readFile(filePath, 'utf-8'));
+            const questionnaire = data.meta?.questionnaire || file.replace('.json', '');
+            questionnaires.push(questionnaire);
+
+            // Collect items from different destinations
+            for (const dest of ['library', 'company', 'product', 'questionnaire', 'exclude']) {
+              const destItems = data[dest] || [];
+              for (const item of destItems) {
+                items.push({
+                  ...item,
+                  destination: dest === 'library' ? 'answer_library' : dest,
+                  source: questionnaire
+                });
+              }
+            }
+          }
+
+          // Deduplicate and group
+          const aggregated = this.deduplicateItems(items);
+
+          return res.json(this.processAggregatedLibrary({
+            customer: safeCustomer,
+            aggregatedAt: getNetherlandsTimestamp(),
+            questionnaires,
+            answerLibrary: {
+              total: items.length,
+              unique: aggregated.length,
+              duplicates: items.length - aggregated.length,
+              items: aggregated
+            }
+          }, safeCustomer));
+        }
+
+        const data = JSON.parse(await readFile(aggregatedPath, 'utf-8'));
+        res.json(this.processAggregatedLibrary(data, safeCustomer));
+
+      } catch (error) {
+        console.error('Error loading aggregated library:', error);
+        res.status(500).json({ error: 'Failed to load aggregated library' });
+      }
+    });
+
+    // Merge similar items in aggregated library
+    this.app.post('/api/aggregated-library/:customer/merge', async (req, res) => {
+      try {
+        const { customer } = req.params;
+        const { itemIds, keepId, mergedLabel } = req.body;
+
+        if (!itemIds || !Array.isArray(itemIds) || itemIds.length < 2) {
+          return res.status(400).json({ error: 'Need at least 2 item IDs to merge' });
+        }
+
+        if (!keepId || !itemIds.includes(keepId)) {
+          return res.status(400).json({ error: 'keepId must be one of the itemIds' });
+        }
+
+        const safeCustomer = customer.replace(/[^a-zA-Z0-9-_]/g, '-');
+        const aggregatedPath = join('./customers', safeCustomer, 'api-ready', `${safeCustomer}-aggregated.json`);
+
+        if (!existsSync(aggregatedPath)) {
+          return res.status(404).json({ error: 'Aggregated data not found' });
+        }
+
+        const data = JSON.parse(await readFile(aggregatedPath, 'utf-8'));
+
+        // Find items to merge
+        const toMerge = itemIds.filter((id: string) => id !== keepId);
+        const keepItem = data.answerLibrary?.items?.find((item: any) => item.id === keepId);
+
+        if (!keepItem) {
+          return res.status(404).json({ error: 'Keep item not found' });
+        }
+
+        // Merge sources from other items into keep item
+        for (const mergeId of toMerge) {
+          const mergeItem = data.answerLibrary?.items?.find((item: any) => item.id === mergeId);
+          if (mergeItem) {
+            // Merge sources
+            if (mergeItem.sources) {
+              keepItem.sources = [...new Set([...(keepItem.sources || []), ...mergeItem.sources])];
+            }
+            // Merge cell refs
+            if (mergeItem.cellRefs) {
+              keepItem.cellRefs = { ...(keepItem.cellRefs || {}), ...mergeItem.cellRefs };
+            }
+          }
+        }
+
+        // Update label if provided
+        if (mergedLabel) {
+          keepItem.label = mergedLabel;
+        }
+
+        // Remove merged items
+        data.answerLibrary.items = data.answerLibrary.items.filter(
+          (item: any) => !toMerge.includes(item.id)
+        );
+
+        // Update counts
+        data.answerLibrary.unique = data.answerLibrary.items.length;
+
+        // Save updated data
+        await writeFile(aggregatedPath, JSON.stringify(data, null, 2), 'utf-8');
+
+        res.json({
+          success: true,
+          merged: toMerge.length,
+          result: keepItem
+        });
+
+      } catch (error) {
+        console.error('Error merging items:', error);
+        res.status(500).json({ error: 'Failed to merge items' });
+      }
+    });
+
+    // Get standard questions for a customer
+    this.app.get('/api/standard-questions/:customer', async (req, res) => {
+      try {
+        const { customer } = req.params;
+        const standardQuestionsPath = join('./customers', customer, 'standard-questions.json');
+
+        if (!existsSync(standardQuestionsPath)) {
+          // Return empty result when no standard questions yet
+          return res.json({ questions: [], topics: [], stats: { total: 0 } });
+        }
+
+        const data = JSON.parse(await readFile(standardQuestionsPath, 'utf-8'));
+        res.json(data);
+
+      } catch (error) {
+        console.error('Error loading standard questions:', error);
+        res.status(500).json({ error: 'Failed to load standard questions' });
+      }
+    });
+
+    // Get curated library for a customer
+    this.app.get('/api/curated-library/:customer', async (req, res) => {
+      try {
+        const { customer } = req.params;
+        const curatedPath = join('./customers', customer, 'curated-library.json');
+
+        if (!existsSync(curatedPath)) {
+          // Return empty result when no curated library yet
+          return res.json({ items: [], topics: [], stats: { total: 0 } });
+        }
+
+        const data = JSON.parse(await readFile(curatedPath, 'utf-8'));
+        res.json(data);
+
+      } catch (error) {
+        console.error('Error loading curated library:', error);
+        res.status(500).json({ error: 'Failed to load curated library' });
+      }
+    });
+
     // Open source file
     this.app.post('/api/open-file/:id', async (req, res) => {
       try {
@@ -565,6 +938,110 @@ export class ReviewServer {
       } catch (error) {
         console.error('Error loading questionnaire data:', error);
         res.status(500).json({ error: 'Failed to load questionnaire data' });
+      }
+    });
+
+    // Serve the original PDF file for overlay rendering
+    this.app.get('/api/questionnaire/:id/pdf', async (req, res) => {
+      try {
+        const { id } = req.params;
+        const data = await this.loadQuestionnaireData(id);
+
+        if (!data.structure?.source?.filepath) {
+          return res.status(404).json({ error: 'PDF path not found' });
+        }
+
+        const pdfPath = data.structure.source.filepath;
+        if (!existsSync(pdfPath)) {
+          return res.status(404).json({ error: 'PDF file not found' });
+        }
+
+        // Only serve PDF files
+        if (!pdfPath.toLowerCase().endsWith('.pdf')) {
+          return res.status(400).json({ error: 'Not a PDF file' });
+        }
+
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `inline; filename="${id}.pdf"`);
+        const pdfBuffer = await readFile(pdfPath);
+        res.send(pdfBuffer);
+      } catch (error) {
+        console.error('Error serving PDF:', error);
+        res.status(500).json({ error: 'Failed to serve PDF' });
+      }
+    });
+
+    // Get visual Q&A training data for a questionnaire
+    this.app.get('/api/questionnaire/:id/visual-qa', async (req, res) => {
+      try {
+        const { id } = req.params;
+        const data = await this.loadQuestionnaireData(id);
+
+        if (!data.structure?.source?.filepath) {
+          return res.status(404).json({ error: 'PDF path not found' });
+        }
+
+        // Find customer folder and visual-qa-training directory
+        const pdfPath = data.structure.source.filepath;
+        const customerDir = dirname(dirname(pdfPath));
+        const trainingDir = join(customerDir, 'visual-qa-training');
+
+        if (!existsSync(trainingDir)) {
+          return res.json({ trainingData: [] });
+        }
+
+        // Find training data files for this questionnaire
+        const pdfBasename = basename(pdfPath, '.pdf').replace(/[^a-zA-Z0-9_-]/g, '_');
+        const files = await readdir(trainingDir);
+        const jsonFiles = files.filter(f => f.startsWith(pdfBasename) && f.endsWith('.json'));
+
+        const trainingData = await Promise.all(
+          jsonFiles.map(async (f) => {
+            const content = await readFile(join(trainingDir, f), 'utf-8');
+            const data = JSON.parse(content);
+            // Convert absolute image path to relative URL
+            const imageFile = basename(data.imagePath);
+            return {
+              ...data,
+              imageUrl: `/api/questionnaire/${id}/visual-qa/image/${imageFile}`,
+            };
+          })
+        );
+
+        // Sort by page number
+        trainingData.sort((a, b) => a.pageNumber - b.pageNumber);
+
+        res.json({ trainingData });
+      } catch (error) {
+        console.error('Error loading visual Q&A training data:', error);
+        res.status(500).json({ error: 'Failed to load visual Q&A training data' });
+      }
+    });
+
+    // Serve visual Q&A training images
+    this.app.get('/api/questionnaire/:id/visual-qa/image/:filename', async (req, res) => {
+      try {
+        const { id, filename } = req.params;
+        const data = await this.loadQuestionnaireData(id);
+
+        if (!data.structure?.source?.filepath) {
+          return res.status(404).json({ error: 'PDF path not found' });
+        }
+
+        const pdfPath = data.structure.source.filepath;
+        const customerDir = dirname(dirname(pdfPath));
+        const imagePath = join(customerDir, 'visual-qa-training', filename);
+
+        if (!existsSync(imagePath)) {
+          return res.status(404).json({ error: 'Image not found' });
+        }
+
+        res.setHeader('Content-Type', 'image/png');
+        const imageBuffer = await readFile(imagePath);
+        res.send(imageBuffer);
+      } catch (error) {
+        console.error('Error serving visual Q&A image:', error);
+        res.status(500).json({ error: 'Failed to serve image' });
       }
     });
 
@@ -853,6 +1330,144 @@ export class ReviewServer {
       } catch (error) {
         console.error('Error saving notes:', error);
         res.status(500).json({ error: 'Failed to save notes' });
+      }
+    });
+
+    // Submit verdict for a Vision discrepancy
+    this.app.post('/api/questionnaire/:questionnaireId/vision-validation/verdict', async (req, res) => {
+      try {
+        const { questionnaireId } = req.params;
+        const { discrepancyIndex, verdict } = req.body;
+
+        if (typeof discrepancyIndex !== 'number' || !['base_correct', 'vision_correct'].includes(verdict)) {
+          return res.status(400).json({ error: 'Invalid discrepancyIndex or verdict' });
+        }
+
+        // Helper to find indexed file
+        const findIndexedFile = async (filename: string): Promise<string | null> => {
+          const rootPath = join('./indexed', filename);
+          if (existsSync(rootPath)) return rootPath;
+          try {
+            const customers = await readdir('./customers');
+            for (const customer of customers) {
+              const customerPath = join('./customers', customer, 'indexed', filename);
+              if (existsSync(customerPath)) return customerPath;
+            }
+          } catch {}
+          return null;
+        };
+
+        const safeName = questionnaireId.replace(/[^a-zA-Z0-9-_]/g, '_');
+        const indexedPath = await findIndexedFile(`${safeName}.json`);
+
+        if (!indexedPath) {
+          return res.status(404).json({ error: 'Questionnaire not found' });
+        }
+
+        const indexed = JSON.parse(await readFile(indexedPath, 'utf-8'));
+        const validation = indexed.visionValidation;
+
+        if (!validation || !validation.discrepancies || !validation.discrepancies[discrepancyIndex]) {
+          return res.status(404).json({ error: 'Discrepancy not found' });
+        }
+
+        const discrepancy = validation.discrepancies[discrepancyIndex];
+
+        // Mark as reviewed with verdict
+        discrepancy.reviewed = true;
+        discrepancy.verdict = verdict;
+        discrepancy.reviewedAt = getNetherlandsTimestamp();
+
+        // If vision_correct, update the item value
+        if (verdict === 'vision_correct') {
+          // Find and update the item
+          for (const section of indexed.sections || []) {
+            for (const item of section.items || []) {
+              if (item.id === discrepancy.itemId) {
+                item.value = discrepancy.visionValue;
+                console.log(`Updated item "${item.label}" to Vision value: ${discrepancy.visionValue}`);
+                break;
+              }
+            }
+          }
+        }
+
+        await writeFile(indexedPath, JSON.stringify(indexed, null, 2), 'utf-8');
+        console.log(`Verdict for discrepancy ${discrepancyIndex}: ${verdict}`);
+
+        res.json({ success: true });
+      } catch (error) {
+        console.error('Error submitting verdict:', error);
+        res.status(500).json({ error: 'Failed to submit verdict' });
+      }
+    });
+
+    // Undo verdict for a Vision discrepancy
+    this.app.post('/api/questionnaire/:questionnaireId/vision-validation/undo', async (req, res) => {
+      try {
+        const { questionnaireId } = req.params;
+        const { discrepancyIndex } = req.body;
+
+        if (typeof discrepancyIndex !== 'number') {
+          return res.status(400).json({ error: 'Invalid discrepancyIndex' });
+        }
+
+        // Helper to find indexed file
+        const findIndexedFile = async (filename: string): Promise<string | null> => {
+          const rootPath = join('./indexed', filename);
+          if (existsSync(rootPath)) return rootPath;
+          try {
+            const customers = await readdir('./customers');
+            for (const customer of customers) {
+              const customerPath = join('./customers', customer, 'indexed', filename);
+              if (existsSync(customerPath)) return customerPath;
+            }
+          } catch {}
+          return null;
+        };
+
+        const safeName = questionnaireId.replace(/[^a-zA-Z0-9-_]/g, '_');
+        const indexedPath = await findIndexedFile(`${safeName}.json`);
+
+        if (!indexedPath) {
+          return res.status(404).json({ error: 'Questionnaire not found' });
+        }
+
+        const indexed = JSON.parse(await readFile(indexedPath, 'utf-8'));
+        const validation = indexed.visionValidation;
+
+        if (!validation || !validation.discrepancies || !validation.discrepancies[discrepancyIndex]) {
+          return res.status(404).json({ error: 'Discrepancy not found' });
+        }
+
+        const discrepancy = validation.discrepancies[discrepancyIndex];
+
+        // If the verdict was vision_correct, revert the item value back to baseValue
+        if (discrepancy.verdict === 'vision_correct') {
+          for (const section of indexed.sections || []) {
+            for (const item of section.items || []) {
+              if (item.id === discrepancy.itemId) {
+                // Revert to base value (could be null/empty)
+                item.value = discrepancy.baseValue || '';
+                console.log(`Reverted item "${item.label}" to base value: ${discrepancy.baseValue}`);
+                break;
+              }
+            }
+          }
+        }
+
+        // Remove the reviewed status and verdict
+        delete discrepancy.reviewed;
+        delete discrepancy.verdict;
+        delete discrepancy.reviewedAt;
+
+        await writeFile(indexedPath, JSON.stringify(indexed, null, 2), 'utf-8');
+        console.log(`Undo verdict for discrepancy ${discrepancyIndex}`);
+
+        res.json({ success: true });
+      } catch (error) {
+        console.error('Error undoing verdict:', error);
+        res.status(500).json({ error: 'Failed to undo verdict' });
       }
     });
 
@@ -1548,6 +2163,119 @@ export class ReviewServer {
     });
 
     return questionnaires;
+  }
+
+  /**
+   * Process aggregated library data for API response
+   * Groups by topic and detects similar items
+   */
+  private processAggregatedLibrary(data: any, customer: string): any {
+    const items = data.answerLibrary?.items || [];
+
+    // Import similarity detection inline to avoid circular deps
+    // groupByTopicWithSimilarity and getSimilarityStats imported at top of file
+
+    // Separate by destination
+    const libraryItems = items.filter((i: any) => i.destination === 'answer_library');
+    const excludedItems = items.filter((i: any) => i.destination === 'exclude');
+    const companyItems = items.filter((i: any) => i.destination === 'company');
+    const productItems = items.filter((i: any) => i.destination === 'product');
+    const questionnaireItems = items.filter((i: any) => i.destination === 'questionnaire');
+
+    // Group library items by topic with similarity detection
+    const grouped = groupByTopicWithSimilarity(libraryItems);
+    const stats = getSimilarityStats(grouped);
+
+    return {
+      customer,
+      aggregatedAt: data.aggregatedAt || new Date().toISOString(),
+      questionnaires: data.questionnaires || [],
+      totalItems: items.length,
+      uniqueItems: data.answerLibrary?.unique || items.length,
+      groups: grouped,
+      company: {
+        count: companyItems.length,
+        items: companyItems
+      },
+      product: {
+        count: productItems.length,
+        items: productItems
+      },
+      questionnaire: {
+        count: questionnaireItems.length,
+        items: questionnaireItems
+      },
+      excluded: {
+        count: excludedItems.length,
+        items: excludedItems
+      },
+      stats: {
+        ...stats,
+        company: companyItems.length,
+        product: productItems.length,
+        questionnaire: questionnaireItems.length,
+        excluded: excludedItems.length
+      }
+    };
+  }
+
+  /**
+   * Deduplicate items by normalized label + value
+   */
+  private deduplicateItems(items: any[]): any[] {
+    const seen = new Map<string, any>();
+
+    for (const item of items) {
+      const normalizedLabel = (item.label || '').toLowerCase().replace(/[^\w\s]/g, '').trim();
+      const normalizedValue = (item.value || '').toLowerCase().replace(/[^\w\s]/g, '').trim();
+      const key = `${normalizedLabel}::${normalizedValue}`;
+
+      if (!seen.has(key)) {
+        seen.set(key, {
+          id: this.generateItemId(item.label, item.value),
+          label: item.label,
+          fullLabel: item.fullLabel || item.label,
+          normalizedLabel,
+          value: item.value,
+          topic: item.topic || 'other',
+          section: item.section || '',
+          destination: item.destination || 'answer_library',
+          sources: [item.source],
+          firstApprovedAt: item.approvedAt || new Date().toISOString(),
+          lastApprovedAt: item.approvedAt || new Date().toISOString(),
+          cellRefs: item.lCell ? { [item.source]: item.lCell } : {}
+        });
+      } else {
+        // Merge sources
+        const existing = seen.get(key)!;
+        if (item.source && !existing.sources.includes(item.source)) {
+          existing.sources.push(item.source);
+        }
+        if (item.lCell && item.source) {
+          existing.cellRefs[item.source] = item.lCell;
+        }
+        if (item.approvedAt) {
+          existing.lastApprovedAt = item.approvedAt;
+        }
+      }
+    }
+
+    return Array.from(seen.values());
+  }
+
+  /**
+   * Generate a unique ID for an item based on label + value
+   */
+  private generateItemId(label: string, value: string): string {
+    // Simple hash without crypto - use string char codes
+    const normalized = `${label}:${value}`.toLowerCase();
+    let hash = 0;
+    for (let i = 0; i < normalized.length; i++) {
+      const char = normalized.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash; // Convert to 32bit integer
+    }
+    return Math.abs(hash).toString(16).padStart(8, '0').substring(0, 12);
   }
 
   /**

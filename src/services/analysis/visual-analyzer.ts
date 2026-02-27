@@ -364,6 +364,15 @@ CRITICAL RULES FOR CONDITIONAL FOLLOW-UP QUESTIONS:
 - The label should make sense WITHOUT needing to see the parent question
 - Remove "If yes/no" prefixes and add context naturally
 
+CRITICAL RULES FOR ROW-IDENTIFIER TABLES:
+- When a table has a first column that identifies WHAT each row is about (component names, allergen names, product names), ALWAYS include the ACTUAL VALUE from that column in the label
+- Example: Composition table with "Isomalt" in first column, "100" in Quantity column
+  - WRONG: label="Component 1 - Quantity (%)", value="100" (generic reference)
+  - WRONG: label="Quantity (% on total) of components", value="100" (no identifier)
+  - CORRECT: label="Isomalt - Quantity (% on total)", value="100" (actual name)
+- Use the actual value (e.g., "Isomalt", "Wheat", "Hazelnuts"), NOT generic references like "Component 1" or "Row 1"
+- This applies to composition tables, ingredient lists, allergen declarations, and similar tabular data
+
 Important:
 - Extract EVERY question/answer pair
 - For PDF yes/no tables, "x" typically means "Yes"

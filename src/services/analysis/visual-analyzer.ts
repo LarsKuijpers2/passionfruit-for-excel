@@ -442,14 +442,23 @@ IMPORTANT EXTRACTION RULES:
 
 3. PREFER INDIVIDUAL ITEMS: Only use "table" type for truly tabular reference data with no filled answers. If rows have yes/no answers or text values, extract them individually.
 
-4. PDF YES/NO TABLES: In PDFs, you may see questions ending with "x" (e.g., "Is there a procedure in place? x"). This "x" indicates a checkmark in a Yes/No/N/A table and typically means "Yes". Extract these as yesno items with value "Yes". If you see a section header like "Yes No N/A COMMENTS", subsequent questions with "x" are from this table structure. The "x" mark means the answer is affirmative (Yes).
+4. ROW-IDENTIFIER TABLES: When a table has a first column that identifies WHAT each row is about (like component names, allergen names, product names), ALWAYS include that row identifier in the label, even if there's only ONE data row filled in:
+   - Example: Composition table with columns "Components", "Quantity (%)", "Source material", "E-number"
+   - Row 1 has: "Isomalt", "100", "sugar beet", "E953"
+   - WRONG: label="Quantity (% on total) of components", value="100"
+   - CORRECT: label="Isomalt - Quantity (% on total) of components", value="100"
+   - CORRECT: label="Isomalt - Source material", value="sugar beet"
+   - CORRECT: label="Isomalt - E-number", value="E953"
+   - This applies whether the table has 1 row or 10 rows - always include the row identifier
 
-5. STRIKETHROUGH ANSWERS: Some questionnaires use strikethrough to indicate the WRONG answer. When you see YES/NO options where one is struck through (has a line through it), the answer is the option WITHOUT strikethrough:
+5. PDF YES/NO TABLES: In PDFs, you may see questions ending with "x" (e.g., "Is there a procedure in place? x"). This "x" indicates a checkmark in a Yes/No/N/A table and typically means "Yes". Extract these as yesno items with value "Yes". If you see a section header like "Yes No N/A COMMENTS", subsequent questions with "x" are from this table structure. The "x" mark means the answer is affirmative (Yes).
+
+6. STRIKETHROUGH ANSWERS: Some questionnaires use strikethrough to indicate the WRONG answer. When you see YES/NO options where one is struck through (has a line through it), the answer is the option WITHOUT strikethrough:
    - If "NO" has strikethrough → answer is "Yes"
    - If "YES" has strikethrough → answer is "No"
    - Strikethrough may appear as text with a horizontal line through it, or as visually different (lighter/greyed) compared to the selected option
 
-6. QUESTIONNAIRE METADATA: Do NOT extract these as answer library items:
+7. QUESTIONNAIRE METADATA: Do NOT extract these as answer library items:
    - Document headers, page numbers, form version numbers
    - Instructions to the filler ("Please complete", "Insert by supplier")
    - Attachment/document references ("Certificate attached", "See appendix", "Bijgevoegd")

@@ -442,14 +442,16 @@ IMPORTANT EXTRACTION RULES:
 
 3. PREFER INDIVIDUAL ITEMS: Only use "table" type for truly tabular reference data with no filled answers. If rows have yes/no answers or text values, extract them individually.
 
-4. ROW-IDENTIFIER TABLES: When a table has a first column that identifies WHAT each row is about (like component names, allergen names, product names), ALWAYS include that row identifier in the label, even if there's only ONE data row filled in:
+4. ROW-IDENTIFIER TABLES: When a table has a first column that identifies WHAT each row is about (like component names, allergen names, product names), ALWAYS include the ACTUAL VALUE from that identifying column in the label, even if there's only ONE data row:
    - Example: Composition table with columns "Components", "Quantity (%)", "Source material", "E-number"
    - Row 1 has: "Isomalt", "100", "sugar beet", "E953"
    - WRONG: label="Quantity (% on total) of components", value="100"
-   - CORRECT: label="Isomalt - Quantity (% on total) of components", value="100"
+   - WRONG: label="Component 1 - Quantity (%)", value="100" (don't use generic "Component 1")
+   - CORRECT: label="Isomalt - Quantity (% on total)", value="100" (use actual name "Isomalt")
    - CORRECT: label="Isomalt - Source material", value="sugar beet"
    - CORRECT: label="Isomalt - E-number", value="E953"
-   - This applies whether the table has 1 row or 10 rows - always include the row identifier
+   - The row identifier should be the ACTUAL VALUE (e.g., "Isomalt", "Wheat", "Hazelnuts"), NOT a generic reference like "Component 1" or "Row 1"
+   - This applies whether the table has 1 row or 10 rows - always include the actual row identifier value
 
 5. PDF YES/NO TABLES: In PDFs, you may see questions ending with "x" (e.g., "Is there a procedure in place? x"). This "x" indicates a checkmark in a Yes/No/N/A table and typically means "Yes". Extract these as yesno items with value "Yes". If you see a section header like "Yes No N/A COMMENTS", subsequent questions with "x" are from this table structure. The "x" mark means the answer is affirmative (Yes).
 

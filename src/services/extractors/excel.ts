@@ -10,6 +10,7 @@
 
 import ExcelJS from 'exceljs';
 import { readFile, writeFile, mkdir, readdir } from 'fs/promises';
+import { existsSync } from 'fs';
 import { join, basename } from 'path';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
 
@@ -87,7 +88,7 @@ export interface RowData {
   /** Is this row empty? */
   isEmpty: boolean;
   /** Detected row type */
-  rowType: 'header' | 'data' | 'section' | 'empty' | 'unknown';
+  rowType: 'header' | 'data' | 'section' | 'empty' | 'unknown' | 'text';
   /** Section title extracted from markdown headings (for header rows) */
   sectionTitle?: string;
   /** Extraction source (e.g., 'table', 'visualQA', 'text') */
@@ -136,6 +137,10 @@ export interface SheetData {
   columnCount: number;
   /** Detected input cells (likely answer fields) */
   inputCells?: string[];
+  /** Page number (for PDFs with multiple content blocks) */
+  pageNumber?: number;
+  /** Content type: 'table' for table data, 'text' for paragraph/text sections */
+  contentType?: 'table' | 'text';
   /** Stats */
   stats: {
     totalRows?: number;
@@ -220,6 +225,8 @@ export interface QuestionnaireStructure {
       itemCount: number;
       sections: string[];
       pageCount: number;
+      /** Pages without tables (text-only pages) */
+      missingPages?: number[];
     };
   };
 }
@@ -785,8 +792,11 @@ export class StructureStorage {
 
   /**
    * Save questionnaire structure
+   * @param structure - The structure to save
+   * @param options - Save options
+   * @param options.overwrite - If false and file exists with updatedAt, skip save (default: false)
    */
-  async save(structure: QuestionnaireStructure): Promise<string> {
+  async save(structure: QuestionnaireStructure, options?: { overwrite?: boolean }): Promise<string> {
     await mkdir(this.storageDir, { recursive: true });
 
     const safeName = structure.source.filename
@@ -795,6 +805,19 @@ export class StructureStorage {
 
     const filename = `${safeName}.json`;
     const filepath = join(this.storageDir, filename);
+
+    // Check if file exists and has manual edits (indicated by updatedAt field)
+    if (!options?.overwrite && existsSync(filepath)) {
+      try {
+        const existing = JSON.parse(await readFile(filepath, 'utf-8'));
+        if (existing.updatedAt) {
+          console.log(`  ⚠️  Skipping ${filename} - has manual edits (use --overwrite to replace)`);
+          return filepath;
+        }
+      } catch {
+        // If we can't read existing file, proceed with overwrite
+      }
+    }
 
     await writeFile(filepath, JSON.stringify(structure, null, 2), 'utf-8');
 

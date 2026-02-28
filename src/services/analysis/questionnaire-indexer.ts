@@ -125,6 +125,9 @@ export interface IndexedItem {
   entityId?: string;  // Link to detected entity
   productId?: string;  // Link to detected product
   isConditional?: boolean;  // True if this is a follow-up/conditional question (e.g., "If yes, please specify...")
+  strikethroughDetected?: boolean;  // True if value was determined by strikethrough (e.g., "Yes" struck through means "No")
+  needsReview?: boolean;  // Flag items that need human review (e.g., strikethrough, low confidence)
+  reviewReason?: string;  // Why this item needs review
 }
 
 /** A table cell with position information */

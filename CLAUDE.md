@@ -79,6 +79,8 @@ customers/              # Customer data (per-customer folders)
 │   ├── review/         # Review HTMLs
 │   └── approved/       # Approved exports
 rules/                  # Global rules (YAML)
+knowledge/              # Domain knowledge
+├── food-industry.md    # Certifications, standards, terminology
 answer-library.yaml     # Harvested answers
 ```
 
@@ -88,6 +90,65 @@ answer-library.yaml     # Harvested answers
 - **Entity vs Product Level**: Entity = reusable across questionnaires
 - **Customer Folders**: Each customer has isolated data directories
 - **Feedback Loop**: Human feedback improves future extractions
+- **Supplier vs Customer**: Supplier fills out questionnaires, Customer requests them
+
+## Review UI
+
+The review UI has two main views:
+
+### Questionnaire View
+- Shows individual questionnaire with original document, indexed items, and library panels
+- Access via sidebar by clicking on a questionnaire name
+- TabBar at top shows open questionnaire tabs
+
+### Database View
+- Full-screen aggregated view of all data for a customer
+- Access via database icon (🗄) next to customer name in sidebar
+- Tabs: Questionnaires, Library, Entities, Product, Metadata, Excluded, Curated
+
+### Entity Role Detection
+
+Questionnaires ask about different parties. During **indexing**, each company-destination item gets an `entityRole` field detected from the question label and section title:
+
+| Role | Detected from labels/sections like |
+|------|-------------------------------------|
+| `supplier` | "Supplier Name", "Vendor Company", "Our Company", "Leverancier" |
+| `manufacturer` | "Manufacturer Name", "Manufacturing Site", "Production Site" |
+| `producer` | "Producer Name", "Producteur" |
+| `customer` | "Customer Name", "Client", "Buyer", "Recipient" |
+| `group` | "Parent Company", "Group Name", "Holding Company", "Head Office" |
+
+**Pipeline flow:**
+1. **INDEX** → `detectEntityRole()` in `questionnaire-indexer.ts` adds `entityRole` to each item
+2. **EXPORT** → entityRole is preserved in approved exports
+3. **AGGREGATE** → entityRole flows through to aggregated data
+4. **UI** → Database view groups entities by detected role
+
+### Entity Grouping (UI)
+In the Database → Entities tab:
+- Entities are grouped by **name + role** (e.g., "Doehler Oosterhout (Supplier)")
+- The same company can have **multiple roles** across questionnaires:
+  - "Doehler Oosterhout (Supplier)" - when filling out a questionnaire
+  - "Doehler Oosterhout (Manufacturer)" - when asked about production site
+  - "Doehler Oosterhout (Customer)" - when they're the recipient
+- Each name+role combination is a separate entry
+- Role comes from `entityRole` field if available, otherwise detected from label
+- Fields are merged within the same name+role group across questionnaires
+
+### Product Grouping
+Products are grouped by source file (questionnaire they came from).
+
+## Knowledge Files
+
+Reference these for domain understanding:
+
+- **[knowledge/food-industry.md](./knowledge/food-industry.md)** - Certifications (GFSI, ISO, RSPO), social compliance (SEDEX, SMETA), terminology
+- **customers/\<name\>/company.md** - Company-specific facts, confirmed certifications, open questions
+
+When processing questionnaires:
+1. A supplier may give different answers to different customers (product-specific, time-sensitive)
+2. Flag conflicting data rather than picking one answer
+3. Update company.md with confirmed facts and open questions
 
 ## Environment Variables
 

@@ -133,11 +133,17 @@ export class HtmlStructureExtractor implements DocumentExtractor {
 
         sheets.push({
           name: sectionName,
+          index: sheets.length,
           rows: sheetRows,
+          mergedRanges: [],
+          rowCount: sheetRows.length,
+          columnCount: Math.max(...sheetRows.map(r => Object.keys(r.cells).length), 0),
           stats: {
             totalRows: sheetRows.length,
             totalCells: sheetTotalCells,
             filledCells: sheetFilledCells,
+            emptyRows: 0,
+            mergedRanges: 0,
           },
         });
 
@@ -151,11 +157,17 @@ export class HtmlStructureExtractor implements DocumentExtractor {
       const textRows = this.extractTextAsRows(document);
       sheets.push({
         name: 'Document',
+        index: 0,
         rows: textRows,
+        mergedRanges: [],
+        rowCount: textRows.length,
+        columnCount: Math.max(...textRows.map(r => Object.keys(r.cells).length), 1),
         stats: {
           totalRows: textRows.length,
           totalCells: textRows.length,
           filledCells: textRows.length,
+          emptyRows: 0,
+          mergedRanges: 0,
         },
       });
       totalCells = textRows.length;
@@ -165,8 +177,9 @@ export class HtmlStructureExtractor implements DocumentExtractor {
     return {
       source: {
         filename: filepath.split('/').pop() || filepath,
+        filepath,
+        extractedAt: new Date().toISOString(),
         documentType: 'html',
-        extracted: new Date().toISOString(),
       },
       sheets,
       stats: {

@@ -1,0 +1,421 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-02-22",
+  "description": "Discovered table patterns from questionnaire structure analysis. Used by indexer to select extraction strategy.",
+
+  "patterns": [
+    {
+      "id": "STANDARD_YESNO_EN",
+      "name": "Standard Yes/No Questionnaire (English)",
+      "description": "English questionnaire with Yes/No/N/A checkbox columns and comments",
+      "frequency": "high",
+      "languages": ["en"],
+      "detection": {
+        "headerKeywords": ["Yes", "No", "N/A", "Comments", "Remarks"],
+        "headerKeywordsMatchCount": 2,
+        "columnCount": { "min": 3, "max": 6 }
+      },
+      "columns": {
+        "question": { "position": "first", "role": "label" },
+        "yes": { "headerContains": ["Yes"], "role": "checkbox" },
+        "no": { "headerContains": ["No"], "role": "checkbox" },
+        "na": { "headerContains": ["N/A", "NA", "N.A."], "role": "checkbox", "optional": true },
+        "comments": { "position": "last", "headerContains": ["Comment", "Remark"], "role": "text" }
+      },
+      "extraction": {
+        "type": "checkbox_row",
+        "questionColumn": 0,
+        "detectCheckedColumn": true,
+        "commentColumn": -1
+      },
+      "examples": [
+        "Barry_Callebaut_US_Raw_Material_Questionnaire",
+        "Cloetta_SK_Raw_Material_Information_file",
+        "211216_Self_assessment_questionnaire_Almonte"
+      ]
+    },
+    {
+      "id": "STANDARD_YESNO_DE",
+      "name": "Standard Yes/No Questionnaire (German)",
+      "description": "German questionnaire with Ja/Nein columns and Bemerkungen",
+      "frequency": "medium",
+      "languages": ["de"],
+      "detection": {
+        "headerKeywords": ["Ja", "Nein", "N/V", "Bemerkung", "Kommentar"],
+        "headerKeywordsMatchCount": 2,
+        "columnCount": { "min": 3, "max": 6 }
+      },
+      "columns": {
+        "number": { "position": 0, "role": "label", "optional": true },
+        "question": { "position": 1, "role": "label" },
+        "ja": { "headerContains": ["Ja"], "role": "checkbox" },
+        "nein": { "headerContains": ["Nein"], "role": "checkbox" },
+        "comments": { "position": "last", "headerContains": ["Bemerkung", "Kommentar"], "role": "text" }
+      },
+      "extraction": {
+        "type": "checkbox_row",
+        "questionColumn": 1,
+        "detectCheckedColumn": true,
+        "commentColumn": -1,
+        "valueMapping": { "Ja": "Yes", "Nein": "No" }
+      },
+      "examples": [
+        "Katjes_DE_02FB0103-06_Lieferantenselbstauskunft",
+        "Soldan_DE_001869_Dienstleister-_und_Lieferantenfragebogen"
+      ]
+    },
+    {
+      "id": "STANDARD_YESNO_NL",
+      "name": "Standard Yes/No Questionnaire (Dutch)",
+      "description": "Dutch questionnaire with Ja/Nee columns and Opmerkingen",
+      "frequency": "low",
+      "languages": ["nl"],
+      "detection": {
+        "headerKeywords": ["Ja", "Nee", "N.v.t.", "Opmerkingen", "Toelichting"],
+        "headerKeywordsMatchCount": 2,
+        "columnCount": { "min": 3, "max": 6 }
+      },
+      "columns": {
+        "question": { "position": "first", "role": "label" },
+        "ja": { "headerContains": ["Ja"], "role": "checkbox" },
+        "nee": { "headerContains": ["Nee"], "role": "checkbox" },
+        "nvt": { "headerContains": ["N.v.t.", "Nvt"], "role": "checkbox", "optional": true },
+        "comments": { "position": "last", "headerContains": ["Opmerking", "Toelichting"], "role": "text" }
+      },
+      "extraction": {
+        "type": "checkbox_row",
+        "questionColumn": 0,
+        "detectCheckedColumn": true,
+        "commentColumn": -1,
+        "valueMapping": { "Ja": "Yes", "Nee": "No", "N.v.t.": "N/A" }
+      },
+      "examples": [
+        "Jimmy_s_RF-014_11_Vragenlijst_leverancier",
+        "20241112_RL14-1_Questionnaire_Quality_Fraude_Environment_Marfo"
+      ]
+    },
+    {
+      "id": "STANDARD_YESNO_FR",
+      "name": "Standard Yes/No Questionnaire (French)",
+      "description": "French questionnaire with Oui/Non columns and Remarques",
+      "frequency": "medium",
+      "languages": ["fr"],
+      "detection": {
+        "headerKeywords": ["Oui", "Non", "N/A", "Remarque", "Commentaire"],
+        "headerKeywordsMatchCount": 2,
+        "columnCount": { "min": 3, "max": 6 }
+      },
+      "columns": {
+        "question": { "position": "first", "role": "label" },
+        "oui": { "headerContains": ["Oui"], "role": "checkbox" },
+        "non": { "headerContains": ["Non"], "role": "checkbox" },
+        "comments": { "position": "last", "headerContains": ["Remarque", "Commentaire"], "role": "text" }
+      },
+      "extraction": {
+        "type": "checkbox_row",
+        "questionColumn": 0,
+        "detectCheckedColumn": true,
+        "commentColumn": -1,
+        "valueMapping": { "Oui": "Yes", "Non": "No" }
+      },
+      "examples": [
+        "Questionnaire_emballages_Kaaspack"
+      ]
+    },
+    {
+      "id": "SIMPLE_KEYVALUE",
+      "name": "Simple Key-Value Pairs",
+      "description": "2-4 column table with label/value pairs",
+      "frequency": "high",
+      "languages": ["en", "de", "nl", "fr"],
+      "detection": {
+        "columnCount": { "min": 2, "max": 4 },
+        "noCheckboxHeaders": true,
+        "headerKeywords": ["Name", "Address", "Date", "Supplier", "Company", "Lieferant", "Naam", "Adres"],
+        "headerKeywordsMatchCount": 1
+      },
+      "columns": {
+        "pairs": { "role": "label_value_pairs" }
+      },
+      "extraction": {
+        "type": "label_value_pairs",
+        "pairColumns": [[0, 1], [2, 3]]
+      },
+      "examples": [
+        "Euro_Patisserie_Apeldoorn_Vragenlijst_leveranciers",
+        "SUPPLIER NAME | value | DATE | value patterns"
+      ]
+    },
+    {
+      "id": "BILINGUAL_SPEC_DE_EN",
+      "name": "Bilingual Specification (German/English)",
+      "description": "Product specification with German/English headers like Lieferant / Supplier",
+      "frequency": "medium",
+      "languages": ["de", "en"],
+      "detection": {
+        "headerKeywords": ["Lieferant / Supplier", "Hersteller / Manufacturer", "Anschrift / Address", "Bezeichnung / Description"],
+        "headerKeywordsMatchCount": 1,
+        "columnCount": { "min": 2, "max": 8 }
+      },
+      "columns": {
+        "label": { "position": 0, "role": "label" },
+        "value": { "position": 1, "role": "value" }
+      },
+      "extraction": {
+        "type": "bilingual_spec",
+        "preferLanguage": "en",
+        "labelSeparator": " / "
+      },
+      "examples": [
+        "149_02044_10070080_Rohwarenspezifikation",
+        "German/English product specifications"
+      ]
+    },
+    {
+      "id": "PARAMETER_TABLE",
+      "name": "Parameter/Measurement Table",
+      "description": "Technical parameters with units, limits, setpoints",
+      "frequency": "medium",
+      "languages": ["en", "de"],
+      "detection": {
+        "headerKeywords": ["Parameter", "Unit", "Setpoint", "Limit", "Upper", "Lower", "Measurement", "Einheit", "Grenzwert"],
+        "headerKeywordsMatchCount": 2,
+        "columnCount": { "min": 3, "max": 7 }
+      },
+      "columns": {
+        "parameter": { "position": 0, "role": "label" },
+        "values": { "position": "remaining", "role": "value" }
+      },
+      "extraction": {
+        "type": "parameter_table",
+        "parameterColumn": 0,
+        "destination": "product"
+      },
+      "examples": [
+        "Parameters (deep frozen) | Unit | Setpoint | Limits"
+      ]
+    },
+    {
+      "id": "AUDIT_CRITERIA",
+      "name": "Audit Criteria Table",
+      "description": "Audit assessment with criteria, ratings, and remarks",
+      "frequency": "low",
+      "languages": ["en"],
+      "detection": {
+        "headerKeywords": ["Audit", "Criteria", "Rating", "Assessment", "Self-Assessment", "Auditor", "Specification", "Remarks"],
+        "headerKeywordsMatchCount": 2,
+        "columnCount": { "min": 3, "max": 6 }
+      },
+      "columns": {
+        "criteria": { "position": 0, "role": "label" },
+        "ratings": { "position": "middle", "role": "value" },
+        "remarks": { "position": "last", "role": "text" }
+      },
+      "extraction": {
+        "type": "audit_criteria",
+        "criteriaColumn": 0
+      },
+      "examples": [
+        "REC_1100-10_Supplier_Audit_Questionnaire"
+      ]
+    },
+    {
+      "id": "SPECIFICATION_TABLE",
+      "name": "Product Specification Table",
+      "description": "Multi-column table with product attributes like Name, Unit, Value, Remarks",
+      "frequency": "high",
+      "languages": ["en", "de"],
+      "detection": {
+        "headerKeywords": ["Name", "Unit", "Value", "Wert", "Basiseinheit", "Portion", "Function"],
+        "headerKeywordsMatchCount": 2,
+        "columnCount": { "min": 4, "max": 8 }
+      },
+      "columns": {
+        "name": { "position": 0, "role": "label" },
+        "attributes": { "position": "remaining", "role": "value" }
+      },
+      "extraction": {
+        "type": "attribute_table",
+        "nameColumn": 0,
+        "attributeColumns": "remaining",
+        "createItemPerRow": true
+      },
+      "examples": [
+        "Delica_CH_Portalcheck_Spezifikationsdaten",
+        "Ricola_CH_Questionnaire_on_raw_materials"
+      ]
+    },
+    {
+      "id": "CERTIFICATE_LIST",
+      "name": "Certificate/Certification List",
+      "description": "Table listing certifications with validity dates and scope",
+      "frequency": "medium",
+      "languages": ["en", "de", "fr"],
+      "detection": {
+        "headerKeywords": ["Certificate", "Certification", "Valid", "Expiry", "Scope", "Zertifikat", "Gültig"],
+        "headerKeywordsMatchCount": 2,
+        "columnCount": { "min": 2, "max": 5 }
+      },
+      "columns": {
+        "certificate": { "position": 0, "role": "label" },
+        "validUntil": { "headerContains": ["Valid", "Expiry", "Gültig"], "role": "date" },
+        "scope": { "headerContains": ["Scope", "Bereich"], "role": "value", "optional": true }
+      },
+      "extraction": {
+        "type": "certificate_list",
+        "certificateColumn": 0,
+        "dateColumn": "detect",
+        "destination": "company"
+      },
+      "examples": [
+        "Multiple files with certification sections"
+      ]
+    },
+    {
+      "id": "BILINGUAL_SPEC_FR_EN",
+      "name": "Bilingual Specification (French/English)",
+      "description": "Product specification with merged bilingual headers like PRODUIT / PRODUCT",
+      "frequency": "medium",
+      "languages": ["fr", "en"],
+      "detection": {
+        "headerKeywords": ["PRODUIT / PRODUCT", "CARACTERISTIQUES / CHARACTERISTICS", "Fournisseur / Supplier"],
+        "headerKeywordsMatchCount": 1,
+        "hasMergedCells": true,
+        "columnCount": { "min": 6, "max": 12 }
+      },
+      "columns": {
+        "product": { "headerContains": ["PRODUIT", "PRODUCT"], "role": "label" },
+        "attributes": { "position": "remaining", "role": "value" }
+      },
+      "extraction": {
+        "type": "bilingual_spec",
+        "preferLanguage": "en",
+        "splitMergedHeaders": true
+      },
+      "examples": [
+        "E_023_v6_CDC_TIPPAGRAL_TC01_2025",
+        "Questionnaire_emballages_Kaaspack"
+      ]
+    },
+    {
+      "id": "CONTACT_INFO",
+      "name": "Contact Information Block",
+      "description": "Company contact details - name, address, phone, email",
+      "frequency": "high",
+      "languages": ["en", "de", "nl", "fr"],
+      "detection": {
+        "headerKeywords": ["Company", "Address", "Phone", "Email", "Contact", "Adres", "Telefoon", "Adresse"],
+        "headerKeywordsMatchCount": 2,
+        "columnCount": { "min": 2, "max": 3 }
+      },
+      "columns": {
+        "field": { "position": 0, "role": "label" },
+        "value": { "position": 1, "role": "value" }
+      },
+      "extraction": {
+        "type": "label_value",
+        "labelColumn": 0,
+        "valueColumn": 1,
+        "destination": "company"
+      },
+      "examples": [
+        "Header sections of most questionnaires"
+      ]
+    },
+    {
+      "id": "PRODUCT_MATRIX",
+      "name": "Product Attribute Matrix",
+      "description": "Matrix with products as rows and attributes as columns, often for allergens or certifications",
+      "frequency": "medium",
+      "languages": ["en", "de"],
+      "detection": {
+        "matrixStructure": true,
+        "headerKeywords": ["Allergen", "Product", "Ingredient", "vegan", "vegetarisch", "Gluten", "Lactose"],
+        "columnCount": { "min": 4, "max": 15 }
+      },
+      "columns": {
+        "product": { "position": 0, "role": "label" },
+        "attributes": { "position": "remaining", "role": "checkbox_or_value" }
+      },
+      "extraction": {
+        "type": "matrix",
+        "rowIdentifierColumn": 0,
+        "expandToItems": true,
+        "itemTemplate": "{product} - {attribute}"
+      },
+      "examples": [
+        "Allergen matrices",
+        "Product certification matrices"
+      ]
+    },
+    {
+      "id": "FREE_FORM_QA",
+      "name": "Free-Form Question and Answer",
+      "description": "Open questions with long-form text answers, no checkboxes",
+      "frequency": "medium",
+      "languages": ["en", "de", "fr", "nl"],
+      "detection": {
+        "columnCount": { "min": 2, "max": 3 },
+        "noCheckboxHeaders": true,
+        "longTextValues": true
+      },
+      "columns": {
+        "question": { "position": 0, "role": "label" },
+        "answer": { "position": 1, "role": "value" }
+      },
+      "extraction": {
+        "type": "label_value",
+        "labelColumn": 0,
+        "valueColumn": 1,
+        "itemType": "text",
+        "level": "narrative"
+      },
+      "examples": [
+        "Description sections in questionnaires"
+      ]
+    }
+  ],
+
+  "languageDetection": {
+    "de": {
+      "keywords": ["Lieferant", "Frage", "Nein", "Ja", "Basiseinheit", "Bemerkung", "Gültig", "Zertifikat"],
+      "yesNo": { "yes": "Ja", "no": "Nein", "na": "N/V" }
+    },
+    "nl": {
+      "keywords": ["Leverancier", "Vraag", "Nee", "Bijlage", "Opmerkingen", "Categorie"],
+      "yesNo": { "yes": "Ja", "no": "Nee", "na": "N.v.t." }
+    },
+    "fr": {
+      "keywords": ["Fournisseur", "Question", "Oui", "Non", "Remarque", "Produit", "Caracteristique"],
+      "yesNo": { "yes": "Oui", "no": "Non", "na": "N/A" }
+    },
+    "en": {
+      "keywords": ["Supplier", "Question", "Yes", "No", "Comment", "Remark", "Product", "Certificate"],
+      "yesNo": { "yes": "Yes", "no": "No", "na": "N/A" }
+    }
+  },
+
+  "detectionPriority": [
+    "STANDARD_YESNO_EN",
+    "STANDARD_YESNO_DE",
+    "STANDARD_YESNO_NL",
+    "STANDARD_YESNO_FR",
+    "BILINGUAL_SPEC_FR_EN",
+    "BILINGUAL_SPEC_DE_EN",
+    "AUDIT_CRITERIA",
+    "PARAMETER_TABLE",
+    "CERTIFICATE_LIST",
+    "PRODUCT_MATRIX",
+    "SPECIFICATION_TABLE",
+    "CONTACT_INFO",
+    "SIMPLE_KEYVALUE",
+    "FREE_FORM_QA"
+  ],
+
+  "documentMappings": {
+    "_comment": "Explicit mappings for documents that don't auto-detect well",
+    "Katjes_DE_02FB0103-06_Lieferantenselbstauskunft": "STANDARD_YESNO_DE",
+    "211216_Self_assessment_questionnaire_Almonte": "STANDARD_YESNO_EN",
+    "Euro_Patisserie_Apeldoorn_Vragenlijst_leveranciers": "SIMPLE_KEYVALUE"
+  }
+}

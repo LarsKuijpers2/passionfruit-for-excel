@@ -1,66 +1,194 @@
 # Topic Definitions for Questionnaire Indexing
 #
-# Topics are used to classify sections and items in questionnaires.
-# Each topic has patterns (regex) and keywords for matching section titles.
-#
-# Matching priority:
-# 1. Patterns (regex) - for complex multi-language matching
-# 2. Keywords (exact word boundary) - for simple terms
+# Topics are organized by category:
+# - ENTITY: Company/organization information
+# - PRODUCT: Product-specific data
+# - OPERATIONS: Day-to-day operational processes
+# - COMPLIANCE: Certifications, audits, food safety
+# - SUSTAINABILITY: Environmental and ethical
+# - ADMIN: Administrative and documentation
 
-version: "1.0"
+version: "2.0"
 
 topics:
-  # Company & Contact Information
-  - id: company_information
-    name: Company Information
-    description: General company data, legal info, financial details
+  # ===========================================================================
+  # ENTITY - Company/Organization Information
+  # ===========================================================================
+
+  - id: entity_info
+    name: Entity Information
+    description: Company name, address, legal info, registration numbers
     patterns:
-      - "company|firmierung|entreprise|bedrijf"
+      - "company|firmierung|entreprise|bedrijf|unternehmen"
       - "general.*data|allgemeine.*daten|algemene"
-      - "financ|finanz|bank|steuer|tax"
+      - "supplier.*info|leverancier|lieferant|fournisseur"
+      - "manufacturer.*info|fabrikant|fabricant"
     keywords:
       - company
+      - supplier
+      - manufacturer
       - business
       - legal
-      - financial
+      - registration
 
-  - id: contact_persons
-    name: Contact Persons
-    description: Contact details, responsible persons
+  - id: entity_contacts
+    name: Entity Contacts
+    description: Contact persons, phone, email
     patterns:
-      - "contact|ansprech|kontakt"
+      - "contact|ansprech|kontakt|contactpersoon"
     keywords:
       - contact
       - person
       - responsible
+      - phone
+      - email
 
-  # Quality & Food Safety
-  - id: certifications
-    name: Certifications
-    description: Quality certifications, standards, accreditations
+  - id: entity_certifications
+    name: Entity Certifications
+    description: Company-level certifications and standards
     patterns:
-      - "certif|zertif"
+      - "company.*certif|bedrijfs.*certif"
     keywords:
-      - certification
-      - certificate
+      - company certification
       - accreditation
-      - standard
-      - IFS
-      - BRC
-      - FSSC
-      - ISO
+
+  # ===========================================================================
+  # PRODUCT - Product-Specific Data
+  # ===========================================================================
+
+  - id: product_identification
+    name: Product Identification
+    description: Product name, code, reference, article number
+    patterns:
+      - "product.*name|produkt.*name|produit.*nom"
+      - "article.*number|artikelnummer|numéro.*article"
+      - "product.*code|produkt.*code"
+      - "product.*reference|referentie"
+    keywords:
+      - product name
+      - article number
+      - SKU
+      - reference
+      - item code
+
+  - id: product_attributes
+    name: Product Attributes
+    description: Physical attributes - appearance, taste, smell, color, texture
+    patterns:
+      - "appearance|aussehen|aspect|uiterlijk"
+      - "taste|geschmack|goût|smaak"
+      - "smell|odour|odor|geruch|geur"
+      - "colour|color|farbe|couleur|kleur"
+      - "texture|textur"
+    keywords:
+      - appearance
+      - taste
+      - smell
+      - odour
+      - color
+      - colour
+      - texture
+
+  - id: product_composition
+    name: Product Composition
+    description: Ingredients list, recipe, formula
+    patterns:
+      - "ingredient|zutat|ingrédient|ingrediënt"
+      - "composition|zusammensetzung|samenstelling"
+      - "formula|formul|recept|recipe"
+    keywords:
+      - ingredient
+      - composition
+      - formula
+      - recipe
+
+  - id: product_allergens
+    name: Product Allergens
+    description: Allergen declarations, cross-contamination
+    patterns:
+      - "allerg"
+      - "cross.*contamin|kruisbesmetting"
+    keywords:
+      - allergen
+      - gluten
+      - nuts
+      - dairy
+      - eggs
+      - soy
+      - cross-contamination
+
+  - id: product_nutrition
+    name: Product Nutrition
+    description: Nutritional values, calories, macros
+    patterns:
+      - "nutri|nährwert|valeur.*nutritive|voedingswaarde"
+      - "calori|energie|energy"
+    keywords:
+      - nutrition
+      - calories
+      - protein
+      - carbohydrate
+      - fat
+      - sugar
+      - salt
+
+  - id: product_certifications
+    name: Product Certifications
+    description: Product-level certifications - halal, kosher, organic, vegan
+    patterns:
+      - "halal|kosher|kasher"
+      - "organic|bio|biologisch|écologique"
+      - "vegan|vegetarian|végétar"
+    keywords:
+      - halal
+      - kosher
+      - organic
+      - vegan
+      - vegetarian
+
+  - id: product_specifications
+    name: Product Specifications
+    description: Shelf life, storage conditions, technical specs
+    patterns:
+      - "shelf.*life|haltbarkeit|durée.*conservation|houdbaarheid"
+      - "storage.*condition|lager|stockage|opslag"
+      - "specification|spezifikation|spécification|specificatie"
+    keywords:
+      - shelf life
+      - storage
+      - expiry
+      - best before
+      - specification
+
+  - id: product_packaging
+    name: Product Packaging
+    description: Packaging materials, dimensions, labeling
+    patterns:
+      - "packag|verpack|emballage|verpakking"
+      - "label|etiket|étiquette"
+    keywords:
+      - packaging
+      - label
+      - container
+      - box
+      - carton
+
+  # ===========================================================================
+  # OPERATIONS - Day-to-day Operational Processes
+  # ===========================================================================
 
   - id: quality_systems
     name: Quality Systems
-    description: Quality management, HACCP, food safety systems
+    description: QMS, HACCP, food safety management systems
     patterns:
-      - "haccp|food.*safety|lebensmittel.*sicherheit"
-      - "quality|qualität|qualite|kwaliteit|qm.*system"
+      - "haccp|food.*safety.*system|lebensmittel.*sicherheit"
+      - "quality.*management|qualitäts.*management|qm.*system"
+      - "quality.*system|kwaliteits.*systeem"
     keywords:
       - quality
+      - QMS
       - HACCP
-      - food safety
-      - QM
+      - food safety system
 
   - id: premises
     name: Premises & Facilities
@@ -69,8 +197,8 @@ topics:
       - "building|gebäude|bâtiment|gebouw"
       - "facilit|einrichtung|installation"
       - "zon(e|ing)|bereich"
-      - "utilit|versorgung"
       - "infrastruc"
+      - "premises|bedrijfspand"
     keywords:
       - building
       - facilities
@@ -80,32 +208,32 @@ topics:
       - premises
       - site
 
+  - id: equipment
+    name: Equipment & Maintenance
+    description: Production equipment, maintenance, calibration
+    patterns:
+      - "equipment|ausrüstung|équipement|apparatuur"
+      - "maintenan|wartung|entretien|onderhoud"
+      - "calibrat|kalibrier|étalonnage|kalibratie"
+    keywords:
+      - equipment
+      - maintenance
+      - calibration
+      - machinery
+
   - id: hygiene
     name: Hygiene
     description: Personal hygiene, handwashing, protective clothing
     patterns:
-      - "hygien|hygiëne"
-      - "handwash|händewaschen"
-      - "personal.*clean|persoonlijke.*hygiëne"
+      - "personal.*hygien|persoonlijke.*hygiëne"
+      - "handwash|händewaschen|handen.*wassen"
+      - "protective.*cloth|schutzkleidung|beschermende.*kleding"
     keywords:
       - hygiene
       - handwashing
-      - sanitation
       - personal hygiene
       - protective clothing
       - work clothes
-
-  - id: training
-    name: Training
-    description: Staff training, competency, awareness
-    patterns:
-      - "training|schulung|formation|opleiding"
-      - "competenc|kompetenz"
-    keywords:
-      - training
-      - competency
-      - awareness
-      - education
 
   - id: cleaning
     name: Cleaning & Sanitation
@@ -132,19 +260,6 @@ topics:
       - insect
       - vermin
 
-  - id: equipment
-    name: Equipment & Maintenance
-    description: Production equipment, maintenance, calibration
-    patterns:
-      - "equipment|ausrüstung|équipement|apparatuur"
-      - "maintenan|wartung|entretien|onderhoud"
-      - "calibrat|kalibrier|étalonnage|kalibratie"
-    keywords:
-      - equipment
-      - maintenance
-      - calibration
-      - machinery
-
   - id: monitoring
     name: Monitoring & Testing
     description: Environmental monitoring, air/water testing, sampling
@@ -152,7 +267,8 @@ topics:
       - "monitor|überwach|surveillance"
       - "air.*quality|luftqualität"
       - "water.*quality|wasserqualität"
-      - "sampl|proben|échantillon"
+      - "sampl|proben|échantillon|monster"
+      - "testing|prüfung|test"
     keywords:
       - monitoring
       - air quality
@@ -160,236 +276,232 @@ topics:
       - sampling
       - testing
 
-  - id: waste
-    name: Waste Management
-    description: Waste handling, disposal, waste water
-    patterns:
-      - "waste|abfall|déchet|afval"
-      - "disposal|entsorgung"
-    keywords:
-      - waste
-      - disposal
-      - garbage
-      - refuse
-
-  - id: allergens
-    name: Allergens
-    description: Allergen management, cross-contamination
-    patterns:
-      - "allerg"
-    keywords:
-      - allergen
-      - cross-contamination
-
-  - id: microbiological
-    name: Microbiological
-    description: Microbiological testing, bacteria, pathogens
-    patterns:
-      - "bacterio|micro|keime"
-    keywords:
-      - microbiological
-      - bacteria
-      - pathogen
-
-  - id: foreign_bodies
-    name: Foreign Bodies
-    description: Foreign body detection, contamination control
-    patterns:
-      - "foreign.*bod|fremdkörper|corps.*étrang"
-    keywords:
-      - foreign body
-      - metal detection
-      - contamination
-
-  # Sustainability & Environment
-  - id: sustainability
-    name: Sustainability
-    description: Sustainability, CSR, environmental management
-    patterns:
-      - "sustain|nachhaltig|durable|duurzaam|rse|csr"
-      - "environment|umwelt|environnement|milieu"
-    keywords:
-      - sustainability
-      - CSR
-      - environment
-      - carbon
-      - CO2
-
-  - id: ethical_social
-    name: Ethical & Social
-    description: Animal welfare, ethical practices, social responsibility
-    patterns:
-      - "animal|tier|welfare|wohl"
-      - "ethical|ethisch|éthique"
-      - "social|sozial"
-    keywords:
-      - animal welfare
-      - ethical
-      - social
-
-  # Product Information
-  - id: identification
-    name: Product Identification
-    description: Product details, specifications
-    patterns:
-      - "product|produkt|produit"
-    keywords:
-      - product
-      - specification
-
-  - id: formula_composition
-    name: Formula & Composition
-    description: Ingredients, composition, recipe
-    patterns:
-      - "ingredient|zutat|ingrédient|ingrediënt"
-      - "formula|composition|zusammensetzung"
-    keywords:
-      - ingredient
-      - composition
-      - formula
-      - recipe
-
-  - id: nutritional
-    name: Nutritional
-    description: Nutritional values, labeling
-    patterns:
-      - "nutri|nährwert|valeur"
-    keywords:
-      - nutritional
-      - nutrition
-      - calories
-
-  - id: shelf_life
-    name: Shelf Life
-    description: Shelf life, expiry, storage conditions
-    patterns:
-      - "shelf.*life|haltbarkeit|durée.*conservation"
-    keywords:
-      - shelf life
-      - expiry
-      - best before
-
-  - id: gmo
-    name: GMO
-    description: GMO status, genetic modification
-    patterns:
-      - "gmo|genetisch|génétique"
-    keywords:
-      - GMO
-      - genetic
-      - modified
-
-  # Supply Chain
   - id: raw_materials
     name: Raw Materials
-    description: Raw material sourcing, suppliers
+    description: Raw material sourcing, suppliers, incoming goods
     patterns:
-      - "raw.*material|rohstoff|matière.*première"
+      - "raw.*material|rohstoff|matière.*première|grondstof"
+      - "incoming.*good|wareneingang"
+      - "supplier.*approv|leveranciers.*goedkeuring"
     keywords:
       - raw material
       - supplier
       - sourcing
-
-  - id: origin_provenance
-    name: Origin & Provenance
-    description: Product origin, country of origin
-    patterns:
-      - "origin|herkunft|origine|oorsprong"
-    keywords:
-      - origin
-      - provenance
-      - country
+      - incoming
 
   - id: traceability
     name: Traceability
-    description: Traceability systems, batch tracking
+    description: Traceability systems, batch tracking, lot numbers
     patterns:
-      - "traceab|rückverfolgb|traça"
+      - "traceab|rückverfolgb|traça|traceerbaarheid"
+      - "batch|charge|lot|partij"
     keywords:
       - traceability
       - batch
       - lot
+      - tracking
 
-  - id: packaging
-    name: Packaging
-    description: Packaging materials, specifications
-    patterns:
-      - "packag|verpack|emballage|verpakking"
-    keywords:
-      - packaging
-      - pack
-      - container
-
-  - id: storage_transport
-    name: Storage & Transport
-    description: Logistics, storage, shipping
+  - id: logistics
+    name: Logistics & Storage
+    description: Transport, storage, shipping, delivery
     patterns:
       - "logist|transport|shipping|lieferung|livraison"
-      - "storage|lager|stockage"
+      - "storage|lager|stockage|opslag"
+      - "delivery|lieferung|livraison|levering"
     keywords:
       - logistics
       - transport
       - storage
       - shipping
+      - delivery
 
-  # Risk & Compliance
-  - id: food_fraud
-    name: Food Fraud
-    description: Food fraud prevention, authenticity
+  - id: waste
+    name: Waste Management
+    description: Waste handling, disposal, waste water
     patterns:
-      - "fraud|betrug|fraude"
+      - "waste|abfall|déchet|afval"
+      - "disposal|entsorgung|verwijdering"
     keywords:
-      - fraud
-      - authenticity
-      - adulteration
+      - waste
+      - disposal
+      - garbage
+
+  - id: microbiology
+    name: Microbiology
+    description: Microbiological testing, bacteria, pathogens
+    patterns:
+      - "bacterio|micro|keime|microbiolog"
+      - "pathogen|ziekteverwekker"
+    keywords:
+      - microbiological
+      - bacteria
+      - pathogen
+
+  # ===========================================================================
+  # COMPLIANCE - Certifications, Audits, Food Safety
+  # ===========================================================================
+
+  - id: certifications
+    name: Certifications & Standards
+    description: Quality certifications - BRC, IFS, FSSC, ISO
+    patterns:
+      - "certif|zertif"
+      - "standard|norm"
+      - "accredit"
+    keywords:
+      - certification
+      - certificate
+      - accreditation
+      - standard
+      - IFS
+      - BRC
+      - FSSC
+      - ISO
+
+  - id: audits
+    name: Audits & Inspections
+    description: Internal/external audits, inspections
+    patterns:
+      - "audit|prüfung"
+      - "inspection|inspektion|inspectie"
+    keywords:
+      - audit
+      - inspection
+      - assessment
+
+  - id: food_safety
+    name: Food Safety
+    description: Food safety procedures, hazard analysis
+    patterns:
+      - "food.*safety|lebensmittel.*sicherheit|voedselveiligheid"
+      - "hazard.*analysis|gefahrenanalyse"
+      - "ccp|critical.*control"
+    keywords:
+      - food safety
+      - hazard
+      - CCP
+      - critical control point
 
   - id: food_defense
     name: Food Defense
     description: Food defense, security, tampering prevention
     patterns:
-      - "defense|verteidigung|défense"
+      - "food.*defense|food.*defence"
+      - "security|sicherheit|beveiliging"
+      - "tamper|manipulat"
     keywords:
       - defense
       - security
       - tampering
 
-  - id: complaints
-    name: Complaints & Crisis
-    description: Complaint handling, crisis management
+  - id: food_fraud
+    name: Food Fraud
+    description: Food fraud prevention, authenticity
+    patterns:
+      - "fraud|betrug|fraude"
+      - "authenticity|authentizität|authenticiteit"
+      - "adulter"
+    keywords:
+      - fraud
+      - authenticity
+      - adulteration
+
+  - id: crisis
+    name: Crisis Management
+    description: Recall procedures, crisis management, complaints
     patterns:
       - "crisis|krisen|crise"
-      - "complaint|reklamation|réclamation"
+      - "recall|rückruf|rappel|terugroep"
+      - "complaint|reklamation|réclamation|klacht"
+      - "withdrawal|rücknahme"
     keywords:
-      - complaint
       - crisis
       - recall
+      - complaint
+      - withdrawal
 
-  - id: country_regulatory
-    name: Country & Regulatory
-    description: Export requirements, country-specific regulations
+  - id: origin
+    name: Origin & Provenance
+    description: Product origin, country of origin
     patterns:
-      - "export|regulatory|regulation"
+      - "origin|herkunft|origine|oorsprong"
+      - "provenance|herkomst"
+      - "country.*of.*origin"
     keywords:
-      - export
-      - regulatory
+      - origin
+      - provenance
       - country
 
-  # Documentation
-  - id: declaration
-    name: Declaration
-    description: Documents, declarations, statements
+  # ===========================================================================
+  # SUSTAINABILITY - Environmental and Ethical
+  # ===========================================================================
+
+  - id: sustainability
+    name: Sustainability & CSR
+    description: Sustainability, CSR, carbon footprint
+    patterns:
+      - "sustain|nachhaltig|durable|duurzaam"
+      - "csr|corporate.*social"
+      - "carbon|co2|klimaat|climate"
+    keywords:
+      - sustainability
+      - CSR
+      - carbon
+      - CO2
+
+  - id: environment
+    name: Environment
+    description: Environmental policies, environmental management
+    patterns:
+      - "environment|umwelt|environnement|milieu"
+      - "iso.*14001"
+    keywords:
+      - environment
+      - environmental
+      - ISO 14001
+
+  - id: animal_welfare
+    name: Animal Welfare
+    description: Animal welfare policies
+    patterns:
+      - "animal.*welfare|tier.*wohl|dierenwelzijn"
+      - "ethical.*animal"
+    keywords:
+      - animal welfare
+      - ethical
+
+  # ===========================================================================
+  # ADMIN - Administrative and Documentation
+  # ===========================================================================
+
+  - id: training
+    name: Training
+    description: Staff training, competency, awareness
+    patterns:
+      - "training|schulung|formation|opleiding"
+      - "competenc|kompetenz|bekwaamheid"
+    keywords:
+      - training
+      - competency
+      - awareness
+      - education
+
+  - id: documents
+    name: Documents
+    description: Document references, attachments
     patterns:
       - "document|dokument|pièce"
-      - "declaration|erklärung|déclaration"
+      - "attachment|anlage|bijlage"
     keywords:
       - document
-      - declaration
+      - attachment
 
   - id: signature
     name: Signature
     description: Signatures, sign-off, authorization
     patterns:
-      - "onderteken|signature|unterschrift"
+      - "signature|unterschrift|ondertekening"
+      - "sign.*off|unterzeichn"
     keywords:
       - signature
       - sign
@@ -398,12 +510,27 @@ topics:
     name: Approval
     description: Approvals, authorizations
     patterns:
-      - "autoris|approval|genehmigung"
+      - "approv|genehmig|goedkeuring"
+      - "authoriz|autoris"
     keywords:
       - approval
       - authorization
 
-  # Default
+  - id: financial
+    name: Financial
+    description: Financial information, banking
+    patterns:
+      - "financ|finanz"
+      - "bank|steuer|tax|btw|vat"
+    keywords:
+      - financial
+      - bank
+      - tax
+
+  # ===========================================================================
+  # DEFAULT
+  # ===========================================================================
+
   - id: other
     name: Other
     description: Uncategorized items

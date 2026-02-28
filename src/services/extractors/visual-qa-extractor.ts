@@ -36,6 +36,8 @@ export interface ExtractedQAPair {
   answerIdx: number;
   confidence?: number;
   visualReason?: string;
+  /** Bounding box of the question element [x1,y1,x2,y2,x3,y3,x4,y4] */
+  questionBoundingBox?: number[];
 }
 
 /** Training data saved for each page extraction */
@@ -180,6 +182,11 @@ ${textList}
 
 **Task**: Looking at the VISUAL LAYOUT in the image, identify key-value pairs (questions with their answers).
 
+**IMPORTANT - Text Correction**: The OCR often incorrectly merges separate text. Look at the IMAGE to see what's ACTUALLY on the page:
+- If a box contains "No SomeText" but the image shows "No" and "SomeText" are visually separate (e.g., "No" is an answer checkbox and "SomeText" is part of the question), you should SPLIT them.
+- The "key" and "value" you return should match what you SEE in the image, not what the OCR text says.
+- Example: If box says "No Elaeis guineensis (Oil)" but the image shows "No" is a checkbox answer separate from the question text "Elaeis guineensis (Oil)", return the split version.
+
 A key-value pair is:
 - A LABEL/QUESTION (the key) paired with its ANSWER/VALUE
 - They should be visually associated: horizontally adjacent, vertically stacked, or in a form field layout
@@ -190,9 +197,10 @@ Consider:
 2. Table patterns: header above, value below
 3. Checkbox/selection patterns: question followed by marked answer
 4. Proximity: key and value should be close together
+5. **OCR errors**: Text may be merged incorrectly - use the IMAGE to see the real layout
 
 Return a JSON array of ALL key-value pairs you can identify:
-[{"key_idx": N, "value_idx": M, "key": "label/question text", "value": "answer text", "confidence": 0.9, "visual_reason": "why paired"}]
+[{"key_idx": N, "value_idx": M, "key": "corrected label/question text", "value": "corrected answer text", "confidence": 0.9, "visual_reason": "why paired, note any OCR corrections"}]
 
 Include any clear associations, not just Yes/No answers. Return empty array [] if no valid pairs found.`;
 
@@ -244,6 +252,8 @@ Include any clear associations, not just Yes/No answers. Return empty array [] i
           answerIdx: p.value_idx,
           confidence: p.confidence,
           visualReason: p.visual_reason,
+          // Include bounding box for positioning in document order
+          questionBoundingBox: sorted[p.key_idx]?.boundingBox,
         }));
       }
 

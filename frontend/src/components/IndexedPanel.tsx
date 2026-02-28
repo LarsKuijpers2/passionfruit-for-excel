@@ -1,5 +1,5 @@
 import { useState, useMemo, forwardRef, useImperativeHandle, useRef, useCallback } from "react";
-import { CaretDown, CaretRight } from '@phosphor-icons/react';
+import { CaretDown, CaretRight, Warning, TextStrikethrough } from '@phosphor-icons/react';
 import type { IndexedSection } from "../types";
 
 interface IndexedPanelProps {
@@ -335,6 +335,16 @@ export const IndexedPanel = forwardRef<IndexedPanelHandle, IndexedPanelProps>(fu
                                 {item.value || "(empty)"}
                                 {isVisionCorrected && (
                                   <span className="inline-block w-1.5 h-1.5 bg-orange-500 rounded-full shrink-0" title="Corrected by Vision" />
+                                )}
+                                {item.strikethroughDetected && (
+                                  <span title="Answer determined by strikethrough">
+                                    <TextStrikethrough size={12} className="text-amber-500 shrink-0" weight="bold" />
+                                  </span>
+                                )}
+                                {item.needsReview && (
+                                  <span title={item.reviewReason || "Needs review"}>
+                                    <Warning size={12} className="text-amber-500 shrink-0" weight="fill" />
+                                  </span>
                                 )}
                               </div>
                             </div>

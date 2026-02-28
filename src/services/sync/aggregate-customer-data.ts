@@ -21,6 +21,7 @@ interface ExportedItem {
   destination: string;
   source: string;
   approvedAt: string;
+  entityRole?: string;
 }
 
 interface ExportMeta {
@@ -60,6 +61,8 @@ export interface AggregatedItem {
   lastApprovedAt: string;
   /** Cell references per source */
   cellRefs: Record<string, string>;
+  /** Entity role (supplier, customer, manufacturer, etc.) */
+  entityRole?: string;
 }
 
 /** Aggregated customer data */
@@ -257,11 +260,40 @@ function aggregateItems(
         firstApprovedAt: item.approvedAt,
         lastApprovedAt: item.approvedAt,
         cellRefs: { [item.source]: item.cells },
+        ...(item.entityRole ? { entityRole: item.entityRole } : {}),
       });
     }
   }
 
   return existingMap;
+}
+
+/**
+ * Load a grouped export file (new format with company, library, product, etc.)
+ */
+interface GroupedExportFile {
+  meta: {
+    questionnaire: string;
+    source: string;
+    customer: string;
+    exportedAt: string;
+  };
+  company?: ExportedItem[];
+  library?: ExportedItem[];
+  product?: ExportedItem[];
+  questionnaire?: ExportedItem[];
+  exclude?: ExportedItem[];
+  stats?: Record<string, number>;
+}
+
+function loadGroupedExportFile(filePath: string): GroupedExportFile | null {
+  try {
+    const content = fs.readFileSync(filePath, 'utf-8');
+    return JSON.parse(content);
+  } catch (error) {
+    console.warn(`Failed to load ${filePath}:`, error);
+    return null;
+  }
 }
 
 /**
@@ -280,42 +312,97 @@ export function aggregateCustomerData(customerFolder: string): AggregatedCustome
     throw new Error(`Customer folder not found. Tried:\n  - ./customers/${customerFolder}/approved\n  - ./approved-exports/${customerFolder}`);
   }
 
-  // Find all questionnaire folders
-  const questionnaireFolders = fs
-    .readdirSync(approvedExportsDir)
-    .filter((f) => fs.statSync(path.join(approvedExportsDir, f)).isDirectory());
-
-  console.log(`Found ${questionnaireFolders.length} questionnaires for ${customerFolder}`);
+  // Find all JSON files (new format) or folders (legacy format)
+  const entries = fs.readdirSync(approvedExportsDir);
+  const jsonFiles = entries.filter((f) => f.endsWith('.json'));
+  const questionnaireFolders = entries.filter(
+    (f) => !f.endsWith('.json') && fs.statSync(path.join(approvedExportsDir, f)).isDirectory()
+  );
 
   const answerLibraryMap = new Map<string, AggregatedItem>();
   const entityDataMap = new Map<string, AggregatedItem>();
 
   let totalAnswerLibraryItems = 0;
   let totalEntityItems = 0;
+  const questionnaires: string[] = [];
 
-  // Process each questionnaire
-  for (const qFolder of questionnaireFolders) {
-    const qPath = path.join(approvedExportsDir, qFolder);
+  // Process JSON files (new format: grouped by destination)
+  if (jsonFiles.length > 0) {
+    console.log(`Found ${jsonFiles.length} questionnaires for ${customerFolder}`);
 
-    // Load answer-library.json
-    const answerLibraryPath = path.join(qPath, 'answer-library.json');
-    if (fs.existsSync(answerLibraryPath)) {
-      const answerLibrary = loadExportFile(answerLibraryPath);
-      if (answerLibrary) {
-        totalAnswerLibraryItems += answerLibrary.items.length;
-        aggregateItems(answerLibrary.items, answerLibraryMap);
+    for (const jsonFile of jsonFiles) {
+      const filePath = path.join(approvedExportsDir, jsonFile);
+      const data = loadGroupedExportFile(filePath);
+      if (!data || !data.meta) continue;
+
+      const source = data.meta.source || jsonFile;
+      const exportedAt = data.meta.exportedAt || new Date().toISOString();
+      questionnaires.push(data.meta.questionnaire || jsonFile.replace('.json', ''));
+
+      // Convert grouped items to ExportedItem format and aggregate
+      const convertItems = (items: any[], destination: string): ExportedItem[] => {
+        return (items || []).map((item) => ({
+          label: item.label,
+          value: item.value || '',
+          cells: item.lCell ? `${item.lCell}:${item.vCell || ''}` : '',
+          section: item.section || '',
+          topic: item.topic || 'other',
+          destination,
+          source,
+          approvedAt: exportedAt,
+          ...(item.entityRole ? { entityRole: item.entityRole } : {}),
+        }));
+      };
+
+      // Library items -> Answer Library
+      const libraryItems = convertItems(data.library || [], 'answer_library');
+      totalAnswerLibraryItems += libraryItems.length;
+      aggregateItems(libraryItems, answerLibraryMap);
+
+      // Company items -> Entity Data
+      const companyItems = convertItems(data.company || [], 'company');
+      totalEntityItems += companyItems.length;
+      aggregateItems(companyItems, entityDataMap);
+
+      // Product items -> Entity Data (product-specific)
+      const productItems = convertItems(data.product || [], 'product');
+      totalEntityItems += productItems.length;
+      aggregateItems(productItems, entityDataMap);
+    }
+  }
+
+  // Also process questionnaire folders (legacy format)
+  if (questionnaireFolders.length > 0) {
+    console.log(`Found ${questionnaireFolders.length} legacy questionnaire folders for ${customerFolder}`);
+
+    for (const qFolder of questionnaireFolders) {
+      const qPath = path.join(approvedExportsDir, qFolder);
+      questionnaires.push(qFolder);
+
+      // Load answer-library.json
+      const answerLibraryPath = path.join(qPath, 'answer-library.json');
+      if (fs.existsSync(answerLibraryPath)) {
+        const answerLibrary = loadExportFile(answerLibraryPath);
+        if (answerLibrary) {
+          totalAnswerLibraryItems += answerLibrary.items.length;
+          aggregateItems(answerLibrary.items, answerLibraryMap);
+        }
+      }
+
+      // Load entity-db.json
+      const entityDbPath = path.join(qPath, 'entity-db.json');
+      if (fs.existsSync(entityDbPath)) {
+        const entityDb = loadExportFile(entityDbPath);
+        if (entityDb) {
+          totalEntityItems += entityDb.items.length;
+          aggregateItems(entityDb.items, entityDataMap);
+        }
       }
     }
+  }
 
-    // Load entity-db.json
-    const entityDbPath = path.join(qPath, 'entity-db.json');
-    if (fs.existsSync(entityDbPath)) {
-      const entityDb = loadExportFile(entityDbPath);
-      if (entityDb) {
-        totalEntityItems += entityDb.items.length;
-        aggregateItems(entityDb.items, entityDataMap);
-      }
-    }
+  if (questionnaires.length === 0) {
+    console.log(`Found 0 questionnaires for ${customerFolder}`);
   }
 
   // Convert maps to arrays
@@ -345,7 +432,7 @@ export function aggregateCustomerData(customerFolder: string): AggregatedCustome
   return {
     customer: customerFolder,
     aggregatedAt: new Date().toISOString(),
-    questionnaires: questionnaireFolders,
+    questionnaires,
     answerLibrary: {
       total: totalAnswerLibraryItems,
       unique: answerLibraryItems.length,

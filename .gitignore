@@ -18,3 +18,13 @@ reviewed/*.xlsx
 failed/*
 logs/*.log
 logs/summary.json
+
+# Office temp files
+~$*
+
+# Temporary working files
+temp/
+
+# Customer data (not code)
+customers/
+api-ready/

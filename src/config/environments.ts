@@ -104,12 +104,14 @@ export function hasRefreshToken(): boolean {
 
 /**
  * Validate that all required configuration is present
+ * Either an API key or a refresh token is required (token can be auto-refreshed)
  */
 export function validateConfig(): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
 
-  if (!hasApiKey()) {
-    errors.push('PASSIONFRUIT_API_KEY is not set');
+  // Either API key or refresh token is valid (token manager can auto-refresh)
+  if (!hasApiKey() && !hasRefreshToken()) {
+    errors.push('PASSIONFRUIT_API_KEY or PASSIONFRUIT_REFRESH_TOKEN is not set');
   }
 
   return {

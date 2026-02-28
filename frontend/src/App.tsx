@@ -9,10 +9,14 @@ import {
   saveNotes,
   submitDiscrepancyVerdict,
   undoDiscrepancyVerdict,
+  saveAnnotation,
+  fetchAllTrainingStatus,
+  compileTraining,
 } from "./api";
+import type { TrainingStatus } from "./api";
 import type { PanelType, IndexedItem, Destination } from "./types";
 import { Toaster, toast } from "sonner";
-import { Database, GitBranch, Table } from "@phosphor-icons/react";
+import { Database, GitBranch, Table, Brain } from "@phosphor-icons/react";
 import { TabBar } from "./components/TabBar";
 import { OriginalPanel, type OriginalPanelHandle } from "./components/OriginalPanel";
 import { IndexedPanel, type IndexedPanelHandle } from "./components/IndexedPanel";
@@ -68,6 +72,34 @@ export default function App() {
 
   const questionnaires = questionnairesData?.questionnaires || [];
 
+  // Training status query
+  const { data: trainingStatusData } = useQuery({
+    queryKey: ["training-status"],
+    queryFn: fetchAllTrainingStatus,
+    refetchInterval: 60000, // Check every minute
+  });
+
+  // Build map of customer -> training status for quick lookup
+  const trainingStatusMap = useMemo(() => {
+    const map = new Map<string, TrainingStatus>();
+    trainingStatusData?.statuses?.forEach(status => {
+      map.set(status.customer, status);
+    });
+    return map;
+  }, [trainingStatusData]);
+
+  // Compile training mutation
+  const compileTrainingMutation = useMutation({
+    mutationFn: (customer: string) => compileTraining(customer),
+    onSuccess: (data, customer) => {
+      toast.success(`Training compiled for ${customer}: ${data.patternsCount} patterns, ${data.rulesCount} rules`);
+      queryClient.invalidateQueries({ queryKey: ["training-status"] });
+    },
+    onError: (error, customer) => {
+      toast.error(`Failed to compile training for ${customer}`);
+    },
+  });
+
   // Custom hooks
   const {
     openTabs,
@@ -100,6 +132,8 @@ export default function App() {
   // UI State
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [reviewMode, setReviewMode] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [pendingEdits, setPendingEdits] = useState<Map<string, { id: string; label?: string; value?: string; comment?: string }>>(new Map());
   const [notesPanelOpen, setNotesPanelOpen] = useState(false);
   const [visiblePanels, setVisiblePanels] = useState<Set<PanelType>>(
     new Set(["original", "indexed", "library"])
@@ -669,6 +703,45 @@ export default function App() {
                     >
                       <Table size={14} />
                     </button>
+                    {/* Training status indicator */}
+                    {(() => {
+                      const status = trainingStatusMap.get(customer);
+                      if (!status?.hasTrainingData) return null;
+
+                      const isStale = status.isStale;
+                      const isCompiling = compileTrainingMutation.isPending &&
+                        compileTrainingMutation.variables === customer;
+
+                      return (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (!isCompiling) {
+                              compileTrainingMutation.mutate(customer);
+                            }
+                          }}
+                          className={`p-1 rounded transition-colors relative ${
+                            isCompiling
+                              ? 'text-blue-400 animate-pulse'
+                              : isStale
+                                ? 'text-amber-500 hover:text-amber-400 hover:bg-amber-500/20'
+                                : 'text-emerald-500 hover:text-emerald-400 hover:bg-emerald-500/20'
+                          }`}
+                          title={
+                            isCompiling
+                              ? `Compiling training...`
+                              : isStale
+                                ? `Training stale (${status.correctionsCount} corrections) - click to recompile`
+                                : `Training up-to-date (${status.correctionsCount} corrections)`
+                          }
+                        >
+                          <Brain size={14} />
+                          {isStale && !isCompiling && (
+                            <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-amber-500 rounded-full" />
+                          )}
+                        </button>
+                      );
+                    })()}
                   </div>
                 </div>
                 {grouped[customer].map((q) => (
@@ -782,11 +855,35 @@ export default function App() {
             (s) => s.name === activeSheet
           )}
           sections={questionnaireData?.indexed?.sections || []}
+          indexedSections={questionnaireData?.indexed?.sections || []}
           textContent={questionnaireData?.structure?.textContent}
           activeCell={activeCell}
           onCellClick={handleCellClick}
           questionnaireId={currentQuestionnaire || undefined}
           pages={questionnaireData?.structure?.pages}
+          onTableEdit={(sectionIndex, tableIndex, edits) => {
+            console.log('Table edit:', { sectionIndex, tableIndex, edits });
+            // TODO: Implement table edit persistence
+            toast.info('Table edits recorded', {
+              description: `${edits.length} change(s) - persistence not yet implemented`,
+            });
+          }}
+          onSaveAnnotation={async (pageNumber, tables, notes) => {
+            if (!currentQuestionnaire) return;
+            try {
+              // Get customer from questionnaire list
+              const q = questionnaires.find(q => q.name === currentQuestionnaire);
+              const customer = q?.customer;
+              const result = await saveAnnotation(currentQuestionnaire, pageNumber, tables, notes, customer);
+              toast.success(`Annotation saved`, {
+                description: `${result.tableCount} table(s) saved as training data`,
+              });
+            } catch (error) {
+              toast.error("Failed to save annotation", {
+                description: error instanceof Error ? error.message : "Unknown error",
+              });
+            }
+          }}
         />
         <IndexedPanel
           ref={indexedPanelRef}
@@ -860,6 +957,62 @@ export default function App() {
           onAccept={(id) => handleAccept("library", id)}
           onReject={(id, reason) => handleReject("library", id, reason)}
           onCellRefClick={handleCellRefClick}
+          editMode={editMode}
+          pendingEdits={pendingEdits}
+          onItemEdit={(edit) => {
+            setPendingEdits(prev => {
+              const next = new Map(prev);
+              next.set(edit.id, edit);
+              return next;
+            });
+          }}
+          onToggleEditMode={() => setEditMode(prev => !prev)}
+          onSaveEdits={() => {
+            if (pendingEdits.size === 0) {
+              toast.info("No changes to save");
+              setEditMode(false);
+              return;
+            }
+            // Convert pending edits to bulk update format
+            const updates: Record<string, unknown> = {};
+            const itemIds: string[] = [];
+
+            pendingEdits.forEach((edit, id) => {
+              itemIds.push(id);
+              if (edit.label) updates.label = edit.label;
+              if (edit.value) updates.value = edit.value;
+              if (edit.comment) updates.note = edit.comment;
+            });
+
+            // Use individual updates for each item since they may have different values
+            const promises = Array.from(pendingEdits.entries()).map(([id, edit]) => {
+              const itemUpdates: Record<string, unknown> = {};
+              if (edit.label) itemUpdates.label = edit.label;
+              if (edit.value) itemUpdates.value = edit.value;
+              if (edit.comment) itemUpdates.note = edit.comment;
+              return bulkUpdateMutation.mutateAsync({
+                panel: "indexed",
+                itemIds: [id],
+                updates: itemUpdates,
+              });
+            });
+
+            Promise.all(promises)
+              .then(() => {
+                toast.success(`Saved ${pendingEdits.size} corrections`);
+                setPendingEdits(new Map());
+                setEditMode(false);
+              })
+              .catch((error) => {
+                toast.error("Failed to save corrections", {
+                  description: error instanceof Error ? error.message : "Unknown error",
+                });
+              });
+          }}
+          onCancelEdits={() => {
+            setPendingEdits(new Map());
+            setEditMode(false);
+          }}
         />
         {visiblePanels.has("visualqa") && currentQuestionnaire && (
           <div className="flex-1 min-w-0 overflow-hidden border-l border-default">

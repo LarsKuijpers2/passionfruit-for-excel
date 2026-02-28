@@ -31,6 +31,10 @@ export interface TableRow {
   na: boolean | null;
   comment: string;
   fieldValue?: string; // For non-Yes/No fields
+  rowNum?: number; // Row number within section (1-indexed)
+  pageNum?: number; // Page number (1-indexed)
+  strikethroughDetected?: boolean; // True if strikethrough was used to mark the answer
+  originalMarked?: 'yes' | 'no' | 'na'; // The option that was struck through (if applicable)
 }
 
 export interface ExtractedTable {
@@ -82,10 +86,11 @@ CRITICAL FORMATTING RULES:
 
 5. ATTACHED DOCUMENTS: Note references like "See attached", "Certificate enclosed"
 
-Return your response as a JSON array:
+Return your response as a JSON array. Include row numbers, page numbers, and strikethrough detection:
 [
   {
     "section": "SECTION NAME",
+    "pageNum": 1,
     "rows": [
       {
         "question": "The question or label text",
@@ -93,11 +98,19 @@ Return your response as a JSON array:
         "no": false,
         "na": false,
         "comment": "Comment text or field value",
-        "fieldValue": "For non-Yes/No fields, the actual value"
+        "fieldValue": "For non-Yes/No fields, the actual value",
+        "rowNum": 1,
+        "pageNum": 1,
+        "strikethroughDetected": false,
+        "originalMarked": null
       }
     ]
   }
 ]
+
+IMPORTANT:
+- Include rowNum (sequential within section, starting at 1) and pageNum (which PDF page this appears on)
+- If strikethrough was used: set "strikethroughDetected": true and "originalMarked" to the option that was struck through ("yes", "no", or "na")
 
 Return ONLY the JSON array, no other text.`;
 
@@ -142,9 +155,83 @@ Return ONLY the JSON array, no other text.`;
   try {
     return JSON.parse(jsonMatch[0]);
   } catch (error) {
+    // Try to repair truncated JSON
+    console.warn('  JSON parse failed, attempting repair...');
+    const repaired = repairTruncatedJson(jsonMatch[0]);
+    if (repaired) {
+      try {
+        return JSON.parse(repaired);
+      } catch (e) {
+        console.warn('  Failed to parse repaired JSON:', e);
+      }
+    }
     console.warn('  Failed to parse JSON from Claude response:', error);
     return [];
   }
+}
+
+/**
+ * Attempt to repair truncated JSON by closing unclosed brackets/braces
+ */
+function repairTruncatedJson(json: string): string | null {
+  // Count open brackets and braces
+  let brackets = 0;
+  let braces = 0;
+  let inString = false;
+  let escapeNext = false;
+
+  for (const char of json) {
+    if (escapeNext) {
+      escapeNext = false;
+      continue;
+    }
+    if (char === '\\') {
+      escapeNext = true;
+      continue;
+    }
+    if (char === '"') {
+      inString = !inString;
+      continue;
+    }
+    if (inString) continue;
+
+    if (char === '[') brackets++;
+    else if (char === ']') brackets--;
+    else if (char === '{') braces++;
+    else if (char === '}') braces--;
+  }
+
+  // If unbalanced, try to fix
+  if (brackets === 0 && braces === 0) {
+    return null; // Already balanced, issue is elsewhere
+  }
+
+  let repaired = json.trimEnd();
+
+  // Remove trailing comma if present
+  if (repaired.endsWith(',')) {
+    repaired = repaired.slice(0, -1);
+  }
+
+  // Close any unclosed strings (heuristic: if odd number of quotes in last 100 chars)
+  const tail = repaired.slice(-100);
+  const quoteCount = (tail.match(/"/g) || []).length;
+  if (quoteCount % 2 === 1) {
+    repaired += '"';
+  }
+
+  // Close braces then brackets
+  while (braces > 0) {
+    repaired += '}';
+    braces--;
+  }
+  while (brackets > 0) {
+    repaired += ']';
+    brackets--;
+  }
+
+  console.warn(`  Repaired JSON: closed ${braces} braces, ${brackets} brackets`);
+  return repaired;
 }
 
 /**

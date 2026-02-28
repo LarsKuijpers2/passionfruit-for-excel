@@ -1,6 +1,13 @@
 import { useState, useMemo, forwardRef, useImperativeHandle, useRef, useCallback } from "react";
-import { CaretDown, CaretRight } from '@phosphor-icons/react';
+import { CaretDown, CaretRight, PencilSimple, FloppyDisk, X } from '@phosphor-icons/react';
 import type { LibraryItem } from "../types";
+
+export interface ItemEdit {
+  id: string;
+  label?: string;
+  value?: string;
+  comment?: string;
+}
 
 interface LibraryPanelProps {
   visible: boolean;
@@ -8,6 +15,8 @@ interface LibraryPanelProps {
   selectedItems: Set<string>;
   lastSelectedId: string | null;
   reviewMode: boolean;
+  editMode?: boolean;
+  pendingEdits?: Map<string, ItemEdit>;
   getReviewStatus: (itemId: string) => "accepted" | "rejected" | undefined;
   onItemSelect: (itemId: string, multiSelect: boolean, shiftSelect: boolean) => void;
   onSelectGroup: (itemIds: string[]) => void;
@@ -15,6 +24,10 @@ interface LibraryPanelProps {
   onAccept: (itemId: string) => void;
   onReject: (itemId: string, reason?: string) => void;
   onCellRefClick?: (cellRef: string) => void;
+  onItemEdit?: (edit: ItemEdit) => void;
+  onToggleEditMode?: () => void;
+  onSaveEdits?: () => void;
+  onCancelEdits?: () => void;
 }
 
 export interface LibraryPanelHandle {
@@ -23,12 +36,12 @@ export interface LibraryPanelHandle {
   toggleAllGroups: () => void;
 }
 
-// Linear-style destination colors (subtle)
+// Linear-style destination colors (theme-aware for better contrast)
 const destinationConfig: Record<string, { label: string; color: string }> = {
-  company: { label: "Company", color: "text-blue-400" },
-  answer_library: { label: "Library", color: "text-emerald-400" },
-  product: { label: "Product", color: "text-orange-400" },
-  questionnaire: { label: "Questionnaire", color: "text-purple-400" },
+  company: { label: "Company", color: "tag-blue" },
+  answer_library: { label: "Library", color: "tag-emerald" },
+  product: { label: "Product", color: "tag-orange" },
+  questionnaire: { label: "Questionnaire", color: "tag-purple" },
   exclude: { label: "Exclude", color: "text-muted" },
 };
 
@@ -39,6 +52,8 @@ export const LibraryPanel = forwardRef<LibraryPanelHandle, LibraryPanelProps>(fu
     selectedItems,
     lastSelectedId,
     reviewMode,
+    editMode = false,
+    pendingEdits,
     getReviewStatus,
     onItemSelect,
     onSelectGroup,
@@ -46,6 +61,10 @@ export const LibraryPanel = forwardRef<LibraryPanelHandle, LibraryPanelProps>(fu
     onAccept: _onAccept,
     onReject: _onReject,
     onCellRefClick,
+    onItemEdit,
+    onToggleEditMode,
+    onSaveEdits,
+    onCancelEdits,
   },
   ref
 ) {
@@ -177,9 +196,50 @@ export const LibraryPanel = forwardRef<LibraryPanelHandle, LibraryPanelProps>(fu
             {allGroupsCollapsed ? <CaretRight size={14} /> : <CaretDown size={14} />}
           </button>
         </div>
-        <span className="text-[11px] text-muted">
-          {totalItems}
-        </span>
+        <div className="flex items-center gap-2">
+          {editMode ? (
+            <>
+              {pendingEdits && pendingEdits.size > 0 && (
+                <span className="text-[10px] bg-yellow-500/20 text-yellow-500 px-1.5 py-0.5 rounded">
+                  {pendingEdits.size} edited
+                </span>
+              )}
+              <button
+                onClick={onSaveEdits}
+                disabled={!pendingEdits || pendingEdits.size === 0}
+                className={`flex items-center gap-1 px-2 py-1 text-[11px] rounded transition-colors ${
+                  pendingEdits && pendingEdits.size > 0
+                    ? "bg-emerald-500/20 text-emerald-500 hover:bg-emerald-500/30"
+                    : "bg-gray-500/20 text-gray-400 cursor-not-allowed"
+                }`}
+                title="Save corrections"
+              >
+                <FloppyDisk size={14} />
+                Save
+              </button>
+              <button
+                onClick={onCancelEdits}
+                className="flex items-center gap-1 px-2 py-1 text-[11px] bg-red-500/20 text-red-500 hover:bg-red-500/30 rounded transition-colors"
+                title="Cancel editing"
+              >
+                <X size={14} />
+                Cancel
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={onToggleEditMode}
+              className="flex items-center gap-1 px-2 py-1 text-[11px] text-muted hover:text-primary hover:bg-card-hover rounded transition-colors"
+              title="Edit extracted values"
+            >
+              <PencilSimple size={14} />
+              Edit
+            </button>
+          )}
+          <span className="text-[11px] text-muted">
+            {totalItems}
+          </span>
+        </div>
       </div>
 
       {/* Search */}
@@ -284,18 +344,71 @@ export const LibraryPanel = forwardRef<LibraryPanelHandle, LibraryPanelProps>(fu
 
                             {/* Content */}
                             <div className="flex-1 min-w-0 overflow-hidden">
-                              <div className="flex items-center gap-2">
-                                <span className="text-[12px] text-muted truncate">
-                                  {item.label}
-                                </span>
-                              </div>
-                              <div className={`text-[13px] truncate ${
-                                item.value
-                                  ? "text-primary"
-                                  : "text-muted italic"
-                              }`}>
-                                {item.value || "(empty)"}
-                              </div>
+                              {editMode ? (
+                                // Edit mode - editable fields
+                                <div className="space-y-1" onClick={(e) => e.stopPropagation()}>
+                                  <input
+                                    type="text"
+                                    className="w-full h-6 px-1.5 bg-app border border-default rounded text-[12px] text-muted focus:outline-none focus:border-accent"
+                                    placeholder="Label"
+                                    defaultValue={pendingEdits?.get(item.itemId)?.label ?? item.label}
+                                    onChange={(e) => onItemEdit?.({
+                                      id: item.itemId,
+                                      label: e.target.value,
+                                      value: pendingEdits?.get(item.itemId)?.value ?? item.value,
+                                    })}
+                                  />
+                                  <input
+                                    type="text"
+                                    className="w-full h-6 px-1.5 bg-app border border-default rounded text-[13px] text-primary focus:outline-none focus:border-accent"
+                                    placeholder="Value"
+                                    defaultValue={pendingEdits?.get(item.itemId)?.value ?? item.value}
+                                    onChange={(e) => onItemEdit?.({
+                                      id: item.itemId,
+                                      label: pendingEdits?.get(item.itemId)?.label ?? item.label,
+                                      value: e.target.value,
+                                    })}
+                                  />
+                                  <input
+                                    type="text"
+                                    className="w-full h-5 px-1.5 bg-yellow-500/10 border border-yellow-500/30 rounded text-[11px] text-yellow-600 dark:text-yellow-400 placeholder:text-yellow-500/50 focus:outline-none focus:border-yellow-500"
+                                    placeholder="Add comment..."
+                                    defaultValue={pendingEdits?.get(item.itemId)?.comment ?? ""}
+                                    onChange={(e) => onItemEdit?.({
+                                      id: item.itemId,
+                                      label: pendingEdits?.get(item.itemId)?.label ?? item.label,
+                                      value: pendingEdits?.get(item.itemId)?.value ?? item.value,
+                                      comment: e.target.value,
+                                    })}
+                                  />
+                                </div>
+                              ) : (
+                                // View mode - display only
+                                <>
+                                  <div className="flex items-center gap-2">
+                                    <span className={`text-[12px] truncate ${
+                                      pendingEdits?.has(item.itemId) ? "text-yellow-500" : "text-muted"
+                                    }`}>
+                                      {pendingEdits?.get(item.itemId)?.label ?? item.label}
+                                    </span>
+                                    {pendingEdits?.has(item.itemId) && (
+                                      <span className="text-[9px] text-yellow-500 font-medium">EDITED</span>
+                                    )}
+                                  </div>
+                                  <div className={`text-[13px] truncate ${
+                                    pendingEdits?.get(item.itemId)?.value ?? item.value
+                                      ? "text-primary"
+                                      : "text-muted italic"
+                                  }`}>
+                                    {(pendingEdits?.get(item.itemId)?.value ?? item.value) || "(empty)"}
+                                  </div>
+                                  {pendingEdits?.get(item.itemId)?.comment && (
+                                    <div className="text-[11px] text-yellow-500 italic truncate">
+                                      💬 {pendingEdits.get(item.itemId)?.comment}
+                                    </div>
+                                  )}
+                                </>
+                              )}
                             </div>
 
                             {/* Right side metadata */}

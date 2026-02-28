@@ -63,6 +63,10 @@ export interface IndexedItem {
   entityId?: string;
   // Link to parent product
   productId?: string;
+  // Strikethrough detection (from Claude Vision)
+  strikethroughDetected?: boolean;  // True if value was determined by strikethrough
+  needsReview?: boolean;  // Flag items that need human review
+  reviewReason?: string;  // Why this item needs review
 }
 
 // Table cell with position information

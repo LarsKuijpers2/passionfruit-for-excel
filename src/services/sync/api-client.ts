@@ -243,15 +243,51 @@ export class PassionfruitAPIClient {
   // ===========================================================================
 
   /**
-   * List all answers
+   * List all answers (handles pagination with limit/offset)
    */
   async listAnswers(): Promise<AnswerResponse[]> {
-    const response = await this.request<PaginatedResponse<AnswerResponse> | AnswerResponse[]>(
-      'GET',
-      '/api/v2/answers/'
-    );
+    const allAnswers: AnswerResponse[] = [];
+    const limit = 500;
+    let offset = 0;
+    let hasMore = true;
 
-    return Array.isArray(response) ? response : response.items;
+    while (hasMore) {
+      const response = await this.request<PaginatedResponse<AnswerResponse> | AnswerResponse[]>(
+        'GET',
+        `/api/v2/answers/?limit=${limit}&offset=${offset}`
+      );
+
+      const items = Array.isArray(response) ? response : response.items;
+      const total = !Array.isArray(response) ? response.total : undefined;
+
+      if (items.length === 0) {
+        hasMore = false;
+      } else {
+        // Dedupe by ID
+        for (const item of items) {
+          if (!allAnswers.some(a => a.id === item.id)) {
+            allAnswers.push(item);
+          }
+        }
+
+        // Check if we have more based on total or page size
+        if (total && allAnswers.length >= total) {
+          hasMore = false;
+        } else if (items.length < limit) {
+          hasMore = false;
+        } else {
+          offset += limit;
+        }
+      }
+
+      // Safety limit
+      if (offset > 10000) {
+        console.warn('Reached pagination limit (10000 items)');
+        hasMore = false;
+      }
+    }
+
+    return allAnswers;
   }
 
   /**
@@ -398,7 +434,7 @@ export class PassionfruitAPIClient {
    */
   async uploadFile(file: Buffer, filename: string): Promise<UploadResponse> {
     const formData = new FormData();
-    formData.append('file', new Blob([file]), filename);
+    formData.append('file', new Blob([new Uint8Array(file)]), filename);
 
     const response = await fetch(`${this.baseUrl}/api/v2/upload/`, {
       method: 'POST',

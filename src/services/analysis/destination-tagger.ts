@@ -11,9 +11,11 @@
  */
 
 import { readFile, writeFile } from 'fs/promises';
+import { existsSync } from 'fs';
 import { join } from 'path';
 import * as yaml from 'yaml';
 import { getCustomerPaths, getRulesFile } from '../../utils/customer-paths.js';
+import type { CompiledTraining } from '../training/training-processor.js';
 
 // =============================================================================
 // TYPES
@@ -62,18 +64,41 @@ export interface IndexedQuestionnaire {
 }
 
 // =============================================================================
+// TRAINING DATA LOADING
+// =============================================================================
+
+async function loadCompiledTraining(customer?: string): Promise<CompiledTraining | null> {
+  if (!customer) return null;
+
+  const compiledPath = join(process.cwd(), 'customers', customer, 'compiled-training.json');
+  if (!existsSync(compiledPath)) {
+    return null;
+  }
+
+  try {
+    const content = await readFile(compiledPath, 'utf-8');
+    return JSON.parse(content) as CompiledTraining;
+  } catch (error) {
+    console.warn(`Failed to load compiled training for ${customer}:`, error);
+    return null;
+  }
+}
+
+// =============================================================================
 // RULES LOADING
 // =============================================================================
 
 async function loadTagRules(customer?: string): Promise<TagRules> {
   // Try customer-specific rules first
   if (customer) {
-    const customerRulesPath = getRulesFile(customer, 'tag-rules.yaml');
-    try {
-      const content = await readFile(customerRulesPath, 'utf-8');
-      return yaml.parse(content) as TagRules;
-    } catch {
-      // Fall through to global rules
+    const customerRulesPath = getRulesFile('tag-rules.yaml', customer);
+    if (customerRulesPath) {
+      try {
+        const content = await readFile(customerRulesPath, 'utf-8');
+        return yaml.parse(content) as TagRules;
+      } catch {
+        // Fall through to global rules
+      }
     }
   }
 
@@ -97,11 +122,54 @@ async function loadTagRules(customer?: string): Promise<TagRules> {
 // TAGGING LOGIC
 // =============================================================================
 
-function tagItem(item: IndexedItem, rules: TagRules): TaggedItem {
+function tagItem(
+  item: IndexedItem,
+  rules: TagRules,
+  training: CompiledTraining | null
+): TaggedItem {
   const label = item.label?.toLowerCase() || '';
   const topic = item.topic?.toLowerCase() || '';
 
-  // 1. Check pattern overrides (highest priority)
+  // 1. Check hard rules from compiled training (HIGHEST PRIORITY - human corrections)
+  // Hard rules are created when a label has been corrected to same destination 3+ times
+  if (training?.hardRules) {
+    for (const rule of training.hardRules) {
+      if (label.includes(rule.labelContains.toLowerCase())) {
+        return {
+          destination: rule.destination as Destination,
+          needs_review: false,
+          tag_source: `training:hard_rule:${rule.labelContains}`,
+        };
+      }
+    }
+  }
+
+  // 2. Check destination patterns from compiled training (learned from corrections)
+  if (training?.destinationPatterns) {
+    for (const pattern of training.destinationPatterns) {
+      // High confidence patterns (many examples) don't need review
+      if (pattern.confidence >= 0.6) {
+        try {
+          // Pattern could be "label*word*pattern" format or exact match
+          const patternRegex = pattern.pattern.includes('*')
+            ? new RegExp(pattern.pattern.replace(/\*/g, '.*'), 'i')
+            : new RegExp(pattern.pattern, 'i');
+
+          if (patternRegex.test(label)) {
+            return {
+              destination: pattern.toDestination as Destination,
+              needs_review: false,
+              tag_source: `training:pattern:${pattern.pattern}`,
+            };
+          }
+        } catch {
+          // Invalid regex, skip
+        }
+      }
+    }
+  }
+
+  // 3. Check pattern overrides from tag-rules.yaml
   for (const override of rules.pattern_overrides) {
     try {
       const regex = new RegExp(override.pattern, 'i');
@@ -118,7 +186,7 @@ function tagItem(item: IndexedItem, rules: TagRules): TaggedItem {
     }
   }
 
-  // 2. Check topic destinations
+  // 4. Check topic destinations
   if (topic && rules.topic_destinations[topic]) {
     return {
       destination: rules.topic_destinations[topic],
@@ -127,7 +195,7 @@ function tagItem(item: IndexedItem, rules: TagRules): TaggedItem {
     };
   }
 
-  // 3. No match - needs review
+  // 5. No match - needs review
   return {
     destination: null,
     needs_review: true,
@@ -146,6 +214,10 @@ export interface TagResult {
   needsReview: number;
   excluded: number;
   byDestination: Record<string, number>;
+  /** How many items were tagged using training data (hard rules + patterns) */
+  taggedByTraining: number;
+  /** Whether training data was used */
+  usedTraining: boolean;
 }
 
 export async function tagQuestionnaire(
@@ -154,6 +226,12 @@ export async function tagQuestionnaire(
 ): Promise<TagResult> {
   // Load rules
   const rules = await loadTagRules(customer);
+
+  // Load compiled training data (human corrections = ground truth)
+  const training = await loadCompiledTraining(customer);
+  if (training) {
+    console.log(`  Using training data: ${training.stats.totalCorrections} corrections, ${training.hardRules.length} hard rules`);
+  }
 
   // Load indexed questionnaire (JSON or YAML)
   const content = await readFile(indexedPath, 'utf-8');
@@ -168,6 +246,8 @@ export async function tagQuestionnaire(
     needsReview: 0,
     excluded: 0,
     byDestination: {},
+    taggedByTraining: 0,
+    usedTraining: training !== null,
   };
 
   // Tag each item
@@ -175,7 +255,7 @@ export async function tagQuestionnaire(
     for (const item of section.items) {
       result.totalItems++;
 
-      const tag = tagItem(item, rules);
+      const tag = tagItem(item, rules, training);
 
       // Add tag info to item
       (item as IndexedItem & TaggedItem).destination = tag.destination;
@@ -191,6 +271,11 @@ export async function tagQuestionnaire(
         result.tagged++;
         const dest = tag.destination || 'unknown';
         result.byDestination[dest] = (result.byDestination[dest] || 0) + 1;
+
+        // Track training-based tags
+        if (tag.tag_source.startsWith('training:')) {
+          result.taggedByTraining++;
+        }
       }
     }
   }
@@ -219,7 +304,8 @@ export async function tagAllQuestionnaires(customer?: string): Promise<TagResult
     const result = await tagQuestionnaire(filePath, customer);
     results.push(result);
 
-    console.log(`  Total: ${result.totalItems}, Tagged: ${result.tagged}, Needs Review: ${result.needsReview}, Excluded: ${result.excluded}`);
+    const trainingInfo = result.usedTraining ? `, Training-based: ${result.taggedByTraining}` : '';
+    console.log(`  Total: ${result.totalItems}, Tagged: ${result.tagged}${trainingInfo}, Needs Review: ${result.needsReview}, Excluded: ${result.excluded}`);
   }
 
   return results;
@@ -243,6 +329,9 @@ if (import.meta.url === `file://${process.argv[1]}`) {
         console.log('\nTagging complete:');
         console.log(`  Total items: ${result.totalItems}`);
         console.log(`  Tagged: ${result.tagged}`);
+        if (result.usedTraining) {
+          console.log(`  Tagged by training: ${result.taggedByTraining}`);
+        }
         console.log(`  Needs review: ${result.needsReview}`);
         console.log(`  Excluded: ${result.excluded}`);
         console.log('\nBy destination:');
@@ -262,11 +351,16 @@ if (import.meta.url === `file://${process.argv[1]}`) {
             tagged: acc.tagged + r.tagged,
             review: acc.review + r.needsReview,
             excluded: acc.excluded + r.excluded,
+            trainingBased: acc.trainingBased + r.taggedByTraining,
+            usedTraining: acc.usedTraining || r.usedTraining,
           }),
-          { items: 0, tagged: 0, review: 0, excluded: 0 }
+          { items: 0, tagged: 0, review: 0, excluded: 0, trainingBased: 0, usedTraining: false }
         );
         console.log(`Total items: ${totals.items}`);
         console.log(`Tagged: ${totals.tagged}`);
+        if (totals.usedTraining) {
+          console.log(`Tagged by training: ${totals.trainingBased}`);
+        }
         console.log(`Needs review: ${totals.review}`);
         console.log(`Excluded: ${totals.excluded}`);
       })

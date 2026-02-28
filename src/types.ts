@@ -203,12 +203,6 @@ export interface QuestionnaireEntityExtraction {
   sources: FieldSource[];
 }
 
-/** Entity for Passionfruit API */
-export interface APIEntity {
-  name: string;
-  data: ExtractedEntityData;
-}
-
 // =============================================================================
 // EVIDENCE
 // =============================================================================

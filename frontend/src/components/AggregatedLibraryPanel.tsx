@@ -1,13 +1,18 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { ArrowLeft, CaretDown, CaretRight, MagnifyingGlass, GitMerge, Warning, CheckCircle, XCircle, ListChecks, Books } from '@phosphor-icons/react';
-import { fetchAggregatedLibrary, mergeLibraryItems, fetchStandardQuestions, fetchCuratedLibrary } from '../api';
-import type { AggregatedLibraryItem, RelatedItemGroup, GroupedByTopic, CuratedQuestion, CuratedTopic } from '../types';
+import { List, MagnifyingGlass, GitMerge, Books, Buildings, Package, FunnelSimple, Export, Files } from '@phosphor-icons/react';
+import { fetchAggregatedLibrary, mergeLibraryItems, fetchCuratedLibrary, fetchQuestionnaires } from '../api';
+import type { AggregatedLibraryItem, CuratedQuestion, CuratedTopic, QuestionnaireListItem } from '../types';
 import { toast } from 'sonner';
+import * as XLSX from 'xlsx';
+import { LibraryDataTable } from './LibraryDataTable';
+import { SimpleDataTable } from './SimpleDataTable';
+import { MasterDetailTable } from './MasterDetailTable';
 
 interface AggregatedLibraryPanelProps {
   customer: string;
   onBack: () => void;
+  onSidebarToggle?: () => void;
 }
 
 // Topic display names
@@ -29,14 +34,12 @@ const TOPIC_LABELS: Record<string, string> = {
   other: 'Other',
 };
 
-export function AggregatedLibraryPanel({ customer, onBack }: AggregatedLibraryPanelProps) {
+export function AggregatedLibraryPanel({ customer, onBack: _onBack, onSidebarToggle }: AggregatedLibraryPanelProps) {
   const queryClient = useQueryClient();
   const [searchQuery, setSearchQuery] = useState('');
-  const [expandedTopics, setExpandedTopics] = useState<Set<string>>(new Set());
-  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
   const [selectedForMerge, setSelectedForMerge] = useState<Set<string>>(new Set());
-  const [activeTab, setActiveTab] = useState<'standard' | 'curated' | 'library' | 'company' | 'product' | 'questionnaire' | 'excluded'>('standard');
-  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
+  const [activeTab, setActiveTab] = useState<'curated' | 'library' | 'entity' | 'product' | 'metadata' | 'excluded' | 'questionnaires'>('questionnaires');
+  const [selectedSource, setSelectedSource] = useState<string>('all');
 
   // Fetch aggregated library data
   const { data, isLoading, error } = useQuery({
@@ -44,17 +47,36 @@ export function AggregatedLibraryPanel({ customer, onBack }: AggregatedLibraryPa
     queryFn: () => fetchAggregatedLibrary(customer),
   });
 
-  // Fetch standard questions
-  const { data: standardData, isLoading: standardLoading } = useQuery({
-    queryKey: ['standard-questions', customer],
-    queryFn: () => fetchStandardQuestions(customer),
-  });
+  // Get unique sources (questionnaires) for filtering
+  const availableSources = useMemo(() => {
+    if (!data?.questionnaires) return [];
+    return data.questionnaires;
+  }, [data?.questionnaires]);
 
   // Fetch curated library
   const { data: curatedData, isLoading: curatedLoading } = useQuery({
     queryKey: ['curated-library', customer],
     queryFn: () => fetchCuratedLibrary(customer),
   });
+
+  // Fetch questionnaires metadata (for approved/imported info)
+  const { data: questionnairesData } = useQuery({
+    queryKey: ['questionnaires'],
+    queryFn: fetchQuestionnaires,
+  });
+
+  // Build a map of questionnaire name to metadata
+  const questionnaireMetadata = useMemo(() => {
+    const map = new Map<string, QuestionnaireListItem>();
+    questionnairesData?.questionnaires
+      .filter(q => q.customer === customer)
+      .forEach(q => {
+        map.set(q.name, q);
+        // Also map by display name for matching
+        map.set(q.displayName, q);
+      });
+    return map;
+  }, [questionnairesData, customer]);
 
   // Merge mutation
   const mergeMutation = useMutation({
@@ -74,236 +96,125 @@ export function AggregatedLibraryPanel({ customer, onBack }: AggregatedLibraryPa
     },
   });
 
-  // Filter groups by search
-  const filteredGroups = useMemo(() => {
-    if (!data?.groups) return [];
-    if (!searchQuery.trim()) return data.groups;
+  // Export to Excel
+  const handleExportToExcel = useCallback(() => {
+    if (!data) return;
 
-    const query = searchQuery.toLowerCase();
-    return data.groups
-      .map((group) => ({
-        ...group,
-        items: group.items.filter(
-          (item) =>
-            item.label.toLowerCase().includes(query) ||
-            item.value.toLowerCase().includes(query) ||
-            (item.rephrasedQuestion?.toLowerCase().includes(query))
-        ),
-        relatedGroups: group.relatedGroups.filter((rg) =>
-          rg.items.some(
-            (item) =>
-              item.label.toLowerCase().includes(query) ||
-              item.value.toLowerCase().includes(query)
-          )
-        ),
-      }))
-      .filter((group) => group.items.length > 0 || group.relatedGroups.length > 0);
-  }, [data?.groups, searchQuery]);
+    const wb = XLSX.utils.book_new();
 
-  const toggleTopic = (topic: string) => {
-    setExpandedTopics((prev) => {
-      const next = new Set(prev);
-      if (next.has(topic)) {
-        next.delete(topic);
-      } else {
-        next.add(topic);
+    // Helper to format sources
+    const formatSources = (sources: string[]) =>
+      sources.map(s => s.split('/').pop()?.replace(/\.(xlsx|pdf|docx|json)$/i, '') || s).join(', ');
+
+    // 1. Library sheet - all library items grouped by topic
+    const libraryRows: Record<string, string>[] = [];
+    if (data.groups) {
+      for (const group of data.groups) {
+        const topicLabel = TOPIC_LABELS[group.topic] || group.topic;
+        // Add standalone items
+        for (const item of group.items) {
+          libraryRows.push({
+            'Topic': topicLabel,
+            'Question': item.rephrasedQuestion || item.label,
+            'Answer': item.value,
+            'Section': item.section || '',
+            'Sources': formatSources(item.sources),
+          });
+        }
+        // Add items from related groups
+        for (const rg of group.relatedGroups) {
+          for (const item of rg.items) {
+            libraryRows.push({
+              'Topic': topicLabel,
+              'Question': item.rephrasedQuestion || item.label,
+              'Answer': item.value,
+              'Section': item.section || '',
+              'Sources': formatSources(item.sources),
+            });
+          }
+        }
       }
-      return next;
-    });
-  };
+    }
+    if (libraryRows.length > 0) {
+      const libraryWs = XLSX.utils.json_to_sheet(libraryRows);
+      libraryWs['!cols'] = [{ wch: 25 }, { wch: 60 }, { wch: 40 }, { wch: 25 }, { wch: 40 }];
+      XLSX.utils.book_append_sheet(wb, libraryWs, 'Library');
+    }
 
-  const toggleSection = (section: string) => {
-    setExpandedSections((prev) => {
-      const next = new Set(prev);
-      if (next.has(section)) {
-        next.delete(section);
-      } else {
-        next.add(section);
-      }
-      return next;
-    });
-  };
+    // 2. Company sheet
+    if (data.company?.items?.length > 0) {
+      const companyRows = data.company.items.map((item: AggregatedLibraryItem) => ({
+        'Field': item.label,
+        'Value': item.value,
+        'Section': item.section || '',
+        'Sources': formatSources(item.sources),
+      }));
+      const companyWs = XLSX.utils.json_to_sheet(companyRows);
+      companyWs['!cols'] = [{ wch: 30 }, { wch: 50 }, { wch: 25 }, { wch: 40 }];
+      XLSX.utils.book_append_sheet(wb, companyWs, 'Company');
+    }
 
-  const toggleItem = (itemId: string) => {
-    setExpandedItems((prev) => {
-      const next = new Set(prev);
-      if (next.has(itemId)) {
-        next.delete(itemId);
-      } else {
-        next.add(itemId);
+    // 3. Product sheet - database format with products as rows
+    if (data.product?.items?.length > 0) {
+      // Get all unique field labels
+      const allFields = [...new Set(data.product.items.map((item: AggregatedLibraryItem) => item.label))];
+      // Group by source (product)
+      const bySource = new Map<string, Record<string, string>>();
+      for (const item of data.product.items) {
+        const source = item.sources[0] || 'Unknown';
+        if (!bySource.has(source)) {
+          bySource.set(source, { 'Product/Source': formatSources([source]) });
+        }
+        bySource.get(source)![item.label] = item.value;
       }
-      return next;
-    });
-  };
+      const productRows = Array.from(bySource.values());
+      if (productRows.length > 0) {
+        const headers = ['Product/Source', ...allFields];
+        const productWs = XLSX.utils.json_to_sheet(productRows, { header: headers });
+        const productCols = [{ wch: 40 }];
+        for (let i = 0; i < allFields.length; i++) productCols.push({ wch: 25 });
+        productWs['!cols'] = productCols;
+        XLSX.utils.book_append_sheet(wb, productWs, 'Product');
+      }
+    }
 
-  const toggleMergeSelection = (itemId: string) => {
-    setSelectedForMerge((prev) => {
-      const next = new Set(prev);
-      if (next.has(itemId)) {
-        next.delete(itemId);
-      } else {
-        next.add(itemId);
-      }
-      return next;
-    });
-  };
+    // 4. Questionnaire sheet
+    if (data.questionnaire?.items?.length > 0) {
+      const questionnaireRows = data.questionnaire.items.map((item: AggregatedLibraryItem) => ({
+        'Question': item.label,
+        'Answer': item.value,
+        'Section': item.section || '',
+        'Sources': formatSources(item.sources),
+      }));
+      const questionnaireWs = XLSX.utils.json_to_sheet(questionnaireRows);
+      questionnaireWs['!cols'] = [{ wch: 60 }, { wch: 40 }, { wch: 25 }, { wch: 40 }];
+      XLSX.utils.book_append_sheet(wb, questionnaireWs, 'Questionnaire');
+    }
+
+    // 5. Excluded sheet
+    if (data.excluded?.items?.length > 0) {
+      const excludedRows = data.excluded.items.map((item: AggregatedLibraryItem) => ({
+        'Question': item.label,
+        'Answer': item.value,
+        'Section': item.section || '',
+        'Sources': formatSources(item.sources),
+      }));
+      const excludedWs = XLSX.utils.json_to_sheet(excludedRows);
+      excludedWs['!cols'] = [{ wch: 60 }, { wch: 40 }, { wch: 25 }, { wch: 40 }];
+      XLSX.utils.book_append_sheet(wb, excludedWs, 'Excluded');
+    }
+
+    // Download
+    const filename = `${customer.replace(/ /g, '_')}_export_${new Date().toISOString().split('T')[0]}.xlsx`;
+    XLSX.writeFile(wb, filename);
+    toast.success('Exported to Excel', { description: filename });
+  }, [data, customer]);
 
   const handleMerge = () => {
     if (selectedForMerge.size < 2) return;
     const itemIds = Array.from(selectedForMerge);
     const keepId = itemIds[0]; // Keep the first one
     mergeMutation.mutate({ itemIds, keepId });
-  };
-
-  const renderItem = (item: AggregatedLibraryItem, showCheckbox = false) => {
-    const isExpanded = expandedItems.has(item.id);
-    const isSelected = selectedForMerge.has(item.id);
-
-    return (
-      <div
-        key={item.id}
-        className={`border-b border-subtle ${isSelected ? 'bg-accent/10' : ''}`}
-      >
-        <div
-          className="flex items-start gap-2 py-2 px-3 cursor-pointer hover:bg-card-hover"
-          onClick={() => toggleItem(item.id)}
-        >
-          {showCheckbox && (
-            <input
-              type="checkbox"
-              checked={isSelected}
-              onChange={(e) => {
-                e.stopPropagation();
-                toggleMergeSelection(item.id);
-              }}
-              className="mt-1"
-              onClick={(e) => e.stopPropagation()}
-            />
-          )}
-          <span className="text-muted mt-0.5">
-            {isExpanded ? <CaretDown size={12} /> : <CaretRight size={12} />}
-          </span>
-          <div className="flex-1 min-w-0">
-            <div className="text-[13px] text-primary">
-              {item.rephrasedQuestion || item.label}
-            </div>
-            {item.rephrasedQuestion && item.rephrasedQuestion !== item.label && (
-              <div className="text-[11px] text-muted italic">
-                Original: {item.label}
-              </div>
-            )}
-            <div className="text-[12px] text-muted mt-0.5 truncate">
-              {item.value || '(empty)'}
-            </div>
-          </div>
-          <div className="flex items-center gap-2 text-[10px] text-muted">
-            {item.sources.length > 1 && (
-              <span className="bg-accent/20 text-accent px-1.5 py-0.5 rounded">
-                {item.sources.length} sources
-              </span>
-            )}
-          </div>
-        </div>
-
-        {isExpanded && (
-          <div className="px-8 pb-3 space-y-2 text-[12px]">
-            <div>
-              <span className="text-muted">Section:</span>{' '}
-              <span className="text-primary">{item.section || 'Unknown'}</span>
-            </div>
-            <div>
-              <span className="text-muted">Sources:</span>
-              <ul className="mt-1 ml-4 list-disc">
-                {item.sources.map((source) => (
-                  <li key={source} className="text-primary">
-                    {source}
-                    {item.cellRefs[source] && (
-                      <span className="text-muted ml-2">({item.cellRefs[source]})</span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  const renderRelatedGroup = (group: RelatedItemGroup, groupIdx: number) => {
-    return (
-      <div key={groupIdx} className="border border-amber-500/30 rounded mb-2 bg-amber-500/5">
-        <div className="flex items-center gap-2 px-3 py-2 border-b border-amber-500/20">
-          <Warning size={14} className="text-amber-500" />
-          <span className="text-[12px] text-amber-500 font-medium">
-            Similar items ({group.items.length})
-          </span>
-          {group.suggestedMerge && (
-            <span className="text-[10px] bg-amber-500/20 px-1.5 py-0.5 rounded text-amber-400">
-              Suggested merge
-            </span>
-          )}
-        </div>
-        <div>
-          {group.items.map((item) => renderItem(item, true))}
-        </div>
-      </div>
-    );
-  };
-
-  const renderTopicGroup = (group: GroupedByTopic) => {
-    const isExpanded = expandedTopics.has(group.topic);
-    const totalItems = group.items.length + group.relatedGroups.reduce((sum, rg) => sum + rg.items.length, 0);
-    const topicLabel = TOPIC_LABELS[group.topic] || group.topic;
-
-    return (
-      <div key={group.topic} className="border-b border-default">
-        <div
-          className="flex items-center gap-2 h-10 px-4 bg-app-secondary cursor-pointer hover:bg-card-hover sticky top-0 z-10"
-          onClick={() => toggleTopic(group.topic)}
-        >
-          <span className="text-muted">
-            {isExpanded ? <CaretDown size={14} /> : <CaretRight size={14} />}
-          </span>
-          <span className="text-[13px] font-medium text-primary flex-1">
-            {topicLabel}
-          </span>
-          <span className="text-[11px] text-muted">
-            {totalItems} items
-            {group.relatedGroups.length > 0 && (
-              <span className="text-amber-500 ml-2">
-                ({group.relatedGroups.length} groups to review)
-              </span>
-            )}
-          </span>
-        </div>
-
-        {isExpanded && (
-          <div>
-            {/* Related groups first (need attention) */}
-            {group.relatedGroups.length > 0 && (
-              <div className="p-3">
-                {group.relatedGroups.map((rg, idx) => renderRelatedGroup(rg, idx))}
-              </div>
-            )}
-
-            {/* Standalone items */}
-            {group.items.map((item) => renderItem(item))}
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  const renderItemList = (items: AggregatedLibraryItem[]) => {
-    if (items.length === 0) {
-      return (
-        <div className="text-center py-12 text-muted text-[13px]">
-          No items
-        </div>
-      );
-    }
-    return items.map((item) => renderItem(item));
   };
 
   if (isLoading) {
@@ -326,16 +237,18 @@ export function AggregatedLibraryPanel({ customer, onBack }: AggregatedLibraryPa
     <div className="flex-1 flex flex-col bg-app overflow-hidden">
       {/* Header */}
       <div className="h-12 px-4 flex items-center gap-3 border-b border-default bg-app-secondary">
-        <button
-          onClick={onBack}
-          className="flex items-center gap-1.5 text-muted hover:text-primary transition-colors"
-        >
-          <ArrowLeft size={16} />
-          <span className="text-[12px]">Back</span>
-        </button>
+        {onSidebarToggle && (
+          <button
+            onClick={onSidebarToggle}
+            className="p-1.5 rounded hover:bg-card-hover text-muted hover:text-primary transition-colors"
+            title="Open sidebar"
+          >
+            <List size={18} />
+          </button>
+        )}
         <div className="flex-1">
           <h1 className="text-[14px] font-medium text-primary">
-            Answer Library - {customer}
+            Database - {customer}
           </h1>
           <div className="text-[11px] text-muted">
             {data?.uniqueItems} unique items from {data?.questionnaires.length} questionnaires
@@ -351,31 +264,28 @@ export function AggregatedLibraryPanel({ customer, onBack }: AggregatedLibraryPa
             Merge {selectedForMerge.size} items
           </button>
         )}
+        <button
+          onClick={handleExportToExcel}
+          disabled={!data}
+          className="h-7 px-3 rounded bg-emerald-600 text-white text-[12px] font-medium flex items-center gap-1.5 hover:bg-emerald-700 transition-colors disabled:opacity-50"
+        >
+          <Export size={14} />
+          Export Excel
+        </button>
       </div>
 
       {/* Tabs */}
       <div className="flex items-center gap-1 px-4 py-2 border-b border-default bg-app-secondary">
         <button
-          onClick={() => setActiveTab('standard')}
+          onClick={() => setActiveTab('questionnaires')}
           className={`h-7 px-3 rounded text-[12px] font-medium transition-colors flex items-center gap-1.5 ${
-            activeTab === 'standard'
+            activeTab === 'questionnaires'
               ? 'bg-cyan-500/20 text-cyan-400'
               : 'text-muted hover:bg-card-hover'
           }`}
         >
-          <ListChecks size={14} />
-          Standard Questions ({standardData?.totalQuestions || 0})
-        </button>
-        <button
-          onClick={() => setActiveTab('curated')}
-          className={`h-7 px-3 rounded text-[12px] font-medium transition-colors flex items-center gap-1.5 ${
-            activeTab === 'curated'
-              ? 'bg-violet-500/20 text-violet-400'
-              : 'text-muted hover:bg-card-hover'
-          }`}
-        >
-          <Books size={14} />
-          Curated ({(curatedData?.company?.reduce((sum, t) => sum + t.questions.length, 0) || 0) + (curatedData?.answer_library?.reduce((sum, t) => sum + t.questions.length, 0) || 0)})
+          <Files size={14} />
+          Questionnaires ({data?.questionnaires.length || 0})
         </button>
         <button
           onClick={() => setActiveTab('library')}
@@ -388,34 +298,36 @@ export function AggregatedLibraryPanel({ customer, onBack }: AggregatedLibraryPa
           Library ({data?.stats.standaloneItems || 0})
         </button>
         <button
-          onClick={() => setActiveTab('company')}
-          className={`h-7 px-3 rounded text-[12px] font-medium transition-colors ${
-            activeTab === 'company'
+          onClick={() => setActiveTab('entity')}
+          className={`h-7 px-3 rounded text-[12px] font-medium transition-colors flex items-center gap-1.5 ${
+            activeTab === 'entity'
               ? 'bg-blue-500/20 text-blue-400'
               : 'text-muted hover:bg-card-hover'
           }`}
         >
-          Company ({data?.company.count || 0})
+          <Buildings size={14} />
+          Entities ({data?.company.count || 0})
         </button>
         <button
           onClick={() => setActiveTab('product')}
-          className={`h-7 px-3 rounded text-[12px] font-medium transition-colors ${
+          className={`h-7 px-3 rounded text-[12px] font-medium transition-colors flex items-center gap-1.5 ${
             activeTab === 'product'
               ? 'bg-orange-500/20 text-orange-400'
               : 'text-muted hover:bg-card-hover'
           }`}
         >
+          <Package size={14} />
           Product ({data?.product.count || 0})
         </button>
         <button
-          onClick={() => setActiveTab('questionnaire')}
+          onClick={() => setActiveTab('metadata')}
           className={`h-7 px-3 rounded text-[12px] font-medium transition-colors ${
-            activeTab === 'questionnaire'
+            activeTab === 'metadata'
               ? 'bg-purple-500/20 text-purple-400'
               : 'text-muted hover:bg-card-hover'
           }`}
         >
-          Questionnaire ({data?.questionnaire.count || 0})
+          Metadata ({data?.questionnaire.count || 0})
         </button>
         <button
           onClick={() => setActiveTab('excluded')}
@@ -427,11 +339,22 @@ export function AggregatedLibraryPanel({ customer, onBack }: AggregatedLibraryPa
         >
           Excluded ({data?.excluded.count || 0})
         </button>
+        <button
+          onClick={() => setActiveTab('curated')}
+          className={`h-7 px-3 rounded text-[12px] font-medium transition-colors flex items-center gap-1.5 ${
+            activeTab === 'curated'
+              ? 'bg-violet-500/20 text-violet-400'
+              : 'text-muted hover:bg-card-hover'
+          }`}
+        >
+          <Books size={14} />
+          Curated ({(curatedData?.company?.reduce((sum, t) => sum + t.questions.length, 0) || 0) + (curatedData?.answer_library?.reduce((sum, t) => sum + t.questions.length, 0) || 0)})
+        </button>
       </div>
 
-      {/* Search */}
-      <div className="px-4 py-2 border-b border-default">
-        <div className="relative">
+      {/* Search and Filter */}
+      <div className="px-4 py-2 border-b border-default flex items-center gap-3">
+        <div className="relative flex-1">
           <MagnifyingGlass
             size={14}
             className="absolute left-3 top-1/2 -translate-y-1/2 text-muted"
@@ -444,123 +367,29 @@ export function AggregatedLibraryPanel({ customer, onBack }: AggregatedLibraryPa
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
+        {availableSources.length > 1 && (
+          <div className="flex items-center gap-2">
+            <FunnelSimple size={14} className="text-muted" />
+            <select
+              value={selectedSource}
+              onChange={(e) => setSelectedSource(e.target.value)}
+              className="h-8 px-2 bg-app border border-default rounded text-[12px] text-primary focus:outline-none focus:border-accent"
+            >
+              <option value="all">All questionnaires</option>
+              {availableSources.map((source) => (
+                <option key={source} value={source}>
+                  {source.split('/').pop()?.replace(/\.(xlsx|pdf|docx|json)$/i, '').substring(0, 40) || source}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
       </div>
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto">
-        {activeTab === 'standard' && (
-          <>
-            {standardLoading ? (
-              <div className="text-center py-12 text-muted text-[13px]">
-                Loading standard questions...
-              </div>
-            ) : !standardData?.sections?.length ? (
-              <div className="text-center py-12 text-muted text-[13px]">
-                No standard questions configured
-              </div>
-            ) : (
-              standardData.sections.map((section) => {
-                const isExpanded = expandedSections.has(section.section);
-                const answeredCount = section.questions.filter(q => q.suggestedAnswer).length;
-
-                return (
-                  <div key={section.section} className="border-b border-default">
-                    <div
-                      className="flex items-center gap-2 h-10 px-4 bg-app-secondary cursor-pointer hover:bg-card-hover sticky top-0 z-10"
-                      onClick={() => toggleSection(section.section)}
-                    >
-                      <span className="text-muted">
-                        {isExpanded ? <CaretDown size={14} /> : <CaretRight size={14} />}
-                      </span>
-                      <span className="text-[13px] font-medium text-primary flex-1">
-                        {section.section}
-                      </span>
-                      <span className="text-[11px] text-muted">
-                        {answeredCount}/{section.questions.length} answered
-                      </span>
-                      {answeredCount === section.questions.length ? (
-                        <CheckCircle size={14} className="text-emerald-500" />
-                      ) : answeredCount > 0 ? (
-                        <Warning size={14} className="text-amber-500" />
-                      ) : (
-                        <XCircle size={14} className="text-red-500" />
-                      )}
-                    </div>
-
-                    {isExpanded && (
-                      <div className="divide-y divide-subtle">
-                        {section.questions.map((question) => {
-                          const isQuestionExpanded = expandedItems.has(question.id);
-
-                          return (
-                            <div key={question.id} className="px-4 py-3">
-                              <div
-                                className="flex items-start gap-2 cursor-pointer"
-                                onClick={() => toggleItem(question.id)}
-                              >
-                                <span className="text-muted mt-0.5">
-                                  {isQuestionExpanded ? <CaretDown size={12} /> : <CaretRight size={12} />}
-                                </span>
-                                <div className="flex-1 min-w-0">
-                                  <div className="flex items-center gap-2">
-                                    <span className="text-[10px] text-muted bg-app px-1.5 py-0.5 rounded">
-                                      {question.id}
-                                    </span>
-                                    {question.suggestedAnswer ? (
-                                      <CheckCircle size={12} className="text-emerald-500" />
-                                    ) : (
-                                      <XCircle size={12} className="text-red-400" />
-                                    )}
-                                  </div>
-                                  <div className="text-[13px] text-primary mt-1">
-                                    {question.question}
-                                  </div>
-                                  {question.suggestedAnswer && (
-                                    <div className="text-[12px] text-emerald-400 mt-1 font-medium">
-                                      {question.suggestedAnswer}
-                                    </div>
-                                  )}
-                                  {question.sources.length > 0 && (
-                                    <div className="text-[10px] text-muted mt-1">
-                                      From: {question.sources.join(', ')}
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-
-                              {isQuestionExpanded && question.libraryMatches.length > 0 && (
-                                <div className="ml-6 mt-3 space-y-2">
-                                  <div className="text-[11px] text-muted font-medium">
-                                    Library Matches ({question.libraryMatches.length}):
-                                  </div>
-                                  {question.libraryMatches.map((match, idx) => (
-                                    <div
-                                      key={idx}
-                                      className="bg-app border border-subtle rounded p-2 text-[12px]"
-                                    >
-                                      <div className="text-muted">{match.label}</div>
-                                      <div className="text-primary mt-0.5">{match.value}</div>
-                                      <div className="text-[10px] text-muted mt-1">
-                                        Sources: {match.sources.join(', ')}
-                                      </div>
-                                    </div>
-                                  ))}
-                                </div>
-                              )}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </div>
-                );
-              })
-            )}
-          </>
-        )}
-
         {activeTab === 'curated' && (
-          <>
+          <div className="flex flex-col h-full">
             {curatedLoading ? (
               <div className="text-center py-12 text-muted text-[13px]">
                 Loading curated library...
@@ -571,176 +400,239 @@ export function AggregatedLibraryPanel({ customer, onBack }: AggregatedLibraryPa
               </div>
             ) : (
               <>
-                {/* Company items */}
-                {curatedData.company?.length > 0 && (
-                  <div className="border-b-2 border-blue-500/30">
-                    <div className="px-4 py-2 bg-blue-500/10 text-blue-400 text-[12px] font-medium">
-                      Company Information
-                    </div>
-                    {curatedData.company.map((topic: CuratedTopic) => {
-                      const isExpanded = expandedTopics.has(`curated-company-${topic.topic}`);
-                      return (
-                        <div key={topic.topic} className="border-b border-default">
-                          <div
-                            className="flex items-center gap-2 h-10 px-4 bg-app-secondary cursor-pointer hover:bg-card-hover sticky top-0 z-10"
-                            onClick={() => toggleTopic(`curated-company-${topic.topic}`)}
-                          >
-                            <span className="text-muted">
-                              {isExpanded ? <CaretDown size={14} /> : <CaretRight size={14} />}
-                            </span>
-                            <span className="text-[13px] font-medium text-primary flex-1">
-                              {topic.topicLabel}
-                            </span>
-                            <span className="text-[11px] text-muted">
-                              {topic.questions.length} questions
-                            </span>
-                          </div>
-                          {isExpanded && (
-                            <div className="divide-y divide-subtle">
-                              {topic.questions.map((q: CuratedQuestion, idx: number) => {
-                                const qId = `curated-company-${topic.topic}-${idx}`;
-                                const isQuestionExpanded = expandedItems.has(qId);
-                                return (
-                                  <div key={idx} className="px-4 py-3">
-                                    <div
-                                      className="flex items-start gap-2 cursor-pointer"
-                                      onClick={() => toggleItem(qId)}
-                                    >
-                                      <span className="text-muted mt-0.5">
-                                        {isQuestionExpanded ? <CaretDown size={12} /> : <CaretRight size={12} />}
-                                      </span>
-                                      <div className="flex-1 min-w-0">
-                                        <div className="text-[13px] text-primary">
-                                          {q.question}
-                                        </div>
-                                        <div className="text-[12px] text-emerald-400 mt-1 whitespace-pre-wrap">
-                                          {q.answer}
-                                        </div>
-                                      </div>
-                                    </div>
-                                    {isQuestionExpanded && (
-                                      <div className="ml-6 mt-3 space-y-2">
-                                        {q.originalLabels.length > 0 && (
-                                          <div>
-                                            <div className="text-[11px] text-muted font-medium">
-                                              Original Labels ({q.originalLabels.length}):
-                                            </div>
-                                            <ul className="mt-1 ml-4 list-disc text-[11px] text-muted">
-                                              {q.originalLabels.map((label, i) => (
-                                                <li key={i}>{label}</li>
-                                              ))}
-                                            </ul>
-                                          </div>
-                                        )}
-                                        {q.sources.length > 0 && (
-                                          <div className="text-[10px] text-muted">
-                                            Sources: {q.sources.join(', ')}
-                                          </div>
-                                        )}
-                                      </div>
-                                    )}
-                                  </div>
-                                );
-                              })}
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-                {/* Answer Library items */}
-                {curatedData.answer_library?.map((topic: CuratedTopic) => {
-                  const isExpanded = expandedTopics.has(`curated-${topic.topic}`);
-                  return (
-                    <div key={topic.topic} className="border-b border-default">
-                      <div
-                        className="flex items-center gap-2 h-10 px-4 bg-app-secondary cursor-pointer hover:bg-card-hover sticky top-0 z-10"
-                        onClick={() => toggleTopic(`curated-${topic.topic}`)}
-                      >
-                        <span className="text-muted">
-                          {isExpanded ? <CaretDown size={14} /> : <CaretRight size={14} />}
-                        </span>
-                        <span className="text-[13px] font-medium text-primary flex-1">
-                          {topic.topicLabel}
-                        </span>
-                        <span className="text-[11px] text-muted">
-                          {topic.questions.length} questions
-                        </span>
-                      </div>
-                      {isExpanded && (
-                        <div className="divide-y divide-subtle">
-                          {topic.questions.map((q: CuratedQuestion, idx: number) => {
-                            const qId = `curated-${topic.topic}-${idx}`;
-                            const isQuestionExpanded = expandedItems.has(qId);
-                            return (
-                              <div key={idx} className="px-4 py-3">
-                                <div
-                                  className="flex items-start gap-2 cursor-pointer"
-                                  onClick={() => toggleItem(qId)}
-                                >
-                                  <span className="text-muted mt-0.5">
-                                    {isQuestionExpanded ? <CaretDown size={12} /> : <CaretRight size={12} />}
+                <div className="flex-1 overflow-auto">
+                  <table className="w-full text-[13px]">
+                    <thead className="sticky top-0 bg-app-secondary z-10">
+                      <tr className="border-b border-default">
+                        <th className="text-left px-4 py-2 text-muted font-medium w-2/5">Question</th>
+                        <th className="text-left px-4 py-2 text-muted font-medium w-1/3">Answer</th>
+                        <th className="text-left px-4 py-2 text-muted font-medium w-24">Type</th>
+                        <th className="text-left px-4 py-2 text-muted font-medium w-1/6">Sources</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {/* Company items */}
+                      {curatedData.company?.flatMap((topic: CuratedTopic) =>
+                        topic.questions.map((q: CuratedQuestion, idx: number) => (
+                          <tr key={`company-${topic.topic}-${idx}`} className="border-b border-subtle hover:bg-card-hover">
+                            <td className="px-4 py-2 text-primary align-top">
+                              <span className="whitespace-pre-wrap">{q.question}</span>
+                            </td>
+                            <td className="px-4 py-2 text-primary align-top">
+                              <span className="whitespace-pre-wrap">{q.answer}</span>
+                            </td>
+                            <td className="px-4 py-2 align-top">
+                              <span className="px-1.5 py-0.5 bg-blue-500/15 text-blue-400 text-[10px] rounded">
+                                Entity
+                              </span>
+                            </td>
+                            <td className="px-4 py-2 align-top">
+                              <div className="flex flex-wrap gap-1">
+                                {q.sources.map((source, i) => (
+                                  <span
+                                    key={i}
+                                    className="inline-block px-1.5 py-0.5 bg-accent/15 text-accent text-[10px] rounded truncate max-w-[100px]"
+                                    title={source}
+                                  >
+                                    {source.split('/').pop()?.replace(/\.(xlsx|pdf|docx|json)$/i, '').substring(0, 15) || source}
                                   </span>
-                                  <div className="flex-1 min-w-0">
-                                    <div className="text-[13px] text-primary">
-                                      {q.question}
-                                    </div>
-                                    <div className="text-[12px] text-emerald-400 mt-1 whitespace-pre-wrap">
-                                      {q.answer}
-                                    </div>
-                                  </div>
-                                </div>
-                                {isQuestionExpanded && (
-                                  <div className="ml-6 mt-3 space-y-2">
-                                    {q.originalLabels.length > 0 && (
-                                      <div>
-                                        <div className="text-[11px] text-muted font-medium">
-                                          Original Labels ({q.originalLabels.length}):
-                                        </div>
-                                        <ul className="mt-1 ml-4 list-disc text-[11px] text-muted">
-                                          {q.originalLabels.map((label, i) => (
-                                            <li key={i}>{label}</li>
-                                          ))}
-                                        </ul>
-                                      </div>
-                                    )}
-                                    {q.sources.length > 0 && (
-                                      <div className="text-[10px] text-muted">
-                                        Sources: {q.sources.join(', ')}
-                                      </div>
-                                    )}
-                                  </div>
-                                )}
+                                ))}
                               </div>
-                            );
-                          })}
-                        </div>
+                            </td>
+                          </tr>
+                        ))
                       )}
-                    </div>
-                  );
-                })}
+                      {/* Answer Library items */}
+                      {curatedData.answer_library?.flatMap((topic: CuratedTopic) =>
+                        topic.questions.map((q: CuratedQuestion, idx: number) => (
+                          <tr key={`library-${topic.topic}-${idx}`} className="border-b border-subtle hover:bg-card-hover">
+                            <td className="px-4 py-2 text-primary align-top">
+                              <span className="whitespace-pre-wrap">{q.question}</span>
+                            </td>
+                            <td className="px-4 py-2 text-primary align-top">
+                              <span className="whitespace-pre-wrap">{q.answer}</span>
+                            </td>
+                            <td className="px-4 py-2 align-top">
+                              <span className="px-1.5 py-0.5 bg-emerald-500/15 text-emerald-400 text-[10px] rounded">
+                                Library
+                              </span>
+                            </td>
+                            <td className="px-4 py-2 align-top">
+                              <div className="flex flex-wrap gap-1">
+                                {q.sources.map((source, i) => (
+                                  <span
+                                    key={i}
+                                    className="inline-block px-1.5 py-0.5 bg-accent/15 text-accent text-[10px] rounded truncate max-w-[100px]"
+                                    title={source}
+                                  >
+                                    {source.split('/').pop()?.replace(/\.(xlsx|pdf|docx|json)$/i, '').substring(0, 15) || source}
+                                  </span>
+                                ))}
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="h-8 px-4 flex items-center border-t border-default bg-app-secondary text-[11px] text-muted">
+                  <span>
+                    {(curatedData.company?.reduce((sum, t) => sum + t.questions.length, 0) || 0) +
+                     (curatedData.answer_library?.reduce((sum, t) => sum + t.questions.length, 0) || 0)} curated questions
+                  </span>
+                </div>
               </>
             )}
-          </>
+          </div>
         )}
 
         {activeTab === 'library' && (
-          <>
-            {filteredGroups.length === 0 ? (
-              <div className="text-center py-12 text-muted text-[13px]">
-                No library items found
-              </div>
-            ) : (
-              filteredGroups.map((group) => renderTopicGroup(group))
-            )}
-          </>
+          <LibraryDataTable groups={data?.groups || []} selectedSource={selectedSource} />
         )}
 
-        {activeTab === 'company' && renderItemList(data?.company.items || [])}
-        {activeTab === 'product' && renderItemList(data?.product.items || [])}
-        {activeTab === 'questionnaire' && renderItemList(data?.questionnaire.items || [])}
-        {activeTab === 'excluded' && renderItemList(data?.excluded.items || [])}
+        {activeTab === 'entity' && (
+          <MasterDetailTable
+            items={data?.company.items || []}
+            selectedSource={selectedSource}
+            emptyMessage="No entity data found"
+            itemLabel="Entity"
+            groupBy="entityName"
+          />
+        )}
+        {activeTab === 'product' && (
+          <MasterDetailTable
+            items={data?.product.items || []}
+            selectedSource={selectedSource}
+            emptyMessage="No product data found"
+            itemLabel="Product"
+          />
+        )}
+        {activeTab === 'metadata' && (
+          <SimpleDataTable
+            items={data?.questionnaire.items || []}
+            selectedSource={selectedSource}
+            emptyMessage="No metadata found"
+          />
+        )}
+        {activeTab === 'excluded' && (
+          <SimpleDataTable
+            items={data?.excluded.items || []}
+            selectedSource={selectedSource}
+            emptyMessage="No excluded items"
+          />
+        )}
+        {activeTab === 'questionnaires' && (
+          <div className="flex flex-col h-full">
+            <div className="flex-1 overflow-auto">
+              <table className="w-full text-[13px]">
+                <thead className="sticky top-0 bg-app-secondary z-10">
+                  <tr className="border-b border-default">
+                    <th className="text-left px-4 py-2 text-muted font-medium">Questionnaire</th>
+                    <th className="text-center px-4 py-2 text-muted font-medium w-20">Total</th>
+                    <th className="text-center px-4 py-2 text-muted font-medium w-20">Library</th>
+                    <th className="text-center px-4 py-2 text-muted font-medium w-20">Entity</th>
+                    <th className="text-center px-4 py-2 text-muted font-medium w-20">Product</th>
+                    <th className="text-center px-4 py-2 text-muted font-medium w-24">Approved</th>
+                    <th className="text-center px-4 py-2 text-muted font-medium w-24">Imported</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data?.questionnaires.map((source) => {
+                    const countFromSource = (items: AggregatedLibraryItem[]) =>
+                      items.filter(item => item.sources.includes(source)).length;
+
+                    const libraryCount = data.groups.reduce((sum, g) => {
+                      return sum +
+                        countFromSource(g.items) +
+                        g.relatedGroups.reduce((s, rg) => s + countFromSource(rg.items), 0);
+                    }, 0);
+                    const companyCount = countFromSource(data.company.items);
+                    const productCount = countFromSource(data.product.items);
+                    const questionnaireCount = countFromSource(data.questionnaire.items);
+                    const excludedCount = countFromSource(data.excluded.items);
+                    const totalCount = libraryCount + companyCount + productCount + questionnaireCount + excludedCount;
+
+                    const sourceName = source.split('/').pop()?.replace(/\.(xlsx|pdf|docx|json)$/i, '') || source;
+
+                    // Get metadata for this questionnaire
+                    const metadata = questionnaireMetadata.get(sourceName) || questionnaireMetadata.get(source);
+
+                    const formatRelativeTime = (dateStr: string) => {
+                      const date = new Date(dateStr);
+                      const now = new Date();
+                      const diffMs = now.getTime() - date.getTime();
+                      const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+                      const diffDays = Math.floor(diffHours / 24);
+                      if (diffDays > 0) return `${diffDays}d ago`;
+                      if (diffHours > 0) return `${diffHours}h ago`;
+                      return 'just now';
+                    };
+
+                    return (
+                      <tr key={source} className="border-b border-subtle hover:bg-card-hover">
+                        <td className="px-4 py-2 text-primary" title={source}>
+                          {sourceName}
+                        </td>
+                        <td className="px-4 py-2 text-center text-primary font-medium">
+                          {totalCount}
+                        </td>
+                        <td className="px-4 py-2 text-center">
+                          {libraryCount > 0 ? (
+                            <span className="text-emerald-400">{libraryCount}</span>
+                          ) : (
+                            <span className="text-muted">-</span>
+                          )}
+                        </td>
+                        <td className="px-4 py-2 text-center">
+                          {companyCount > 0 ? (
+                            <span className="text-blue-400">{companyCount}</span>
+                          ) : (
+                            <span className="text-muted">-</span>
+                          )}
+                        </td>
+                        <td className="px-4 py-2 text-center">
+                          {productCount > 0 ? (
+                            <span className="text-orange-400">{productCount}</span>
+                          ) : (
+                            <span className="text-muted">-</span>
+                          )}
+                        </td>
+                        <td className="px-4 py-2 text-center">
+                          {metadata?.approvedCount ? (
+                            <div className="flex flex-col items-center">
+                              <span className="text-emerald-400 font-medium">{metadata.approvedCount}</span>
+                              {metadata.approvedAt && (
+                                <span className="text-[10px] text-muted">{formatRelativeTime(metadata.approvedAt)}</span>
+                              )}
+                            </div>
+                          ) : (
+                            <span className="text-muted">-</span>
+                          )}
+                        </td>
+                        <td className="px-4 py-2 text-center">
+                          {metadata?.apiReadyCount ? (
+                            <div className="flex flex-col items-center">
+                              <span className="text-blue-400 font-medium">{metadata.apiReadyCount}</span>
+                              {metadata.apiReadyAt && (
+                                <span className="text-[10px] text-muted">{formatRelativeTime(metadata.apiReadyAt)}</span>
+                              )}
+                            </div>
+                          ) : (
+                            <span className="text-muted">-</span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            <div className="h-8 px-4 flex items-center border-t border-default bg-app-secondary text-[11px] text-muted">
+              <span>{data?.questionnaires.length || 0} questionnaires</span>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Stats footer */}

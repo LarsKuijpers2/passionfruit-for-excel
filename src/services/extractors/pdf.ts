@@ -6,8 +6,8 @@
  * with fallback to pdf-parse for basic text extraction.
  */
 
-import { readFile } from 'fs/promises';
-import { basename } from 'path';
+import { readFile, writeFile, mkdir } from 'fs/promises';
+import { basename, dirname, join } from 'path';
 import { exec } from 'child_process';
 import { promisify } from 'util';
 import type {
@@ -19,11 +19,34 @@ import type {
   DocumentType,
 } from './excel.js';
 import { extractPdfWithAzure, isAzureConfigured, type DocumentAnalysisResult, type TableCell } from './azure.js';
+import { BedrockRuntimeClient, InvokeModelCommand } from '@aws-sdk/client-bedrock-runtime';
 import { classifyDocument, type DocumentClassification } from '../analysis/document-classifier.js';
 import { extractTextQA, type TextQAResult } from './text-qa.js';
 import { VisualQAExtractor, type TextElementWithPosition, type PageInfo } from './visual-qa-extractor.js';
+import { ClaudeMarkdownExtractor } from './claude-markdown-extractor.js';
+
+// Extraction mode options
+export type ExtractionMode = 'auto' | 'azure' | 'claude-vision';
+
+export interface PdfExtractionOptions {
+  /** Extraction mode: 'auto' uses Azure, 'claude-vision' uses Claude Vision for markdown */
+  mode?: ExtractionMode;
+}
 
 const execAsync = promisify(exec);
+
+// Claude client singleton for paragraph correction
+const CLAUDE_MODEL_ID = 'eu.anthropic.claude-sonnet-4-20250514-v1:0';
+let claudeClient: BedrockRuntimeClient | null = null;
+
+function getClaudeClient(): BedrockRuntimeClient {
+  if (!claudeClient) {
+    claudeClient = new BedrockRuntimeClient({
+      region: process.env.AWS_REGION || 'eu-central-1'
+    });
+  }
+  return claudeClient;
+}
 
 // =============================================================================
 // TYPES
@@ -35,6 +58,17 @@ interface ParsedLine {
   pageNumber: number;
   lineNumber: number;
   cells?: string[]; // For table rows
+}
+
+// Content block for position-based parsing
+interface ContentBlock {
+  type: 'table' | 'paragraph' | 'keyvalue';
+  pageNumber: number;
+  yPosition: number;
+  tableIndex?: number;
+  content?: string;
+  polygon?: number[];
+  kvValue?: string;
 }
 
 // =============================================================================
@@ -56,9 +90,19 @@ export class PdfStructureExtractor {
    * - 'table': Azure Document Intelligence for checkbox/table-based questionnaires
    * - 'text': Text-based Q&A extraction for flowing text documents
    * - 'both': Combines both methods for mixed documents
+   *
+   * Or use Claude Vision mode for semantic markdown extraction (like Claude Chat).
    */
-  async extract(filepath: string): Promise<QuestionnaireStructure> {
+  async extract(filepath: string, options?: PdfExtractionOptions): Promise<QuestionnaireStructure> {
     const filename = basename(filepath);
+    const mode = options?.mode || 'auto';
+
+    // Claude Vision mode: Extract structured markdown using Claude Vision
+    if (mode === 'claude-vision') {
+      console.log('  Using Claude Vision for semantic markdown extraction...');
+      const extractor = new ClaudeMarkdownExtractor();
+      return extractor.extractToStructure(filepath, filename);
+    }
 
     // First, classify the document to understand what extraction method to use
     console.log('  Classifying document...');
@@ -309,162 +353,43 @@ export class PdfStructureExtractor {
       }
     }
 
+    // Log missing pages for reference (but don't add text as rows)
+    // Text content is available in textContent for the frontend to display separately
     if (missingPages.length > 0) {
-      console.log(`    Adding missing pages from text extraction: [${missingPages.join(', ')}]`);
-
-      // Add missing pages as text content to the table result
-      const enhancedRows = [...tableResult.sheets[0].rows];
-      let nextRowNumber = enhancedRows.length > 0 ? Math.max(...enhancedRows.map(r => r.row)) + 1 : 1;
-
-      for (const pageNum of missingPages) {
-        // Add page header
-        enhancedRows.push({
-          row: nextRowNumber++,
-          cells: {
-            A: {
-              ref: `A${nextRowNumber - 1}`,
-              value: `--- PAGE ${pageNum} (Text Content) ---`,
-              type: 'string',
-              filled: true,
-              role: 'section',
-              pageNumber: pageNum,
-            },
-            B: {
-              ref: `B${nextRowNumber - 1}`,
-              value: '',
-              type: 'string',
-              filled: false,
-              role: 'empty',
-              pageNumber: pageNum,
-            },
-          },
-          isEmpty: false,
-          rowType: 'section',
-        });
-
-        // Add content from text extraction for this page
-        const pageItems = textResult.items.filter(item =>
-          // Items don't have explicit page numbers, so add them as general content
-          true // For now, add all text items to missing pages
-        );
-
-        // Add a few text items to represent this page's content
-        const itemsToAdd = pageItems.slice(0, 3); // Limit to avoid duplication
-        for (const item of itemsToAdd) {
-          enhancedRows.push({
-            row: nextRowNumber++,
-            cells: {
-              A: {
-                ref: `A${nextRowNumber - 1}`,
-                value: item.question,
-                type: 'string',
-                filled: true,
-                role: 'label',
-                pageNumber: pageNum,
-              },
-              B: {
-                ref: `B${nextRowNumber - 1}`,
-                value: item.answer || '',
-                type: 'string',
-                filled: !!item.answer,
-                role: 'value',
-                pageNumber: pageNum,
-              },
-            },
-            isEmpty: false,
-            rowType: 'data',
-          });
-        }
-      }
-
-      // Update the sheet with merged rows
-      const enhancedSheet: SheetData = {
-        ...tableResult.sheets[0],
-        rows: enhancedRows,
-        rowCount: enhancedRows.length,
-        stats: {
-          ...tableResult.sheets[0].stats,
-          totalCells: enhancedRows.length * 2,
-          filledCells: enhancedRows.reduce((count, row) =>
-            count + Object.values(row.cells).filter(cell => cell.filled).length, 0
-          ),
-        },
-      };
-
-      // Return enhanced result
-      const mergedResult: QuestionnaireStructure = {
-        ...tableResult,
-        sheets: [enhancedSheet],
-        stats: {
-          ...tableResult.stats,
-          totalRows: enhancedRows.length,
-          totalCells: enhancedRows.length * 2,
-          filledCells: enhancedSheet.stats.filledCells,
-        },
-        metadata: {
-          ...tableResult.metadata,
-          classification: {
-            documentType: classification.documentType,
-            recommendedMethod: classification.recommendedMethod,
-            sections: classification.sections.map(s => s.name),
-            language: classification.language,
-          },
-          textQA: {
-            itemCount: textResult.items.length,
-            sections: textResult.sections,
-            pageCount: textResult.pageCount,
-          },
-        },
-      };
-
-      return mergedResult;
-    } else {
-      // No missing pages, just enhance metadata
-      return {
-        ...tableResult,
-        metadata: {
-          ...tableResult.metadata,
-          classification: {
-            documentType: classification.documentType,
-            recommendedMethod: classification.recommendedMethod,
-            sections: classification.sections.map(s => s.name),
-            language: classification.language,
-          },
-          textQA: {
-            itemCount: textResult.items.length,
-            sections: textResult.sections,
-            pageCount: textResult.pageCount,
-          },
-        },
-      };
+      console.log(`    Pages without tables: [${missingPages.join(', ')}] (text in textContent)`);
     }
+
+    // Just enhance metadata, don't add text rows to tables
+    // Tables should only contain table data
+    return {
+      ...tableResult,
+      metadata: {
+        ...tableResult.metadata,
+        classification: {
+          documentType: classification.documentType,
+          recommendedMethod: classification.recommendedMethod,
+          sections: classification.sections.map(s => s.name),
+          language: classification.language,
+        },
+        textQA: {
+          itemCount: textResult.items.length,
+          sections: textResult.sections,
+          pageCount: textResult.pageCount,
+          missingPages, // Store for reference
+        },
+      },
+    };
   }
 
   /**
-   * Extract using Azure Document Intelligence table extraction
+   * Extract using Azure Document Intelligence - merges tables and paragraphs by position
    */
   private async extractWithAzure(filepath: string, filename: string): Promise<QuestionnaireStructure> {
-    console.log('  Using Azure Document Intelligence for table extraction...');
+    console.log('  Using Azure Document Intelligence...');
     const result = await extractPdfWithAzure(filepath);
 
-    const sheets = this.parseRawTablesToSheets(result, filename);
-
-    // Extract Q&A pairs from all text elements using Claude Vision (for items outside tables)
-    if (result.paragraphs?.length || result.keyValuePairs?.length) {
-      const visualQARows = await this.extractVisualQARows(result, sheets, filepath);
-      if (visualQARows.length > 0 && sheets.length > 0) {
-        // Add visual Q&A rows to the first sheet
-        const lastRowNum = Math.max(...sheets[0].rows.map(r => r.row), 0);
-        for (let i = 0; i < visualQARows.length; i++) {
-          visualQARows[i].row = lastRowNum + i + 1;
-          visualQARows[i].cells['A'].ref = `A${lastRowNum + i + 1}`;
-          visualQARows[i].cells['B'].ref = `B${lastRowNum + i + 1}`;
-        }
-        sheets[0].rows.push(...visualQARows);
-        sheets[0].rowCount = sheets[0].rows.length;
-        console.log(`  ✓ Added ${visualQARows.length} Q&A pairs from visual analysis`);
-      }
-    }
+    // Parse tables and paragraphs together, sorted by position
+    const sheets = await this.parseContentByPosition(result, filename, filepath);
 
     const totalRows = sheets.reduce((sum, sheet) => sum + sheet.rows.length, 0);
     const totalCells = sheets.reduce((sum, sheet) => sum + sheet.stats.totalCells, 0);
@@ -523,6 +448,561 @@ export class PdfStructureExtractor {
         }
       },
     };
+  }
+
+  /**
+   * Parse content by position - merges tables and paragraphs in document order.
+   * This recreates the exact structure of the PDF: text, then table, then text, etc.
+   */
+  private async parseContentByPosition(
+    result: DocumentAnalysisResult,
+    filename: string,
+    filepath?: string
+  ): Promise<SheetData[]> {
+    const colLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+    // Uses module-level ContentBlock type
+    const blocks: ContentBlock[] = [];
+
+    // Add tables as content blocks
+    for (let i = 0; i < result.tables.length; i++) {
+      const table = result.tables[i];
+      // Get the top y-position of the table from its first cell
+      let minY = Infinity;
+      for (const cell of table.cells) {
+        if (cell.polygon && cell.polygon[1] < minY) {
+          minY = cell.polygon[1];
+        }
+      }
+      blocks.push({
+        type: 'table',
+        pageNumber: table.pageNumber,
+        yPosition: minY !== Infinity ? minY : 0,
+        tableIndex: i,
+      });
+    }
+
+    // Add paragraphs as content blocks (filtered to avoid table content duplication)
+    const tableTextSet = new Set<string>();
+    for (const table of result.tables) {
+      for (const cell of table.cells) {
+        if (cell.content?.trim()) {
+          tableTextSet.add(cell.content.trim().toLowerCase().substring(0, 50));
+        }
+      }
+    }
+
+    // Also track keyValuePairs content to avoid duplicating in paragraphs
+    const kvpTextSet = new Set<string>();
+    if (result.keyValuePairs) {
+      for (const kvp of result.keyValuePairs) {
+        if (kvp.key?.content?.trim()) {
+          kvpTextSet.add(kvp.key.content.trim().toLowerCase().substring(0, 50));
+        }
+        if (kvp.value?.content?.trim()) {
+          kvpTextSet.add(kvp.value.content.trim().toLowerCase().substring(0, 50));
+        }
+      }
+    }
+
+    // Add keyValuePairs as Q&A content blocks (question + answer together)
+    if (result.keyValuePairs) {
+      for (const kvp of result.keyValuePairs) {
+        if (!kvp.key?.content?.trim()) continue;
+
+        const keyContent = kvp.key.content.trim();
+        const normalizedKey = keyContent.toLowerCase().substring(0, 50);
+
+        // Skip if already in a table
+        if (tableTextSet.has(normalizedKey)) continue;
+
+        // Skip if key is too short (likely noise or checkbox values)
+        // Note: Azure keyValuePairs are already filtered by Azure, so use lower threshold
+        if (keyContent.length < 3) continue;
+
+        // Skip if key looks like an answer (Yes/No/N/A/checkbox marks)
+        if (/^(Yes|No|N\/A|NA|X|✓|✗|☐|☑|☒|-|—)$/i.test(keyContent)) continue;
+
+        // Get y-position from key's polygon if available [x1,y1, x2,y2, x3,y3, x4,y4]
+        const keyPolygon = kvp.key?.polygon;
+        const yPosition = keyPolygon && keyPolygon.length >= 2 ? keyPolygon[1] : 0;
+
+        blocks.push({
+          type: 'keyvalue',
+          pageNumber: kvp.pageNumber || kvp.key?.pageNumber || 1,
+          yPosition,
+          content: keyContent,
+          kvValue: kvp.value?.content?.trim() || '',
+          polygon: keyPolygon,
+        });
+      }
+    }
+
+    // Collect paragraphs with positions for spatial analysis
+    interface ParagraphWithPosition {
+      content: string;
+      pageNumber: number;
+      x: number;  // Left edge
+      y: number;  // Top edge
+      polygon?: number[];
+    }
+
+    const allParagraphs: ParagraphWithPosition[] = [];
+
+    if (result.paragraphs) {
+      for (const para of result.paragraphs) {
+        if (!para.content?.trim()) continue;
+
+        const content = para.content.trim();
+        const normalizedContent = content.toLowerCase().substring(0, 50);
+
+        // Skip if this paragraph text is in a table
+        if (tableTextSet.has(normalizedContent)) continue;
+        // Skip if this paragraph text is in keyValuePairs
+        if (kvpTextSet.has(normalizedContent)) continue;
+
+        // Get position from polygon [x1,y1, x2,y2, x3,y3, x4,y4]
+        const x = para.polygon?.[0] || 0;
+        const y = para.polygon?.[1] || 0;
+
+        allParagraphs.push({
+          content,
+          pageNumber: para.pageNumber || 1,
+          x,
+          y,
+          polygon: para.polygon,
+        });
+      }
+    }
+
+    // SPATIAL PAIRING: Find answers to the RIGHT of questions on the same line
+    const Y_TOLERANCE = 0.3; // inches - same line tolerance
+    const usedIndices = new Set<number>();
+
+    for (let i = 0; i < allParagraphs.length; i++) {
+      const para = allParagraphs[i];
+
+      // Is this a potential answer? (short text: Yes/No/N/A or very short)
+      const isShortAnswer = /^(Yes|No|N\/A|NA|X|✓|✗)$/i.test(para.content) || para.content.length < 5;
+      if (!isShortAnswer) continue;
+
+      // Find a question to the LEFT on the same line (same Y, lower X)
+      let bestQuestion: ParagraphWithPosition | null = null;
+      let bestQuestionIdx = -1;
+
+      for (let j = 0; j < allParagraphs.length; j++) {
+        if (i === j || usedIndices.has(j)) continue;
+        const candidate = allParagraphs[j];
+
+        // Must be on same page
+        if (candidate.pageNumber !== para.pageNumber) continue;
+
+        // Must be on same horizontal line (Y within tolerance)
+        if (Math.abs(candidate.y - para.y) > Y_TOLERANCE) continue;
+
+        // Must be to the LEFT of the answer (lower X)
+        if (candidate.x >= para.x) continue;
+
+        // Must be longer than the answer (looks like a question)
+        if (candidate.content.length <= para.content.length) continue;
+
+        // Pick the closest question to the left
+        if (!bestQuestion || candidate.x > bestQuestion.x) {
+          bestQuestion = candidate;
+          bestQuestionIdx = j;
+        }
+      }
+
+      if (bestQuestion && bestQuestionIdx >= 0) {
+        // Found a Q&A pair based on position!
+        usedIndices.add(i);  // Mark answer as used
+        usedIndices.add(bestQuestionIdx);  // Mark question as used
+
+        blocks.push({
+          type: 'keyvalue',
+          pageNumber: para.pageNumber,
+          yPosition: bestQuestion.y,
+          content: bestQuestion.content,
+          kvValue: para.content,
+          polygon: bestQuestion.polygon,
+        });
+      }
+      // If no question found to the left, this answer will be added as unpaired paragraph below
+    }
+
+    // Add remaining unpaired paragraphs (instruction text, section headers, context, etc.)
+    for (let i = 0; i < allParagraphs.length; i++) {
+      if (usedIndices.has(i)) continue;  // Already used in a Q&A pair
+
+      const para = allParagraphs[i];
+      blocks.push({
+        type: 'paragraph',
+        pageNumber: para.pageNumber,
+        yPosition: para.y,
+        content: para.content,
+        polygon: para.polygon,
+      });
+    }
+
+    // Sort all blocks by page, then y-position
+    blocks.sort((a, b) => {
+      if (a.pageNumber !== b.pageNumber) return a.pageNumber - b.pageNumber;
+      return a.yPosition - b.yPosition;
+    });
+
+    // No need for Claude correction - we used spatial analysis
+    const correctedBlocks = blocks;
+
+    // Remove empty blocks
+    const filteredBlocks = correctedBlocks.filter(b => b.type === 'table' || b.type === 'keyvalue' || (b.content && b.content.length > 0));
+
+    console.log(`  Found ${filteredBlocks.filter(b => b.type === 'table').length} tables, ${filteredBlocks.filter(b => b.type === 'paragraph' || b.type === 'keyvalue').length} paragraphs`);
+
+    // All content goes into ONE sheet, rendered vertically in document order
+    // Tables and text are distinguished by rowType so frontend can render them differently
+    const allRows: RowData[] = [];
+    let globalRowNumber = 1;
+
+    // Track column headers for checkbox interpretation
+    let currentColumnHeaders: Map<number, string> = new Map();
+    let headerXPositions: Array<{ xMin: number; xMax: number; header: string; colIdx: number }> = [];
+
+    for (const block of filteredBlocks) {
+      if (block.type === 'table' && block.tableIndex !== undefined) {
+        // Process table rows
+        const table = result.tables[block.tableIndex];
+        const tableRows = this.parseTableToRows(table, globalRowNumber, colLetters, currentColumnHeaders, headerXPositions);
+        allRows.push(...tableRows.rows);
+        globalRowNumber += tableRows.rows.length;
+        currentColumnHeaders = tableRows.columnHeaders;
+        headerXPositions = tableRows.headerXPositions;
+      } else if (block.type === 'keyvalue' && block.content) {
+        // Add key-value pair as a Q&A row with label and value in two columns
+        const rowNum = globalRowNumber++;
+        allRows.push({
+          row: rowNum,
+          isEmpty: false,
+          rowType: 'text', // Rendered as text, but with Q&A structure
+          cells: {
+            'A': {
+              ref: `A${rowNum}`,
+              value: block.content, // Question/Label
+              type: 'string',
+              filled: true,
+              role: 'label',
+              pageNumber: block.pageNumber,
+              polygon: block.polygon,
+            },
+            'B': {
+              ref: `B${rowNum}`,
+              value: block.kvValue || '', // Answer/Value
+              type: 'string',
+              filled: !!block.kvValue,
+              role: 'value',
+              pageNumber: block.pageNumber,
+            },
+          },
+        });
+      } else if (block.type === 'paragraph' && block.content) {
+        // Add paragraph as a text row (rowType: 'text' so frontend renders differently)
+        allRows.push({
+          row: globalRowNumber++,
+          isEmpty: false,
+          rowType: 'text', // Mark as text content - frontend should render as text block, not table row
+          cells: {
+            'A': {
+              ref: `A${globalRowNumber - 1}`,
+              value: block.content,
+              type: 'string',
+              filled: true,
+              role: 'label',
+              pageNumber: block.pageNumber,
+              polygon: block.polygon,
+            },
+          },
+        });
+      }
+    }
+
+    // Calculate stats
+    let totalCells = 0;
+    let filledCells = 0;
+    for (const row of allRows) {
+      for (const cell of Object.values(row.cells)) {
+        totalCells++;
+        if (cell.filled) filledCells++;
+      }
+    }
+
+    console.log(`  ✓ Merged ${allRows.length} rows in document order`);
+
+    return [{
+      name: 'Document',
+      index: 0,
+      rows: allRows,
+      mergedRanges: [],
+      topic: this.detectTopicFromFilename(filename),
+      rowCount: allRows.length,
+      columnCount: Math.max(...allRows.map(r => Object.keys(r.cells).length), 1),
+      stats: {
+        totalCells,
+        filledCells,
+        emptyRows: 0,
+        mergedRanges: 0,
+      },
+    }];
+  }
+
+  /**
+   * Use Claude Vision to correct Azure's paragraph extraction errors.
+   * Azure often splits Q&A pairs incorrectly (e.g., "No Elaeis guineensis" instead of separate Q and A).
+   * This uses the existing VisualQAExtractor to identify proper Q&A pairs.
+   */
+  private async correctParagraphsWithClaude(
+    blocks: ContentBlock[],
+    pdfPath?: string
+  ): Promise<ContentBlock[]> {
+    // Separate paragraphs from other block types
+    const paragraphBlocks = blocks.filter(b => b.type === 'paragraph' && b.content);
+    const otherBlocks = blocks.filter(b => b.type !== 'paragraph');
+
+    // If very few paragraphs, not worth Claude call - return all blocks including paragraphs
+    if (paragraphBlocks.length < 3) {
+      return [...otherBlocks, ...paragraphBlocks].sort((a, b) => {
+        if (a.pageNumber !== b.pageNumber) return a.pageNumber - b.pageNumber;
+        return a.yPosition - b.yPosition;
+      });
+    }
+
+    // Convert paragraph blocks to TextElementWithPosition format for VisualQAExtractor
+    const textElements: TextElementWithPosition[] = paragraphBlocks.map(b => ({
+      content: b.content || '',
+      pageNumber: b.pageNumber,
+      boundingBox: b.polygon,
+    }));
+
+    // Get unique page numbers for page info
+    const pageNumbers = [...new Set(paragraphBlocks.map(b => b.pageNumber))];
+    const pages: PageInfo[] = pageNumbers.map(pn => ({
+      pageNumber: pn,
+      width: 8.5,  // Default letter size
+      height: 11,
+    }));
+
+    try {
+      console.log(`  🔍 Using Claude Vision to correct ${paragraphBlocks.length} paragraphs...`);
+
+      const extractor = new VisualQAExtractor(
+        process.env.AWS_REGION || 'eu-central-1',
+        { saveTrainingData: true } // Save for model training
+      );
+
+      const qaPairs = await extractor.extractQAPairs(textElements, pages, pdfPath);
+
+      if (qaPairs.length === 0) {
+        console.log('  No Q&A pairs identified by Claude, keeping all content');
+        // Keep all blocks including paragraphs
+        return [...otherBlocks, ...paragraphBlocks].sort((a, b) => {
+          if (a.pageNumber !== b.pageNumber) return a.pageNumber - b.pageNumber;
+          return a.yPosition - b.yPosition;
+        });
+      }
+
+      console.log(`  ✓ Claude identified ${qaPairs.length} Q&A pairs`);
+
+      // Convert Claude-identified Q&A pairs to keyvalue blocks
+      const newKeyValueBlocks: ContentBlock[] = [];
+      const usedParagraphIndices = new Set<number>();
+
+      for (const pair of qaPairs) {
+        // Get position from the question element
+        const questionElement = paragraphBlocks[pair.questionIdx];
+        usedParagraphIndices.add(pair.questionIdx);
+        if (pair.answerIdx !== undefined) {
+          usedParagraphIndices.add(pair.answerIdx);
+        }
+
+        newKeyValueBlocks.push({
+          type: 'keyvalue',
+          pageNumber: pair.pageNumber,
+          yPosition: questionElement?.yPosition || 0,
+          content: pair.question,
+          kvValue: pair.answer,
+          polygon: pair.questionBoundingBox,
+        });
+      }
+
+      // Keep remaining paragraphs that weren't matched as Q&A
+      const remainingParagraphs = paragraphBlocks.filter((_, idx) => !usedParagraphIndices.has(idx));
+
+      // Combine ALL content: tables + Azure keyValuePairs + Claude Q&A pairs + remaining paragraphs
+      const correctedBlocks = [...otherBlocks, ...newKeyValueBlocks, ...remainingParagraphs];
+
+      // Re-sort by page and y-position
+      correctedBlocks.sort((a, b) => {
+        if (a.pageNumber !== b.pageNumber) return a.pageNumber - b.pageNumber;
+        return a.yPosition - b.yPosition;
+      });
+
+      return correctedBlocks;
+    } catch (error) {
+      console.error('  Error in Claude paragraph correction:', error);
+      // On error, keep all content including paragraphs
+      return [...otherBlocks, ...paragraphBlocks].sort((a, b) => {
+        if (a.pageNumber !== b.pageNumber) return a.pageNumber - b.pageNumber;
+        return a.yPosition - b.yPosition;
+      });
+    }
+  }
+
+  /**
+   * Parse a single table into rows (extracted from parseRawTablesToSheets)
+   */
+  private parseTableToRows(
+    table: DocumentAnalysisResult['tables'][0],
+    startRowNumber: number,
+    colLetters: string,
+    currentColumnHeaders: Map<number, string>,
+    headerXPositions: Array<{ xMin: number; xMax: number; header: string; colIdx: number }>
+  ): {
+    rows: RowData[];
+    columnHeaders: Map<number, string>;
+    headerXPositions: Array<{ xMin: number; xMax: number; header: string; colIdx: number }>;
+  } {
+    const rows: RowData[] = [];
+    let globalRowNumber = startRowNumber;
+
+    // Build a map of (row, col) -> cell for this table
+    const cellMap = new Map<string, typeof table.cells[0]>();
+    let maxRow = 0;
+    let maxCol = 0;
+
+    for (const cell of table.cells) {
+      const key = `${cell.rowIndex},${cell.columnIndex}`;
+      cellMap.set(key, cell);
+      maxRow = Math.max(maxRow, cell.rowIndex);
+      maxCol = Math.max(maxCol, cell.columnIndex);
+    }
+
+    // Process each row in the table
+    for (let rowIdx = 0; rowIdx <= maxRow; rowIdx++) {
+      const rowCells: Record<string, CellData> = {};
+      let isHeaderRow = false;
+      let isEmpty = true;
+      let hasYesNoHeaders = false;
+
+      // Collect all cells in this row
+      const rowCellData: Array<{ colIdx: number; cell: typeof table.cells[0] }> = [];
+      for (let colIdx = 0; colIdx <= maxCol && colIdx < 26; colIdx++) {
+        const cell = cellMap.get(`${rowIdx},${colIdx}`);
+        if (cell) {
+          rowCellData.push({ colIdx, cell });
+        }
+      }
+
+      // Check if this is a YES/NO/Comments header row
+      const rowContents = rowCellData.map(d => d.cell.content.trim().toLowerCase());
+      const hasStandaloneYes = rowContents.some(c => /^yes$/i.test(c));
+      const hasStandaloneNo = rowContents.some(c => /^no$/i.test(c) || /^n\/a$/i.test(c));
+
+      if (hasStandaloneYes && (hasStandaloneNo || rowContents.some(c => /^comments?$/i.test(c)))) {
+        hasYesNoHeaders = true;
+        currentColumnHeaders = new Map();
+        headerXPositions = [];
+        for (const { colIdx, cell } of rowCellData) {
+          currentColumnHeaders.set(colIdx, cell.content.trim());
+          const content = cell.content.trim();
+          if (/^(yes|no|n\/a|na|comments?)$/i.test(content) && cell.polygon) {
+            headerXPositions.push({
+              xMin: cell.polygon[0],
+              xMax: cell.polygon[2],
+              header: content,
+              colIdx
+            });
+          }
+        }
+      }
+
+      const looksLikeHeaderRow = rowCellData.some(d => d.cell.kind === 'columnHeader') || hasYesNoHeaders;
+
+      // Build the row cells
+      for (const { colIdx, cell } of rowCellData) {
+        if (colIdx >= 26) continue;
+
+        const colLetter = colLetters[colIdx];
+        let value = cell.content.trim();
+        const filled = value.length > 0;
+        if (filled) isEmpty = false;
+
+        if (cell.kind === 'columnHeader' || hasYesNoHeaders) {
+          isHeaderRow = true;
+        }
+
+        let role: CellRole = 'value';
+        if (cell.kind === 'columnHeader' || hasYesNoHeaders) {
+          role = 'header';
+        } else if (colIdx === 0) {
+          role = 'label';
+        }
+
+        // Handle checkbox marks
+        let isSelected = value.includes(':selected:') || /^[x☒✓✔]$/i.test(value);
+        value = value.replace(/:selected:/g, '').replace(/:unselected:/g, '').trim();
+
+        if (!isHeaderRow && currentColumnHeaders.size > 0 && isSelected) {
+          let header = currentColumnHeaders.get(colIdx)?.toLowerCase() || '';
+          if (!header && cell.polygon && headerXPositions.length > 0) {
+            const cellX = cell.polygon[0];
+            const matchedHeader = headerXPositions.find(h =>
+              cellX >= h.xMin - 0.1 && cellX <= h.xMax + 0.1
+            );
+            if (matchedHeader) header = matchedHeader.header.toLowerCase();
+          }
+
+          if (/^yes$/i.test(header)) value = 'Yes';
+          else if (/^no$/i.test(header)) value = 'No';
+          else if (/^n\/a/i.test(header)) value = 'N/A';
+          else if (!value) value = '☒';
+        }
+
+        rowCells[colLetter] = {
+          ref: `${colLetter}${globalRowNumber}`,
+          value,
+          type: 'string',
+          filled,
+          role,
+          polygon: cell.polygon,
+          pageNumber: cell.pageNumber || table.pageNumber,
+        };
+      }
+
+      if (isEmpty && Object.keys(rowCells).length === 0) continue;
+
+      // Add empty cells for gaps
+      for (let colIdx = 0; colIdx <= maxCol && colIdx < 26; colIdx++) {
+        const colLetter = colLetters[colIdx];
+        if (!rowCells[colLetter]) {
+          rowCells[colLetter] = {
+            ref: `${colLetter}${globalRowNumber}`,
+            value: '',
+            type: 'string',
+            filled: false,
+            role: colIdx === 0 ? 'label' : 'value',
+          };
+        }
+      }
+
+      rows.push({
+        row: globalRowNumber,
+        cells: rowCells,
+        isEmpty,
+        rowType: isHeaderRow ? 'header' : 'data',
+      });
+
+      globalRowNumber++;
+    }
+
+    return { rows, columnHeaders: currentColumnHeaders, headerXPositions };
   }
 
   /**
@@ -1111,6 +1591,7 @@ export class PdfStructureExtractor {
               filled: true,
               role: 'label',
               pageNumber: pair.pageNumber,
+              polygon: pair.questionBoundingBox, // For y-position sorting
             },
             'B': {
               ref: 'B0',
@@ -1119,6 +1600,7 @@ export class PdfStructureExtractor {
               filled: true,
               role: 'value',
               pageNumber: pair.pageNumber,
+              polygon: pair.questionBoundingBox, // Same position as question
               // Store visual Q&A metadata for review
               visualQAMetadata: {
                 confidence: pair.confidence,
@@ -1141,6 +1623,67 @@ export class PdfStructureExtractor {
   }
 
   /**
+   * Append Visual Q&A rows as a separate section at the end.
+   * Keeps table structure completely intact - Visual Q&A goes to its own section.
+   */
+  private insertVisualQARowsInline(sheet: SheetData, visualQARows: RowData[]): void {
+    if (visualQARows.length === 0) return;
+
+    const getRowY = (row: RowData): number => {
+      for (const cell of Object.values(row.cells)) {
+        if (cell.polygon && cell.polygon.length >= 2) {
+          return cell.polygon[1];
+        }
+      }
+      return Infinity;
+    };
+
+    const getRowPage = (row: RowData): number => {
+      for (const cell of Object.values(row.cells)) {
+        if (cell.pageNumber) return cell.pageNumber;
+      }
+      return 999;
+    };
+
+    // Sort Visual Q&A by page, then y-position
+    visualQARows.sort((a, b) => {
+      const pageA = getRowPage(a);
+      const pageB = getRowPage(b);
+      if (pageA !== pageB) return pageA - pageB;
+      return getRowY(a) - getRowY(b);
+    });
+
+    // Add section header
+    const nextRowNum = sheet.rows.length + 1;
+    sheet.rows.push({
+      row: nextRowNum,
+      cells: {
+        A: {
+          ref: `A${nextRowNum}`,
+          value: 'Additional Text Content',
+          type: 'string',
+          filled: true,
+          role: 'section',
+          format: { bold: true },
+        },
+      },
+      isEmpty: false,
+      rowType: 'section',
+    });
+
+    // Append all Visual Q&A rows
+    for (const row of visualQARows) {
+      row.row = sheet.rows.length + 1;
+      for (const [col, cell] of Object.entries(row.cells)) {
+        cell.ref = `${col}${row.row}`;
+      }
+      sheet.rows.push(row);
+    }
+
+    sheet.rowCount = sheet.rows.length;
+  }
+
+  /**
    * Extract section titles from markdown headings and map them to table indices
    * Azure markdown format: # Heading, ## Heading, ### Heading followed by <table> tags
    */
@@ -1155,8 +1698,8 @@ export class PdfStructureExtractor {
     }
 
     // Find all markdown headings and their positions
-    // Matches: # Title, ## Title, ### Title
-    const headingRegex = /^(#{1,3})\s+(.+)$/gm;
+    // Matches: # Title, ## Title, ### Title, #### Title, ##### Title, ###### Title
+    const headingRegex = /^(#{1,6})\s+(.+)$/gm;
     const headings: Array<{ level: number; title: string; index: number }> = [];
 
     let match;

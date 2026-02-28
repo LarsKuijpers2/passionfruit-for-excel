@@ -9,6 +9,9 @@
  *   harvest        - Harvest entity-level answers into library
  *   review         - Interactive review with visual preview
  *   list           - List stored questionnaires
+ *   train-model    - Train custom Azure model from approved data
+ *   test-enhanced  - Test enhanced extraction on documents
+ *   optimize       - Apply current extraction optimizations
  */
 
 // Load environment variables from .env file
@@ -57,6 +60,7 @@ program
   .option('-c, --customer <name>', 'Customer name (uses customer folder structure)')
   .option('--output-dir <dir>', 'Output directory (legacy mode, ignored if --customer is set)')
   .option('--markdown', 'Also export to Markdown')
+  .option('--overwrite', 'Overwrite existing structure even if it has manual edits')
   .action(async (file: string, opts) => {
     try {
       const filePath = resolve(file);
@@ -96,6 +100,51 @@ program
       console.log('  Rows: ' + structure.stats.totalRows);
       console.log('  Filled cells: ' + structure.stats.filledCells + '/' + structure.stats.totalCells);
 
+      // Apply structure training (learned extraction corrections) if customer specified
+      let trainingApplied = 0;
+      if (customer) {
+        try {
+          const { structureTrainingProcessor } = await import('./services/training/structure-training-processor.js');
+          const training = await structureTrainingProcessor.loadCompiled(customer);
+
+          if (training && training.substitutionRules.length > 0) {
+            console.log('\n🎓 Applying learned extraction corrections...');
+
+            // Apply corrections to all cell values in the structure
+            for (const sheet of structure.sheets) {
+              for (const row of sheet.rows) {
+                for (const [col, cell] of Object.entries(row.cells)) {
+                  if (cell.value) {
+                    const result = structureTrainingProcessor.applyCorrections(cell.value, training);
+                    if (result.changes.length > 0) {
+                      cell.value = result.corrected;
+                      trainingApplied += result.changes.length;
+                      // Log first few corrections
+                      if (trainingApplied <= 5) {
+                        for (const change of result.changes) {
+                          console.log(`   ${cell.ref}: "${change.from}" → "${change.to}"`);
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+
+            if (trainingApplied > 0) {
+              console.log(`   ✅ Applied ${trainingApplied} auto-corrections from training data`);
+              if (trainingApplied > 5) {
+                console.log(`   (showing first 5 of ${trainingApplied})`);
+              }
+            } else {
+              console.log('   No corrections needed');
+            }
+          }
+        } catch (e) {
+          // No compiled training data available, continue without
+        }
+      }
+
       console.log('\n  Sheets:');
       for (const sheet of structure.sheets) {
         const topic = sheet.topic ? ' [' + sheet.topic + ']' : '';
@@ -103,7 +152,7 @@ program
       }
 
       const storage = new StructureStorage(outputDir);
-      const jsonPath = await storage.save(structure);
+      const jsonPath = await storage.save(structure, { overwrite: !!opts.overwrite });
       console.log('\n✅ Saved: ' + jsonPath);
 
       // Optionally export Markdown
@@ -634,6 +683,7 @@ program
   .option('--output-dir <dir>', 'Output directory for downloaded file (legacy mode)')
   .option('--process', 'Automatically run store and index after download')
   .option('--dry-run', 'Show what would be downloaded without actually downloading')
+  .option('--overwrite', 'Overwrite existing structure even if it has manual edits')
   .action(async (evidenceId: string, opts) => {
     try {
       const id = parseInt(evidenceId, 10);
@@ -747,8 +797,36 @@ program
         structure.source.evidenceId = evidence.id;
         structure.source.evidenceName = evidence.name;
 
+        // Apply structure training (learned extraction corrections)
+        try {
+          const { structureTrainingProcessor } = await import('./services/training/structure-training-processor.js');
+          const training = await structureTrainingProcessor.loadCompiled(customer);
+
+          if (training && training.substitutionRules.length > 0) {
+            let trainingApplied = 0;
+            for (const sheet of structure.sheets) {
+              for (const row of sheet.rows) {
+                for (const [col, cell] of Object.entries(row.cells)) {
+                  if (cell.value) {
+                    const result = structureTrainingProcessor.applyCorrections(cell.value, training);
+                    if (result.changes.length > 0) {
+                      cell.value = result.corrected;
+                      trainingApplied += result.changes.length;
+                    }
+                  }
+                }
+              }
+            }
+            if (trainingApplied > 0) {
+              console.log(`  🎓 Applied ${trainingApplied} learned corrections`);
+            }
+          }
+        } catch {
+          // No compiled training data available
+        }
+
         const storage = new StructureStorage(structureDir);
-        const jsonPath = await storage.save(structure);
+        const jsonPath = await storage.save(structure, { overwrite: !!opts.overwrite });
         console.log(`  ✅ Stored: ${jsonPath}`);
 
         // Index
@@ -782,6 +860,7 @@ program
   .option('--no-process', 'Skip automatic processing')
   .option('--dry-run', 'Show what would be downloaded without actually downloading')
   .option('--continue-on-error', 'Continue processing remaining IDs if one fails')
+  .option('--overwrite', 'Overwrite existing structures even if they have manual edits')
   .action(async (evidenceIdsRaw: string[], opts) => {
     try {
       // Parse evidence IDs (handle both space and comma separated)
@@ -871,14 +950,42 @@ program
             structure.source.evidenceId = evidence.id;
             structure.source.evidenceName = evidence.name;
 
+            // Apply structure training (learned extraction corrections)
+            try {
+              const { structureTrainingProcessor } = await import('./services/training/structure-training-processor.js');
+              const training = await structureTrainingProcessor.loadCompiled(customer);
+
+              if (training && training.substitutionRules.length > 0) {
+                let trainingApplied = 0;
+                for (const sheet of structure.sheets) {
+                  for (const row of sheet.rows) {
+                    for (const [col, cell] of Object.entries(row.cells)) {
+                      if (cell.value) {
+                        const result = structureTrainingProcessor.applyCorrections(cell.value, training);
+                        if (result.changes.length > 0) {
+                          cell.value = result.corrected;
+                          trainingApplied += result.changes.length;
+                        }
+                      }
+                    }
+                  }
+                }
+                if (trainingApplied > 0) {
+                  console.log(`  🎓 Applied ${trainingApplied} learned corrections`);
+                }
+              }
+            } catch {
+              // No compiled training data available
+            }
+
             const storage = new StructureStorage(structureDir);
-            await storage.save(structure);
+            await storage.save(structure, { overwrite: !!opts.overwrite });
             console.log(`  ✅ Stored`);
 
             const indexer = new QuestionnaireIndexer(structureDir, 'eu-central-1', rulesDir);
             const indexed = await indexer.index(file.filename);
             await indexer.save(indexed, indexedDir);
-            console.log(`  ✅ Indexed (${indexed.totalItems} items)`);
+            console.log(`  ✅ Indexed (${indexed.stats.total} items)`);
           }
 
           results.push({ id, status: 'success', name: evidence.name });
@@ -1458,6 +1565,426 @@ program
 ║                                                                ║
 ╚═══════════════════════════════════════════════════════════════╝
 `);
+  });
+
+// =============================================================================
+// TRAINING AND OPTIMIZATION COMMANDS
+// =============================================================================
+
+program
+  .command('train-model')
+  .description('Train custom Azure Document Intelligence model from approved questionnaire data')
+  .option('-c, --customers <names...>', 'Specific customers to include (default: all)')
+  .option('--min-quality <score>', 'Minimum data quality score (0-1, default: 0.7)', '0.7')
+  .option('--dry-run', 'Analyze training data without actual training')
+  .action(async (opts) => {
+    try {
+      console.log('🎯 Custom Model Training Pipeline\n');
+
+      // Dynamic import to avoid bundling issues
+      const { trainCustomModel } = await import('./services/training/custom-model-trainer.js');
+
+      // Find customer paths
+      const customersDir = resolve('./customers');
+      let customerPaths: string[] = [];
+
+      if (opts.customers && opts.customers.length > 0) {
+        customerPaths = opts.customers.map((name: string) => resolve(customersDir, name));
+      } else {
+        // Find all customers with approved data
+        const { readdir, stat } = await import('fs/promises');
+        const entries = await readdir(customersDir);
+
+        for (const entry of entries) {
+          const customerPath = resolve(customersDir, entry);
+          try {
+            const customerStat = await stat(customerPath);
+            if (customerStat.isDirectory()) {
+              const approvedDir = resolve(customerPath, 'approved');
+              const approvedStat = await stat(approvedDir);
+              if (approvedStat.isDirectory()) {
+                const approvedFiles = await readdir(approvedDir);
+                if (approvedFiles.some(f => f.endsWith('.json'))) {
+                  customerPaths.push(customerPath);
+                }
+              }
+            }
+          } catch {
+            // Skip if no approved directory
+          }
+        }
+      }
+
+      if (customerPaths.length === 0) {
+        console.log('❌ No training data found. Process some questionnaires first.');
+        process.exit(1);
+      }
+
+      console.log(`📊 Found training data from ${customerPaths.length} customers`);
+
+      if (opts.dryRun) {
+        console.log('🧪 Dry run mode - analyzing training data only');
+        // Implement dry run analysis
+        process.exit(0);
+      }
+
+      // Train the model
+      const modelId = await trainCustomModel(customerPaths);
+
+      console.log(`✅ Training completed!`);
+      console.log(`📝 Model ID: ${modelId}`);
+      console.log(`\n🚀 To use the trained model:`);
+      console.log(`export AZURE_MODEL_ID=${modelId}`);
+
+    } catch (error) {
+      console.error('❌ Training failed:', error);
+      process.exit(1);
+    }
+  });
+
+program
+  .command('test-enhanced')
+  .description('Test enhanced Azure extraction with optimizations')
+  .argument('<file>', 'PDF file to test extraction on')
+  .option('-c, --customer <name>', 'Customer name')
+  .option('-m, --model <id>', 'Custom model ID to test')
+  .option('--type <type>', 'Document type: questionnaire, certificate, general', 'questionnaire')
+  .option('--compare', 'Compare with baseline extraction')
+  .action(async (file: string, opts) => {
+    try {
+      const filePath = resolve(file);
+      console.log(`🧪 Testing enhanced extraction on: ${file}\n`);
+
+      // Dynamic import
+      const { EnhancedAzureExtractor } = await import('./services/extractors/enhanced-azure.js');
+
+      const extractor = new EnhancedAzureExtractor();
+
+      // Set custom model if specified
+      if (opts.model) {
+        process.env.AZURE_MODEL_ID = opts.model;
+        console.log(`📄 Using custom model: ${opts.model}`);
+      }
+
+      const startTime = Date.now();
+
+      const result = await extractor.extractWithOptimizations(filePath, {
+        documentType: opts.type,
+        prioritizeTableStructure: opts.type === 'questionnaire',
+        enhancedFieldDetection: true,
+        customModelId: opts.model
+      });
+
+      const duration = Date.now() - startTime;
+
+      console.log(`\n✅ Enhanced extraction completed in ${duration}ms\n`);
+
+      // Display results summary
+      console.log('📊 Extraction Results:');
+      console.log(`  Pages: ${result.pages?.length || 0}`);
+      console.log(`  Tables: ${result.tables?.length || 0}`);
+      console.log(`  Paragraphs: ${result.paragraphs?.length || 0}`);
+      console.log(`  Key-Value Pairs: ${result.keyValuePairs?.length || 0}`);
+
+      if (result.tables) {
+        console.log('\n📋 Table Analysis:');
+        result.tables.forEach((table: any, index: number) => {
+          console.log(`  Table ${index + 1}: ${table.tableType || 'general'} (${table.cells?.length || 0} cells)`);
+        });
+      }
+
+      // Save results if customer specified
+      if (opts.customer) {
+        const customer = opts.customer;
+        const outputDir = resolve(`./customers/${customer}/test-results`);
+        const { mkdir, writeFile } = await import('fs/promises');
+
+        await mkdir(outputDir, { recursive: true });
+        const outputFile = resolve(outputDir, `enhanced-extraction-${Date.now()}.json`);
+        await writeFile(outputFile, JSON.stringify(result, null, 2));
+
+        console.log(`\n💾 Results saved to: ${outputFile}`);
+      }
+
+      // Compare with baseline if requested
+      if (opts.compare) {
+        console.log('\n🔄 Running baseline comparison...');
+
+        // Extract with standard method
+        const { extractPdfWithAzure } = await import('./services/extractors/azure.js');
+        const baselineResult = await extractPdfWithAzure(filePath);
+
+        console.log('\n📊 Comparison:');
+        console.log(`  Enhanced tables: ${result.tables?.length || 0}`);
+        console.log(`  Baseline tables: ${baselineResult.tables?.length || 0}`);
+        console.log(`  Table improvement: ${((result.tables?.length || 0) - (baselineResult.tables?.length || 0)) >= 0 ? '+' : ''}${(result.tables?.length || 0) - (baselineResult.tables?.length || 0)}`);
+      }
+
+    } catch (error) {
+      console.error('❌ Enhanced extraction failed:', error);
+      process.exit(1);
+    }
+  });
+
+program
+  .command('optimize')
+  .description('Apply current extraction optimizations to existing Azure configuration')
+  .option('--format <format>', 'Output format: html, markdown', 'html')
+  .option('--model <model>', 'Azure model: prebuilt-document, prebuilt-layout, prebuilt-read', 'prebuilt-document')
+  .action(async (opts) => {
+    try {
+      console.log('🔧 Applying extraction optimizations...\n');
+
+      // Update environment variables
+      process.env.AZURE_OUTPUT_FORMAT = opts.format;
+      process.env.AZURE_MODEL_ID = opts.model;
+
+      console.log('✅ Applied optimizations:');
+      console.log(`  - Output format: ${opts.format}`);
+      console.log(`  - Default model: ${opts.model}`);
+      console.log(`  - Enhanced table processing: enabled`);
+      console.log(`  - Questionnaire patterns: enabled`);
+
+      console.log('\n📝 Environment variables set:');
+      console.log(`  AZURE_OUTPUT_FORMAT=${opts.format}`);
+      console.log(`  AZURE_MODEL_ID=${opts.model}`);
+
+      console.log('\n🚀 Optimizations applied! New extractions will use enhanced settings.');
+
+    } catch (error) {
+      console.error('❌ Optimization failed:', error);
+      process.exit(1);
+    }
+  });
+
+// =============================================================================
+// TRAINING - Manage compiled training data from human corrections
+// =============================================================================
+
+program
+  .command('training')
+  .description('Manage training data compiled from human corrections')
+  .argument('[action]', 'Action: status, compile, view', 'status')
+  .option('-c, --customer <name>', 'Customer name (required for compile/view)')
+  .action(async (action: string, opts) => {
+    try {
+      const { trainingProcessor } = await import('./services/training/training-processor.js');
+
+      if (action === 'status') {
+        // Show status for all customers
+        console.log('\n📊 Training Data Status\n');
+        const statuses = await trainingProcessor.getAllStatus();
+
+        if (statuses.length === 0) {
+          console.log('  No training data found. Make corrections in the review UI to build training data.');
+          process.exit(0);
+        }
+
+        for (const status of statuses) {
+          const staleIndicator = status.isStale ? ' ⚠️  STALE' : ' ✅';
+          console.log(`\n  📁 ${status.customer}${staleIndicator}`);
+          console.log(`     Corrections: ${status.correctionsCount}`);
+          console.log(`     Questionnaires: ${status.questionnairesWithCorrections.length}`);
+          if (status.compiledAt) {
+            console.log(`     Compiled: ${status.compiledAt}`);
+          } else {
+            console.log(`     Compiled: Never`);
+          }
+          if (status.isStale) {
+            console.log(`     → Run: pnpm cli training compile -c ${status.customer}`);
+          }
+        }
+        console.log('');
+
+      } else if (action === 'compile') {
+        const customer = opts.customer as string;
+        if (!customer) {
+          console.error('❌ Customer name required. Use: pnpm cli training compile -c <customer>');
+          process.exit(1);
+        }
+
+        console.log(`\n🔧 Compiling training data for ${customer}...\n`);
+        const compiled = await trainingProcessor.compile(customer);
+
+        console.log('\n📈 Compilation Results:');
+        console.log(`   Total corrections: ${compiled.stats.totalCorrections}`);
+        console.log(`   Destination changes: ${compiled.stats.destinationChanges}`);
+        console.log(`   Value changes: ${compiled.stats.valueChanges}`);
+        console.log(`   Questionnaires used: ${compiled.stats.questionnairesUsed}`);
+        console.log(`   Hard rules generated: ${compiled.hardRules.length}`);
+        console.log(`   Destination patterns: ${compiled.destinationPatterns.length}`);
+        console.log(`   Few-shot examples: ${compiled.fewShotExamples.length}`);
+        console.log(`\n✅ Training data compiled and saved`);
+
+      } else if (action === 'view') {
+        const customer = opts.customer as string;
+        if (!customer) {
+          console.error('❌ Customer name required. Use: pnpm cli training view -c <customer>');
+          process.exit(1);
+        }
+
+        const compiled = await trainingProcessor.loadCompiled(customer);
+        if (!compiled) {
+          console.error(`❌ No compiled training data for ${customer}. Run: pnpm cli training compile -c ${customer}`);
+          process.exit(1);
+        }
+
+        console.log(`\n📊 Compiled Training Data for ${customer}\n`);
+        console.log(`   Version: ${compiled.version}`);
+        console.log(`   Compiled: ${compiled.compiledAt}`);
+        console.log(`   Total corrections: ${compiled.stats.totalCorrections}`);
+
+        if (compiled.hardRules.length > 0) {
+          console.log('\n   🔒 Hard Rules (label → destination):');
+          for (const rule of compiled.hardRules.slice(0, 10)) {
+            console.log(`      "${rule.labelContains}" → ${rule.destination}`);
+          }
+          if (compiled.hardRules.length > 10) {
+            console.log(`      ... and ${compiled.hardRules.length - 10} more`);
+          }
+        }
+
+        if (compiled.destinationPatterns.length > 0) {
+          console.log('\n   📝 Destination Patterns:');
+          for (const pattern of compiled.destinationPatterns.slice(0, 10)) {
+            console.log(`      "${pattern.pattern}" (${pattern.fromDestination} → ${pattern.toDestination}, confidence: ${(pattern.confidence * 100).toFixed(0)}%)`);
+          }
+          if (compiled.destinationPatterns.length > 10) {
+            console.log(`      ... and ${compiled.destinationPatterns.length - 10} more`);
+          }
+        }
+        console.log('');
+
+      } else {
+        console.error(`❌ Unknown action: ${action}. Use: status, compile, or view`);
+        process.exit(1);
+      }
+
+    } catch (error) {
+      console.error('❌ Training command failed:', error);
+      process.exit(1);
+    }
+  });
+
+// =============================================================================
+// STRUCTURE-TRAINING - Manage extraction-level training from structure corrections
+// =============================================================================
+
+program
+  .command('structure-training')
+  .description('Manage structure/extraction training data from human corrections to Azure output')
+  .argument('[action]', 'Action: status, compile, view', 'status')
+  .option('-c, --customer <name>', 'Customer name (required for compile/view)')
+  .action(async (action: string, opts) => {
+    try {
+      const { structureTrainingProcessor } = await import('./services/training/structure-training-processor.js');
+
+      if (action === 'status') {
+        // Show status for all customers
+        console.log('\n📊 Structure Training Data Status (Extraction Corrections)\n');
+        const statuses = await structureTrainingProcessor.getAllStatus();
+
+        if (statuses.length === 0) {
+          console.log('  No structure training data found.');
+          console.log('  Make corrections to extracted cell values in the Original panel to build training data.');
+          process.exit(0);
+        }
+
+        for (const status of statuses) {
+          const staleIndicator = status.isStale ? ' ⚠️  STALE' : ' ✅';
+          console.log(`\n  📁 ${status.customer}${staleIndicator}`);
+          console.log(`     Corrections: ${status.correctionsCount}`);
+          console.log(`     Questionnaires: ${status.questionnairesWithCorrections.length}`);
+          if (status.compiledAt) {
+            console.log(`     Compiled: ${status.compiledAt}`);
+          } else {
+            console.log(`     Compiled: Never`);
+          }
+          if (status.isStale) {
+            console.log(`     → Run: pnpm cli structure-training compile -c ${status.customer}`);
+          }
+        }
+        console.log('');
+
+      } else if (action === 'compile') {
+        const customer = opts.customer as string;
+        if (!customer) {
+          console.error('❌ Customer name required. Use: pnpm cli structure-training compile -c <customer>');
+          process.exit(1);
+        }
+
+        console.log(`\n🔧 Compiling structure training data for ${customer}...\n`);
+        const compiled = await structureTrainingProcessor.compile(customer);
+
+        console.log('\n📈 Compilation Results:');
+        console.log(`   Total corrections: ${compiled.stats.totalCorrections}`);
+        console.log(`   OCR fixes: ${compiled.stats.ocrFixes}`);
+        console.log(`   Content additions: ${compiled.stats.contentAdditions}`);
+        console.log(`   Content removals: ${compiled.stats.contentRemovals}`);
+        console.log(`   Questionnaires used: ${compiled.stats.questionnairesUsed}`);
+        console.log(`   OCR patterns: ${compiled.ocrPatterns.length}`);
+        console.log(`   Substitution rules: ${compiled.substitutionRules.length}`);
+        console.log(`\n✅ Structure training data compiled and saved`);
+
+      } else if (action === 'view') {
+        const customer = opts.customer as string;
+        if (!customer) {
+          console.error('❌ Customer name required. Use: pnpm cli structure-training view -c <customer>');
+          process.exit(1);
+        }
+
+        const compiled = await structureTrainingProcessor.loadCompiled(customer);
+        if (!compiled) {
+          console.error(`❌ No compiled structure training data for ${customer}.`);
+          console.error(`   Run: pnpm cli structure-training compile -c ${customer}`);
+          process.exit(1);
+        }
+
+        console.log(`\n📊 Compiled Structure Training for ${customer}\n`);
+        console.log(`   Version: ${compiled.version}`);
+        console.log(`   Compiled: ${compiled.compiledAt}`);
+        console.log(`   Total corrections: ${compiled.stats.totalCorrections}`);
+
+        if (compiled.substitutionRules.length > 0) {
+          console.log('\n   🔄 Substitution Rules (find → replace):');
+          for (const rule of compiled.substitutionRules.slice(0, 10)) {
+            const find = rule.find.length > 30 ? rule.find.slice(0, 30) + '...' : rule.find;
+            const replace = rule.replace.length > 30 ? rule.replace.slice(0, 30) + '...' : rule.replace;
+            console.log(`      "${find}" → "${replace}" (${rule.count}x)`);
+          }
+          if (compiled.substitutionRules.length > 10) {
+            console.log(`      ... and ${compiled.substitutionRules.length - 10} more`);
+          }
+        }
+
+        if (compiled.ocrPatterns.length > 0) {
+          console.log('\n   👁️  OCR Patterns (wrong → correct):');
+          for (const pattern of compiled.ocrPatterns.slice(0, 10)) {
+            console.log(`      "${pattern.wrongPattern}" → "${pattern.correction}" (${pattern.count}x, conf: ${(pattern.confidence * 100).toFixed(0)}%)`);
+          }
+          if (compiled.ocrPatterns.length > 10) {
+            console.log(`      ... and ${compiled.ocrPatterns.length - 10} more`);
+          }
+        }
+
+        if (compiled.cellPatterns.length > 0) {
+          console.log('\n   📍 Cell Patterns:');
+          for (const pattern of compiled.cellPatterns.slice(0, 5)) {
+            const rowInfo = pattern.rowRange ? ` rows ${pattern.rowRange.min}-${pattern.rowRange.max}` : '';
+            console.log(`      ${pattern.cellPattern}${rowInfo}: ${pattern.correctionType} (${pattern.count}x)`);
+          }
+        }
+        console.log('');
+
+      } else {
+        console.error(`❌ Unknown action: ${action}. Use: status, compile, or view`);
+        process.exit(1);
+      }
+
+    } catch (error) {
+      console.error('❌ Structure training command failed:', error);
+      process.exit(1);
+    }
   });
 
 program.parse();

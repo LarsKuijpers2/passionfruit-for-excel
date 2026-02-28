@@ -15,6 +15,7 @@ import { exec } from 'child_process';
 import { BedrockRuntimeClient, InvokeModelCommand } from '@aws-sdk/client-bedrock-runtime';
 import { groupByTopicWithSimilarity, getSimilarityStats } from './services/sync/similarity-detector.js';
 import { correctionTracker, type ErrorType } from './services/learning/correction-tracker.js';
+import { trainingProcessor } from './services/training/training-processor.js';
 
 // Helper to get current timestamp in Netherlands timezone
 function getNetherlandsTimestamp(): string {
@@ -164,7 +165,7 @@ export class ReviewServer {
 
   private setupMiddleware(): void {
     this.app.use(cors());
-    this.app.use(express.json());
+    this.app.use(express.json({ limit: '50mb' }));
 
     // Serve React app from frontend/dist
     const reactAppPath = join(process.cwd(), 'frontend', 'dist');
@@ -334,6 +335,53 @@ export class ReviewServer {
       } catch (error) {
         console.error('Error fetching structure file:', error);
         res.status(500).json({ error: 'Failed to fetch structure file' });
+      }
+    });
+
+    // Update a structure file (save split view edits)
+    this.app.put('/api/structure-files/:customer/:file', async (req, res) => {
+      try {
+        const { customer, file } = req.params;
+        const { sheet } = req.body;
+
+        if (!sheet) {
+          return res.status(400).json({ error: 'Sheet data is required' });
+        }
+
+        const filePath = join(this.customersDir, customer, 'structure', file);
+
+        if (!existsSync(filePath)) {
+          return res.status(404).json({ error: 'Structure file not found' });
+        }
+
+        // Read existing structure to preserve other fields
+        const existingContent = await readFile(filePath, 'utf-8');
+        const existing = JSON.parse(existingContent);
+
+        // Update the sheet data in the sheets array (structure files use 'sheets' array)
+        if (existing.sheets && Array.isArray(existing.sheets)) {
+          // Find matching sheet by name or index, default to first sheet
+          const sheetIndex = existing.sheets.findIndex((s: any) =>
+            s.name === sheet.name || s.index === sheet.index
+          );
+          if (sheetIndex >= 0) {
+            existing.sheets[sheetIndex] = sheet;
+          } else {
+            existing.sheets[0] = sheet;
+          }
+        } else {
+          // Fallback: create sheets array if it doesn't exist
+          existing.sheets = [sheet];
+        }
+        existing.updatedAt = new Date().toISOString();
+
+        await writeFile(filePath, JSON.stringify(existing, null, 2), 'utf-8');
+        console.log(`Updated structure file: ${filePath}`);
+
+        res.json({ success: true });
+      } catch (error) {
+        console.error('Error updating structure file:', error);
+        res.status(500).json({ error: 'Failed to update structure file' });
       }
     });
 
@@ -555,6 +603,57 @@ export class ReviewServer {
       } catch (error) {
         console.error('Error generating export preview:', error);
         res.status(500).json({ error: 'Failed to generate preview' });
+      }
+    });
+
+    // Save page annotations for training data
+    this.app.post('/api/questionnaire/:id/annotate', async (req, res) => {
+      try {
+        const { id } = req.params;
+        const { pageNumber, tables, notes, customer } = req.body;
+
+        if (!pageNumber || !tables) {
+          res.status(400).json({ error: 'pageNumber and tables are required' });
+          return;
+        }
+
+        // Determine customer directory
+        const customerDir = customer
+          ? join('./customers', customer)
+          : '.';
+
+        // Create annotations directory if it doesn't exist
+        const annotationsDir = join(customerDir, 'training-annotations');
+        if (!existsSync(annotationsDir)) {
+          await mkdir(annotationsDir, { recursive: true });
+        }
+
+        // Create annotation filename
+        const safeName = id.replace(/[^a-zA-Z0-9-_]/g, '_');
+        const annotationPath = join(annotationsDir, `${safeName}_page${pageNumber}_${Date.now()}.json`);
+
+        // Build annotation object
+        const annotation = {
+          questionnaireId: id,
+          pageNumber,
+          tables,
+          notes,
+          createdAt: new Date().toISOString(),
+          type: 'manual_table_annotation',
+        };
+
+        // Save annotation
+        await writeFile(annotationPath, JSON.stringify(annotation, null, 2), 'utf-8');
+        console.log(`Saved annotation to ${annotationPath}`);
+
+        res.json({
+          success: true,
+          path: annotationPath,
+          tableCount: tables.length,
+        });
+      } catch (error) {
+        console.error('Error saving annotation:', error);
+        res.status(500).json({ error: 'Failed to save annotation' });
       }
     });
 
@@ -941,6 +1040,139 @@ export class ReviewServer {
       }
     });
 
+    // Update questionnaire structure (save split view edits)
+    this.app.put('/api/questionnaire/:id/structure', async (req, res) => {
+      try {
+        const { id } = req.params;
+        const { sheet } = req.body;
+
+        if (!sheet) {
+          return res.status(400).json({ error: 'Sheet data is required' });
+        }
+
+        const safeName = id.replace(/[^a-zA-Z0-9-_]/g, '_');
+
+        // Helper to find structure file in root or customer directories
+        const findStructureFile = async (filename: string): Promise<{ path: string; customer?: string } | null> => {
+          const rootPath = join('./structure', filename);
+          if (existsSync(rootPath)) {
+            return { path: rootPath };
+          }
+          try {
+            const customers = await readdir('./customers');
+            for (const customer of customers) {
+              const customerPath = join('./customers', customer, 'structure', filename);
+              if (existsSync(customerPath)) {
+                return { path: customerPath, customer };
+              }
+            }
+          } catch {}
+          return null;
+        };
+
+        const structureResult = await findStructureFile(`${safeName}.json`);
+        if (!structureResult) {
+          return res.status(404).json({ error: 'Structure file not found' });
+        }
+
+        const { path: structurePath, customer } = structureResult;
+
+        // Read existing structure to preserve metadata
+        const existingContent = await readFile(structurePath, 'utf-8');
+        const existing = JSON.parse(existingContent);
+
+        // Find the original sheet for comparison (to track corrections)
+        let originalSheet: any = null;
+        if (existing.sheets && Array.isArray(existing.sheets)) {
+          const sheetIndex = existing.sheets.findIndex((s: any) =>
+            s.name === sheet.name || s.index === sheet.index
+          );
+          if (sheetIndex >= 0) {
+            originalSheet = existing.sheets[sheetIndex];
+          }
+        }
+
+        // Track structure corrections (extraction fixes)
+        const corrections: Array<{
+          questionnaireId: string;
+          sheetName: string;
+          cellRef: string;
+          rowNum: number;
+          original: string;
+          corrected: string;
+          timestamp: string;
+        }> = [];
+
+        if (originalSheet && sheet.rows) {
+          // Compare cell values to find corrections
+          for (const newRow of sheet.rows) {
+            const originalRow = originalSheet.rows?.find((r: any) => r.row === newRow.row);
+            if (!originalRow) continue;
+
+            for (const [cellRef, newCell] of Object.entries(newRow.cells || {})) {
+              const originalCell = originalRow.cells?.[cellRef];
+              const newValue = (newCell as any)?.value || '';
+              const originalValue = originalCell?.value || '';
+
+              // If value changed and it's not just whitespace
+              if (newValue !== originalValue && (newValue.trim() || originalValue.trim())) {
+                corrections.push({
+                  questionnaireId: id,
+                  sheetName: sheet.name || 'Sheet1',
+                  cellRef,
+                  rowNum: newRow.row,
+                  original: originalValue,
+                  corrected: newValue,
+                  timestamp: getNetherlandsTimestamp(),
+                });
+              }
+            }
+          }
+        }
+
+        // Save structure corrections as training data
+        if (corrections.length > 0 && customer) {
+          try {
+            const correctionsPath = join('./customers', customer, 'structure-corrections.json');
+            let existingCorrections: typeof corrections = [];
+            if (existsSync(correctionsPath)) {
+              existingCorrections = JSON.parse(await readFile(correctionsPath, 'utf-8'));
+            }
+            existingCorrections.push(...corrections);
+            await writeFile(correctionsPath, JSON.stringify(existingCorrections, null, 2), 'utf-8');
+            console.log(`Saved ${corrections.length} structure corrections to ${correctionsPath}`);
+          } catch (e) {
+            console.error('Failed to save structure corrections:', e);
+          }
+        }
+
+        // Update the sheet data in the sheets array (structure files use 'sheets' array)
+        if (existing.sheets && Array.isArray(existing.sheets)) {
+          // Find matching sheet by name or index, default to first sheet
+          const sheetIndex = existing.sheets.findIndex((s: any) =>
+            s.name === sheet.name || s.index === sheet.index
+          );
+          if (sheetIndex >= 0) {
+            existing.sheets[sheetIndex] = sheet;
+          } else {
+            existing.sheets[0] = sheet;
+          }
+        } else {
+          // Fallback: create sheets array if it doesn't exist
+          existing.sheets = [sheet];
+        }
+        existing.updatedAt = new Date().toISOString();
+
+        await writeFile(structurePath, JSON.stringify(existing, null, 2), 'utf-8');
+        console.log(`Updated structure file: ${structurePath}`);
+
+        res.json({ success: true, path: structurePath, correctionsCount: corrections.length });
+      } catch (error) {
+        console.error('Error updating structure:', error);
+        res.status(500).json({ error: 'Failed to update structure' });
+      }
+    });
+
     // Serve the original PDF file for overlay rendering
     this.app.get('/api/questionnaire/:id/pdf', async (req, res) => {
       try {
@@ -1237,16 +1469,79 @@ export class ReviewServer {
         const itemIdSet = new Set(itemIds);
         let updatedCount = 0;
 
+        // Track corrections for training data
+        const corrections: Array<{
+          itemId: string;
+          questionnaireId: string;
+          original: Record<string, unknown>;
+          corrected: Record<string, unknown>;
+          context: { label?: string; lCell?: string; vCell?: string; section?: string };
+          timestamp: string;
+        }> = [];
+
         // Find and update the items
         for (const section of indexed.sections || []) {
           for (const item of section.items || []) {
             if (itemIdSet.has(item.id)) {
-              // Apply updates to the item
+              // Save original values before updating (for training data)
+              const originalValues: Record<string, unknown> = {};
+              const correctedValues: Record<string, unknown> = {};
+
               for (const [key, value] of Object.entries(updates)) {
+                if (item[key] !== value) {
+                  originalValues[key] = item[key];
+                  correctedValues[key] = value;
+                }
                 item[key] = value;
               }
+
+              // Only log if there were actual changes
+              if (Object.keys(originalValues).length > 0) {
+                corrections.push({
+                  itemId: item.id,
+                  questionnaireId,
+                  original: originalValues,
+                  corrected: correctedValues,
+                  context: {
+                    label: item.label,
+                    lCell: item.lCell,
+                    vCell: item.vCell,
+                    section: section.title,
+                  },
+                  timestamp: new Date().toISOString(),
+                });
+              }
+
               updatedCount++;
             }
+          }
+        }
+
+        // Save corrections as training data if any were made
+        if (corrections.length > 0) {
+          try {
+            // Determine customer from questionnaire path
+            const customerMatch = indexedPath.match(/customers\/([^/]+)\//);
+            const customerDir = customerMatch
+              ? join('./customers', customerMatch[1])
+              : '.';
+            const correctionsPath = join(customerDir, 'training-corrections.json');
+
+            // Load existing corrections or create new array
+            let existingCorrections: typeof corrections = [];
+            if (existsSync(correctionsPath)) {
+              existingCorrections = JSON.parse(await readFile(correctionsPath, 'utf-8'));
+            }
+
+            // Append new corrections
+            existingCorrections.push(...corrections);
+
+            // Save back
+            await writeFile(correctionsPath, JSON.stringify(existingCorrections, null, 2), 'utf-8');
+            console.log(`Saved ${corrections.length} corrections to ${correctionsPath}`);
+          } catch (e) {
+            console.error('Failed to save training corrections:', e);
+            // Don't fail the request, indexed file was still updated
           }
         }
 
@@ -1576,6 +1871,132 @@ export class ReviewServer {
       } catch (error) {
         console.error('Error applying annotation:', error);
         res.status(500).json({ error: 'Failed to apply annotation' });
+      }
+    });
+
+    // =========================================================================
+    // TRAINING DATA ENDPOINTS
+    // =========================================================================
+
+    // Get training status for all customers
+    this.app.get('/api/training/status', async (req, res) => {
+      try {
+        const allStatus = await trainingProcessor.getAllStatus();
+        res.json({ statuses: allStatus });
+      } catch (error) {
+        console.error('Error getting training status:', error);
+        res.status(500).json({ error: 'Failed to get training status' });
+      }
+    });
+
+    // Get training status for a specific customer
+    this.app.get('/api/training/status/:customer', async (req, res) => {
+      try {
+        const { customer } = req.params;
+        const status = await trainingProcessor.getStatus(customer);
+        res.json(status);
+      } catch (error) {
+        console.error('Error getting training status:', error);
+        res.status(500).json({ error: 'Failed to get training status' });
+      }
+    });
+
+    // Compile training data for a customer
+    this.app.post('/api/training/compile/:customer', async (req, res) => {
+      try {
+        const { customer } = req.params;
+        const compiled = await trainingProcessor.compile(customer);
+        res.json({
+          success: true,
+          stats: compiled.stats,
+          patternsCount: compiled.destinationPatterns.length,
+          examplesCount: compiled.fewShotExamples.length,
+          rulesCount: compiled.hardRules.length,
+        });
+      } catch (error) {
+        console.error('Error compiling training:', error);
+        res.status(500).json({ error: 'Failed to compile training data' });
+      }
+    });
+
+    // Get compiled training data for a customer
+    this.app.get('/api/training/compiled/:customer', async (req, res) => {
+      try {
+        const { customer } = req.params;
+        const compiled = await trainingProcessor.loadCompiled(customer);
+        if (!compiled) {
+          res.status(404).json({ error: 'No compiled training data found' });
+          return;
+        }
+        res.json(compiled);
+      } catch (error) {
+        console.error('Error loading compiled training:', error);
+        res.status(500).json({ error: 'Failed to load compiled training' });
+      }
+    });
+
+    // =========================================================================
+    // STRUCTURE TRAINING ENDPOINTS (Extraction-level corrections)
+    // =========================================================================
+
+    // Get structure training status for all customers
+    this.app.get('/api/training/structure/status', async (req, res) => {
+      try {
+        const { structureTrainingProcessor } = await import('./services/training/structure-training-processor.js');
+        const allStatus = await structureTrainingProcessor.getAllStatus();
+        res.json({ statuses: allStatus });
+      } catch (error) {
+        console.error('Error getting structure training status:', error);
+        res.status(500).json({ error: 'Failed to get structure training status' });
+      }
+    });
+
+    // Get structure training status for a specific customer
+    this.app.get('/api/training/structure/status/:customer', async (req, res) => {
+      try {
+        const { customer } = req.params;
+        const { structureTrainingProcessor } = await import('./services/training/structure-training-processor.js');
+        const status = await structureTrainingProcessor.getStatus(customer);
+        res.json(status);
+      } catch (error) {
+        console.error('Error getting structure training status:', error);
+        res.status(500).json({ error: 'Failed to get structure training status' });
+      }
+    });
+
+    // Compile structure training data for a customer
+    this.app.post('/api/training/structure/compile/:customer', async (req, res) => {
+      try {
+        const { customer } = req.params;
+        const { structureTrainingProcessor } = await import('./services/training/structure-training-processor.js');
+        const compiled = await structureTrainingProcessor.compile(customer);
+        res.json({
+          success: true,
+          stats: compiled.stats,
+          ocrPatternsCount: compiled.ocrPatterns.length,
+          cellPatternsCount: compiled.cellPatterns.length,
+          substitutionRulesCount: compiled.substitutionRules.length,
+        });
+      } catch (error) {
+        console.error('Error compiling structure training:', error);
+        res.status(500).json({ error: 'Failed to compile structure training data' });
+      }
+    });
+
+    // Get compiled structure training data for a customer
+    this.app.get('/api/training/structure/compiled/:customer', async (req, res) => {
+      try {
+        const { customer } = req.params;
+        const { structureTrainingProcessor } = await import('./services/training/structure-training-processor.js');
+        const compiled = await structureTrainingProcessor.loadCompiled(customer);
+        if (!compiled) {
+          res.status(404).json({ error: 'No compiled structure training data found' });
+          return;
+        }
+        res.json(compiled);
+      } catch (error) {
+        console.error('Error loading compiled structure training:', error);
+        res.status(500).json({ error: 'Failed to load compiled structure training' });
       }
     });
 

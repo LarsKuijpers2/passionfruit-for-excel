@@ -184,9 +184,9 @@ export function CommandPalette({
     <div className="fixed inset-0 z-[2000] flex items-center justify-center">
       <div className="fixed inset-0 bg-black/70 dark:bg-black/70" onClick={onClose} />
 
-      <div className="relative z-10 bg-card border border-default rounded-lg w-[480px] max-w-[90vw] shadow-2xl">
+      <div className="relative z-10 bg-card border border-default rounded-lg w-[480px] max-w-[90vw] max-h-[90vh] flex flex-col shadow-2xl">
         {/* Header */}
-        <div className="flex justify-between items-center h-12 px-4 border-b border-default">
+        <div className="flex justify-between items-center h-12 px-4 border-b border-default shrink-0">
           <span className="text-[13px] font-medium text-primary">
             {selectedCount} item{selectedCount !== 1 ? 's' : ''} selected
           </span>
@@ -195,8 +195,8 @@ export function CommandPalette({
           </kbd>
         </div>
 
-        {/* Content */}
-        <div className="p-4 space-y-4">
+        {/* Content - scrollable */}
+        <div className="p-4 space-y-4 overflow-y-auto flex-1">
           {/* Label */}
           {isSingleSelect && (
             <div>
@@ -341,16 +341,38 @@ export function CommandPalette({
             <label className="block text-[11px] font-medium text-muted uppercase tracking-wide mb-1.5">
               Review Action
             </label>
-            <select
-              className="w-full h-8 px-3 bg-app border border-default rounded text-[13px] text-primary focus:outline-none focus:border-accent"
-              value={action}
-              onChange={(e) => setAction(e.target.value)}
-            >
-              <option value="">— No action —</option>
-              <option value="accept">Accept</option>
-              <option value="reject">Reject</option>
-              <option value="reset">Reset</option>
-            </select>
+            <div className="flex gap-1.5">
+              <button
+                onClick={() => setAction(action === 'accept' ? '' : 'accept')}
+                className={`h-8 px-4 rounded text-[12px] font-medium transition-colors ${
+                  action === 'accept'
+                    ? 'bg-emerald-500 text-white'
+                    : 'bg-app-secondary text-emerald-400 hover:bg-emerald-500/20'
+                }`}
+              >
+                Accept
+              </button>
+              <button
+                onClick={() => setAction(action === 'reject' ? '' : 'reject')}
+                className={`h-8 px-4 rounded text-[12px] font-medium transition-colors ${
+                  action === 'reject'
+                    ? 'bg-red-500 text-white'
+                    : 'bg-app-secondary text-red-400 hover:bg-red-500/20'
+                }`}
+              >
+                Reject
+              </button>
+              <button
+                onClick={() => setAction(action === 'reset' ? '' : 'reset')}
+                className={`h-8 px-4 rounded text-[12px] font-medium transition-colors ${
+                  action === 'reset'
+                    ? 'bg-gray-500 text-white'
+                    : 'bg-app-secondary text-muted hover:bg-card-hover'
+                }`}
+              >
+                Reset
+              </button>
+            </div>
           </div>
 
           {/* Reject Reason */}
@@ -371,7 +393,7 @@ export function CommandPalette({
         </div>
 
         {/* Footer */}
-        <div className="flex justify-between h-14 px-4 items-center border-t border-default">
+        <div className="flex justify-between h-14 px-4 items-center border-t border-default shrink-0">
           <button
             onClick={handleRevert}
             className="h-8 px-4 rounded text-[12px] font-medium bg-app-secondary text-muted hover:bg-card-hover hover:text-primary transition-colors flex items-center gap-1.5"

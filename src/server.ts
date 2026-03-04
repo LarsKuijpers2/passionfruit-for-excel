@@ -126,7 +126,7 @@ export class ReviewServer {
 
   constructor(questionnaire?: string, options: { port?: number; reviewDir?: string } = {}) {
     this.questionnaire = questionnaire || '';
-    this.port = options.port || 3456;
+    this.port = options.port || (process.env.PORT ? parseInt(process.env.PORT, 10) : 3456);
     this.reviewDir = options.reviewDir || './review';
     this.customersDir = './customers';
 
@@ -1032,7 +1032,8 @@ export class ReviewServer {
     this.app.get('/api/questionnaire/:id', async (req, res) => {
       try {
         const { id } = req.params;
-        const data = await this.loadQuestionnaireData(id);
+        const extraction = req.query.extraction as 'azure' | 'vision' | undefined;
+        const data = await this.loadQuestionnaireData(id, extraction);
         res.json(data);
       } catch (error) {
         console.error('Error loading questionnaire data:', error);
@@ -1177,13 +1178,41 @@ export class ReviewServer {
     this.app.get('/api/questionnaire/:id/pdf', async (req, res) => {
       try {
         const { id } = req.params;
-        const data = await this.loadQuestionnaireData(id);
+        const extraction = req.query.extraction as 'azure' | 'vision' | undefined;
+        const data = await this.loadQuestionnaireData(id, extraction);
 
-        if (!data.structure?.source?.filepath) {
+        let pdfPath: string | undefined;
+
+        // Try structure.source.filepath first, but only if it's actually a PDF
+        if (data.structure?.source?.filepath) {
+          const structurePath = data.structure.source.filepath;
+          if (structurePath.toLowerCase().endsWith('.pdf') && existsSync(structurePath)) {
+            pdfPath = structurePath;
+          }
+        }
+
+        // If no PDF from structure, try indexed.source (e.g., vision extraction of PDF)
+        // This handles cases where structure points to .docx but we have a PDF version
+        if (!pdfPath && data.indexed?.source && data.customer) {
+          const sourceFilename = data.indexed.source;
+          // Try the source filename directly (it should include .pdf extension)
+          const possiblePath = join('./customers', data.customer, 'incoming', sourceFilename);
+          if (possiblePath.toLowerCase().endsWith('.pdf') && existsSync(possiblePath)) {
+            pdfPath = possiblePath;
+          } else {
+            // Try adding .pdf extension if not present
+            const pdfFilename = sourceFilename.endsWith('.pdf') ? sourceFilename : `${sourceFilename}.pdf`;
+            const altPath = join('./customers', data.customer, 'incoming', pdfFilename);
+            if (existsSync(altPath)) {
+              pdfPath = altPath;
+            }
+          }
+        }
+
+        if (!pdfPath) {
           return res.status(404).json({ error: 'PDF path not found' });
         }
 
-        const pdfPath = data.structure.source.filepath;
         if (!existsSync(pdfPath)) {
           return res.status(404).json({ error: 'PDF file not found' });
         }
@@ -1417,8 +1446,8 @@ export class ReviewServer {
     this.app.patch('/api/questionnaire/:questionnaireId/:panel/bulk', async (req, res) => {
       try {
         const { questionnaireId, panel } = req.params;
-        const { itemIds, updates } = req.body;
-        console.log(`Bulk update: ${questionnaireId} / ${panel} - ${itemIds.length} items`);
+        const { itemIds, updates, extractionView } = req.body;
+        console.log(`Bulk update: ${questionnaireId} / ${panel} - ${itemIds.length} items (view: ${extractionView || 'default'})`);
 
         if (!questionnaireId || !itemIds || !Array.isArray(itemIds) || !updates) {
           return res.status(400).json({ error: 'Missing questionnaireId, itemIds, or updates' });
@@ -1455,12 +1484,20 @@ export class ReviewServer {
           return null;
         };
 
-        // Load the indexed file (JSON only)
+        // Determine filename suffix based on extraction view
         const safeName = questionnaireId.replace(/[^a-zA-Z0-9-_]/g, '_');
-        const indexedPath = await findIndexedFile(`${safeName}.json`);
+        let filename = `${safeName}.json`;
+        if (extractionView === 'azure') {
+          filename = `${safeName}-azure.json`;
+        } else if (extractionView === 'vision') {
+          filename = `${safeName}-vision.json`;
+        }
+
+        // Load the indexed file
+        const indexedPath = await findIndexedFile(filename);
 
         if (!indexedPath) {
-          return res.status(404).json({ error: `Indexed file not found: ${safeName}.json` });
+          return res.status(404).json({ error: `Indexed file not found: ${filename}` });
         }
 
         const indexed = JSON.parse(await readFile(indexedPath, 'utf-8'));
@@ -2446,6 +2483,8 @@ export class ReviewServer {
     // Helper to process questionnaire files (JSON only)
     const processFile = async (file: string, indexedDir: string, customer?: string) => {
       if (!file.endsWith('.json')) return;
+      // Skip extraction strategy comparison files - these are intermediate outputs
+      if (file.endsWith('-azure.json') || file.endsWith('-vision.json')) return;
 
       const name = file.replace(/\.json$/, '');
       const safeName = name.replace(/[^a-zA-Z0-9-_]/g, '_');
@@ -2702,15 +2741,25 @@ export class ReviewServer {
   /**
    * Load all data for a specific questionnaire (structure + indexed + library)
    * Searches in both root directories and customer-specific directories
+   * @param extraction - Optional extraction view: 'azure' or 'vision' to load specific extraction file
    */
-  private async loadQuestionnaireData(questionnaireId: string): Promise<{
+  private async loadQuestionnaireData(questionnaireId: string, extraction?: 'azure' | 'vision'): Promise<{
     id: string;
     structure: any;
     indexed: any;
     library: any;
     feedback: FeedbackData | null;
+    extractionView?: 'azure' | 'vision' | 'default';
+    customer?: string;
+    visionExtraction?: {
+      markdown?: string;
+      qaPairs?: any[];
+      sections?: any[];
+      metadata: any;
+    };
   }> {
     const safeName = questionnaireId.replace(/[^a-zA-Z0-9-_]/g, '_');
+    let detectedCustomer: string | undefined;
 
     // Helper to find file in root or customer directories
     const findFile = async (rootDir: string, filename: string): Promise<string | null> => {
@@ -2726,11 +2775,59 @@ export class ReviewServer {
         for (const customer of customers) {
           const customerPath = join('./customers', customer, rootDir, filename);
           if (existsSync(customerPath)) {
+            detectedCustomer = customer;
             return customerPath;
           }
         }
       } catch {}
 
+      return null;
+    };
+
+    // Helper to find vision extraction directory for a questionnaire
+    const findVisionExtraction = async (): Promise<{
+      markdown?: string;
+      qaPairs?: any[];
+      sections?: any[];
+      metadata: any;
+    } | null> => {
+      try {
+        // Vision extraction directories don't have .json extension, so strip it from questionnaireId
+        const visionDirName = questionnaireId.replace(/\.json$/i, '').replace(/[^a-zA-Z0-9-_]/g, '_');
+        const customers = await readdir('./customers');
+        for (const customer of customers) {
+          const visionDir = join('./customers', customer, 'vision-extraction', visionDirName);
+          const metadataPath = join(visionDir, 'metadata.json');
+
+          // Check for new format first (phase2-qa-pairs.json)
+          const phase2Path = join(visionDir, 'phase2-qa-pairs.json');
+          const phase1SectionsPath = join(visionDir, 'phase1-sections.json');
+
+          if (existsSync(phase2Path)) {
+            const qaPairs = JSON.parse(await readFile(phase2Path, 'utf-8'));
+            let sections: any[] = [];
+            let metadata = {};
+            if (existsSync(phase1SectionsPath)) {
+              sections = JSON.parse(await readFile(phase1SectionsPath, 'utf-8'));
+            }
+            if (existsSync(metadataPath)) {
+              metadata = JSON.parse(await readFile(metadataPath, 'utf-8'));
+            }
+            return { qaPairs, sections, metadata };
+          }
+
+          // Fall back to legacy format (pass1-structure.md)
+          const pass1Path = join(visionDir, 'pass1-structure.md');
+          if (existsSync(pass1Path)) {
+            const markdown = await readFile(pass1Path, 'utf-8');
+            let metadata = {};
+            if (existsSync(metadataPath)) {
+              metadata = JSON.parse(await readFile(metadataPath, 'utf-8'));
+            }
+            return { markdown, metadata };
+          }
+        }
+      } catch {}
       return null;
     };
 
@@ -2742,10 +2839,40 @@ export class ReviewServer {
     }
 
     // Load indexed (indexed/*.json only)
+    // If extraction view is specified, try to load the extraction-specific file first
     let indexed = null;
-    const indexedPath = await findFile('indexed', `${safeName}.json`);
-    if (indexedPath) {
-      indexed = JSON.parse(await readFile(indexedPath, 'utf-8'));
+    let actualExtractionView: 'azure' | 'vision' | 'default' = 'default';
+
+    if (extraction) {
+      // For 'vision' extraction, load the converted .json file (not raw -vision.json)
+      // The -vision.json is raw output; the main .json has all transformations including originalLabel
+      if (extraction === 'vision') {
+        const indexedPath = await findFile('indexed', `${safeName}.json`);
+        if (indexedPath) {
+          indexed = JSON.parse(await readFile(indexedPath, 'utf-8'));
+          actualExtractionView = 'vision';
+          console.log(`Loaded vision extraction (converted): ${safeName}.json`);
+        }
+      } else {
+        // For other extractions (azure), try to load extraction-specific file
+        const extractionFilename = `${safeName}-${extraction}.json`;
+        const extractionPath = await findFile('indexed', extractionFilename);
+        if (extractionPath) {
+          indexed = JSON.parse(await readFile(extractionPath, 'utf-8'));
+          actualExtractionView = extraction;
+          console.log(`Loaded ${extraction} extraction view: ${extractionFilename}`);
+        } else {
+          console.log(`Extraction file not found: ${extractionFilename}, falling back to default`);
+        }
+      }
+    }
+
+    // If no extraction specified or extraction file not found, load default
+    if (!indexed) {
+      const indexedPath = await findFile('indexed', `${safeName}.json`);
+      if (indexedPath) {
+        indexed = JSON.parse(await readFile(indexedPath, 'utf-8'));
+      }
     }
 
     // Load library (answer-library.yaml)
@@ -2762,12 +2889,18 @@ export class ReviewServer {
       feedback = JSON.parse(await readFile(feedbackPath, 'utf-8'));
     }
 
+    // Load vision extraction if available
+    const visionExtraction = await findVisionExtraction();
+
     return {
       id: questionnaireId,
       structure,
       indexed,
       library,
-      feedback
+      feedback,
+      extractionView: actualExtractionView,
+      customer: detectedCustomer,
+      ...(visionExtraction && { visionExtraction })
     };
   }
 

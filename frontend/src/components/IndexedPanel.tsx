@@ -1,5 +1,5 @@
 import { useState, useMemo, forwardRef, useImperativeHandle, useRef, useCallback } from "react";
-import { CaretDown, CaretRight, Warning, TextStrikethrough } from '@phosphor-icons/react';
+import { CaretDown, CaretRight, Warning, TextStrikethrough, TextAa, Quotes } from '@phosphor-icons/react';
 import type { IndexedSection } from "../types";
 
 interface IndexedPanelProps {
@@ -16,7 +16,7 @@ interface IndexedPanelProps {
   onAccept: (itemId: string) => void;
   onReject: (itemId: string, reason?: string) => void;
   onCellRefClick?: (cellRef: string) => void;
-  onItemClick?: (item: { lCell?: string; vCell?: string; label: string }) => void;
+  onItemClick?: (item: { id?: string; lCell?: string; vCell?: string; label: string; pageNumber?: number }) => void;
 }
 
 export interface IndexedPanelHandle {
@@ -24,6 +24,13 @@ export interface IndexedPanelHandle {
   getAllItemIds: () => string[];
   toggleAllGroups: () => void;
 }
+
+// Format multi-value answers: replace newlines with commas
+const formatMultiValue = (value: string): string => {
+  if (!value) return value;
+  // Replace newline (with optional comma before) with comma + space
+  return value.replace(/,?\s*\n+\s*/g, ', ').trim();
+};
 
 // Linear-style destination colors (theme-aware for better contrast)
 const destinationConfig: Record<string, { label: string; color: string }> = {
@@ -33,6 +40,8 @@ const destinationConfig: Record<string, { label: string; color: string }> = {
   questionnaire: { label: "Questionnaire", color: "tag-purple" },
   exclude: { label: "Exclude", color: "text-muted" },
 };
+
+// Extraction source badge removed - now using view toggle in App.tsx
 
 export const IndexedPanel = forwardRef<IndexedPanelHandle, IndexedPanelProps>(function IndexedPanel(
   {
@@ -58,6 +67,7 @@ export const IndexedPanel = forwardRef<IndexedPanelHandle, IndexedPanelProps>(fu
   const [searchQuery, setSearchQuery] = useState("");
   const [collapsedSections, setCollapsedSections] = useState<Set<number>>(new Set());
   const [filterNeedsReview, setFilterNeedsReview] = useState(false);
+  const [showOriginalLabels, setShowOriginalLabels] = useState(true);
   const itemRefs = useRef<Map<string, HTMLDivElement>>(new Map());
 
   const allItemIds = useMemo(() => {
@@ -171,6 +181,10 @@ export const IndexedPanel = forwardRef<IndexedPanelHandle, IndexedPanelProps>(fu
   };
 
   const totalItems = sections.reduce((acc, s) => acc + s.items.length, 0);
+  const rephrasedCount = sections.reduce(
+    (acc, s) => acc + s.items.filter((i) => i.originalLabel).length,
+    0
+  );
 
   if (!visible) return null;
 
@@ -189,6 +203,22 @@ export const IndexedPanel = forwardRef<IndexedPanelHandle, IndexedPanelProps>(fu
           </button>
         </div>
         <div className="flex items-center gap-3">
+          {/* Original/Rephrased label toggle */}
+          <button
+            onClick={() => setShowOriginalLabels(!showOriginalLabels)}
+            disabled={rephrasedCount === 0}
+            className={`flex items-center gap-1 text-[11px] px-2 py-0.5 rounded transition-colors ${
+              rephrasedCount === 0
+                ? "text-muted/50 cursor-not-allowed"
+                : !showOriginalLabels
+                  ? "bg-purple-500/20 text-purple-400"
+                  : "text-muted hover:text-primary hover:bg-card-hover"
+            }`}
+            title={rephrasedCount === 0 ? "No rephrased labels available" : showOriginalLabels ? "Showing original labels" : "Showing rephrased questions"}
+          >
+            {showOriginalLabels ? <Quotes size={12} /> : <TextAa size={12} />}
+            {showOriginalLabels ? "Original" : "Rephrased"} {rephrasedCount > 0 && rephrasedCount}
+          </button>
           {needsReviewCount > 0 && (
             <button
               onClick={() => setFilterNeedsReview(!filterNeedsReview)}
@@ -296,7 +326,7 @@ export const IndexedPanel = forwardRef<IndexedPanelHandle, IndexedPanelProps>(fu
                             onClick={(e) => {
                               handleItemClick(e, item.itemId);
                               if (onItemClick) {
-                                onItemClick({ lCell: item.lCell, vCell: item.vCell, label: item.label });
+                                onItemClick({ id: item.itemId, lCell: item.lCell, vCell: item.vCell, label: item.label, pageNumber: item.pageNumber });
                               }
                             }}
                             className={`group flex items-start gap-2 py-1.5 px-3 border-b border-subtle cursor-pointer transition-colors ${
@@ -324,7 +354,7 @@ export const IndexedPanel = forwardRef<IndexedPanelHandle, IndexedPanelProps>(fu
                             <div className="flex-1 min-w-0 overflow-hidden">
                               <div className="flex items-center gap-2">
                                 <span className="text-[12px] text-muted truncate">
-                                  {item.label}
+                                  {showOriginalLabels && item.originalLabel ? item.originalLabel : item.label}
                                 </span>
                               </div>
                               <div className={`text-[13px] truncate flex items-center gap-1.5 ${
@@ -332,7 +362,7 @@ export const IndexedPanel = forwardRef<IndexedPanelHandle, IndexedPanelProps>(fu
                                   ? "text-primary"
                                   : "text-muted italic"
                               }`}>
-                                {item.value || "(empty)"}
+                                {item.value ? formatMultiValue(item.value) : "(empty)"}
                                 {isVisionCorrected && (
                                   <span className="inline-block w-1.5 h-1.5 bg-orange-500 rounded-full shrink-0" title="Corrected by Vision" />
                                 )}

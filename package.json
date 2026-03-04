@@ -31,7 +31,6 @@
     "commander": "^12.1.0",
     "cors": "^2.8.6",
     "dotenv": "^17.2.4",
-    "exceljs": "^4.4.0",
     "express": "^5.2.1",
     "franc": "^6.2.0",
     "mammoth": "^1.11.0",
@@ -49,6 +48,7 @@
     "@typescript-eslint/eslint-plugin": "^8.15.0",
     "@typescript-eslint/parser": "^8.15.0",
     "eslint": "^9.15.0",
+    "exceljs": "^4.4.0",
     "jsdom": "^28.0.0",
     "tsx": "^4.19.0",
     "typescript": "^5.7.0"

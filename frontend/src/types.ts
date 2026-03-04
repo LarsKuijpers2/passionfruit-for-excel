@@ -39,11 +39,15 @@ export interface DetectedProduct {
   };
 }
 
+// Extraction source (Azure Document Intelligence or Claude Vision)
+export type ExtractionSource = 'azure' | 'vision';
+
 // Indexed item from extraction
 export interface IndexedItem {
   id?: string;
   type: string;
   label: string;
+  originalLabel?: string;  // Original label before contextualization
   value?: string;
   topic: string;
   level: string;
@@ -51,6 +55,8 @@ export interface IndexedItem {
   lCell?: string;
   vCell?: string;
   ref?: string;
+  // Extraction source tracking
+  extractionSource?: ExtractionSource;
   // Destination tagging (from TAG step)
   destination?: Destination | null;
   needs_review?: boolean;
@@ -67,6 +73,8 @@ export interface IndexedItem {
   strikethroughDetected?: boolean;  // True if value was determined by strikethrough
   needsReview?: boolean;  // Flag items that need human review
   reviewReason?: string;  // Why this item needs review
+  // Page number in source document (for PDF navigation)
+  pageNumber?: number;
 }
 
 // Table cell with position information
@@ -115,15 +123,18 @@ export interface LibraryItem {
     file: string;
     sheet: string;
   };
+  // For question contextualization
+  sectionTitle?: string;
 }
 
 // Excel cell data (from structure)
 export interface ExcelCell {
-  ref: string;
-  value: string;
+  ref?: string;  // Optional for vision extractions that don't have cell refs
+  value?: string;  // Optional for empty cells
   type?: string;
   filled?: boolean;
-  role?: 'header' | 'section' | 'label' | 'input' | 'value' | 'empty';
+  role?: string;  // Common values: 'header', 'section', 'label', 'input', 'value', 'empty'
+  pageNumber?: number;  // For PDF elements from vision extraction
   format?: {
     bold?: boolean;
     italic?: boolean;
@@ -197,6 +208,67 @@ export interface TextContent {
   }>;
 }
 
+// Q&A pair extracted from vision extraction
+export interface VisionQAPair {
+  question: string;
+  answer: string;
+  section: string;
+  page: number;
+  confidence: number;
+  type: 'field' | 'table_cell' | 'checkbox' | 'text';
+  metadata?: {
+    rowContext?: string;
+    columnHeader?: string;
+    tableTitle?: string;
+  };
+}
+
+// Section identified in vision extraction
+export interface VisionSection {
+  title: string;
+  pages: number[];
+  type: 'form' | 'table' | 'checklist' | 'text' | 'mixed';
+  description?: string;
+}
+
+// Vision extraction data from two-pass Claude Vision pipeline
+export interface VisionExtractionData {
+  /** Legacy: markdown output from old two-pass extractor */
+  markdown?: string;
+  /** New: structured Q&A pairs from vision extractor */
+  qaPairs?: VisionQAPair[];
+  /** New: sections identified in the document */
+  sections?: VisionSection[];
+  metadata: {
+    extractedAt?: string;
+    modelId?: string;
+    pass1Tokens?: {
+      input: number;
+      output: number;
+    };
+    pass2Tokens?: {
+      input: number;
+      output: number;
+    };
+    phase1Tokens?: {
+      input: number;
+      output: number;
+    };
+    phase2Tokens?: {
+      input: number;
+      output: number;
+    };
+    processingTimeMs?: number;
+    pageCount?: number;
+    batchCount?: number;
+    retryCount?: number;
+    pdfHash?: string;
+  };
+}
+
+// Extraction view type for toggling between extraction strategies
+export type ExtractionView = 'default' | 'azure' | 'vision';
+
 // Full questionnaire data (from /api/questionnaire/:id)
 export interface QuestionnaireData {
   id: string;
@@ -235,6 +307,10 @@ export interface QuestionnaireData {
     byTopic?: Record<string, LibraryItem[]>;
   } | LibraryItem[];
   feedback?: FeedbackData | null;
+  /** Vision extraction from two-pass Claude Vision pipeline */
+  visionExtraction?: VisionExtractionData;
+  /** Which extraction view is currently loaded (azure, vision, or default) */
+  extractionView?: ExtractionView;
 }
 
 // Vision discrepancy (difference between base extraction and what Vision sees)

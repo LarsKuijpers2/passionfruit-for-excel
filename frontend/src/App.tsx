@@ -14,7 +14,7 @@ import {
   compileTraining,
 } from "./api";
 import type { TrainingStatus } from "./api";
-import type { PanelType, IndexedItem, Destination } from "./types";
+import type { PanelType, IndexedItem, Destination, ExtractionView } from "./types";
 import { Toaster, toast } from "sonner";
 import { Database, GitBranch, Table, Brain } from "@phosphor-icons/react";
 import { TabBar } from "./components/TabBar";
@@ -95,7 +95,7 @@ export default function App() {
       toast.success(`Training compiled for ${customer}: ${data.patternsCount} patterns, ${data.rulesCount} rules`);
       queryClient.invalidateQueries({ queryKey: ["training-status"] });
     },
-    onError: (error, customer) => {
+    onError: (_error, customer) => {
       toast.error(`Failed to compile training for ${customer}`);
     },
   });
@@ -166,10 +166,22 @@ export default function App() {
   // Vision corrections panel
   const [visionPanelOpen, setVisionPanelOpen] = useState(false);
 
+  // Extraction view toggle (default, azure, or vision) - persisted to localStorage
+  const [extractionView, setExtractionView] = useState<ExtractionView>(() => {
+    const saved = localStorage.getItem('extractionView');
+    return (saved as ExtractionView) || 'default';
+  });
+
+  // Persist extraction view to localStorage
+  const handleExtractionViewChange = useCallback((view: ExtractionView) => {
+    setExtractionView(view);
+    localStorage.setItem('extractionView', view);
+  }, []);
+
   // Current questionnaire data
   const { data: questionnaireData, isLoading: questionnaireLoading } = useQuery({
-    queryKey: ["questionnaire", currentQuestionnaire],
-    queryFn: () => fetchQuestionnaire(currentQuestionnaire!),
+    queryKey: ["questionnaire", currentQuestionnaire, extractionView],
+    queryFn: () => fetchQuestionnaire(currentQuestionnaire!, extractionView),
     enabled: !!currentQuestionnaire,
   });
 
@@ -264,7 +276,7 @@ export default function App() {
       updates: Record<string, unknown>;
     }) => {
       if (!currentQuestionnaire) throw new Error("No questionnaire selected");
-      return bulkUpdateItems(currentQuestionnaire, panel, itemIds, updates);
+      return bulkUpdateItems(currentQuestionnaire, panel, itemIds, updates, extractionView);
     },
     onSuccess: () => {
       if (currentQuestionnaire) {
@@ -452,7 +464,7 @@ export default function App() {
             ),
           }));
 
-          queryClient.setQueryData(["questionnaire", currentQuestionnaire], {
+          queryClient.setQueryData(["questionnaire", currentQuestionnaire, extractionView], {
             ...questionnaireData,
             indexed: {
               ...questionnaireData.indexed,
@@ -488,6 +500,7 @@ export default function App() {
       selectedItems,
       questionnaireData,
       currentQuestionnaire,
+      extractionView,
       queryClient,
       bulkUpdateMutation,
       handleAccept,
@@ -609,6 +622,8 @@ export default function App() {
           theme={theme}
           hasNotes={!!(questionnaireData?.indexed?.meta?.notes)}
           visiblePanels={visiblePanels}
+          extractionView={extractionView}
+          loadedExtractionView={questionnaireData?.extractionView}
           onSidebarToggle={() => setSidebarOpen((prev) => !prev)}
           onTabClick={switchTab}
           onTabClose={closeTab}
@@ -616,6 +631,7 @@ export default function App() {
           onNotesClick={() => setNotesPanelOpen((prev) => !prev)}
           onThemeChange={setTheme}
           onTogglePanel={togglePanel}
+          onExtractionViewChange={handleExtractionViewChange}
         />
       )}
 
@@ -829,7 +845,8 @@ export default function App() {
         />
       ) : (
         <>
-          {/* Sheet tabs */}
+          {/* Sheet tabs - hide for Vision mode (Vision uses sections, not Excel sheets) */}
+          {extractionView !== 'vision' && (
           <div className="flex items-center gap-0 px-3 bg-app-secondary border-b border-default h-9 overflow-x-auto scrollbar-none">
             {questionnaireData?.structure?.sheets?.map((sheet) => (
               <button
@@ -845,6 +862,7 @@ export default function App() {
               </button>
             ))}
           </div>
+          )}
 
           {/* Main panels */}
           <div className="flex flex-1 overflow-hidden">
@@ -861,6 +879,8 @@ export default function App() {
           onCellClick={handleCellClick}
           questionnaireId={currentQuestionnaire || undefined}
           pages={questionnaireData?.structure?.pages}
+          visionExtraction={questionnaireData?.visionExtraction}
+          extractionView={extractionView}
           onTableEdit={(sectionIndex, tableIndex, edits) => {
             console.log('Table edit:', { sectionIndex, tableIndex, edits });
             // TODO: Implement table edit persistence
@@ -912,11 +932,20 @@ export default function App() {
           onCellRefClick={handleCellRefClick}
           onReject={(id, reason) => handleReject("indexed", id, reason)}
           onItemClick={(item) => {
+            // Navigate to page in PDF (if available)
+            if (item.pageNumber && originalPanelRef.current) {
+              originalPanelRef.current.navigateToPage(item.pageNumber);
+            }
+            // Scroll to cell in Original panel (for Azure extractions with cell refs)
             if (item.lCell) {
               setActiveCell(item.lCell);
               if (originalPanelRef.current) {
                 originalPanelRef.current.scrollToCell(item.lCell);
               }
+            }
+            // Also scroll to the same item in the Library panel
+            if (item.id && libraryPanelRef.current) {
+              libraryPanelRef.current.scrollToItem(item.id);
             }
           }}
         />
@@ -925,6 +954,7 @@ export default function App() {
           visible={visiblePanels.has("library")}
           items={
             // Use the same indexed items, just grouped by destination in the panel
+            // Include sectionTitle for question contextualization
             questionnaireData?.indexed?.sections?.flatMap(section =>
               section.items.map(item => ({
                 id: item.id,
@@ -933,6 +963,7 @@ export default function App() {
                 topic: item.topic,
                 destination: item.destination || "answer_library",
                 lCell: item.lCell,
+                sectionTitle: section.title,
               }))
             ) || []
           }

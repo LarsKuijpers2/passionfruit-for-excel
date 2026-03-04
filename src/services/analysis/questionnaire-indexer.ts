@@ -15,6 +15,24 @@ import { BedrockRuntimeClient, InvokeModelCommand } from '@aws-sdk/client-bedroc
 import { VisualAnalyzer, type SheetAnalysis, type DetectedItem, type ItemType, type ItemLevel } from './visual-analyzer.js';
 import type { QuestionnaireStructure } from '../extractors/excel.js';
 import { RulesManager } from '../../utils/rules-manager.js';
+import type { ExtractionSource, IndexedEvidence } from '../../types.js';
+import { AzureIndexer } from '../extractors/azure-indexer.js';
+import { VisionIndexer } from '../extractors/vision-indexer.js';
+import { contextualizeQuestions } from './question-contextualizer.js';
+
+// =============================================================================
+// EXTRACTION STRATEGY
+// =============================================================================
+
+/** Strategy for extraction - determines which indexer(s) to use */
+export type ExtractionStrategy = 'azure' | 'vision' | 'both' | 'legacy';
+
+/** Result of running multiple strategies */
+export interface MultiStrategyResult {
+  azure?: IndexedQuestionnaire;
+  vision?: IndexedQuestionnaire;
+  legacy?: IndexedQuestionnaire;
+}
 
 // =============================================================================
 // TOPIC DEFINITION (loaded from rules/topics.yaml)
@@ -128,6 +146,12 @@ export interface IndexedItem {
   strikethroughDetected?: boolean;  // True if value was determined by strikethrough (e.g., "Yes" struck through means "No")
   needsReview?: boolean;  // Flag items that need human review (e.g., strikethrough, low confidence)
   reviewReason?: string;  // Why this item needs review
+  pageNumber?: number;  // Page number in source document (for PDF navigation)
+  // Extraction source tracking (Phase 1: Separate Extractors)
+  extractionSource?: ExtractionSource;  // Which extraction strategy produced this item ('azure' | 'vision')
+  evidence?: IndexedEvidence;  // Detailed evidence (cell refs for azure, bbox for vision)
+  // Self-explaining questions (Phase 3: Contextualization)
+  originalLabel?: string;  // Original label before contextualization transform
 }
 
 /** A table cell with position information */
@@ -1031,6 +1055,10 @@ export class QuestionnaireIndexer {
     const content = await readFile(filepath, 'utf-8');
     const structure: QuestionnaireStructure = JSON.parse(content);
 
+    // Build cell ref to pageNumber map for navigation
+    const cellPageMap = this.buildCellPageMap(structure);
+    console.log(`  Built cell page map with ${cellPageMap.size} entries`);
+
     // Load topics from topics.yaml
     this.topics = await loadTopicsFromRules(this.rulesDir);
     if (this.topics.length > 0) {
@@ -1153,6 +1181,12 @@ export class QuestionnaireIndexer {
           } else {
             if (item.lCell) indexedItem.lCell = item.lCell;
             if (item.vCell) indexedItem.vCell = item.vCell;
+          }
+
+          // Look up pageNumber from cell refs
+          const pageNumber = cellPageMap.get(item.lCell) || cellPageMap.get(item.vCell || '') || cellPageMap.get(item.ref || '');
+          if (pageNumber) {
+            indexedItem.pageNumber = pageNumber;
           }
 
           // Apply corrections from rules
@@ -1637,6 +1671,27 @@ export class QuestionnaireIndexer {
   /**
    * Extract row number from cell reference
    */
+  /**
+   * Build a map of cell refs to page numbers from structure data
+   */
+  private buildCellPageMap(structure: QuestionnaireStructure): Map<string, number> {
+    const cellPageMap = new Map<string, number>();
+
+    for (const sheet of structure.sheets) {
+      for (const row of sheet.rows) {
+        for (const [col, cell] of Object.entries(row.cells)) {
+          if (cell.pageNumber) {
+            // Use the ref if available, otherwise construct from row/col
+            const ref = cell.ref || `${col}${row.row}`;
+            cellPageMap.set(ref, cell.pageNumber);
+          }
+        }
+      }
+    }
+
+    return cellPageMap;
+  }
+
   private extractRow(cellRef: string): number {
     const match = cellRef.match(/\d+/);
     return match ? parseInt(match[0], 10) : 0;
@@ -1691,6 +1746,134 @@ export class QuestionnaireIndexer {
     }
 
     return maxLang;
+  }
+
+  /**
+   * Index with specific extraction strategy
+   *
+   * Strategies:
+   * - 'azure': Local JSON parsing only (parses structure.json, no API calls)
+   * - 'vision': Claude Vision API (analyzes original PDF with bounding boxes)
+   * - 'both': Run both strategies in parallel, save separate files
+   * - 'legacy': Use the existing mixed approach (backward compatible)
+   */
+  async indexWithStrategy(
+    filename: string,
+    strategy: ExtractionStrategy = 'both',
+    options?: {
+      outputDir?: string;
+      pdfPath?: string; // Required for vision strategy
+    }
+  ): Promise<MultiStrategyResult> {
+    const result: MultiStrategyResult = {};
+    const outputDir = options?.outputDir || join(this.storageDir, '..', 'indexed');
+    const jsonName = filename.replace(/\.(xlsx?|docx?|pdf|json)$/i, '').replace(/[^a-zA-Z0-9-_]/g, '_');
+
+    console.log(`\n  📊 Indexing with strategy: ${strategy}`);
+
+    // Determine what to run
+    const runAzure = strategy === 'azure' || strategy === 'both';
+    const runVision = strategy === 'vision' || strategy === 'both';
+    const runLegacy = strategy === 'legacy';
+
+    // Run strategies (in parallel where possible)
+    const promises: Promise<void>[] = [];
+
+    if (runAzure) {
+      promises.push(
+        (async () => {
+          console.log(`  🔷 Running Azure strategy (local JSON parsing)...`);
+          try {
+            const azureIndexer = new AzureIndexer(this.storageDir, this.rulesDir);
+            result.azure = await azureIndexer.index(filename, outputDir);
+            console.log(`  ✓ Azure: ${result.azure.stats.total} items extracted`);
+          } catch (error) {
+            console.error(`  ✗ Azure strategy failed: ${error}`);
+          }
+        })()
+      );
+    }
+
+    if (runVision && options?.pdfPath) {
+      promises.push(
+        (async () => {
+          console.log(`  🔶 Running Vision strategy (Claude Vision API)...`);
+          try {
+            const visionIndexer = new VisionIndexer(this.storageDir, this.region, this.rulesDir);
+            result.vision = await visionIndexer.index(options.pdfPath!, outputDir);
+            console.log(`  ✓ Vision: ${result.vision.stats.total} items extracted`);
+          } catch (error) {
+            console.error(`  ✗ Vision strategy failed: ${error}`);
+          }
+        })()
+      );
+    } else if (runVision && !options?.pdfPath) {
+      console.warn(`  ⚠ Vision strategy requires pdfPath option, skipping...`);
+    }
+
+    if (runLegacy) {
+      promises.push(
+        (async () => {
+          console.log(`  🔳 Running Legacy strategy (mixed Claude analysis)...`);
+          try {
+            result.legacy = await this.index(filename);
+            // Save legacy output
+            await mkdir(outputDir, { recursive: true });
+            const legacyPath = join(outputDir, `${jsonName}.json`);
+            await writeFile(legacyPath, JSON.stringify(result.legacy, null, 2));
+            console.log(`  ✓ Legacy: ${result.legacy.stats.total} items extracted`);
+          } catch (error) {
+            console.error(`  ✗ Legacy strategy failed: ${error}`);
+          }
+        })()
+      );
+    }
+
+    // Wait for all strategies to complete
+    await Promise.all(promises);
+
+    // Apply contextualization to create self-explaining questions
+    if (result.azure) {
+      console.log(`  📝 Contextualizing Azure labels...`);
+      const azureContextualized = contextualizeQuestions(result.azure.sections);
+      result.azure.sections = azureContextualized.sections;
+      console.log(`    ✓ Transformed ${azureContextualized.stats.transformed}/${azureContextualized.stats.totalItems} labels`);
+      // Re-save with contextualized labels
+      const azurePath = join(outputDir, `${jsonName}-azure.json`);
+      await writeFile(azurePath, JSON.stringify(result.azure, null, 2));
+    }
+    if (result.vision) {
+      console.log(`  📝 Contextualizing Vision labels...`);
+      const visionContextualized = contextualizeQuestions(result.vision.sections);
+      result.vision.sections = visionContextualized.sections;
+      console.log(`    ✓ Transformed ${visionContextualized.stats.transformed}/${visionContextualized.stats.totalItems} labels`);
+      // Re-save with contextualized labels
+      const visionPath = join(outputDir, `${jsonName}-vision.json`);
+      await writeFile(visionPath, JSON.stringify(result.vision, null, 2));
+    }
+    if (result.legacy) {
+      console.log(`  📝 Contextualizing Legacy labels...`);
+      const legacyContextualized = contextualizeQuestions(result.legacy.sections);
+      result.legacy.sections = legacyContextualized.sections;
+      console.log(`    ✓ Transformed ${legacyContextualized.stats.transformed}/${legacyContextualized.stats.totalItems} labels`);
+      // Re-save with contextualized labels
+      const legacyPath = join(outputDir, `${jsonName}.json`);
+      await writeFile(legacyPath, JSON.stringify(result.legacy, null, 2));
+    }
+
+    // Summary
+    console.log(`\n  📊 Extraction Summary:`);
+    if (result.azure) {
+      console.log(`     Azure:  ${result.azure.stats.total} items (${result.azure.stats.answered} answered)`);
+    }
+    if (result.vision) {
+      console.log(`     Vision: ${result.vision.stats.total} items (${result.vision.stats.answered} answered)`);
+    }
+    if (result.legacy) {
+      console.log(`     Legacy: ${result.legacy.stats.total} items (${result.legacy.stats.answered} answered)`);
+    }
+
+    return result;
   }
 
   /**

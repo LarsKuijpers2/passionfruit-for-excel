@@ -58,6 +58,7 @@ program
   .description('Store questionnaire preserving structure (Excel, Word, PDF)')
   .argument('<file>', 'Path to the questionnaire file (.xlsx, .docx, .pdf)')
   .option('-c, --customer <name>', 'Customer name (uses customer folder structure)')
+  .option('-e, --extractor <type>', 'PDF extractor: azure | vision | two-pass-vision (default: azure)', 'azure')
   .option('--output-dir <dir>', 'Output directory (legacy mode, ignored if --customer is set)')
   .option('--markdown', 'Also export to Markdown')
   .option('--overwrite', 'Overwrite existing structure even if it has manual edits')
@@ -77,9 +78,14 @@ program
       }
 
       const docType = getDocumentType(filePath);
-      console.log('\nStoring: ' + file + ' (' + docType + ')');
+      const extractorType = opts.extractor as 'azure' | 'vision' | 'two-pass-vision';
+      const extractorLabel = docType === 'pdf' && extractorType !== 'azure' ? ` [${extractorType}]` : '';
+      console.log('\nStoring: ' + file + ' (' + docType + ')' + extractorLabel);
 
-      const extractor = await getExtractor(filePath);
+      const extractor = await getExtractor(filePath, {
+        customerDir: customer ? `./customers/${customer}` : undefined,
+        pdfExtractor: extractorType,
+      });
       const structure = await extractor.extract(filePath);
 
       // Check for sidecar .meta.json file (created by fetch command)
@@ -184,10 +190,12 @@ program
   .option('--output <dir>', 'Output directory for indexed questionnaires (legacy mode)')
   .option('--rules-dir <dir>', 'Rules directory (legacy mode)')
   .option('--no-vision', 'Skip Claude Vision validation for PDFs')
+  .option('-s, --strategy <strategy>', 'Extraction strategy: azure (local JSON), vision (Claude Vision), both, or legacy (default: legacy)', 'legacy')
   .action(async (file: string, opts) => {
     try {
       const customer = opts.customer as string | undefined;
       const useVision = opts.vision !== false;
+      const strategy = (opts.strategy as string || 'legacy') as 'azure' | 'vision' | 'both' | 'legacy';
 
       // Determine directories based on customer or legacy mode
       let dir: string;
@@ -208,9 +216,62 @@ program
         rulesDir = opts.rulesDir as string || './rules';
       }
 
-      console.log('\n📇 Indexing: ' + file + '\n');
+      console.log('\n📇 Indexing: ' + file);
+      console.log('   Strategy: ' + strategy + '\n');
 
       const indexer = new QuestionnaireIndexer(dir, 'eu-central-1', rulesDir);
+
+      // Use strategy-based indexing if not legacy
+      if (strategy !== 'legacy') {
+        // Find PDF path for vision strategy
+        let pdfPath: string | undefined;
+        if (strategy === 'vision' || strategy === 'both') {
+          const { existsSync } = await import('fs');
+          const { readdir } = await import('fs/promises');
+
+          // If input file is already a PDF, use it directly
+          if (file.toLowerCase().endsWith('.pdf') && existsSync(file)) {
+            pdfPath = file;
+          } else if (incomingDir) {
+            // Otherwise search for a matching PDF in the incoming directory
+            const sourceName = file.replace(/\.(json|xlsx?|docx?)$/i, '').replace(/[^a-zA-Z0-9-_]/g, '_');
+            const files = await readdir(incomingDir);
+            const baseWords = sourceName.toLowerCase().split('_').filter(w => w.length > 3).slice(0, 3);
+
+            for (const f of files) {
+              if (f.toLowerCase().endsWith('.pdf')) {
+                const matches = baseWords.filter(w => f.toLowerCase().includes(w));
+                if (matches.length >= 2) {
+                  pdfPath = join(incomingDir, f);
+                  break;
+                }
+              }
+            }
+          }
+        }
+
+        const result = await indexer.indexWithStrategy(file, strategy, {
+          outputDir,
+          pdfPath,
+        });
+
+        // Print summary
+        if (result.azure) {
+          console.log('\n📊 Azure Results:');
+          console.log('   Total items: ' + result.azure.stats.total);
+          console.log('   Answered: ' + result.azure.stats.answered);
+        }
+        if (result.vision) {
+          console.log('\n📊 Vision Results:');
+          console.log('   Total items: ' + result.vision.stats.total);
+          console.log('   Answered: ' + result.vision.stats.answered);
+        }
+
+        console.log('\n💾 Output files saved to: ' + outputDir);
+        return;
+      }
+
+      // Legacy mode - original behavior
       const indexed = await indexer.index(file);
 
       console.log('\n📊 Index Summary:');
@@ -680,6 +741,7 @@ program
   .description('Fetch a questionnaire from Passionfruit API by evidence ID and process through pipeline')
   .argument('<evidenceId>', 'Passionfruit evidence ID')
   .option('-c, --customer <name>', 'Customer name (uses customer folder structure)')
+  .option('-e, --extractor <type>', 'PDF extractor: azure | vision | two-pass-vision (default: azure)', 'azure')
   .option('--output-dir <dir>', 'Output directory for downloaded file (legacy mode)')
   .option('--process', 'Automatically run store and index after download')
   .option('--dry-run', 'Show what would be downloaded without actually downloading')
@@ -790,7 +852,11 @@ program
         console.log('\n📦 Processing through pipeline...\n');
 
         // Store
-        const extractor = await getExtractor(filepath);
+        const extractorType = opts.extractor as 'azure' | 'vision' | 'two-pass-vision';
+        const extractor = await getExtractor(filepath, {
+          customerDir: `./customers/${customer}`,
+          pdfExtractor: extractorType,
+        });
         const structure = await extractor.extract(filepath);
 
         // Inject API source info
@@ -856,6 +922,7 @@ program
   .description('Fetch multiple questionnaires from Passionfruit API by evidence IDs')
   .argument('<evidenceIds...>', 'Passionfruit evidence IDs (space or comma separated)')
   .requiredOption('-c, --customer <name>', 'Customer name (required)')
+  .option('-e, --extractor <type>', 'PDF extractor: azure | vision | two-pass-vision (default: azure)', 'azure')
   .option('--process', 'Automatically run store and index after download (default: true)', true)
   .option('--no-process', 'Skip automatic processing')
   .option('--dry-run', 'Show what would be downloaded without actually downloading')
@@ -945,7 +1012,11 @@ program
 
           // Process if requested
           if (opts.process) {
-            const extractor = await getExtractor(filepath);
+            const extractorType = opts.extractor as 'azure' | 'vision' | 'two-pass-vision';
+            const extractor = await getExtractor(filepath, {
+              customerDir: `./customers/${customer}`,
+              pdfExtractor: extractorType,
+            });
             const structure = await extractor.extract(filepath);
             structure.source.evidenceId = evidence.id;
             structure.source.evidenceName = evidence.name;
@@ -1722,6 +1793,43 @@ program
 
     } catch (error) {
       console.error('❌ Enhanced extraction failed:', error);
+      process.exit(1);
+    }
+  });
+
+// =============================================================================
+// CONVERT-VISION - Convert vision extraction Q&A pairs to indexed format
+// =============================================================================
+
+program
+  .command('convert-vision')
+  .description('Convert vision extraction Q&A pairs to indexed format for destination tagging')
+  .argument('<file>', 'Questionnaire filename (from vision-extraction folder)')
+  .option('-c, --customer <name>', 'Customer name (required)', '')
+  .action(async (file: string, opts) => {
+    try {
+      const customer = opts.customer as string;
+      if (!customer) {
+        console.error('❌ Customer name required. Use: pnpm cli convert-vision <file> -c <customer>');
+        process.exit(1);
+      }
+
+      console.log(`\n🔄 Converting vision extraction to indexed format`);
+      console.log(`   Customer: ${customer}`);
+      console.log(`   File: ${file}\n`);
+
+      const { convertAndSave } = await import('./services/extractors/vision-to-indexed.js');
+      const customerDir = `./customers/${customer}`;
+
+      const outputPath = await convertAndSave(customerDir, file);
+
+      console.log(`\n✅ Conversion complete!`);
+      console.log(`   Output: ${outputPath}`);
+      console.log(`\n💡 Now open the review UI to assign destinations:`);
+      console.log(`   pnpm cli serve -c ${customer}`);
+
+    } catch (error) {
+      console.error('❌ Conversion failed:', error instanceof Error ? error.message : error);
       process.exit(1);
     }
   });

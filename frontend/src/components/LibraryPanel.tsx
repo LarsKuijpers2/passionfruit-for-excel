@@ -1,6 +1,7 @@
 import { useState, useMemo, forwardRef, useImperativeHandle, useRef, useCallback } from "react";
 import { CaretDown, CaretRight, PencilSimple, FloppyDisk, X } from '@phosphor-icons/react';
 import type { LibraryItem } from "../types";
+import { contextualizeLabel } from "../utils/question-contextualizer";
 
 export interface ItemEdit {
   id: string;
@@ -35,6 +36,13 @@ export interface LibraryPanelHandle {
   getAllItemIds: () => string[];
   toggleAllGroups: () => void;
 }
+
+// Format multi-value answers: replace newlines with commas
+const formatMultiValue = (value: string): string => {
+  if (!value) return value;
+  // Replace newline (with optional comma before) with comma + space
+  return value.replace(/,?\s*\n+\s*/g, ', ').trim();
+};
 
 // Linear-style destination colors (theme-aware for better contrast)
 const destinationConfig: Record<string, { label: string; color: string }> = {
@@ -383,13 +391,27 @@ export const LibraryPanel = forwardRef<LibraryPanelHandle, LibraryPanelProps>(fu
                                   />
                                 </div>
                               ) : (
-                                // View mode - display only
+                                // View mode - display only with contextualized labels
+                                (() => {
+                                  const originalLabel = pendingEdits?.get(item.itemId)?.label ?? item.label;
+                                  const contextualized = contextualizeLabel(
+                                    originalLabel,
+                                    item.sectionTitle || "",
+                                    item.value
+                                  );
+                                  return (
                                 <>
                                   <div className="flex items-center gap-2">
-                                    <span className={`text-[12px] truncate ${
-                                      pendingEdits?.has(item.itemId) ? "text-yellow-500" : "text-muted"
-                                    }`}>
-                                      {pendingEdits?.get(item.itemId)?.label ?? item.label}
+                                    <span
+                                      className={`text-[12px] ${
+                                        pendingEdits?.has(item.itemId) ? "text-yellow-500" : "text-muted"
+                                      }`}
+                                      title={contextualized.transformed ? `Original: ${originalLabel}` : undefined}
+                                    >
+                                      {contextualized.label}
+                                      {contextualized.transformed && (
+                                        <span className="ml-1 text-[9px] text-purple-400">*</span>
+                                      )}
                                     </span>
                                     {pendingEdits?.has(item.itemId) && (
                                       <span className="text-[9px] text-yellow-500 font-medium">EDITED</span>
@@ -400,7 +422,7 @@ export const LibraryPanel = forwardRef<LibraryPanelHandle, LibraryPanelProps>(fu
                                       ? "text-primary"
                                       : "text-muted italic"
                                   }`}>
-                                    {(pendingEdits?.get(item.itemId)?.value ?? item.value) || "(empty)"}
+                                    {(pendingEdits?.get(item.itemId)?.value ?? item.value) ? formatMultiValue(pendingEdits?.get(item.itemId)?.value ?? item.value ?? "") : "(empty)"}
                                   </div>
                                   {pendingEdits?.get(item.itemId)?.comment && (
                                     <div className="text-[11px] text-yellow-500 italic truncate">
@@ -408,6 +430,8 @@ export const LibraryPanel = forwardRef<LibraryPanelHandle, LibraryPanelProps>(fu
                                     </div>
                                   )}
                                 </>
+                                  );
+                                })()
                               )}
                             </div>
 

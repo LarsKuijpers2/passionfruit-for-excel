@@ -1,15 +1,17 @@
 import { useState, useMemo, forwardRef, useImperativeHandle, useRef, useEffect, useCallback } from 'react';
 import * as pdfjsLib from 'pdfjs-dist';
 import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
-import { File, GridFour, PencilSimpleLine, PencilSimple, Plus, X, Check, Trash, SplitHorizontal, FloppyDisk } from '@phosphor-icons/react';
-import type { ExcelSheet, IndexedSection, IndexedItem } from '../types';
+import { File, GridFour, PencilSimpleLine, PencilSimple, Plus, X, Check, Trash, SplitHorizontal, FloppyDisk, Code } from '@phosphor-icons/react';
+import type { ExcelSheet, IndexedSection, IndexedItem, VisionExtractionData, VisionQAPair, ExtractionView } from '../types';
 import { TableAnnotationEditor, type AnnotatedTable } from './TableAnnotationEditor';
 import { saveStructure } from '../api';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 // Set the worker source for PDF.js
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
-type ViewTab = 'file' | 'view' | 'split';
+type ViewTab = 'file' | 'view' | 'split' | 'markdown';
 
 interface PageInfo {
   pageNumber: number;
@@ -76,15 +78,20 @@ interface OriginalPanelProps {
   pages?: PageInfo[];
   onSaveAnnotation?: (pageNumber: number, tables: AnnotatedTable[], notes: string) => void;
   onTableEdit?: (sectionIndex: number, tableIndex: number, edits: TableEditOp[]) => void;
+  /** Vision extraction from two-pass Claude Vision pipeline */
+  visionExtraction?: VisionExtractionData;
+  /** Current extraction view mode - used to hide bounding box controls in vision mode */
+  extractionView?: ExtractionView;
 }
 
 export interface OriginalPanelHandle {
   scrollToCell: (cellRef: string) => void;
+  navigateToPage: (pageNumber: number) => void;
 }
 
-export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>(function OriginalPanel(
-  { visible, sheet, sections: _sections, indexedSections, textContent, activeCell, onCellClick, questionnaireId, pages: _pages, onSaveAnnotation, onTableEdit },
-  ref
+function OriginalPanelInner(
+  { visible, sheet, sections: _sections, indexedSections, textContent, activeCell, onCellClick, questionnaireId, pages: _pages, onSaveAnnotation, onTableEdit, visionExtraction, extractionView }: OriginalPanelProps,
+  ref: React.ForwardedRef<OriginalPanelHandle>
 ) {
   // Helper to format checkbox values from Azure extraction
   // Converts :selected: and :unselected: markers to visual checkboxes
@@ -123,6 +130,7 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
   };
 
   const [expandedSections, setExpandedSections] = useState<Set<number>>(new Set());
+  const [expandedVisionSections, setExpandedVisionSections] = useState<Set<number>>(new Set());
   const cellRefs = useRef<Map<string, HTMLTableCellElement>>(new Map());
   const [showAnnotationEditor, setShowAnnotationEditor] = useState(false);
 
@@ -130,6 +138,14 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
   const [activeTab, setActiveTab] = useState<ViewTab>('view');
   const activeTabRef = useRef<ViewTab>(activeTab);
   activeTabRef.current = activeTab;
+
+  // Switch away from hidden tabs when in Vision mode
+  useEffect(() => {
+    if (extractionView === 'vision' && (activeTab === 'view' || activeTab === 'split')) {
+      // In Vision mode, 'view' and 'split' tabs are hidden - switch to 'markdown' if available, else 'file'
+      setActiveTab(visionExtraction ? 'markdown' : 'file');
+    }
+  }, [extractionView, activeTab, visionExtraction]);
 
   // Table editing state
   const [editingTable, setEditingTable] = useState<{ sectionIndex: number; tableIndex: number } | null>(null);
@@ -181,6 +197,9 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
 
   // Toast notification state
   const [toast, setToast] = useState<{ message: string; type: 'error' | 'success' | 'info' } | null>(null);
+
+  // Markdown view mode: 'rendered' (with tables) or 'raw' (preformatted text)
+  const [markdownViewMode, setMarkdownViewMode] = useState<'rendered' | 'raw'>('rendered');
 
   // Auto-dismiss toast after 4 seconds
   useEffect(() => {
@@ -495,7 +514,7 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
     // Find the cell data for selected refs
     const elementsToAdd: Array<{ ref: string; value: string; pageNumber?: number }> = [];
     for (const row of sheet.rows || []) {
-      for (const [col, cell] of Object.entries(row.cells || {})) {
+      for (const [_col, cell] of Object.entries(row.cells || {})) {
         const c = cell as any;
         if (selectedPdfElements.has(c.ref)) {
           elementsToAdd.push({
@@ -650,7 +669,7 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
       // Search in table cells
       if (sheet) {
         for (const row of sheet.rows || []) {
-          for (const [col, cell] of Object.entries(row.cells || {})) {
+          for (const [_col, cell] of Object.entries(row.cells || {})) {
             const c = cell as any;
             if (selectedPdfElements.has(c.ref)) {
               elementsToAdd.push({ ref: c.ref, value: c.value || '', pageNumber: c.pageNumber });
@@ -1032,8 +1051,30 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
   const [pdfSearchQuery, setPdfSearchQuery] = useState('');
   const [pdfSearchResults, setPdfSearchResults] = useState<Array<{ ref: string; pageNumber?: number; content: string; polygon?: number[]; type: string }>>([]);
   const [currentSearchIndex, setCurrentSearchIndex] = useState(0);
+  const [showSearchDropdown, setShowSearchDropdown] = useState(false);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
+
+  // ===== PDF WHEEL ZOOM HANDLER =====
+
+  // Callback ref to attach wheel handler with { passive: false } to prevent browser zoom
+  const pdfContainerRef = useCallback((node: HTMLDivElement | null) => {
+    if (!node) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      // Only zoom if Ctrl (Windows) or Meta (Mac) is pressed, or if it's a pinch gesture (ctrlKey is true for pinch)
+      if (e.ctrlKey || e.metaKey) {
+        e.preventDefault();
+        e.stopPropagation();
+        const delta = -e.deltaY * 0.01; // Smaller multiplier for smoother zoom
+        setScale(s => Math.max(0.5, Math.min(3, s + delta)));
+      }
+    };
+
+    // Must use { passive: false } to allow preventDefault on wheel events
+    node.addEventListener('wheel', handleWheel, { passive: false });
+  }, []);
 
   // ===== PDF REGION DRAWING HANDLERS =====
 
@@ -1129,7 +1170,7 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
 
     // Search in table cells
     for (const row of sheet.rows || []) {
-      for (const [col, cell] of Object.entries(row.cells || {})) {
+      for (const [_col, cell] of Object.entries(row.cells || {})) {
         const c = cell as any;
         if (selectedPdfElements.has(c.ref)) {
           elementsToAdd.push({
@@ -1290,6 +1331,15 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
       // For File tab: the useEffect will handle page navigation and bounding box
       // The activeCell prop triggers the rendering
     },
+    navigateToPage: (pageNumber: number) => {
+      if (pageNumber > 0 && pageNumber <= numPages) {
+        setCurrentPage(pageNumber);
+        // Switch to file tab if not already on a PDF view
+        if (activeTab === 'view') {
+          setActiveTab('file');
+        }
+      }
+    },
   }));
 
   const toggleSectionExpanded = (sectionIndex: number) => {
@@ -1306,7 +1356,7 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
 
   // Load PDF when tab switches to 'file'
   useEffect(() => {
-    if ((activeTab !== 'file' && activeTab !== 'split') || !questionnaireId) return;
+    if ((activeTab !== 'file' && activeTab !== 'split' && activeTab !== 'markdown') || !questionnaireId) return;
 
     setPdfLoading(true);
     setPdfError(null);
@@ -1476,6 +1526,34 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
       });
     }
 
+    // Search vision extraction Q&A pairs
+    if (visionExtraction?.qaPairs) {
+      visionExtraction.qaPairs.forEach((qa, idx) => {
+        const questionMatch = qa.question?.toLowerCase().includes(lowerQuery);
+        const answerMatch = qa.answer?.toLowerCase().includes(lowerQuery);
+        const sectionMatch = qa.section?.toLowerCase().includes(lowerQuery);
+        const rowContextMatch = qa.metadata?.rowContext?.toLowerCase().includes(lowerQuery);
+        const columnHeaderMatch = qa.metadata?.columnHeader?.toLowerCase().includes(lowerQuery);
+
+        if (questionMatch || answerMatch || sectionMatch || rowContextMatch || columnHeaderMatch) {
+          // Build a descriptive content string
+          const contentParts = [];
+          if (qa.metadata?.rowContext) contentParts.push(qa.metadata.rowContext);
+          if (qa.metadata?.columnHeader) contentParts.push(qa.metadata.columnHeader);
+          if (qa.question && !contentParts.includes(qa.question)) contentParts.push(qa.question);
+          contentParts.push(qa.answer || '(empty)');
+
+          results.push({
+            ref: `V${idx + 1}`,
+            pageNumber: qa.page,
+            content: contentParts.join(' - '),
+            polygon: undefined, // Vision extraction doesn't have bounding boxes
+            type: 'vision'
+          });
+        }
+      });
+    }
+
     // Sort by page number, then by ref for consistent ordering
     return results.sort((a, b) => {
       if (a.pageNumber !== undefined && b.pageNumber !== undefined) {
@@ -1508,12 +1586,24 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
     }
   }, [activeTab, currentSearchRef, currentSearchIndex, pdfSearchResults]);
 
+  // Close search dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(e.target as Node)) {
+        setShowSearchDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   // Handle search
   const handlePdfSearch = (query: string) => {
     setPdfSearchQuery(query);
     const results = searchContent(query);
     setPdfSearchResults(results);
     setCurrentSearchIndex(0);
+    setShowSearchDropdown(query.length > 0 && results.length > 0);
     // Navigate to first result
     if (results.length > 0) {
       const firstResult = results[0];
@@ -1557,7 +1647,7 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
 
   // Render current PDF page
   useEffect(() => {
-    if (!pdfDoc || !canvasRef.current || (activeTab !== 'file' && activeTab !== 'split')) return;
+    if (!pdfDoc || !canvasRef.current || (activeTab !== 'file' && activeTab !== 'split' && activeTab !== 'markdown')) return;
 
     const renderPage = async () => {
       const page = await pdfDoc.getPage(currentPage);
@@ -1951,40 +2041,126 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
             >
               <File size={16} weight={activeTab === 'file' ? 'fill' : 'regular'} />
             </button>
-            <button
-              onClick={() => setActiveTab('view')}
-              className={`p-1.5 rounded transition-colors ${
-                activeTab === 'view'
-                  ? 'bg-accent text-white'
-                  : 'text-muted hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-700'
-              }`}
-              title="View"
-            >
-              <GridFour size={16} weight={activeTab === 'view' ? 'fill' : 'regular'} />
-            </button>
-            <button
-              onClick={() => setActiveTab('split')}
-              className={`p-1.5 rounded transition-colors ${
-                activeTab === 'split'
-                  ? 'bg-accent text-white'
-                  : 'text-muted hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-700'
-              }`}
-              title="Split View (File + Table)"
-            >
-              <SplitHorizontal size={16} weight={activeTab === 'split' ? 'fill' : 'regular'} />
-            </button>
+            {/* View and Split tabs - hide in Vision mode since they show Azure structure */}
+            {extractionView !== 'vision' && (
+              <>
+                <button
+                  onClick={() => setActiveTab('view')}
+                  className={`p-1.5 rounded transition-colors ${
+                    activeTab === 'view'
+                      ? 'bg-accent text-white'
+                      : 'text-muted hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-700'
+                  }`}
+                  title="View"
+                >
+                  <GridFour size={16} weight={activeTab === 'view' ? 'fill' : 'regular'} />
+                </button>
+                <button
+                  onClick={() => setActiveTab('split')}
+                  className={`p-1.5 rounded transition-colors ${
+                    activeTab === 'split'
+                      ? 'bg-accent text-white'
+                      : 'text-muted hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-700'
+                  }`}
+                  title="Split View (File + Table)"
+                >
+                  <SplitHorizontal size={16} weight={activeTab === 'split' ? 'fill' : 'regular'} />
+                </button>
+              </>
+            )}
+            {/* Markdown tab - only shown when vision extraction is available */}
+            {visionExtraction && (
+              <button
+                onClick={() => setActiveTab('markdown')}
+                className={`p-1.5 rounded transition-colors ${
+                  activeTab === 'markdown'
+                    ? 'bg-purple-500 text-white'
+                    : 'text-purple-400 hover:text-purple-300 hover:bg-purple-500/20'
+                }`}
+                title="Vision Extraction (Markdown)"
+              >
+                <Code size={16} weight={activeTab === 'markdown' ? 'fill' : 'regular'} />
+              </button>
+            )}
           </div>
         </div>
 
         {/* Search */}
-        <div className="flex items-center gap-2 flex-1 max-w-[300px] mx-4">
-          <input
-            type="text"
-            placeholder="Search..."
-            value={pdfSearchQuery}
-            onChange={(e) => handlePdfSearch(e.target.value)}
-            className="flex-1 h-7 px-2.5 bg-app border border-default rounded text-[12px] text-primary placeholder:text-muted focus:outline-none focus:border-accent"
-          />
+        <div ref={searchContainerRef} className="relative flex items-center gap-2 flex-1 max-w-[400px] mx-4">
+          <div className="relative flex-1">
+            <input
+              type="text"
+              placeholder="Search questions, answers, sections..."
+              value={pdfSearchQuery}
+              onChange={(e) => handlePdfSearch(e.target.value)}
+              onFocus={() => pdfSearchResults.length > 0 && setShowSearchDropdown(true)}
+              onKeyDown={(e) => {
+                if (e.key === 'Escape') {
+                  setShowSearchDropdown(false);
+                } else if (e.key === 'ArrowDown' && pdfSearchResults.length > 0) {
+                  e.preventDefault();
+                  setCurrentSearchIndex(i => (i + 1) % pdfSearchResults.length);
+                } else if (e.key === 'ArrowUp' && pdfSearchResults.length > 0) {
+                  e.preventDefault();
+                  setCurrentSearchIndex(i => (i - 1 + pdfSearchResults.length) % pdfSearchResults.length);
+                } else if (e.key === 'Enter' && pdfSearchResults.length > 0) {
+                  const result = pdfSearchResults[currentSearchIndex];
+                  if (result?.pageNumber !== undefined) {
+                    setCurrentPage(result.pageNumber);
+                  }
+                  setShowSearchDropdown(false);
+                }
+              }}
+              className="w-full h-7 px-2.5 bg-app border border-default rounded text-[12px] text-primary placeholder:text-muted focus:outline-none focus:border-accent"
+            />
+            {/* Search Results Dropdown */}
+            {showSearchDropdown && pdfSearchQuery && pdfSearchResults.length > 0 && (
+              <div className="absolute top-full left-0 right-0 mt-1 bg-panel border border-default rounded shadow-lg max-h-[300px] overflow-y-auto z-50">
+                {pdfSearchResults.slice(0, 50).map((result, idx) => (
+                  <button
+                    key={`${result.ref}-${idx}`}
+                    onClick={() => {
+                      setCurrentSearchIndex(idx);
+                      if (result.pageNumber !== undefined) {
+                        setCurrentPage(result.pageNumber);
+                      }
+                      setShowSearchDropdown(false);
+                    }}
+                    className={`w-full text-left px-3 py-2 text-[11px] border-b border-subtle last:border-b-0 hover:bg-hover transition-colors ${
+                      idx === currentSearchIndex ? 'bg-accent/10 border-l-2 border-l-accent' : ''
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className={`px-1.5 py-0.5 rounded text-[9px] font-medium ${
+                        result.type === 'vision' ? 'bg-purple-500/20 text-purple-400' :
+                        result.type === 'cell' ? 'bg-blue-500/20 text-blue-400' :
+                        result.type === 'paragraph' ? 'bg-green-500/20 text-green-400' :
+                        'bg-gray-500/20 text-gray-400'
+                      }`}>
+                        {result.type === 'vision' ? 'Q&A' : result.type}
+                      </span>
+                      {result.pageNumber !== undefined && (
+                        <span className="text-muted">p.{result.pageNumber}</span>
+                      )}
+                    </div>
+                    <div className="mt-1 text-primary line-clamp-2">
+                      {result.content.length > 120 ? result.content.slice(0, 120) + '...' : result.content}
+                    </div>
+                  </button>
+                ))}
+                {pdfSearchResults.length > 50 && (
+                  <div className="px-3 py-2 text-[10px] text-muted text-center bg-subtle">
+                    Showing first 50 of {pdfSearchResults.length} results
+                  </div>
+                )}
+              </div>
+            )}
+            {pdfSearchQuery && pdfSearchResults.length === 0 && (
+              <div className="absolute top-full left-0 right-0 mt-1 bg-panel border border-default rounded shadow-lg p-3 text-[11px] text-muted z-50">
+                No results found for "{pdfSearchQuery}"
+              </div>
+            )}
+          </div>
           {pdfSearchResults.length > 0 && (
             <div className="flex items-center gap-1">
               <span className="text-[10px] text-muted whitespace-nowrap">
@@ -2001,6 +2177,16 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
                 className="px-1.5 py-0.5 text-[11px] bg-gray-100 dark:bg-gray-700 rounded hover:bg-gray-200 dark:hover:bg-gray-600"
               >
                 ↓
+              </button>
+              <button
+                onClick={() => {
+                  setPdfSearchQuery('');
+                  setPdfSearchResults([]);
+                }}
+                className="px-1.5 py-0.5 text-[11px] bg-gray-100 dark:bg-gray-700 rounded hover:bg-gray-200 dark:hover:bg-gray-600"
+                title="Clear search"
+              >
+                ✕
               </button>
             </div>
           )}
@@ -2164,14 +2350,17 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
                   </button>
                 </div>
                 <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setShowAllBoxes(!showAllBoxes)}
-                    className={`px-1.5 py-0.5 text-[10px] rounded ${
-                      showAllBoxes ? 'bg-blue-500/20 text-blue-400' : 'bg-gray-100 dark:bg-gray-700 text-muted'
-                    }`}
-                  >
-                    {showAllBoxes ? 'Hide' : 'Show'}
-                  </button>
+                  {/* Hide bounding box toggle in Vision mode */}
+                  {extractionView !== 'vision' && (
+                    <button
+                      onClick={() => setShowAllBoxes(!showAllBoxes)}
+                      className={`px-1.5 py-0.5 text-[10px] rounded ${
+                        showAllBoxes ? 'bg-blue-500/20 text-blue-400' : 'bg-gray-100 dark:bg-gray-700 text-muted'
+                      }`}
+                    >
+                      {showAllBoxes ? 'Hide' : 'Show'}
+                    </button>
+                  )}
                   <div className="flex items-center gap-1">
                     <button onClick={() => setScale(s => Math.max(0.5, s - 0.25))} className="px-1 text-[10px] bg-gray-100 dark:bg-gray-700 rounded">−</button>
                     <span className="text-[10px] text-muted">{Math.round(scale * 100)}%</span>
@@ -2180,7 +2369,7 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
                 </div>
               </div>
             )}
-            <div className="flex-1 overflow-auto bg-gray-200 dark:bg-gray-900 flex items-start justify-center p-2">
+            <div ref={pdfContainerRef} className="flex-1 overflow-auto bg-gray-200 dark:bg-gray-900 flex items-start justify-center p-2" style={{ overscrollBehavior: 'contain' }}>
               {pdfLoading && <div className="text-muted text-center py-8 text-[12px]">Loading PDF...</div>}
               {pdfError && <div className="text-red-500 text-center py-8 text-[12px]">{pdfError}</div>}
               {!pdfLoading && !pdfError && !pdfDoc && (
@@ -2810,24 +2999,29 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
               </div>
 
               <div className="flex items-center gap-3">
-                <button
-                  onClick={() => setShowAnnotationEditor(true)}
-                  className="flex items-center gap-1 px-2 py-1 text-[11px] bg-emerald-500/20 text-emerald-400 rounded hover:bg-emerald-500/30 transition-colors"
-                  title="Annotate this page - add missing tables/data for training"
-                >
-                  <PencilSimpleLine size={14} />
-                  Annotate
-                </button>
-                <button
-                  onClick={() => setShowAllBoxes(!showAllBoxes)}
-                  className={`px-2 py-1 text-[11px] rounded transition-colors ${
-                    showAllBoxes
-                      ? 'bg-blue-500/20 text-blue-400'
-                      : 'bg-gray-100 dark:bg-gray-700 text-muted hover:text-primary'
-                  }`}
-                >
-                  {showAllBoxes ? 'Hide Boxes' : 'Show Boxes'}
-                </button>
+                {/* Hide annotation controls in Vision mode - no bounding box data available */}
+                {extractionView !== 'vision' && (
+                  <>
+                    <button
+                      onClick={() => setShowAnnotationEditor(true)}
+                      className="flex items-center gap-1 px-2 py-1 text-[11px] bg-emerald-500/20 text-emerald-400 rounded hover:bg-emerald-500/30 transition-colors"
+                      title="Annotate this page - add missing tables/data for training"
+                    >
+                      <PencilSimpleLine size={14} />
+                      Annotate
+                    </button>
+                    <button
+                      onClick={() => setShowAllBoxes(!showAllBoxes)}
+                      className={`px-2 py-1 text-[11px] rounded transition-colors ${
+                        showAllBoxes
+                          ? 'bg-blue-500/20 text-blue-400'
+                          : 'bg-gray-100 dark:bg-gray-700 text-muted hover:text-primary'
+                      }`}
+                    >
+                      {showAllBoxes ? 'Hide Boxes' : 'Show Boxes'}
+                    </button>
+                  </>
+                )}
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setScale(s => Math.max(0.5, s - 0.25))}
@@ -2848,7 +3042,7 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
           )}
 
           {/* PDF Canvas */}
-          <div className="flex-1 overflow-auto bg-gray-200 dark:bg-gray-900 flex items-start justify-center p-4">
+          <div ref={pdfContainerRef} className="flex-1 overflow-auto bg-gray-200 dark:bg-gray-900 flex items-start justify-center p-4">
             {pdfLoading && (
               <div className="text-muted text-center py-12">Loading PDF...</div>
             )}
@@ -3404,6 +3598,215 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
         </div>
       )}
 
+      {/* Markdown View (Vision Extraction) - PDF left, Markdown right */}
+      {activeTab === 'markdown' && visionExtraction && (
+        <div className="flex-1 flex overflow-hidden">
+          {/* Left: PDF */}
+          <div className="w-1/2 flex flex-col overflow-hidden border-r border-default">
+            {/* PDF Controls */}
+            {numPages > 0 && (
+              <div className="h-10 px-3 flex items-center justify-between border-b border-default bg-app-secondary">
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                    disabled={currentPage <= 1}
+                    className="px-1.5 py-0.5 text-[10px] bg-gray-100 dark:bg-gray-700 rounded disabled:opacity-50"
+                  >
+                    ←
+                  </button>
+                  <span className="text-[10px] text-muted">{currentPage}/{numPages}</span>
+                  <button
+                    onClick={() => setCurrentPage(p => Math.min(numPages, p + 1))}
+                    disabled={currentPage >= numPages}
+                    className="px-1.5 py-0.5 text-[10px] bg-gray-100 dark:bg-gray-700 rounded disabled:opacity-50"
+                  >
+                    →
+                  </button>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1">
+                    <button onClick={() => setScale(s => Math.max(0.5, s - 0.25))} className="px-1 text-[10px] bg-gray-100 dark:bg-gray-700 rounded">−</button>
+                    <span className="text-[10px] text-muted">{Math.round(scale * 100)}%</span>
+                    <button onClick={() => setScale(s => Math.min(3, s + 0.25))} className="px-1 text-[10px] bg-gray-100 dark:bg-gray-700 rounded">+</button>
+                  </div>
+                </div>
+              </div>
+            )}
+            <div ref={pdfContainerRef} className="flex-1 overflow-auto bg-gray-200 dark:bg-gray-900 flex items-start justify-center p-2" style={{ overscrollBehavior: 'contain' }}>
+              {pdfLoading && <div className="text-muted text-center py-8 text-[12px]">Loading PDF...</div>}
+              {pdfError && <div className="text-red-500 text-center py-8 text-[12px]">{pdfError}</div>}
+              {!pdfLoading && !pdfError && !pdfDoc && (
+                <div className="text-muted text-center py-8 text-[12px]">
+                  {questionnaireId ? 'No PDF available' : 'Select a questionnaire'}
+                </div>
+              )}
+              {pdfDoc && (
+                <div className="relative inline-block shadow-lg">
+                  <canvas ref={canvasRef} className="bg-white" />
+                  <div ref={overlayRef} className="absolute top-0 left-0 pointer-events-auto" />
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Right: Vision Extraction Data */}
+          <div className="w-1/2 flex flex-col overflow-hidden">
+            {/* Header */}
+            <div className="h-10 px-4 flex items-center justify-between border-b border-default bg-purple-500/10">
+              <div className="flex items-center gap-2">
+                <Code size={16} className="text-purple-400" />
+                <span className="text-[13px] font-medium text-purple-300">Vision Extraction</span>
+                {/* View mode toggle - only show for markdown format */}
+                {visionExtraction.markdown && (
+                  <div className="flex items-center gap-1 ml-2">
+                    <button
+                      onClick={() => setMarkdownViewMode('rendered')}
+                      className={`px-2 py-0.5 text-[10px] rounded transition-colors ${
+                        markdownViewMode === 'rendered'
+                          ? 'bg-purple-500/30 text-purple-300'
+                          : 'text-muted hover:text-purple-300 hover:bg-purple-500/10'
+                      }`}
+                      title="Render markdown with formatted tables"
+                    >
+                      Rendered
+                    </button>
+                    <button
+                      onClick={() => setMarkdownViewMode('raw')}
+                      className={`px-2 py-0.5 text-[10px] rounded transition-colors ${
+                        markdownViewMode === 'raw'
+                          ? 'bg-purple-500/30 text-purple-300'
+                          : 'text-muted hover:text-purple-300 hover:bg-purple-500/10'
+                      }`}
+                      title="Show raw markdown text"
+                    >
+                      Raw
+                    </button>
+                  </div>
+                )}
+                {/* Q&A count for new format */}
+                {visionExtraction.qaPairs && (
+                  <span className="ml-2 px-2 py-0.5 text-[10px] bg-purple-500/20 text-purple-300 rounded">
+                    {visionExtraction.qaPairs.length} Q&A pairs
+                  </span>
+                )}
+              </div>
+              <div className="flex items-center gap-2 text-[10px] text-muted">
+                {visionExtraction.metadata?.pageCount && (
+                  <span>{visionExtraction.metadata.pageCount} pages</span>
+                )}
+                {visionExtraction.metadata?.processingTimeMs && (
+                  <span>• {(visionExtraction.metadata.processingTimeMs / 1000).toFixed(1)}s</span>
+                )}
+                {visionExtraction.metadata?.modelId && (
+                  <span>• {visionExtraction.metadata.modelId.split('/').pop()?.split(':')[0]}</span>
+                )}
+              </div>
+            </div>
+            {/* Content - New Q&A format or Legacy Markdown */}
+            {visionExtraction.qaPairs ? (
+              // New Q&A pairs format - grouped by section with collapsible headers
+              <div className="flex-1 overflow-y-auto">
+                {/* Group Q&A pairs by section */}
+                {(() => {
+                  const bySection = visionExtraction.qaPairs!.reduce((acc, qa) => {
+                    const section = qa.section || 'Uncategorized';
+                    if (!acc[section]) acc[section] = [];
+                    acc[section].push(qa);
+                    return acc;
+                  }, {} as Record<string, VisionQAPair[]>);
+
+                  // Build clean question label
+                  const buildLabel = (qa: VisionQAPair) => {
+                    const parts: string[] = [];
+                    if (qa.metadata?.rowContext) {
+                      parts.push(qa.metadata.rowContext);
+                    }
+                    // Use column header if different from question, otherwise use question
+                    if (qa.metadata?.columnHeader && qa.metadata.columnHeader !== qa.question) {
+                      parts.push(qa.metadata.columnHeader);
+                    } else if (qa.question) {
+                      parts.push(qa.question);
+                    }
+                    return parts.join(' - ') || qa.question;
+                  };
+
+                  return Object.entries(bySection).map(([section, pairs], sectionIdx) => {
+                    const isExpanded = expandedVisionSections.has(sectionIdx);
+                    return (
+                      <div key={section} className="border-b border-subtle last:border-b-0">
+                        {/* Collapsible section header */}
+                        <button
+                          onClick={() => {
+                            setExpandedVisionSections(prev => {
+                              const next = new Set(prev);
+                              if (next.has(sectionIdx)) {
+                                next.delete(sectionIdx);
+                              } else {
+                                next.add(sectionIdx);
+                              }
+                              return next;
+                            });
+                          }}
+                          className="w-full px-4 py-2.5 bg-app-secondary/50 hover:bg-app-secondary transition-colors flex items-center gap-2 text-left"
+                        >
+                          <span className={`text-muted transition-transform ${isExpanded ? 'rotate-90' : ''}`}>▶</span>
+                          <span className="flex-1 text-[12px] font-medium text-primary">{section}</span>
+                          <span className="text-[10px] text-muted px-2 py-0.5 bg-app rounded">{pairs!.length}</span>
+                        </button>
+                        {/* Section content */}
+                        {isExpanded && (
+                          <div className="divide-y divide-subtle/50">
+                            {pairs!.map((qa, idx) => (
+                              <div key={idx} className="px-4 py-2 hover:bg-app-secondary/30 transition-colors">
+                                <div className="text-[11px] text-muted mb-1">
+                                  {buildLabel(qa)}
+                                </div>
+                                <div className="text-[12px] text-primary font-medium">
+                                  {qa.answer || <span className="text-muted/50 italic font-normal">—</span>}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  });
+                })()}
+              </div>
+            ) : visionExtraction.markdown ? (
+              // Legacy markdown format
+              markdownViewMode === 'rendered' ? (
+                <div className="flex-1 overflow-y-auto p-4 bg-app prose prose-sm prose-invert max-w-none
+                  prose-headings:text-primary prose-headings:font-semibold prose-headings:mt-4 prose-headings:mb-2
+                  prose-h1:text-[16px] prose-h2:text-[14px] prose-h3:text-[13px]
+                  prose-p:text-[12px] prose-p:text-muted prose-p:my-2 prose-p:leading-relaxed
+                  prose-table:text-[11px] prose-table:border-collapse prose-table:w-full prose-table:my-3
+                  prose-th:bg-app-secondary prose-th:border prose-th:border-subtle prose-th:px-2 prose-th:py-1.5 prose-th:text-left prose-th:font-medium prose-th:text-muted
+                  prose-td:border prose-td:border-subtle prose-td:px-2 prose-td:py-1.5 prose-td:text-primary
+                  prose-strong:text-primary prose-strong:font-semibold
+                  prose-ul:my-2 prose-ul:pl-4 prose-li:text-[12px] prose-li:text-muted
+                  prose-code:text-[11px] prose-code:bg-app-secondary prose-code:px-1 prose-code:py-0.5 prose-code:rounded
+                ">
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {visionExtraction.markdown}
+                  </ReactMarkdown>
+                </div>
+              ) : (
+                <div className="flex-1 overflow-y-auto p-4 bg-app">
+                  <pre className="text-[11px] text-primary font-mono whitespace-pre-wrap leading-relaxed">
+                    {visionExtraction.markdown}
+                  </pre>
+                </div>
+              )
+            ) : (
+              <div className="flex-1 flex items-center justify-center text-muted text-[12px]">
+                No vision extraction data available
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Table Annotation Editor Modal */}
       <TableAnnotationEditor
         visible={showAnnotationEditor}
@@ -3441,4 +3844,6 @@ export const OriginalPanel = forwardRef<OriginalPanelHandle, OriginalPanelProps>
       )}
     </div>
   );
-});
+}
+
+export const OriginalPanel = forwardRef(OriginalPanelInner);

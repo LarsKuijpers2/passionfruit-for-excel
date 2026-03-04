@@ -12,6 +12,34 @@ import type { ItemType, ItemLevel } from './services/analysis/visual-analyzer.js
 import type { Language, IndexedQuestionnaire } from './services/analysis/questionnaire-indexer.js';
 
 // =============================================================================
+// EXTRACTION SOURCE TYPES
+// =============================================================================
+
+/** Which extraction strategy produced an item */
+export type ExtractionSource = 'azure' | 'vision';
+
+/** Evidence from Azure Document Intelligence extraction */
+export interface AzureEvidence {
+  type: 'azure';
+  /** Excel sheet name */
+  sheet: string;
+  /** Label cell reference (e.g., "A1") */
+  lCell: string;
+  /** Value cell reference (e.g., "B1") */
+  vCell: string;
+}
+
+/** Evidence from Claude Vision extraction */
+export interface VisionEvidence {
+  type: 'vision';
+  /** Page number in document */
+  pageNumber: number;
+}
+
+/** Union type for extraction evidence */
+export type IndexedEvidence = AzureEvidence | VisionEvidence;
+
+// =============================================================================
 // EXTRACTION METADATA
 // =============================================================================
 

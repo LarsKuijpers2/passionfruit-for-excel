@@ -143,7 +143,7 @@ export class ClaudeMarkdownExtractor {
         extractionMethod: 'claude-markdown',
         markdown: extracted.markdown,
         pageCount: extracted.pageCount,
-      },
+      } as any,
     };
   }
 

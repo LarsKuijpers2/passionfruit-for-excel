@@ -1,5 +1,5 @@
 import { List, Sun, Moon, Desktop, X, Check, Notepad } from '@phosphor-icons/react';
-import type { Tab, PanelType } from '../types';
+import type { Tab, PanelType, ExtractionView } from '../types';
 
 interface TabBarProps {
   tabs: Tab[];
@@ -8,6 +8,8 @@ interface TabBarProps {
   theme: 'light' | 'dark' | 'system';
   hasNotes?: boolean;
   visiblePanels: Set<PanelType>;
+  extractionView: ExtractionView;
+  loadedExtractionView?: ExtractionView;
   onSidebarToggle: () => void;
   onTabClick: (name: string) => void;
   onTabClose: (index: number) => void;
@@ -15,6 +17,7 @@ interface TabBarProps {
   onNotesClick: () => void;
   onThemeChange: (theme: 'light' | 'dark' | 'system') => void;
   onTogglePanel: (panel: PanelType) => void;
+  onExtractionViewChange: (view: ExtractionView) => void;
 }
 
 export function TabBar({
@@ -24,6 +27,8 @@ export function TabBar({
   theme,
   hasNotes,
   visiblePanels,
+  extractionView,
+  loadedExtractionView,
   onSidebarToggle,
   onTabClick,
   onTabClose,
@@ -31,6 +36,7 @@ export function TabBar({
   onNotesClick,
   onThemeChange,
   onTogglePanel,
+  onExtractionViewChange,
 }: TabBarProps) {
   const cycleTheme = () => {
     const themes: Array<'light' | 'dark' | 'system'> = ['light', 'dark', 'system'];
@@ -75,23 +81,54 @@ export function TabBar({
         </button>
       ))}
 
-      <div className="flex items-center gap-2 ml-auto pr-2">
-        {/* Panel toggles - connected number buttons */}
+      {/* Extraction view toggle - CENTER */}
+      <div className="flex items-center gap-1.5 mx-auto">
+        <div className="flex items-center bg-app rounded overflow-hidden border border-default">
+          {(['default', 'azure', 'vision'] as ExtractionView[]).map((view) => (
+            <button
+              key={view}
+              onClick={() => onExtractionViewChange(view)}
+              className={`px-2.5 py-1 text-[11px] font-medium transition-colors ${
+                extractionView === view
+                  ? view === 'azure'
+                    ? 'bg-blue-500/20 text-blue-400'
+                    : view === 'vision'
+                      ? 'bg-purple-500/20 text-purple-400'
+                      : 'bg-accent/20 text-accent'
+                  : 'text-muted hover:text-primary hover:bg-card-hover'
+              }`}
+            >
+              {view === 'default' ? 'Default' : view === 'azure' ? 'Azure' : 'Vision'}
+            </button>
+          ))}
+        </div>
+        {loadedExtractionView && loadedExtractionView !== extractionView && (
+          <span className={`text-[9px] px-1.5 py-0.5 rounded ${
+            loadedExtractionView === 'azure'
+              ? 'bg-blue-500/10 text-blue-400/70'
+              : loadedExtractionView === 'vision'
+                ? 'bg-purple-500/10 text-purple-400/70'
+                : 'bg-accent/10 text-accent/70'
+          }`}>
+            {loadedExtractionView === 'azure' ? 'Azure' : loadedExtractionView === 'vision' ? 'Vision' : 'Default'} loaded
+          </span>
+        )}
+      </div>
+
+      <div className="flex items-center gap-2 pr-2">
+        {/* Panel toggles - connected number buttons (removed visualqa) */}
         <div className="flex items-center border border-default rounded overflow-hidden mr-2">
-          {(['original', 'indexed', 'library', 'visualqa'] as PanelType[]).map((panel, idx) => {
+          {(['original', 'indexed', 'library'] as PanelType[]).map((panel, idx) => {
             const isVisible = visiblePanels.has(panel);
-            const label = panel === 'visualqa' ? 'V' : String(idx + 1);
-            const title = panel === 'visualqa' ? 'Visual Q&A' : panel;
+            const label = String(idx + 1);
             return (
               <button
                 key={panel}
                 className={`w-6 h-6 flex items-center justify-center text-[11px] font-medium cursor-pointer transition-colors border-r border-default last:border-r-0 ${
-                  isVisible
-                    ? panel === 'visualqa' ? 'bg-purple-500/20 text-purple-400' : 'bg-accent/20 text-accent'
-                    : 'text-muted hover:bg-card-hover'
+                  isVisible ? 'bg-accent/20 text-accent' : 'text-muted hover:bg-card-hover'
                 }`}
                 onClick={() => onTogglePanel(panel)}
-                title={`${isVisible ? 'Hide' : 'Show'} ${title} panel`}
+                title={`${isVisible ? 'Hide' : 'Show'} ${panel} panel`}
               >
                 {label}
               </button>

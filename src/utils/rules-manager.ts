@@ -235,6 +235,25 @@ export class RulesManager {
   }
 
   /**
+   * Load any YAML file from the rules directory
+   */
+  async loadYaml<T>(filename: string): Promise<T | null> {
+    const filepath = `${this.rulesDir}/${filename}`;
+
+    if (!existsSync(filepath)) {
+      return null;
+    }
+
+    try {
+      const content = await readFile(filepath, 'utf-8');
+      return parseYaml(content) as T;
+    } catch (error) {
+      console.warn(`Failed to load ${filename}: ${error}`);
+      return null;
+    }
+  }
+
+  /**
    * Get stats about loaded rules
    */
   getStats(): { index: { exclude: number; corrections: number }; harvest: { exclude: number; corrections: number } } {

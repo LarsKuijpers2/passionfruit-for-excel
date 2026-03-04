@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { PencilSimple, Plus, X, Check, Trash } from '@phosphor-icons/react';
 import type { ReconstructedTable, IndexedItem } from '../types';
 
@@ -100,7 +100,7 @@ export const ReconstructedTableComponent: React.FC<ReconstructedTableProps> = ({
     return { isSelected, isVisionCorrected, reviewStatus };
   };
 
-  const handleCellDoubleClick = (rowIndex: number, column: string, currentValue: string) => {
+  const handleCellDoubleClick = (rowIndex: number, column: string, _currentValue: string) => {
     if (!editMode) return;
     setEditingCell({ rowIndex, column });
   };
@@ -150,23 +150,7 @@ export const ReconstructedTableComponent: React.FC<ReconstructedTableProps> = ({
     setNewRows(prev => prev.filter((_, i) => i !== newRowIndex));
   };
 
-  const handleAddItemToRow = (item: IndexedItem, newRowIndex: number, column: string) => {
-    setNewRows(prev => {
-      const next = [...prev];
-      const row = next[newRowIndex];
-      const cellIndex = row.cells.findIndex(c => c.column === column);
-      if (cellIndex >= 0) {
-        next[newRowIndex] = {
-          ...row,
-          cells: row.cells.map((c, i) =>
-            i === cellIndex ? { ...c, value: item.value || '', itemId: item.id } : c
-          )
-        };
-      }
-      return next;
-    });
-    setShowItemPool(false);
-  };
+  // Note: handleAddItemToRow removed - not currently used but available for future drag-drop from item pool
 
   const handleSave = () => {
     if (!onTableEdit) return;
@@ -174,7 +158,7 @@ export const ReconstructedTableComponent: React.FC<ReconstructedTableProps> = ({
     const edits: { type: 'update' | 'add' | 'delete'; rowIndex?: number; cells?: { column: string; value: string; itemId?: string }[] }[] = [];
 
     // Add updates
-    localEdits.forEach((edit, key) => {
+    localEdits.forEach((edit, _key) => {
       edits.push({
         type: 'update',
         rowIndex: edit.rowIndex,
@@ -505,7 +489,7 @@ export const ReconstructedTableComponent: React.FC<ReconstructedTableProps> = ({
                       className="px-3 py-2 cursor-text hover:bg-accent/10"
                       onDrop={(e) => {
                         e.preventDefault();
-                        const itemId = e.dataTransfer.getData('itemId');
+                        // itemId available via e.dataTransfer.getData('itemId') if needed
                         const itemValue = e.dataTransfer.getData('itemValue');
                         if (itemValue) {
                           handleNewRowCellEdit(newRowIndex, header, itemValue);

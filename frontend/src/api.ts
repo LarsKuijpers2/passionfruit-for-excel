@@ -6,7 +6,11 @@ import type {
   AggregatedLibraryData,
   StandardQuestionsData,
   CuratedLibraryData,
+  ExtractionView,
 } from './types';
+
+// Re-export ExtractionView for convenience
+export type { ExtractionView } from './types';
 
 const API_BASE = '';
 
@@ -72,8 +76,9 @@ export interface PipelineData {
 }
 
 // Get single questionnaire data
-export async function fetchQuestionnaire(id: string): Promise<QuestionnaireData> {
-  const res = await fetch(`${API_BASE}/api/questionnaire/${encodeURIComponent(id)}`);
+export async function fetchQuestionnaire(id: string, extractionView?: ExtractionView): Promise<QuestionnaireData> {
+  const params = extractionView && extractionView !== 'default' ? `?extraction=${extractionView}` : '';
+  const res = await fetch(`${API_BASE}/api/questionnaire/${encodeURIComponent(id)}${params}`);
   if (!res.ok) throw new Error(`Failed to fetch questionnaire: ${id}`);
   return res.json();
 }
@@ -122,14 +127,15 @@ export async function bulkUpdateItems(
   questionnaireId: string,
   panel: 'indexed' | 'library',
   itemIds: string[],
-  updates: Record<string, unknown>
+  updates: Record<string, unknown>,
+  extractionView?: 'default' | 'azure' | 'vision'
 ): Promise<void> {
   const res = await fetch(
     `${API_BASE}/api/questionnaire/${encodeURIComponent(questionnaireId)}/${panel}/bulk`,
     {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ itemIds, updates }),
+      body: JSON.stringify({ itemIds, updates, extractionView }),
     }
   );
   if (!res.ok) throw new Error('Failed to bulk update items');

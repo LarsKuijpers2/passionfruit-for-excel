@@ -17,7 +17,7 @@ export function reconstructTablesFromSheet(sheet: ExcelSheet): {
 
   // Group cells by row number
   for (const cell of allCells) {
-    const rowMatch = cell.ref.match(/\d+/);
+    const rowMatch = cell.ref?.match(/\d+/);
     if (!rowMatch) {
       cellsWithoutPosition.push(cell);
       continue;
@@ -48,19 +48,20 @@ export function reconstructTablesFromSheet(sheet: ExcelSheet): {
     } | null = null;
 
     for (const [rowNumber, rowCells] of tableRows) {
-      // Sort cells by column
-      const sortedCells = rowCells.sort((a, b) => {
-        const colA = extractColumn(a.ref);
-        const colB = extractColumn(b.ref);
+      // Sort cells by column (filter out cells without refs)
+      const cellsWithRefs = rowCells.filter(c => c.ref);
+      const sortedCells = cellsWithRefs.sort((a, b) => {
+        const colA = extractColumn(a.ref!);
+        const colB = extractColumn(b.ref!);
         return colA.localeCompare(colB);
       });
 
       const tableCells: TableCell[] = [];
       for (const cell of sortedCells) {
         tableCells.push({
-          column: extractColumn(cell.ref),
-          value: cell.value,
-          itemId: cell.ref, // Use cell ref as item ID for structure data
+          column: extractColumn(cell.ref!),
+          value: cell.value || '',
+          itemId: cell.ref!, // Use cell ref as item ID for structure data
           type: cell.role || 'field'
         });
       }
@@ -72,7 +73,7 @@ export function reconstructTablesFromSheet(sheet: ExcelSheet): {
           rowNumber,
           cells: tableCells
         });
-        currentTable.sourceItems.push(...sortedCells.map(c => c.ref));
+        currentTable.sourceItems.push(...sortedCells.map(c => c.ref!));
         currentTable.endRow = rowNumber;
       } else {
         // Finalize previous table if exists
@@ -86,14 +87,14 @@ export function reconstructTablesFromSheet(sheet: ExcelSheet): {
             rowNumber,
             cells: tableCells
           }],
-          sourceItems: sortedCells.map(c => c.ref),
+          sourceItems: sortedCells.map(c => c.ref!),
           startRow: rowNumber,
           endRow: rowNumber
         };
       }
 
       // Mark cells as part of table
-      sortedCells.forEach(cell => tableCellRefs.add(cell.ref));
+      sortedCells.forEach(cell => tableCellRefs.add(cell.ref!));
     }
 
     // Finalize last table
@@ -105,7 +106,7 @@ export function reconstructTablesFromSheet(sheet: ExcelSheet): {
   // Remaining cells not part of tables
   const remainingCells = [
     ...cellsWithoutPosition,
-    ...allCells.filter(cell => !tableCellRefs.has(cell.ref))
+    ...allCells.filter(cell => !cell.ref || !tableCellRefs.has(cell.ref))
   ];
 
   // Create section map (simplified for structure data - group by proximity)
@@ -203,7 +204,7 @@ function groupIntoSections(
 
   // Add individual cells to appropriate sections or create new ones
   for (const cell of cells) {
-    const rowMatch = cell.ref.match(/\d+/);
+    const rowMatch = cell.ref?.match(/\d+/);
     if (!rowMatch) continue;
 
     const cellRow = parseInt(rowMatch[0], 10);

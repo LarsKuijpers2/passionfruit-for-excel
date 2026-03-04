@@ -15,6 +15,9 @@ import type { QuestionnaireStructure } from './excel.js';
 /** Supported document types */
 export type DocumentType = 'excel' | 'word' | 'pdf' | 'html';
 
+/** PDF extractor types */
+export type PdfExtractorType = 'azure' | 'two-pass-vision' | 'vision';
+
 /** Document extractor interface - all extractors must implement this */
 export interface DocumentExtractor {
   /** Extract structure from the document file */
@@ -24,14 +27,27 @@ export interface DocumentExtractor {
   getDocumentType(): DocumentType;
 }
 
+/** Options for extractor factory */
+export interface GetExtractorOptions {
+  /** Customer directory for extractors that need it */
+  customerDir?: string;
+  /** PDF extractor type (default: 'azure') */
+  pdfExtractor?: PdfExtractorType;
+}
+
 // =============================================================================
 // FACTORY
 // =============================================================================
 
 /**
  * Get the appropriate extractor for a file based on its extension
+ * @param filepath Path to the file to extract
+ * @param options Optional configuration for extractor selection
  */
-export async function getExtractor(filepath: string): Promise<DocumentExtractor> {
+export async function getExtractor(
+  filepath: string,
+  options?: GetExtractorOptions
+): Promise<DocumentExtractor> {
   const ext = extname(filepath).toLowerCase();
 
   switch (ext) {
@@ -47,6 +63,21 @@ export async function getExtractor(filepath: string): Promise<DocumentExtractor>
     }
 
     case '.pdf': {
+      const pdfExtractor = options?.pdfExtractor || 'azure';
+
+      if (pdfExtractor === 'vision') {
+        // New two-phase vision extractor (recommended for complex documents)
+        const { VisionExtractor } = await import('./vision-extractor.js');
+        return new VisionExtractor(options?.customerDir);
+      }
+
+      if (pdfExtractor === 'two-pass-vision') {
+        // Legacy two-pass vision extractor
+        const { TwoPassVisionExtractor } = await import('./two-pass-vision-extractor.js');
+        return new TwoPassVisionExtractor(options?.customerDir);
+      }
+
+      // Default: Azure OCR-based extraction
       const { PdfStructureExtractor } = await import('./pdf.js');
       return new PdfStructureExtractor();
     }

@@ -320,6 +320,96 @@ export async function saveAnnotation(
 }
 
 // =============================================================================
+// VISION FIX API
+// =============================================================================
+
+export interface VisionFixRegion {
+  x: number;      // Normalized 0-1 (left edge)
+  y: number;      // Normalized 0-1 (top edge)
+  width: number;  // Normalized 0-1
+  height: number; // Normalized 0-1
+}
+
+export interface VisionFixItem {
+  id: string;
+  label: string;
+  value: string;
+  type: 'field' | 'table_row' | 'checkbox' | 'text';
+  destination: 'library' | 'entity' | 'product' | 'excluded';
+  section?: string;
+  confidence?: number;
+}
+
+export interface VisionFixResult {
+  success: boolean;
+  items: VisionFixItem[];
+  debugInfo: {
+    imageSize: { width: number; height: number };
+    croppedSize: { width: number; height: number };
+    tokensUsed: { input: number; output: number };
+    processingTimeMs: number;
+  };
+  error?: string;
+}
+
+// Extract items from a selected PDF region using Claude Vision
+export async function visionFix(
+  questionnaireId: string,
+  pageNumber: number,
+  region: VisionFixRegion,
+  instructions: string,
+  customer?: string
+): Promise<VisionFixResult> {
+  const res = await fetch(
+    `${API_BASE}/api/questionnaire/${encodeURIComponent(questionnaireId)}/vision-fix`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pageNumber, region, instructions, customer }),
+    }
+  );
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.error || 'Vision fix extraction failed');
+  }
+  return res.json();
+}
+
+// Save vision-fix extracted items to the indexed file and training data
+export async function saveVisionFix(
+  questionnaireId: string,
+  items: VisionFixItem[],
+  visionFixContext: {
+    pageNumber: number;
+    region: VisionFixRegion;
+    instructions: string;
+    /** Section title to insert items into (optional - appends to end if not specified) */
+    insertPosition?: string;
+  },
+  customer?: string
+): Promise<{
+  success: boolean;
+  addedCount: number;
+  section: string;
+  indexedPath: string;
+  trainingPath: string;
+}> {
+  const res = await fetch(
+    `${API_BASE}/api/questionnaire/${encodeURIComponent(questionnaireId)}/vision-fix/save`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items, visionFixContext, customer }),
+    }
+  );
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.error || 'Failed to save vision fix items');
+  }
+  return res.json();
+}
+
+// =============================================================================
 // TRAINING DATA API
 // =============================================================================
 

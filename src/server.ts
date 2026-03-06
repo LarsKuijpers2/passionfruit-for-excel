@@ -657,6 +657,221 @@ export class ReviewServer {
       }
     });
 
+    // ==========================================================================
+    // VISION FIX ENDPOINTS
+    // ==========================================================================
+
+    // Extract items from a selected PDF region using Claude Vision
+    this.app.post('/api/questionnaire/:id/vision-fix', async (req, res) => {
+      try {
+        const { id } = req.params;
+        const { pageNumber, region, instructions, customer } = req.body;
+
+        if (!pageNumber || !region || !instructions) {
+          res.status(400).json({ error: 'pageNumber, region, and instructions are required' });
+          return;
+        }
+
+        // Find the PDF file
+        const safeName = id.replace(/[^a-zA-Z0-9-_]/g, '_');
+        let pdfPath: string | null = null;
+
+        // Search in customer directories
+        const customers = await readdir('./customers');
+        for (const c of customers) {
+          // Check incoming folder
+          const incomingDir = join('./customers', c, 'incoming');
+          if (existsSync(incomingDir)) {
+            const files = await readdir(incomingDir);
+            for (const file of files) {
+              if (file.toLowerCase().endsWith('.pdf')) {
+                const fileSafeName = file.replace(/[^a-zA-Z0-9-_]/g, '_').replace(/_pdf$/i, '');
+                if (fileSafeName === safeName || safeName.includes(fileSafeName) || fileSafeName.includes(safeName)) {
+                  pdfPath = join(incomingDir, file);
+                  break;
+                }
+              }
+            }
+          }
+          if (pdfPath) break;
+
+          // Check questionnaires folder
+          const questionnairesDir = join('./customers', c, 'questionnaires');
+          if (existsSync(questionnairesDir)) {
+            const files = await readdir(questionnairesDir);
+            for (const file of files) {
+              if (file.toLowerCase().endsWith('.pdf')) {
+                const fileSafeName = file.replace(/[^a-zA-Z0-9-_]/g, '_').replace(/_pdf$/i, '');
+                if (fileSafeName === safeName || safeName.includes(fileSafeName) || fileSafeName.includes(safeName)) {
+                  pdfPath = join(questionnairesDir, file);
+                  break;
+                }
+              }
+            }
+          }
+          if (pdfPath) break;
+        }
+
+        if (!pdfPath) {
+          res.status(404).json({ error: `PDF not found for questionnaire: ${id}` });
+          return;
+        }
+
+        console.log(`Vision Fix: Processing ${pdfPath} page ${pageNumber}`);
+
+        // Import and use the region vision extractor
+        const { RegionVisionExtractor } = await import('./services/extractors/region-vision-extractor.js');
+        const extractor = new RegionVisionExtractor();
+
+        const result = await extractor.extractRegion(pdfPath, pageNumber, region, instructions);
+
+        if (result.success) {
+          console.log(`Vision Fix: Extracted ${result.items.length} items`);
+          res.json(result);
+        } else {
+          res.status(500).json({ error: result.error || 'Vision extraction failed' });
+        }
+      } catch (error) {
+        console.error('Error in vision-fix:', error);
+        res.status(500).json({ error: 'Vision fix extraction failed' });
+      }
+    });
+
+    // Save vision-fix extracted items to the indexed file and training data
+    this.app.post('/api/questionnaire/:id/vision-fix/save', async (req, res) => {
+      try {
+        const { id } = req.params;
+        const { items, visionFixContext, customer } = req.body;
+
+        if (!items || !Array.isArray(items) || items.length === 0) {
+          res.status(400).json({ error: 'items array is required' });
+          return;
+        }
+
+        const safeName = id.replace(/[^a-zA-Z0-9-_]/g, '_');
+
+        // Find the indexed file
+        let indexedPath: string | null = null;
+        let detectedCustomer: string | undefined = customer;
+
+        const customers = await readdir('./customers');
+        for (const c of customers) {
+          const customerIndexedPath = join('./customers', c, 'indexed', `${safeName}.json`);
+          if (existsSync(customerIndexedPath)) {
+            indexedPath = customerIndexedPath;
+            detectedCustomer = c;
+            break;
+          }
+        }
+
+        if (!indexedPath) {
+          res.status(404).json({ error: `Indexed file not found for: ${id}` });
+          return;
+        }
+
+        // Load existing indexed data
+        const indexed = JSON.parse(await readFile(indexedPath, 'utf-8'));
+
+        // Determine target section:
+        // 1. Use insertPosition from context (user-selected section)
+        // 2. Fall back to section from first item
+        // 3. Fall back to "Vision Fixes" as default
+        const insertPosition = visionFixContext?.insertPosition;
+        const sectionName = insertPosition || items[0]?.section || 'Vision Fixes';
+
+        // Find or create the section
+        if (!indexed.sections) {
+          indexed.sections = [];
+        }
+
+        let targetSection = indexed.sections.find((s: any) =>
+          s.title.toLowerCase() === sectionName.toLowerCase()
+        );
+
+        if (!targetSection) {
+          // Create new section - insert it at appropriate position
+          targetSection = {
+            title: sectionName,
+            topic: 'other',
+            items: [],
+          };
+
+          // If inserting at a specific position, find the right place
+          if (insertPosition) {
+            // Find a section with similar page numbers or insert at end
+            const pageNum = visionFixContext?.pageNumber || 0;
+            let insertIndex = indexed.sections.length;
+
+            for (let i = 0; i < indexed.sections.length; i++) {
+              const section = indexed.sections[i];
+              const sectionPages = section.items?.map((it: any) => it.pageNumber).filter(Boolean) || [];
+              const minPage = Math.min(...sectionPages, Infinity);
+              if (minPage > pageNum) {
+                insertIndex = i;
+                break;
+              }
+            }
+
+            indexed.sections.splice(insertIndex, 0, targetSection);
+          } else {
+            indexed.sections.push(targetSection);
+          }
+        }
+
+        // Add items to the section
+        const newItems = items.map((item: any) => ({
+          id: item.id,
+          label: item.label,
+          value: item.value,
+          type: item.type,
+          destination: item.destination,
+          source: 'vision_fix',
+          pageNumber: visionFixContext?.pageNumber,
+        }));
+
+        // Insert at beginning of section (newly extracted items are usually more relevant)
+        targetSection.items = [...newItems, ...targetSection.items];
+
+        // Save updated indexed file
+        await writeFile(indexedPath, JSON.stringify(indexed, null, 2), 'utf-8');
+        console.log(`Vision Fix: Added ${items.length} items to ${indexedPath}`);
+
+        // Save as training data
+        const customerDir = detectedCustomer
+          ? join('./customers', detectedCustomer)
+          : '.';
+
+        const visionFixDir = join(customerDir, 'vision-fix-corrections');
+        if (!existsSync(visionFixDir)) {
+          await mkdir(visionFixDir, { recursive: true });
+        }
+
+        const correctionPath = join(visionFixDir, `${safeName}_${Date.now()}.json`);
+        const correction = {
+          questionnaireId: id,
+          pageNumber: visionFixContext?.pageNumber,
+          region: visionFixContext?.region,
+          instructions: visionFixContext?.instructions,
+          extractedItems: items,
+          timestamp: new Date().toISOString(),
+        };
+
+        await writeFile(correctionPath, JSON.stringify(correction, null, 2), 'utf-8');
+        console.log(`Vision Fix: Saved training data to ${correctionPath}`);
+
+        res.json({
+          success: true,
+          addedCount: items.length,
+          section: sectionName,
+          indexedPath,
+          trainingPath: correctionPath,
+        });
+      } catch (error) {
+        console.error('Error saving vision-fix items:', error);
+        res.status(500).json({ error: 'Failed to save vision-fix items' });
+      }
+    });
+
     // Export indexed items grouped by destination (Company, Library, Product, Exclude)
     this.app.post('/api/export-grouped/:questionnaireId', async (req, res) => {
       try {
@@ -1493,8 +1708,15 @@ export class ReviewServer {
           filename = `${safeName}-vision.json`;
         }
 
-        // Load the indexed file
-        const indexedPath = await findIndexedFile(filename);
+        // Load the indexed file, fall back to default if extraction-specific file not found
+        let indexedPath = await findIndexedFile(filename);
+
+        if (!indexedPath && extractionView && extractionView !== 'default') {
+          // Fall back to default file
+          console.log(`Extraction file ${filename} not found, falling back to default`);
+          filename = `${safeName}.json`;
+          indexedPath = await findIndexedFile(filename);
+        }
 
         if (!indexedPath) {
           return res.status(404).json({ error: `Indexed file not found: ${filename}` });
@@ -2844,26 +3066,15 @@ export class ReviewServer {
     let actualExtractionView: 'azure' | 'vision' | 'default' = 'default';
 
     if (extraction) {
-      // For 'vision' extraction, load the converted .json file (not raw -vision.json)
-      // The -vision.json is raw output; the main .json has all transformations including originalLabel
-      if (extraction === 'vision') {
-        const indexedPath = await findFile('indexed', `${safeName}.json`);
-        if (indexedPath) {
-          indexed = JSON.parse(await readFile(indexedPath, 'utf-8'));
-          actualExtractionView = 'vision';
-          console.log(`Loaded vision extraction (converted): ${safeName}.json`);
-        }
+      // Try to load extraction-specific file (-azure.json or -vision.json)
+      const extractionFilename = `${safeName}-${extraction}.json`;
+      const extractionPath = await findFile('indexed', extractionFilename);
+      if (extractionPath) {
+        indexed = JSON.parse(await readFile(extractionPath, 'utf-8'));
+        actualExtractionView = extraction;
+        console.log(`Loaded ${extraction} extraction view: ${extractionFilename}`);
       } else {
-        // For other extractions (azure), try to load extraction-specific file
-        const extractionFilename = `${safeName}-${extraction}.json`;
-        const extractionPath = await findFile('indexed', extractionFilename);
-        if (extractionPath) {
-          indexed = JSON.parse(await readFile(extractionPath, 'utf-8'));
-          actualExtractionView = extraction;
-          console.log(`Loaded ${extraction} extraction view: ${extractionFilename}`);
-        } else {
-          console.log(`Extraction file not found: ${extractionFilename}, falling back to default`);
-        }
+        console.log(`Extraction file not found: ${extractionFilename}, falling back to default`);
       }
     }
 

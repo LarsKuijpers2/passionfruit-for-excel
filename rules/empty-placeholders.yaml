@@ -1,0 +1,57 @@
+# Empty/Placeholder Values
+# Values that indicate an unfilled field (dropdown placeholders, empty selections, etc.)
+# These are treated as "unanswered" during indexing
+#
+# Format: exact match (case-insensitive)
+
+placeholders:
+  # Generic
+  - EMPTY
+  - N/A
+  - NA
+  - "-"
+
+  # English
+  - Choose an option
+  - Select an option
+  - Please select
+  - Select one
+  - Select...
+  - Click to select
+
+  # Spanish
+  - Elija un elemento
+  - Elija un elemento.
+  - Seleccione
+  - Seleccione una opción
+  - Seleccionar
+  - Por favor seleccione
+
+  # German
+  - Bitte auswählen
+  - Auswählen
+  - Bitte wählen
+  - Option wählen
+
+  # French
+  - Sélectionner
+  - Choisir
+  - Veuillez sélectionner
+  - Choisissez une option
+
+  # Dutch
+  - Selecteer
+  - Kies een optie
+  - Selecteer een optie
+
+  # Italian
+  - Selezionare
+  - Scegliere
+  - Seleziona un'opzione
+
+# Patterns (regex) - these are checked if exact match fails
+patterns:
+  - "^select\\.{0,3}$"           # "Select", "Select.", "Select..."
+  - "^choose\\.{0,3}$"          # "Choose", "Choose..."
+  - "^\\-+$"                     # Just dashes: "-", "--", "---"
+  - "^\\s*$"                     # Whitespace only

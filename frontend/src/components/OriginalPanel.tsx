@@ -1,10 +1,12 @@
 import { useState, useMemo, forwardRef, useImperativeHandle, useRef, useEffect, useCallback } from 'react';
 import * as pdfjsLib from 'pdfjs-dist';
 import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
-import { File, GridFour, PencilSimpleLine, PencilSimple, Plus, X, Check, Trash, SplitHorizontal, FloppyDisk, Code } from '@phosphor-icons/react';
+import { File, GridFour, PencilSimpleLine, PencilSimple, Plus, X, Check, Trash, SplitHorizontal, FloppyDisk, Code, Eye, SpinnerGap } from '@phosphor-icons/react';
 import type { ExcelSheet, IndexedSection, IndexedItem, VisionExtractionData, VisionQAPair, ExtractionView } from '../types';
 import { TableAnnotationEditor, type AnnotatedTable } from './TableAnnotationEditor';
+import { VisionFixModal } from './VisionFixModal';
 import { saveStructure } from '../api';
+import type { VisionFixRegion } from '../api';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
@@ -133,6 +135,22 @@ function OriginalPanelInner(
   const [expandedVisionSections, setExpandedVisionSections] = useState<Set<number>>(new Set());
   const cellRefs = useRef<Map<string, HTMLTableCellElement>>(new Map());
   const [showAnnotationEditor, setShowAnnotationEditor] = useState(false);
+
+  // Vision Fix state
+  const [visionFixMode, setVisionFixMode] = useState(false);
+  const [showVisionFixModal, setShowVisionFixModal] = useState(false);
+  const [visionFixRegion, setVisionFixRegion] = useState<VisionFixRegion | null>(null);
+  const [visionFixDrawing, setVisionFixDrawing] = useState(false);
+  const [visionFixStart, setVisionFixStart] = useState<{ x: number; y: number } | null>(null);
+  const [visionFixEnd, setVisionFixEnd] = useState<{ x: number; y: number } | null>(null);
+  const [visionFixBackgroundTask, setVisionFixBackgroundTask] = useState<{
+    taskId: string;
+    status: 'running' | 'complete' | 'error';
+    pageNumber: number;
+    region: VisionFixRegion;
+    results?: import('../api').VisionFixResult;
+    error?: string;
+  } | null>(null);
 
   // Tab state - declared early as it's used by other hooks
   const [activeTab, setActiveTab] = useState<ViewTab>('view');
@@ -2999,6 +3017,31 @@ function OriginalPanelInner(
               </div>
 
               <div className="flex items-center gap-3">
+                {/* Vision Fix button - works in all modes */}
+                <button
+                  onClick={() => {
+                    if (visionFixMode) {
+                      // Exit vision fix mode
+                      setVisionFixMode(false);
+                      setVisionFixRegion(null);
+                      setVisionFixStart(null);
+                      setVisionFixEnd(null);
+                    } else {
+                      // Enter vision fix mode
+                      setVisionFixMode(true);
+                    }
+                  }}
+                  className={`flex items-center gap-1 px-2 py-1 text-[11px] rounded transition-colors ${
+                    visionFixMode
+                      ? 'bg-purple-500/30 text-purple-300'
+                      : 'bg-purple-500/20 text-purple-400 hover:bg-purple-500/30'
+                  }`}
+                  title={visionFixMode ? 'Cancel Vision Fix' : 'Vision Fix - select a region to extract missing content'}
+                >
+                  <Eye size={14} />
+                  {visionFixMode ? 'Cancel' : 'Vision Fix'}
+                </button>
+
                 {/* Hide annotation controls in Vision mode - no bounding box data available */}
                 {extractionView !== 'vision' && (
                   <>
@@ -3055,9 +3098,74 @@ function OriginalPanelInner(
               </div>
             )}
             {pdfDoc && (
-              <div className="relative inline-block shadow-lg">
+              <div
+                className="relative inline-block shadow-lg"
+                style={{ cursor: visionFixMode ? 'crosshair' : 'default' }}
+                onMouseDown={(e) => {
+                  if (!visionFixMode) return;
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  const x = (e.clientX - rect.left) / rect.width;
+                  const y = (e.clientY - rect.top) / rect.height;
+                  setVisionFixDrawing(true);
+                  setVisionFixStart({ x, y });
+                  setVisionFixEnd({ x, y });
+                }}
+                onMouseMove={(e) => {
+                  if (!visionFixMode || !visionFixDrawing) return;
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+                  const y = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height));
+                  setVisionFixEnd({ x, y });
+                }}
+                onMouseUp={() => {
+                  if (!visionFixMode || !visionFixDrawing || !visionFixStart || !visionFixEnd) return;
+                  setVisionFixDrawing(false);
+
+                  // Calculate region
+                  const x = Math.min(visionFixStart.x, visionFixEnd.x);
+                  const y = Math.min(visionFixStart.y, visionFixEnd.y);
+                  const width = Math.abs(visionFixEnd.x - visionFixStart.x);
+                  const height = Math.abs(visionFixEnd.y - visionFixStart.y);
+
+                  // Only show modal if region is big enough (at least 2% of the page)
+                  if (width > 0.02 && height > 0.02) {
+                    setVisionFixRegion({ x, y, width, height });
+                    setShowVisionFixModal(true);
+                    setVisionFixMode(false);
+                  }
+                  setVisionFixStart(null);
+                  setVisionFixEnd(null);
+                }}
+                onMouseLeave={() => {
+                  if (visionFixDrawing) {
+                    setVisionFixDrawing(false);
+                    setVisionFixStart(null);
+                    setVisionFixEnd(null);
+                  }
+                }}
+              >
                 <canvas ref={canvasRef} className="bg-white" />
                 <div ref={overlayRef} className="absolute top-0 left-0 pointer-events-auto" />
+
+                {/* Vision Fix instruction banner */}
+                {visionFixMode && !visionFixDrawing && (
+                  <div className="absolute top-2 left-1/2 -translate-x-1/2 bg-purple-500/90 text-white px-3 py-1.5 rounded text-sm font-medium shadow-lg">
+                    Draw a rectangle around the area to extract
+                  </div>
+                )}
+
+                {/* Vision Fix selection overlay */}
+                {visionFixDrawing && visionFixStart && visionFixEnd && (
+                  <div
+                    className="absolute border-2 border-purple-500 bg-purple-500/20 pointer-events-none"
+                    style={{
+                      left: `${Math.min(visionFixStart.x, visionFixEnd.x) * 100}%`,
+                      top: `${Math.min(visionFixStart.y, visionFixEnd.y) * 100}%`,
+                      width: `${Math.abs(visionFixEnd.x - visionFixStart.x) * 100}%`,
+                      height: `${Math.abs(visionFixEnd.y - visionFixStart.y) * 100}%`,
+                    }}
+                  />
+                )}
               </div>
             )}
           </div>
@@ -3819,6 +3927,111 @@ function OriginalPanelInner(
         }}
         onCancel={() => setShowAnnotationEditor(false)}
       />
+
+      {/* Vision Fix Modal */}
+      {(visionFixRegion || (visionFixBackgroundTask?.status === 'complete' && visionFixBackgroundTask.results)) && (
+        <VisionFixModal
+          isOpen={showVisionFixModal}
+          onClose={() => {
+            setShowVisionFixModal(false);
+            setVisionFixRegion(null);
+            // Clear background task if viewing results
+            if (visionFixBackgroundTask?.status === 'complete') {
+              setVisionFixBackgroundTask(null);
+            }
+          }}
+          questionnaireId={questionnaireId || ''}
+          pageNumber={visionFixBackgroundTask?.pageNumber || currentPage}
+          region={visionFixBackgroundTask?.region || visionFixRegion!}
+          availableSections={indexedSections?.map(s => ({
+            title: s.title,
+            itemCount: s.items?.length || 0,
+          })) || []}
+          preloadedResults={visionFixBackgroundTask?.status === 'complete' ? visionFixBackgroundTask.results : undefined}
+          onStartBackground={(taskId, extractionPromise) => {
+            // Store the region before closing modal
+            const regionToUse = visionFixRegion!;
+            setVisionFixBackgroundTask({
+              taskId,
+              status: 'running',
+              pageNumber: currentPage,
+              region: regionToUse,
+            });
+            setToast({ type: 'info', message: 'Extraction started in background...' });
+
+            // Handle promise completion
+            extractionPromise
+              .then((results) => {
+                setVisionFixBackgroundTask(prev => prev ? {
+                  ...prev,
+                  status: 'complete',
+                  results,
+                } : null);
+                if (results.success) {
+                  setToast({ type: 'success', message: `Extracted ${results.items.length} items. Click to review.` });
+                } else {
+                  setToast({ type: 'error', message: results.error || 'Extraction failed' });
+                }
+              })
+              .catch((err) => {
+                setVisionFixBackgroundTask(prev => prev ? {
+                  ...prev,
+                  status: 'error',
+                  error: err.message,
+                } : null);
+                setToast({ type: 'error', message: err.message || 'Extraction failed' });
+              });
+          }}
+          onSuccess={() => {
+            // Trigger a refresh of the questionnaire data
+            // This would typically be handled by the parent component
+            setShowVisionFixModal(false);
+            setVisionFixRegion(null);
+            setVisionFixBackgroundTask(null);
+            // Show success toast
+            setToast({ type: 'success', message: 'Items added to extraction' });
+          }}
+        />
+      )}
+
+      {/* Background Task Indicator */}
+      {visionFixBackgroundTask && visionFixBackgroundTask.status === 'running' && (
+        <div className="fixed bottom-16 right-4 bg-purple-500/90 text-white px-4 py-2 rounded-lg shadow-lg z-50 flex items-center gap-2 text-[13px]">
+          <SpinnerGap size={16} className="animate-spin" />
+          <span>Vision Fix extracting page {visionFixBackgroundTask.pageNumber}...</span>
+          <button
+            onClick={() => setVisionFixBackgroundTask(null)}
+            className="ml-2 hover:opacity-70"
+          >
+            <X size={14} />
+          </button>
+        </div>
+      )}
+
+      {/* Background Task Complete - Click to Review */}
+      {visionFixBackgroundTask && visionFixBackgroundTask.status === 'complete' && visionFixBackgroundTask.results && (
+        <button
+          onClick={() => {
+            setShowVisionFixModal(true);
+          }}
+          className="fixed bottom-16 right-4 bg-emerald-500/90 text-white px-4 py-2 rounded-lg shadow-lg z-50 flex items-center gap-2 text-[13px] hover:bg-emerald-600/90 transition-colors"
+        >
+          <Check size={16} />
+          <span>
+            Extracted {visionFixBackgroundTask.results.items.length} items from page {visionFixBackgroundTask.pageNumber}
+          </span>
+          <span className="text-emerald-200 ml-1">Click to review</span>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setVisionFixBackgroundTask(null);
+            }}
+            className="ml-2 hover:opacity-70"
+          >
+            <X size={14} />
+          </button>
+        </button>
+      )}
 
       {/* Toast Notification */}
       {toast && (

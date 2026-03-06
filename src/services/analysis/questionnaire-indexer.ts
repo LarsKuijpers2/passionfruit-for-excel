@@ -21,6 +21,71 @@ import { VisionIndexer } from '../extractors/vision-indexer.js';
 import { contextualizeQuestions } from './question-contextualizer.js';
 
 // =============================================================================
+// EMPTY PLACEHOLDER DETECTION
+// =============================================================================
+
+/** Loaded placeholder config */
+interface PlaceholderConfig {
+  placeholders: string[];
+  patterns: string[];
+}
+
+let _placeholderConfig: PlaceholderConfig | null = null;
+
+/** Load placeholder config from rules/empty-placeholders.yaml */
+async function loadPlaceholderConfig(): Promise<PlaceholderConfig> {
+  if (_placeholderConfig) return _placeholderConfig;
+
+  const configPath = './rules/empty-placeholders.yaml';
+  try {
+    if (existsSync(configPath)) {
+      const content = await readFile(configPath, 'utf-8');
+      _placeholderConfig = parseYaml(content) as PlaceholderConfig;
+    }
+  } catch (e) {
+    console.warn('Warning: Could not load empty-placeholders.yaml:', e);
+  }
+
+  // Fallback defaults if config not found
+  if (!_placeholderConfig) {
+    _placeholderConfig = {
+      placeholders: [
+        'EMPTY', 'Elija un elemento', 'Elija un elemento.',
+        'Select an option', 'Choose an option', 'Please select',
+        'Bitte auswählen', 'Sélectionner',
+      ],
+      patterns: ['^select\\.{0,3}$', '^choose\\.{0,3}$', '^\\-+$'],
+    };
+  }
+
+  return _placeholderConfig;
+}
+
+/** Check if a value is a placeholder (unfilled dropdown, etc.) */
+function isPlaceholderValue(value: string, config: PlaceholderConfig): boolean {
+  const normalized = value.trim().toLowerCase();
+  if (!normalized) return true;
+
+  // Check exact matches
+  if (config.placeholders.some(p => normalized === p.toLowerCase())) {
+    return true;
+  }
+
+  // Check regex patterns
+  for (const pattern of config.patterns || []) {
+    try {
+      if (new RegExp(pattern, 'i').test(normalized)) {
+        return true;
+      }
+    } catch {
+      // Invalid regex, skip
+    }
+  }
+
+  return false;
+}
+
+// =============================================================================
 // EXTRACTION STRATEGY
 // =============================================================================
 
@@ -1036,6 +1101,7 @@ export class QuestionnaireIndexer {
   private rulesDir: string;
   private region: string;
   private topics: TopicDefinition[] = [];
+  private placeholderConfig: PlaceholderConfig | null = null;
 
   constructor(storageDir: string = './structure', region: string = 'eu-central-1', rulesDir: string = './rules') {
     this.storageDir = storageDir;
@@ -1064,6 +1130,9 @@ export class QuestionnaireIndexer {
     if (this.topics.length > 0) {
       console.log(`  Loaded ${this.topics.length} topic definitions from topics.yaml`);
     }
+
+    // Load placeholder config for detecting empty dropdown values
+    this.placeholderConfig = await loadPlaceholderConfig();
 
     // Load rules
     const rules = await this.rulesManager.loadIndexRules();
@@ -1137,7 +1206,9 @@ export class QuestionnaireIndexer {
 
           // Use document language as default, only override if item has strong language indicators
           const itemLang = this.detectItemLanguageOverride(item.label + ' ' + (item.value || ''), documentLanguage);
-          const hasValue = item.value && item.value !== 'EMPTY' && item.value.trim() !== '';
+          // Check for empty/placeholder values (dropdown placeholders, unfilled fields)
+          const hasValue = item.value && item.value.trim() !== '' &&
+            !isPlaceholderValue(item.value, this.placeholderConfig!);
 
           // Use AI-suggested destination from Claude, with fallback logic
           let aiDestination: ItemDestination;
